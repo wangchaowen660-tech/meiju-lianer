@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>每句练耳</title>
+
+<style>
+
+body {
+    margin: 0;
+    padding: 25px 15px;
+    background: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 25px 20px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.scene {
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.progress {
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.sentence {
+    min-height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+}
+
+.play {
+    background: #222;
+    color: white;
+}
+
+.next {
+    background: #eeeeee;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>🎧 每句练耳</h1>
+
+<div class="subtitle">
+Chaowen AI
+</div>
+
+<div id="scene" class="scene">
+✈️ Airport
+</div>
+
+<div id="progress" class="progress">
+第 1 / 100 句
+</div>
+
+<div id="sentence" class="sentence">
+Good morning.
+</div>
+
+<button class="play" onclick="playSentence()">
+▶ 播放
+</button>
+
+<button class="next" onclick="nextSentence()">
+➡️ 下一句
+</button>
+
+</div>
+
+
+<script>
+
+const lessons = [
+
+["✈️ Airport","Good morning."],
+["✈️ Airport","May I see your passport?"],
+["✈️ Airport","Where are you going?"],
+["✈️ Airport","Do you have any bags?"],
+["✈️ Airport","How many bags do you have?"],
+["✈️ Airport","Do you want a window seat?"],
+["✈️ Airport","Do you need any help?"],
+["✈️ Airport","Here is your boarding pass."],
+["✈️ Airport","What is your flight number?"],
+["✈️ Airport","What time is your flight?"],
+
+["🏨 Hotel","Do you have a reservation?"],
+["🏨 Hotel","May I see your passport?"],
+["🏨 Hotel","What is your name?"],
+["🏨 Hotel","How many nights are you staying?"],
+["🏨 Hotel","What time is check-in?"],
+["🏨 Hotel","What time is check-out?"],
+["🏨 Hotel","Where is my room?"],
+["🏨 Hotel","Do you have Wi-Fi?"],
+["🏨 Hotel","What is the Wi-Fi password?"],
+["🏨 Hotel","Could I have another towel?"],
+
+["🍽️ Restaurant","A table for two, please."],
+["🍽️ Restaurant","May I see the menu?"],
+["🍽️ Restaurant","What do you recommend?"],
+["🍽️ Restaurant","Are you ready to order?"],
+["🍽️ Restaurant","I'd like some chicken."],
+["🍽️ Restaurant","Can I have some water?"],
+["🍽️ Restaurant","Is this spicy?"],
+["🍽️ Restaurant","Can you make it less spicy?"],
+["🍽️ Restaurant","What comes with this?"],
+["🍽️ Restaurant","I'd like some rice."],
+["🍽️ Restaurant","Can I get another plate?"],
+["🍽️ Restaurant","Could we have the bill, please?"],
+["🍽️ Restaurant","Can I pay by card?"],
+["🍽️ Restaurant","Is service included?"],
+["🍽️ Restaurant","Thank you for your help."],
+
+["🛒 Shopping","How much is this?"],
+["🛒 Shopping","Do you have a larger size?"],
+["🛒 Shopping","Do you have a smaller size?"],
+["🛒 Shopping","Can I try this on?"],
+["🛒 Shopping","Do you have another color?"],
+["🛒 Shopping","Where can I pay?"],
+["🛒 Shopping","Can I pay by card?"],
+["🛒 Shopping","Can I have a bag?"],
+["🛒 Shopping","Do you have anything cheaper?"],
+["🛒 Shopping","I'll take this one."],
+
+["🚕 Transport","Where are you going?"],
+["🚕 Transport","How much is the fare?"],
+["🚕 Transport","How long will it take?"],
+["🚕 Transport","Please take me to this address."],
+["🚕 Transport","Can you stop here?"],
+["🚕 Transport","Where is the bus stop?"],
+["🚕 Transport","Which bus should I take?"],
+["🚕 Transport","What time does the bus leave?"],
+["🚕 Transport","Is this the right train?"],
+["🚕 Transport","Where can I buy a ticket?"],
+
+["👋 Daily","How are you?"],
+["👋 Daily","How is your day?"],
+["👋 Daily","What are you doing?"],
+["👋 Daily","Where do you live?"],
+["👋 Daily","Where are you from?"],
+["👋 Daily","What do you do?"],
+["👋 Daily","Do you speak English?"],
+["👋 Daily","Could you speak slowly?"],
+["👋 Daily","Could you say that again?"],
+["👋 Daily","I don't understand."],
+["👋 Daily","What does that mean?"],
+["👋 Daily","Can you help me?"],
+["👋 Daily","Give me a minute, please."],
+["👋 Daily","See you tomorrow."],
+["👋 Daily","Have a nice day."],
+
+["👨‍🍳 Kitchen","Are the vegetables ready?"],
+["👨‍🍳 Kitchen","Can you clean the fish?"],
+["👨‍🍳 Kitchen","Is the chicken ready?"],
+["👨‍🍳 Kitchen","Please wash the vegetables."],
+["👨‍🍳 Kitchen","Cut the onions, please."],
+["👨‍🍳 Kitchen","The soup is ready."],
+["👨‍🍳 Kitchen","Taste the soup, please."],
+["👨‍🍳 Kitchen","Is it too salty?"],
+["👨‍🍳 Kitchen","Is it spicy enough?"],
+["👨‍🍳 Kitchen","We need more rice."],
+["👨‍🍳 Kitchen","We need more vegetables."],
+["👨‍🍳 Kitchen","Lunch is ready."],
+["👨‍🍳 Kitchen","Dinner starts at six."],
+["👨‍🍳 Kitchen","Please clean the kitchen."],
+["👨‍🍳 Kitchen","Good job."],
+
+["🆘 Useful","Please wait a moment."],
+["🆘 Useful","I'm not sure."],
+["🆘 Useful","Let me check."],
+["🆘 Useful","Can you show me?"],
+["🆘 Useful","Please write it down."],
+["🆘 Useful","I need some help."],
+["🆘 Useful","I don't know."],
+["🆘 Useful","One more time, please."],
+["🆘 Useful","That's fine."],
+["🆘 Useful","Thank you very much."]
+
+];
+
+let current = 0;
+
+
+function showSentence() {
+
+    document.getElementById("scene").innerText =
+        lessons[current][0];
+
+    document.getElementById("sentence").innerText =
+        lessons[current][1];
+
+    document.getElementById("progress").innerText =
+        "第 " + (current + 1) + " / " + lessons.length + " 句";
+}
+
+
+function playSentence() {
+
+    speechSynthesis.cancel();
+
+    const text = lessons[current][1];
+
+    const voice =
+        new SpeechSynthesisUtterance(text);
+
+    voice.lang = "en-US";
+    voice.rate = 0.75;
+    voice.pitch = 1;
+    voice.volume = 1;
+
+    speechSynthesis.speak(voice);
+}
+
+
+function nextSentence() {
+
+    speechSynthesis.cancel();
+
+    current++;
+
+    if (current >= lessons.length) {
+        current = 0;
+    }
+
+    showSentence();
+}
+
+
+showSentence();
+
+</script>
+
+</body>
+</html>
