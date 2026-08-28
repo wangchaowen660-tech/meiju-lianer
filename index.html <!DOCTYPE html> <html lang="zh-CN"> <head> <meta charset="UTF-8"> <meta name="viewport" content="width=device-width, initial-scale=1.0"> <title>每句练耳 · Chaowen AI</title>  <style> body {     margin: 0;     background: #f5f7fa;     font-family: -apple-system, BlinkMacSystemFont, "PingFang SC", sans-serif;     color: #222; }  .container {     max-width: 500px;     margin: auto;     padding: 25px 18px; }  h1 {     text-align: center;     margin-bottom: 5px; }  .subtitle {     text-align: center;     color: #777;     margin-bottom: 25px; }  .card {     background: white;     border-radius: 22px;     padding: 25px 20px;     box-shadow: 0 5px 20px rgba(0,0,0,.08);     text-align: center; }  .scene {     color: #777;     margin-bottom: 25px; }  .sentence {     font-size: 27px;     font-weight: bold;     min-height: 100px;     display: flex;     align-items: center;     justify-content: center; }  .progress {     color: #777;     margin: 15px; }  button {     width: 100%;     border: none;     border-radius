@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每句练耳 · Chaowen AI</title>
+
+<style>
+body {
+    margin: 0;
+    background: #f5f7fa;
+    font-family: Arial, sans-serif;
+    color: #222;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 25px 18px;
+}
+
+h1 {
+    text-align: center;
+}
+.progress {
+    color: #777;
+    margin: 15px;
+}
+
+button {
+    width: 100%;
+    border: none;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 6px 0;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.play {
+    background: #222;
+    color: white;
+}
+
+.other {
+    background: #edf0f4;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+.row button {
+    flex: 1;
+}
+
+.meaning {
+    display: none;
+    background: #f5f5f5;
+    padding: 12px;
+    border-radius: 12px;
+    margin: 8px 0;
+}
+
+.status {
+    color: #777;
+    min-height: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎧 每句练耳</h1>
+
+<div class="subtitle">
+Chaowen AI · 一句一句听懂
+</div>
+
+<div class="card">
+
+<div>✈️ 机场 · 办理登机</div>
+
+<div id="sentence" class="sentence"></div>
+
+<div id="progress" class="progress"></div>
+
+<div id="status" class="status">
+准备好了
+</div>
+.subtitle {<button class="play" onclick="playSentence()">▶ 播放</button>
+
+<div class="row">
+<button class="other" onclick="playSentence()">🔁 再听</button>
+<button class="other" onclick="showMeaning()">🈶 看意思</button>
+</div>
+
+<div id="meaning" class="meaning"></div>
+
+<button class="other" onclick="nextSentence()">➡️ 下一句</button>
+
+</div>
+</div>
+
+<script>
+
+const lessons = [
+["Good morning.","早上好。"],
+["May I see your passport?","可以看看你的护照吗？"],
+["Where are you going?","你要去哪里？"],
+["Do you have any bags to check in?","你有行李要托运吗？"],
+["How many bags do you have?","你有几个行李？"],
+["Do you want a window seat?","你想要靠窗的座位吗？"],
+["Do you have any carry-on luggage?","你有随身行李吗？"],
+["Here is your boarding pass.","这是你的登机牌。"],
+["Your gate is 12.","你的登机口是12号。"],
+["Boarding starts at 10:30.","10:30开始登机。"],
+["Your flight is on time.","你的航班准点。"],
+["Have a nice flight.","祝你旅途愉快。"]
+];
+
+let current = 0;
+
+function showSentence() {
+
+document.getElementById("sentence").innerText =
+lessons[current][0];
+
+document.getElementById("progress").innerText =
+(current + 1) + " / " + lessons.length;
+
+document.getElementById("meaning").style.display =
+"none";
+
+document.getElementById("status").innerText =
+"先听这一句";
+
+}
+
+function playSentence() {
+
+speechSynthesis.cancel();
+
+let speech = new SpeechSynthesisUtterance(
+lessons[current][0]
+);
+
+speech.lang = "en-US";
+speech.rate = 0.75;
+
+document.getElementById("status").innerText =
+"🎧 正在播放";
+
+speech.onend = function() {
+
+document.getElementById("status").innerText =
+"⏸️ 停5秒，自己消化";
+
+setTimeout(function() {
+
+document.getElementById("status").innerText =
+"可以了，听明白后进入下一句";
+
+},5000);
+
+};
+
+speechSynthesis.speak(speech);
+
+}
+
+function showMeaning() {
+
+let box = document.getElementById("meaning");
+
+box.innerText = lessons[current][1];
+
+box.style.display = "block";
+
+}
+
+function nextSentence() {
+
+current++;
+
+if (current >= lessons.length) {
+current = 0;
+}
+
+showSentence();
+
+}
+
+showSentence();
+
+</script>
+
+</body>
+</html>
+    text-align: center;
+    color: #777;
+}
+
+.card {
+    background: white;
+    border-radius: 22px;
+    padding: 25px 20px;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.sentence {
+    font-size: 28px;
+    font-weight: bold;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
