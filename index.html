@@ -1,461 +1,790 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
 <title>每句练耳 V2.0</title>
+
 <style>
-*{
-    box-sizing:border-box;
+
+* {
+    box-sizing: border-box;
 }
-body{
-    margin:0;
-    padding:20px 14px 40px;
-    background:#f5f5f5;
-    font-family:-apple-system,BlinkMacSystemFont,
-    "Microsoft YaHei",Arial,sans-serif;
+
+body {
+    margin: 0;
+    padding: 20px 14px 40px;
+    background: #f5f5f5;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Microsoft YaHei",
+        Arial,
+        sans-serif;
 }
-.container{
-    max-width:560px;
-    margin:auto;
+
+.container {
+    max-width: 560px;
+    margin: auto;
 }
-.header{
-    text-align:center;
-    padding:10px 0 20px;
+
+.header {
+    text-align: center;
+    padding: 10px 0 20px;
 }
-.header h1{
-    margin:0;
-    font-size:30px;
+
+.header h1 {
+    margin: 0;
+    font-size: 30px;
 }
-.header p{
-    margin:8px 0 0;
-    color:#888;
+
+.header p {
+    margin: 8px 0 0;
+    color: #888;
 }
-.search{
-    display:flex;
-    gap:8px;
-    margin-bottom:15px;
+
+.search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
 }
-.search input{
-    flex:1;
-    min-width:0;
-    padding:13px;
-    border:1px solid #ddd;
-    border-radius:12px;
-    font-size:16px;
-    outline:none;
+
+.search input {
+    flex: 1;
+    min-width: 0;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 16px;
+    outline: none;
 }
-.search button{
-    width:auto;
-    margin:0;
-    padding:12px 18px;
-    background:#222;
-    color:white;
+
+.search button {
+    width: auto;
+    margin: 0;
+    padding: 12px 18px;
+    background: #222;
+    color: white;
 }
-.results{
-    margin-bottom:15px;
+
+.results {
+    margin-bottom: 15px;
 }
-.result{
-    background:white;
-    padding:13px;
-    margin-bottom:8px;
-    border-radius:12px;
-    cursor:pointer;
+
+.result {
+    background: white;
+    padding: 13px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    cursor: pointer;
 }
-.result-en{
-    font-weight:bold;
-    font-size:17px;
+
+.result-en {
+    font-weight: bold;
+    font-size: 17px;
 }
-.result-cn{
-    margin-top:5px;
-    color:#777;
+
+.result-cn {
+    margin-top: 5px;
+    color: #777;
 }
-.card{
-    background:white;
-    border-radius:22px;
-    padding:25px 18px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
-    text-align:center;
+
+.card {
+    background: white;
+    border-radius: 22px;
+    padding: 25px 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    text-align: center;
 }
-.scene{
-    color:#888;
-    font-size:14px;
+
+.scene {
+    color: #888;
+    font-size: 14px;
 }
-.progress{
-    color:#aaa;
-    margin-top:6px;
-    font-size:14px;
+
+.progress {
+    color: #aaa;
+    margin-top: 6px;
+    font-size: 14px;
 }
-.english{
-    min-height:110px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:15px;
-    font-size:30px;
-    font-weight:bold;
-    line-height:1.4;
+
+.english {
+    min-height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.4;
 }
-.chinese{
-    min-height:50px;
-    font-size:20px;
-    color:#666;
+
+.chinese {
+    min-height: 50px;
+    font-size: 20px;
+    color: #666;
 }
-button{
-    width:100%;
-    border:0;
-    border-radius:12px;
-    padding:14px;
-    margin-top:10px;
-    font-size:17px;
-    cursor:pointer;
+
+button {
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 10px;
+    font-size: 17px;
+    cursor: pointer;
 }
-.play{
-    background:#222;
-    color:white;
+
+.play {
+    background: #222;
+    color: white;
 }
-.normal{
-    background:#eee;
+
+.normal {
+    background: #eee;
 }
-.nav{
-    display:flex;
-    gap:8px;
+
+.nav {
+    display: flex;
+    gap: 8px;
 }
-.status{
-    min-height:24px;
-    margin-top:15px;
-    color:#777;
-    font-size:14px;
+
+.status {
+    min-height: 24px;
+    margin-top: 15px;
+    color: #777;
+    font-size: 14px;
 }
+
 </style>
 </head>
+
+
 <body>
+
 <div class="container">
-<div class="header">
-<h1>🎧 每句练耳</h1>
-<p>听清 · 听懂 · 开口</p>
-</div>
-<!-- 搜索 -->
-<div class="search">
-<button onclick="searchSentence()">
-搜索
-</button>
-</div>
-<div id="results"
-class="results">
-</div>
-<!-- 主卡片 -->
-<div class="card">
-<div id="scene"
-class="scene">
-日常
-</div>
-<div id="progress"
-class="progress">
-第 1 / 5 句
-</div>
-<div id="english"
-class="english">
-Good morning.
-</div>
-<div id="chinese"
-class="chinese">
-早上好。
+
+    <div class="header">
+
+        <h1>🎧 每句练耳</h1>
+
+        <p>听清 · 听懂 · 开口</p>
+
+    </div>
+
+
+    <!-- 搜索 -->
+
+    <div class="search">
+
+        <input
+            id="searchInput"
+            type="search"
+            placeholder="输入中文或英文"
+            autocomplete="off"
+        >
+
+        <button onclick="searchSentence()">
+            搜索
+        </button>
+
+    </div>
+
+
+    <div
+        id="results"
+        class="results">
+    </div>
+
+
+    <!-- 主卡片 -->
+
+    <div class="card">
+
+        <div
+            id="scene"
+            class="scene">
+            日常
+        </div>
+
+
+        <div
+            id="progress"
+            class="progress">
+            第 1 / 5 句
+        </div>
+
+
+        <div
+            id="english"
+            class="english">
+            Good morning.
+        </div>
+
+
+        <div
+            id="chinese"
+            class="chinese">
+            早上好。
+        </div>
+
+
+        <button
+            class="play"
+            onclick="playCurrent()">
+
+            ▶ 播放英语
+
+        </button>
+
+
+        <button
+            class="normal"
+            onclick="repeatCurrent()">
+
+            🔁 重听
+
+        </button>
+
+
+        <div class="nav">
+
+            <button
+                class="normal"
+                onclick="previousSentence()">
+
+                ⬅ 上一句
+
+            </button>
+
+
+            <button
+                class="normal"
+                onclick="nextSentence()">
+
+                下一句 ➡
+
+            </button>
+
+        </div>
+
+
+        <button
+            class="normal"
+            onclick="randomSentence()">
+
+            🎲 随机一句
+
+        </button>
+
+
+        <div
+            id="status"
+            class="status">
+
+            准备好了
+
+        </div>
+
+    </div>
+
 </div>
 
-▶ 播放英语
-🔁 重听
-<div class="nav">
 
-⬅ 上一句
-下一句 ➡
-</div>
-
-🎲 随机一句
-<div id="status"
-class="status">
-准备好了
-</div>
-</div>
-</div>
 <script>
-/* ==================================================
+
+/* =========================================
    句库
-================================================== */
+========================================= */
+
 const lessons = [
-{
-scene:"日常",
-en:"Good morning.",
-cn:"早上好。"
-},
-{
-scene:"日常",
-en:"How are you?",
-cn:"你好吗？"
-},
-{
-scene:"日常",
-en:"What are you doing?",
-cn:"你在做什么？"
-},
-{
-scene:"日常",
-en:"Where are you going?",
-cn:"你要去哪里？"
-},
-{
-scene:"日常",
-en:"Where do you live?",
-cn:"你住在哪里？"
-}
-];
-/* ==================================================
-   当前句
-================================================== */
-let current = 0;
-let speaking = false;
-/* ==================================================
-   页面元素
-================================================== */
-const status =
-document.getElementById("status");
-/* ==================================================
-   播放当前句
-================================================== */
-function playCurrent(){
-    const item =
-    lessons[current];
-    /*
-       如果正在播放，
-       先不重复建立队列
-    */
-    if(speaking){
-        return;
+
+    {
+        scene: "日常",
+        en: "Good morning.",
+        cn: "早上好。"
+    },
+
+    {
+        scene: "日常",
+        en: "How are you?",
+        cn: "你好吗？"
+    },
+
+    {
+        scene: "日常",
+        en: "What are you doing?",
+        cn: "你在做什么？"
+    },
+
+    {
+        scene: "日常",
+        en: "Where are you going?",
+        cn: "你要去哪里？"
+    },
+
+    {
+        scene: "日常",
+        en: "Where do you live?",
+        cn: "你住在哪里？"
     }
+
+];
+
+
+/* =========================================
+   状态
+========================================= */
+
+let current = 0;
+
+let currentUtterance = null;
+
+let isSpeaking = false;
+
+
+/* =========================================
+   页面元素
+========================================= */
+
+const status =
+    document.getElementById("status");
+
+
+/* =========================================
+   播放当前句
+========================================= */
+
+function playCurrent() {
+
+    const item = lessons[current];
+
+    /*
+       如果之前还有语音，
+       先清空队列。
+    */
+
+    if (window.speechSynthesis) {
+
+        window.speechSynthesis.cancel();
+
+    }
+
+
+    isSpeaking = false;
+
+
+    /*
+       新建语音对象
+    */
+
     const utterance =
-    new SpeechSynthesisUtterance(
-        item.en
-    );
+        new SpeechSynthesisUtterance(item.en);
+
+
+    currentUtterance = utterance;
+
+
     /*
        英语
     */
-    utterance.lang =
-    "en-US";
+
+    utterance.lang = "en-US";
+
+
     /*
-       已经测试过：
+       已经实际测试：
        0.85 比 0.72 清楚
     */
-    utterance.rate =
-    0.85;
-    utterance.pitch =
-    1;
-    utterance.volume =
-    1;
-    utterance.onstart =
-    function(){
-        speaking = true;
+
+    utterance.rate = 0.85;
+
+    utterance.pitch = 1;
+
+    utterance.volume = 1;
+
+
+    utterance.onstart = function() {
+
+        /*
+           如果这不是当前语音，
+           不处理。
+        */
+
+        if (
+            currentUtterance !== utterance
+        ) {
+            return;
+        }
+
+
+        isSpeaking = true;
+
         status.innerText =
-        "🎧 正在播放……";
+            "🎧 正在播放……";
+
     };
-    utterance.onend =
-    function(){
-        speaking = false;
+
+
+    utterance.onend = function() {
+
+        if (
+            currentUtterance !== utterance
+        ) {
+            return;
+        }
+
+
+        isSpeaking = false;
+
+        currentUtterance = null;
+
         status.innerText =
-        "✅ 播放完成";
+            "✅ 播放完成";
+
     };
-    utterance.onerror =
-    function(){
-        speaking = false;
+
+
+    utterance.onerror = function(event) {
+
+        if (
+            currentUtterance !== utterance
+        ) {
+            return;
+        }
+
+
+        isSpeaking = false;
+
+        currentUtterance = null;
+
+
+        /*
+           cancel / interrupt
+           不算真正错误
+        */
+
+        if (
+            event.error === "canceled" ||
+            event.error === "interrupted"
+        ) {
+
+            status.innerText =
+                "准备好了";
+
+            return;
+
+        }
+
+
         status.innerText =
-        "⚠️ 播放失败";
+            "⚠️ 播放失败";
+
     };
+
+
     /*
-       直接播放
+       关键：
+       不使用 setTimeout。
+       直接在按钮点击产生的用户操作中播放。
     */
-    window.speechSynthesis.speak(
-        utterance
-    );
+
+    try {
+
+        window.speechSynthesis.speak(
+            utterance
+        );
+
+    } catch (error) {
+
+        isSpeaking = false;
+
+        currentUtterance = null;
+
+        status.innerText =
+            "⚠️ 播放失败";
+
+    }
+
 }
-/* ==================================================
+
+
+/* =========================================
    重听
-================================================== */
-function repeatCurrent(){
-    window.speechSynthesis.cancel();
-    speaking = false;
+========================================= */
+
+function repeatCurrent() {
+
     /*
-       稍微等待系统释放上一条
+       重听也是一次新的用户点击，
+       因此直接重新播放。
     */
-    setTimeout(
-        function(){
-            playCurrent();
-        },
-        150
-    );
+
+    playCurrent();
+
 }
-/* ==================================================
+
+
+/* =========================================
    下一句
-================================================== */
-function nextSentence(){
+========================================= */
+
+function nextSentence() {
+
     /*
-       这里只改变句子。
+       只改变句子，
        不操作语音引擎。
     */
+
     current++;
-    if(
-        current >=
-        lessons.length
-    ){
+
+    if (
+        current >= lessons.length
+    ) {
+
         current = 0;
+
     }
+
+
     showSentence();
+
     status.innerText =
-    "准备好了";
+        "准备好了";
+
 }
-/* ==================================================
+
+
+/* =========================================
    上一句
-================================================== */
-function previousSentence(){
+========================================= */
+
+function previousSentence() {
+
     current--;
-    if(current < 0){
+
+    if (current < 0) {
+
         current =
-        lessons.length - 1;
+            lessons.length - 1;
+
     }
+
+
     showSentence();
+
     status.innerText =
-    "准备好了";
+        "准备好了";
+
 }
-/* ==================================================
+
+
+/* =========================================
    随机一句
-================================================== */
-function randomSentence(){
+========================================= */
+
+function randomSentence() {
+
     current =
-    Math.floor(
-        Math.random() *
-        lessons.length
-    );
+        Math.floor(
+            Math.random() *
+            lessons.length
+        );
+
+
     showSentence();
+
     status.innerText =
-    "🎲 已选择随机句子";
+        "🎲 已选择随机句子";
+
 }
-/* ==================================================
+
+
+/* =========================================
    显示句子
-================================================== */
-function showSentence(){
+========================================= */
+
+function showSentence() {
+
     const item =
-    lessons[current];
-    document.getElementById(
-        "scene"
-    ).innerText =
-    item.scene;
-    document.getElementById(
-        "progress"
-    ).innerText =
-    "第 " +
-    (current + 1) +
-    " / " +
-    lessons.length +
-    " 句";
-    document.getElementById(
-        "english"
-    ).innerText =
-    item.en;
-    document.getElementById(
-        "chinese"
-    ).innerText =
-    item.cn;
+        lessons[current];
+
+
+    document.getElementById("scene")
+        .innerText =
+        item.scene;
+
+
+    document.getElementById("progress")
+        .innerText =
+        "第 " +
+        (current + 1) +
+        " / " +
+        lessons.length +
+        " 句";
+
+
+    document.getElementById("english")
+        .innerText =
+        item.en;
+
+
+    document.getElementById("chinese")
+        .innerText =
+        item.cn;
+
 }
-/* ==================================================
+
+
+/* =========================================
    搜索
-================================================== */
-function searchSentence(){
+========================================= */
+
+function searchSentence() {
+
     const input =
-    document.getElementById(
-        "searchInput"
-    );
+        document.getElementById(
+            "searchInput"
+        );
+
+
     const keyword =
-    input.value
-    .trim()
-    .toLowerCase();
+        input.value
+            .trim()
+            .toLowerCase();
+
+
     const results =
-    document.getElementById(
-        "results"
-    );
-    results.innerHTML =
-    "";
-    if(!keyword){
+        document.getElementById(
+            "results"
+        );
+
+
+    results.innerHTML = "";
+
+
+    if (!keyword) {
+
         return;
+
     }
+
+
     lessons.forEach(
-        function(item,index){
+        function(item, index) {
+
             const en =
-            item.en.toLowerCase();
+                item.en.toLowerCase();
+
+
             const cn =
-            item.cn;
-            if(
-                en.includes(keyword)
-                ||
+                item.cn;
+
+
+            if (
+                en.includes(keyword) ||
                 cn.includes(keyword)
-            ){
+            ) {
+
                 const box =
-                document.createElement(
-                    "div"
-                );
+                    document.createElement(
+                        "div"
+                    );
+
+
                 box.className =
-                "result";
+                    "result";
+
+
                 box.innerHTML =
-                "<div class='result-en'>" +
-                item.en +
-                "</div>" +
-                "<div class='result-cn'>" +
-                item.cn +
-                "</div>";
+
+                    "<div class='result-en'>" +
+                    item.en +
+                    "</div>" +
+
+                    "<div class='result-cn'>" +
+                    item.cn +
+                    "</div>";
+
+
                 box.onclick =
-                function(){
-                    current =
-                    index;
-                    showSentence();
-                    results.innerHTML =
-                    "";
-                    input.value =
-                    "";
-                    status.innerText =
-                    "准备好了";
-                };
-                results.appendChild(
-                    box
-                );
+                    function() {
+
+                        current = index;
+
+                        showSentence();
+
+                        results.innerHTML =
+                            "";
+
+                        input.value =
+                            "";
+
+                        status.innerText =
+                            "准备好了";
+
+                    };
+
+
+                results.appendChild(box);
+
             }
+
         }
     );
-    if(
+
+
+    if (
         results.innerHTML === ""
-    ){
+    ) {
+
         results.innerHTML =
-        "<div class='result'>" +
-        "没有找到相关句子" +
-        "</div>";
+
+            "<div class='result'>" +
+
+            "没有找到相关句子" +
+
+            "</div>";
+
     }
+
 }
-/* ==================================================
+
+
+/* =========================================
    回车搜索
-================================================== */
+========================================= */
+
 document
-.getElementById("searchInput")
-.addEventListener(
-    "keydown",
-    function(event){
-        if(
-            event.key ===
-            "Enter"
-        ){
-            searchSentence();
+    .getElementById("searchInput")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                searchSentence();
+
+            }
+
         }
-    }
-);
-/* ==================================================
+    );
+
+
+/* =========================================
    初始化
-================================================== */
+========================================= */
+
 showSentence();
+
 </script>
+
 </body>
+
 </html>
