@@ -1,174 +1,183 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>每句练耳</title>
 
 <style>
 
-body {
-    margin: 0;
-    padding: 20px 15px;
-    background: #f5f5f5;
-    font-family: Arial, sans-serif;
+*{
+    box-sizing:border-box;
 }
 
-.card {
-    max-width: 520px;
-    margin: auto;
-    background: white;
-    padding: 22px 18px;
-    border-radius: 20px;
-    box-sizing: border-box;
+body{
+    margin:0;
+    padding:18px 12px 40px;
+    background:#f5f5f5;
+    font-family:-apple-system,BlinkMacSystemFont,"Microsoft YaHei",Arial,sans-serif;
 }
 
-h1 {
-    text-align: center;
-    margin: 0 0 5px 0;
+.card{
+    width:100%;
+    max-width:540px;
+    margin:auto;
+    background:white;
+    border-radius:22px;
+    padding:22px 17px 25px;
+    box-shadow:0 5px 22px rgba(0,0,0,.08);
 }
 
-.subtitle {
-    text-align: center;
-    color: #777;
-    margin-bottom: 20px;
+h1{
+    text-align:center;
+    margin:0;
+    font-size:28px;
 }
 
-.searchBox {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 15px;
+.subtitle{
+    text-align:center;
+    color:#777;
+    margin:6px 0 20px;
 }
 
-#searchInput {
-    flex: 1;
-    padding: 13px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 16px;
-    box-sizing: border-box;
+.search{
+    display:flex;
+    gap:8px;
+    margin-bottom:10px;
 }
 
-.searchButton {
-    width: auto;
-    padding: 12px 16px;
-    margin: 0;
-    background: #222;
-    color: white;
+#searchInput{
+    flex:1;
+    min-width:0;
+    border:1px solid #ddd;
+    border-radius:11px;
+    padding:13px;
+    font-size:16px;
+    outline:none;
 }
 
-.scene {
-    text-align: center;
-    color: #777;
-    margin-top: 10px;
+.searchBtn{
+    width:auto;
+    margin:0;
+    padding:13px 16px;
+    background:#222;
+    color:white;
 }
 
-.progress {
-    text-align: center;
-    color: #999;
-    margin: 10px 0 15px;
+#results{
+    margin-bottom:15px;
 }
 
-.sentence {
-    min-height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 29px;
-    font-weight: bold;
-    line-height: 1.4;
+.result{
+    padding:12px;
+    margin:7px 0;
+    border-radius:10px;
+    background:#f1f1f1;
 }
 
-.meaning {
-    min-height: 45px;
-    text-align: center;
-    color: #666;
-    font-size: 20px;
-    line-height: 1.5;
-    margin-bottom: 10px;
+.resultEnglish{
+    font-weight:bold;
+    font-size:17px;
 }
 
-button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 9px;
-    border: none;
-    border-radius: 12px;
-    font-size: 17px;
+.resultChinese{
+    margin-top:5px;
+    color:#666;
 }
 
-.play {
-    background: #222;
-    color: white;
+.scene{
+    text-align:center;
+    color:#777;
+    margin-top:8px;
 }
 
-.repeat {
-    background: #ddd;
+.progress{
+    text-align:center;
+    color:#999;
+    margin:8px 0;
 }
 
-.next {
-    background: #eee;
+.sentence{
+    min-height:105px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    line-height:1.4;
+    padding:10px;
 }
 
-.status {
-    text-align: center;
-    min-height: 24px;
-    margin-top: 12px;
-    color: #777;
+.meaning{
+    min-height:45px;
+    text-align:center;
+    color:#666;
+    font-size:20px;
+    line-height:1.5;
+    margin-bottom:10px;
 }
 
-.results {
-    margin-top: 18px;
+button{
+    width:100%;
+    border:0;
+    border-radius:12px;
+    padding:14px;
+    margin-top:9px;
+    font-size:17px;
 }
 
-.resultTitle {
-    font-weight: bold;
-    margin-bottom: 8px;
+.play{
+    background:#222;
+    color:white;
 }
 
-.resultItem {
-    padding: 13px;
-    margin-bottom: 8px;
-    background: #f1f1f1;
-    border-radius: 10px;
-    cursor: pointer;
+.repeat{
+    background:#e5e5e5;
 }
 
-.resultEnglish {
-    font-weight: bold;
-    font-size: 17px;
+.nav{
+    display:flex;
+    gap:8px;
 }
 
-.resultChinese {
-    color: #666;
-    margin-top: 4px;
+.nav button{
+    flex:1;
+    background:#eee;
 }
 
-.noResult {
-    color: #999;
-    text-align: center;
-    padding: 10px;
+.random{
+    background:#eee;
+}
+
+.status{
+    text-align:center;
+    min-height:24px;
+    margin-top:13px;
+    color:#777;
+    font-size:15px;
+}
+
+.sceneSelect{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
+    margin-bottom:8px;
+    background:white;
 }
 
 </style>
-
 </head>
 
 
 <body>
 
-
 <div class="card">
 
-
 <h1>🎧 每句练耳</h1>
-
 
 <div class="subtitle">
 每一句都是干货
@@ -177,17 +186,17 @@ button {
 
 <!-- 搜索 -->
 
-<div class="searchBox">
+<div class="search">
 
 <input
 id="searchInput"
 type="text"
-placeholder="输入中文或英文搜索，例如：早上好 / morning"
+placeholder="输入中文或英文搜索"
 oninput="searchLessons()"
 >
 
 <button
-class="searchButton"
+class="searchBtn"
 onclick="searchLessons()">
 搜索
 </button>
@@ -195,25 +204,53 @@ onclick="searchLessons()">
 </div>
 
 
-<!-- 当前场景 -->
+<div id="results"></div>
+
+
+<!-- 场景 -->
+
+<select
+id="sceneSelect"
+class="sceneSelect"
+onchange="changeScene()">
+
+<option value="全部">全部场景</option>
+
+<option value="日常">👋 日常</option>
+
+<option value="餐厅">🍽️ 餐厅</option>
+
+<option value="购物">🛒 购物</option>
+
+<option value="酒店">🏨 酒店</option>
+
+<option value="交通">🚕 交通</option>
+
+<option value="机场">✈️ 机场</option>
+
+<option value="厨房">👨‍🍳 厨房</option>
+
+<option value="工作">💼 工作</option>
+
+<option value="实用">🆘 实用</option>
+
+</select>
+
+
+<!-- 当前句子 -->
 
 <div
 id="scene"
 class="scene">
-日常
+👋 日常
 </div>
-
-
-<!-- 进度 -->
 
 <div
 id="progress"
 class="progress">
-第 1 / 100 句
+第 1 / 1000 句
 </div>
 
-
-<!-- 英文 -->
 
 <div
 id="sentence"
@@ -221,8 +258,6 @@ class="sentence">
 Good morning.
 </div>
 
-
-<!-- 中文 -->
 
 <div
 id="meaning"
@@ -247,10 +282,23 @@ onclick="playSentence()">
 </button>
 
 
+<div class="nav">
+
+<button onclick="previousSentence()">
+⬅ 上一句
+</button>
+
+<button onclick="nextSentence()">
+下一句 ➡
+</button>
+
+</div>
+
+
 <button
-class="next"
-onclick="nextSentence()">
-➡️ 下一句
+class="random"
+onclick="randomSentence()">
+🎲 随机一句
 </button>
 
 
@@ -260,29 +308,28 @@ class="status">
 准备好了
 </div>
 
-
-<!-- 搜索结果 -->
-
-<div
-id="results"
-class="results">
-</div>
-
-
 </div>
 
 
 <script>
 
 
-/* =================================
-   100句英语 + 中文
-================================= */
+/* =====================================================
+   每句练耳核心句库
+   格式：
+   [场景, 英文, 中文]
+===================================================== */
 
 const lessons = [
 
+/* ===== 日常 ===== */
+
 ["日常","Good morning.","早上好。"],
+["日常","Good afternoon.","下午好。"],
+["日常","Good evening.","晚上好。"],
+["日常","Good night.","晚安。"],
 ["日常","How are you?","你好吗？"],
+["日常","I'm fine, thank you.","我很好，谢谢你。"],
 ["日常","How is your day?","你今天过得怎么样？"],
 ["日常","What are you doing?","你在做什么？"],
 ["日常","Where are you going?","你要去哪里？"],
@@ -290,29 +337,30 @@ const lessons = [
 ["日常","Where are you from?","你来自哪里？"],
 ["日常","What do you do?","你是做什么工作的？"],
 ["日常","Do you speak English?","你会说英语吗？"],
+["日常","I speak a little English.","我会说一点英语。"],
 ["日常","Could you speak slowly?","你可以说慢一点吗？"],
-
 ["日常","Could you say that again?","你可以再说一遍吗？"],
 ["日常","I don't understand.","我听不懂。"],
 ["日常","What does that mean?","那是什么意思？"],
 ["日常","Can you help me?","你可以帮我吗？"],
-["日常","Please wait a moment.","请等一下。"],
 ["日常","Give me a minute, please.","请给我一点时间。"],
+["日常","Please wait a moment.","请等一下。"],
+["日常","Let me think.","让我想一下。"],
 ["日常","Let me check.","让我看一下。"],
 ["日常","I'm not sure.","我不确定。"],
 ["日常","I don't know.","我不知道。"],
 ["日常","That's fine.","没关系。"],
-
+["日常","No problem.","没问题。"],
+["日常","Of course.","当然可以。"],
+["日常","That's okay.","没关系。"],
 ["日常","Thank you very much.","非常感谢你。"],
 ["日常","You're welcome.","不用客气。"],
 ["日常","Have a nice day.","祝你今天愉快。"],
 ["日常","See you tomorrow.","明天见。"],
 ["日常","See you later.","回头见。"],
-["日常","Good night.","晚安。"],
 ["日常","Take care.","保重。"],
-["日常","No problem.","没问题。"],
-["日常","That's okay.","没关系。"],
-["日常","Of course.","当然可以。"],
+
+/* ===== 餐厅 ===== */
 
 ["餐厅","A table for two, please.","请给我们一张两人桌。"],
 ["餐厅","May I see the menu?","可以给我看看菜单吗？"],
@@ -324,14 +372,16 @@ const lessons = [
 ["餐厅","Is this spicy?","这个辣吗？"],
 ["餐厅","Can you make it less spicy?","可以做得不那么辣吗？"],
 ["餐厅","What comes with this?","这个里面包括什么？"],
-
 ["餐厅","Can I get another plate?","可以再给我一个盘子吗？"],
 ["餐厅","Could we have the bill, please?","请给我们账单好吗？"],
 ["餐厅","Can I pay by card?","可以刷卡吗？"],
 ["餐厅","Is service included?","包含服务费吗？"],
 ["餐厅","Thank you for your help.","谢谢你的帮助。"],
 
+/* ===== 购物 ===== */
+
 ["购物","How much is this?","这个多少钱？"],
+["购物","How much does it cost?","这个多少钱？"],
 ["购物","Do you have a larger size?","有大一点的尺码吗？"],
 ["购物","Do you have a smaller size?","有小一点的尺码吗？"],
 ["购物","Can I try this on?","我可以试穿吗？"],
@@ -341,6 +391,8 @@ const lessons = [
 ["购物","Can I have a bag?","可以给我一个袋子吗？"],
 ["购物","Do you have anything cheaper?","有没有便宜一点的？"],
 ["购物","I'll take this one.","我就要这个。"],
+
+/* ===== 酒店 ===== */
 
 ["酒店","Do you have a reservation?","你有预订吗？"],
 ["酒店","May I see your passport?","可以看看你的护照吗？"],
@@ -353,6 +405,9 @@ const lessons = [
 ["酒店","What is the Wi-Fi password?","无线网络密码是多少？"],
 ["酒店","Could I have another towel?","可以再给我一条毛巾吗？"],
 
+/* ===== 交通 ===== */
+
+["交通","Where are you going?","你要去哪里？"],
 ["交通","How much is the fare?","车费多少钱？"],
 ["交通","How long will it take?","需要多长时间？"],
 ["交通","Please take me to this address.","请带我去这个地址。"],
@@ -362,7 +417,8 @@ const lessons = [
 ["交通","What time does the bus leave?","公交车几点出发？"],
 ["交通","Is this the right train?","这是正确的火车吗？"],
 ["交通","Where can I buy a ticket?","在哪里可以买票？"],
-["交通","Where is the taxi stand?","出租车站在哪里？"],
+
+/* ===== 机场 ===== */
 
 ["机场","May I see your passport?","可以看看你的护照吗？"],
 ["机场","Where are you going?","你要去哪里？"],
@@ -374,6 +430,8 @@ const lessons = [
 ["机场","What is your flight number?","你的航班号是多少？"],
 ["机场","What time is your flight?","你的航班几点？"],
 
+/* ===== 厨房 ===== */
+
 ["厨房","Are the vegetables ready?","蔬菜准备好了吗？"],
 ["厨房","Can you clean the fish?","你可以把鱼处理好吗？"],
 ["厨房","Is the chicken ready?","鸡肉准备好了吗？"],
@@ -384,273 +442,431 @@ const lessons = [
 ["厨房","Is it too salty?","是不是太咸了？"],
 ["厨房","Is it spicy enough?","辣味够吗？"],
 ["厨房","We need more rice.","我们需要更多米饭。"],
-
 ["厨房","We need more vegetables.","我们需要更多蔬菜。"],
 ["厨房","Lunch is ready.","午餐好了。"],
 ["厨房","Dinner starts at six.","晚餐六点开始。"],
 ["厨房","Please clean the kitchen.","请把厨房清理干净。"],
 ["厨房","Good job.","做得好。"],
 
+/* ===== 工作 ===== */
+
+["工作","Are you ready?","你准备好了吗？"],
+["工作","Let's start.","我们开始吧。"],
+["工作","Let's do it.","我们开始做吧。"],
+["工作","Please help me.","请帮帮我。"],
+["工作","I need your help.","我需要你的帮助。"],
+["工作","Please wait.","请等一下。"],
+["工作","Come here, please.","请到这里来。"],
+["工作","Please follow me.","请跟我来。"],
+["工作","I'll check it.","我来检查一下。"],
+["工作","It's ready.","准备好了。"],
+["工作","We need more time.","我们需要更多时间。"],
+["工作","We need more people.","我们需要更多人手。"],
+["工作","Good work.","干得好。"],
+["工作","Be careful.","小心一点。"],
+["工作","Let's finish this first.","我们先把这个做完。"],
+
+/* ===== 实用 ===== */
+
 ["实用","Please write it down.","请把它写下来。"],
 ["实用","I need some help.","我需要一些帮助。"],
 ["实用","One more time, please.","请再来一次。"],
 ["实用","Can you show me?","你可以给我看看吗？"],
-["实用","Please speak more slowly.","请说慢一点。"]
+["实用","Please speak more slowly.","请说慢一点。"],
+["实用","Please say it again.","请再说一遍。"],
+["实用","I need water.","我需要水。"],
+["实用","I need a minute.","我需要一点时间。"],
+["实用","I want to learn English.","我想学英语。"],
+["实用","I want to go home.","我想回家。"],
+["实用","I want to eat.","我想吃东西。"],
+["实用","I want to sleep.","我想睡觉。"],
+["实用","I want to go.","我想去。"],
+["实用","I want to use it.","我想用它。"],
+["实用","I want to buy it.","我想买它。"]
 
 ];
 
 
-/* =================================
-   当前句子
-================================= */
+/* =====================================================
+   当前状态
+===================================================== */
 
 let current = 0;
 
+let currentList = lessons;
 
-/* =================================
+
+/* =====================================================
    显示句子
-================================= */
+===================================================== */
 
-function showSentence() {
+function showSentence(){
+
+    const item =
+        currentList[current];
+
+    if(!item){
+        return;
+    }
 
     document.getElementById("scene").innerText =
-        lessons[current][0];
+        item[0];
 
     document.getElementById("sentence").innerText =
-        lessons[current][1];
+        item[1];
 
     document.getElementById("meaning").innerText =
-        lessons[current][2];
+        item[2];
 
     document.getElementById("progress").innerText =
-        "第 " + (current + 1) +
-        " / " + lessons.length + " 句";
-
-    document.getElementById("status").innerText =
-        "准备好了";
-
+        "第 " +
+        (current + 1) +
+        " / " +
+        currentList.length +
+        " 句";
 }
 
 
-/* =================================
-   播放英语
-   注意：只播放 lessons[current][1]
-================================= */
-function playSentence() {
+/* =====================================================
+   播放
+===================================================== */
 
-    // 每次播放前彻底停止旧语音
+function playSentence(){
+
     window.speechSynthesis.cancel();
 
     document.getElementById("status").innerText =
         "🎧 正在准备……";
 
-    setTimeout(function () {
+    setTimeout(function(){
 
-        const english = lessons[current][1];
+        const item =
+            currentList[current];
+
+        if(!item){
+            return;
+        }
+
+        const english =
+            item[1];
 
         const voice =
-            new SpeechSynthesisUtterance(english);
+            new SpeechSynthesisUtterance(
+                english
+            );
 
-        voice.lang = "en-US";
+        voice.lang =
+            "en-US";
 
-        // 清晰、自然
-        voice.rate = 0.72;
-        voice.pitch = 1.0;
-        voice.volume = 1.0;
+        voice.rate =
+            0.72;
 
-        voice.onstart = function () {
+        voice.pitch =
+            1.0;
 
-            document.getElementById("status").innerText =
-                "🎧 正在播放……";
+        voice.volume =
+            1.0;
 
-        };
+        voice.onstart =
+            function(){
 
-        voice.onend = function () {
+                document.getElementById("status").innerText =
+                    "🎧 正在播放英语……";
 
-            document.getElementById("status").innerText =
-                "✅ 听完了";
+            };
 
-        };
+        voice.onend =
+            function(){
 
-        voice.onerror = function () {
+                document.getElementById("status").innerText =
+                    "✅ 听完了";
 
-            document.getElementById("status").innerText =
-                "⚠️ 播放出现问题，请再试一次";
+            };
 
-        };
+        voice.onerror =
+            function(){
 
-        window.speechSynthesis.speak(voice);
+                document.getElementById("status").innerText =
+                    "⚠️ 播放失败，请再试一次";
 
-    }, 400);
+            };
+
+        window.speechSynthesis.speak(
+            voice
+        );
+
+    },350);
 }
 
-function nextSentence() {
+
+/* =====================================================
+   下一句
+===================================================== */
+
+function nextSentence(){
 
     window.speechSynthesis.cancel();
 
     current++;
 
-    if (current >= lessons.length) {
+    if(
+        current >=
+        currentList.length
+    ){
 
         current = 0;
 
     }
 
     showSentence();
-
 }
 
 
-/* =================================
-   中文 / 英文搜索
-================================= */
-function searchLessons() {
+/* =====================================================
+   上一句
+===================================================== */
 
-    const input =
-        document.getElementById("searchInput");
+function previousSentence(){
+
+    window.speechSynthesis.cancel();
+
+    current--;
+
+    if(current < 0){
+
+        current =
+            currentList.length - 1;
+
+    }
+
+    showSentence();
+}
+
+
+/* =====================================================
+   随机一句
+===================================================== */
+
+function randomSentence(){
+
+    window.speechSynthesis.cancel();
+
+    current =
+        Math.floor(
+            Math.random() *
+            currentList.length
+        );
+
+    showSentence();
+
+    document.getElementById("status").innerText =
+        "🎲 已随机选择";
+}
+
+
+/* =====================================================
+   场景筛选
+===================================================== */
+
+function changeScene(){
+
+    const scene =
+        document.getElementById("sceneSelect").value;
+
+    window.speechSynthesis.cancel();
+
+    if(scene === "全部"){
+
+        currentList =
+            lessons;
+
+    }else{
+
+        currentList =
+            lessons.filter(
+                function(item){
+
+                    return item[0] === scene;
+
+                }
+            );
+
+    }
+
+    current = 0;
+
+    showSentence();
+}
+
+
+/* =====================================================
+   中文 / 英文搜索
+===================================================== */
+
+function searchLessons(){
 
     const keyword =
-        input.value.trim().toLowerCase();
+        document.getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
 
     const results =
         document.getElementById("results");
 
     results.innerHTML = "";
 
-    if (keyword === "") {
+    if(keyword === ""){
         return;
     }
 
-    const found = lessons.filter(function(item) {
 
-        const scene =
-            item[0].toLowerCase();
+    const found =
+        lessons.filter(
+            function(item){
 
-        const english =
-            item[1].toLowerCase();
+                return (
+                    item[0]
+                    .toLowerCase()
+                    .includes(keyword)
 
-        const chinese =
-            item[2].toLowerCase();
+                    ||
 
-        return (
-            scene.includes(keyword) ||
-            english.includes(keyword) ||
-            chinese.includes(keyword)
+                    item[1]
+                    .toLowerCase()
+                    .includes(keyword)
+
+                    ||
+
+                    item[2]
+                    .toLowerCase()
+                    .includes(keyword)
+                );
+
+            }
         );
 
-    });
 
     const title =
         document.createElement("div");
 
-    title.className = "resultTitle";
-
     title.innerText =
-        "🔎 找到 " + found.length + " 句";
+        "🔎 找到 " +
+        found.length +
+        " 句";
+
+    title.style.marginBottom =
+        "8px";
 
     results.appendChild(title);
 
 
-    if (found.length === 0) {
+    if(found.length === 0){
 
-        const noResult =
+        const none =
             document.createElement("div");
 
-        noResult.className = "noResult";
+        none.className =
+            "noResult";
 
-        noResult.innerText =
+        none.innerText =
             "没有找到相关句子";
 
-        results.appendChild(noResult);
+        results.appendChild(none);
 
         return;
     }
 
 
-    found.forEach(function(item) {
+    found.forEach(
+        function(item){
 
-        const index =
-            lessons.indexOf(item);
+            const box =
+                document.createElement("div");
 
-
-        const box =
-            document.createElement("div");
-
-        box.className =
-            "resultItem";
+            box.className =
+                "result";
 
 
-        const english =
-            document.createElement("div");
+            const english =
+                document.createElement("div");
 
-        english.className =
-            "resultEnglish";
+            english.className =
+                "resultEnglish";
 
-        english.innerText =
-            item[1];
-
-
-        const chinese =
-            document.createElement("div");
-
-        chinese.className =
-            "resultChinese";
-
-        chinese.innerText =
-            item[2];
+            english.innerText =
+                item[1];
 
 
-        box.appendChild(english);
+            const chinese =
+                document.createElement("div");
 
-        box.appendChild(chinese);
+            chinese.className =
+                "resultChinese";
 
-
-        /*
-           点击搜索结果
-           直接切换当前卡片
-        */
-
-        box.onclick = function() {
-
-            window.speechSynthesis.cancel();
-
-            current = index;
-
-            showSentence();
-
-            document.getElementById("status").innerText =
-                "已找到这句话";
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-        };
+            chinese.innerText =
+                item[2];
 
 
-        results.appendChild(box);
+            box.appendChild(
+                english
+            );
 
-    });
+            box.appendChild(
+                chinese
+            );
 
+
+            box.onclick =
+                function(){
+
+                    window.speechSynthesis.cancel();
+
+                    currentList =
+                        lessons;
+
+                    current =
+                        lessons.indexOf(item);
+
+                    document.getElementById("sceneSelect")
+                        .value =
+                        "全部";
+
+                    showSentence();
+
+                    results.innerHTML = "";
+
+                    document.getElementById("searchInput")
+                        .value = "";
+
+                    document.getElementById("status")
+                        .innerText =
+                        "✅ 已找到这句话";
+
+                    window.scrollTo({
+                        top:0,
+                        behavior:"smooth"
+                    });
+
+                };
+
+
+            results.appendChild(
+                box
+            );
+
+        }
+    );
 }
 
 
-
-/* =================================
-   启动
-================================= */
+/* =====================================================
+   页面启动
+===================================================== */
 
 showSentence();
 
 </script>
 
 </body>
-
-</html>中文
-↓
-搜索
-↓
-找到句子
-↓
-调用原来的播放器
+</html>
