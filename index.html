@@ -438,6 +438,7 @@ function showSentence() {
 ================================= */
 function playSentence() {
 
+    // 每次播放前彻底停止旧语音
     window.speechSynthesis.cancel();
 
     document.getElementById("status").innerText =
@@ -445,18 +446,16 @@ function playSentence() {
 
     setTimeout(function () {
 
-        const text = lessons[current][1];
+        const english = lessons[current][1];
 
         const voice =
-            new SpeechSynthesisUtterance(text);
+            new SpeechSynthesisUtterance(english);
 
         voice.lang = "en-US";
 
-        // 不要太慢，避免系统语音出现拖顿
-        voice.rate = 0.78;
-
+        // 清晰、自然
+        voice.rate = 0.72;
         voice.pitch = 1.0;
-
         voice.volume = 1.0;
 
         voice.onstart = function () {
@@ -476,13 +475,13 @@ function playSentence() {
         voice.onerror = function () {
 
             document.getElementById("status").innerText =
-                "⚠️ 播放失败，请再试一次";
+                "⚠️ 播放出现问题，请再试一次";
 
         };
 
         window.speechSynthesis.speak(voice);
 
-    }, 600);
+    }, 400);
 }
 
 function nextSentence() {
