@@ -9,3 +9,10 @@
 上传到 audio/
 ↓
 播放器读取
+001.mp3
+     ↓
+HTML <audio>
+     ↓
+▶ 播放
+     ↓
+不会再经过 speechSynthesis
