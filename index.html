@@ -334,118 +334,72 @@ function stopSpeech(){
    播放当前句
 ================================= */
 
-function playCurrent(){
-
-    const item =
-    lessons[current];
-
-    /*
-       每次播放前彻底清空旧语音
-    */
-
-    stopSpeech();
-
-
-    /*
-       创建新的语音对象
-    */
-
-    const utterance =
-    new SpeechSynthesisUtterance(
-        item.en
-    );
-
-
-    /*
-       英语
-    */
-
-    utterance.lang =
-    "en-US";
-
-
-    /*
-       稍慢一点
-    */
-
-    utterance.rate = 0.85;
-
-
-    utterance.pitch =
-    1;
-
-
-    utterance.volume =
-    1;
-
-
-    /*
-       开始
-    */
-
-    utterance.onstart =
-    function(){
-
-        speaking = true;
-
-        status.innerText =
-        "🎧 正在播放……";
-
-    };
-
-
-    /*
-       完成
-    */
-
-    utterance.onend =
-    function(){
-
-        speaking = false;
-
-        status.innerText =
-        "✅ 播放完成";
-
-    };
-
-
-    /*
-       错误
-    */
-
-    utterance.onerror =
-    function(){
-
-        speaking = false;
-
-        status.innerText =
-        "⚠️ 播放失败";
-
-    };
-
-
-    /*
-       延迟一点再启动
-       减少 iPhone Safari 卡顿
-    */
-
-    setTimeout(
-        function(){
-
-            window.speechSynthesis
-            .speak(utterance);
-
-        },
-        500
-    );
-
-}
-
 
 /* =================================
    重听
 ================================= */
+const item = lessons[current];
 
+// 彻底清空上一条语音
+try {
+    speechSynthesis.cancel();
+} catch(e) {}
+
+speaking = false;
+
+// 重新创建语音对象
+const utterance =
+    new SpeechSynthesisUtterance(item.en);
+
+// 固定英语
+utterance.lang = "en-US";
+
+// 关键：速度保持已经验证有效的 0.85
+utterance.rate = 0.85;
+
+utterance.pitch = 1;
+utterance.volume = 1;
+
+utterance.onstart = function(){
+    speaking = true;
+    status.innerText = "🎧 正在播放……";
+};
+
+utterance.onend = function(){
+    speaking = false;
+    status.innerText = "✅ 播放完成";
+};
+
+utterance.onerror = function(){
+    speaking = false;
+    status.innerText = "⚠️ 播放失败";
+};
+
+// 关键：
+// 先让系统完成 cancel，
+// 再重新 speak
+setTimeout(function(){
+
+    try {
+
+        speechSynthesis.cancel();
+
+        setTimeout(function(){
+
+            speechSynthesis.speak(
+                utterance
+            );
+
+        }, 50);
+
+    } catch(e) {
+
+        status.innerText =
+            "⚠️ 播放失败";
+
+    }
+
+}, 50);
 function repeatCurrent(){
 
     stopSpeech();
