@@ -1,3 +1,19 @@
 meiju-lianer/
 ├── index.html
 └── audio/
+const player = document.getElementById("player");
+
+player.src = "audio/001.mp3";
+
+player.play();
+中文搜索
+   ↓
+“早上好”
+   ↓
+Good morning.
+   ↓
+001.mp3
+   ↓
+▶ 播放
+002.mp3
+003.mp3
