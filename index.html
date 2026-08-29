@@ -1,165 +1,1178 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每句练耳 - 声音测试</title>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<title>每句练耳</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
+
     margin:0;
-    padding:30px 16px;
+
+    padding:
+        20px
+        12px
+        40px;
+
     background:#f5f5f5;
-    font-family:-apple-system,BlinkMacSystemFont,"Microsoft YaHei",sans-serif;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Microsoft YaHei",
+        Arial,
+        sans-serif;
+
 }
 
 .card{
-    max-width:520px;
-    margin:auto;
-    background:white;
-    border-radius:20px;
-    padding:25px 18px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
-    text-align:center;
+
+    width:100%;
+
+    max-width:560px;
+
+    margin:0 auto;
+
+    padding:
+        22px
+        16px
+        28px;
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    box-shadow:
+        0 6px 24px
+        rgba(0,0,0,.08);
+
 }
 
 h1{
-    margin-top:0;
+
+    margin:0;
+
+    text-align:center;
+
+    font-size:28px;
+
+}
+
+.subtitle{
+
+    margin-top:6px;
+
+    text-align:center;
+
+    color:#888;
+
+    font-size:14px;
+
+}
+
+
+/* =========================
+   搜索
+========================= */
+
+.searchBox{
+
+    display:flex;
+
+    gap:8px;
+
+    margin-top:20px;
+
+}
+
+#searchInput{
+
+    flex:1;
+
+    min-width:0;
+
+    padding:13px;
+
+    border:
+        1px solid #ddd;
+
+    border-radius:11px;
+
+    font-size:16px;
+
+    outline:none;
+
+}
+
+#searchInput:focus{
+
+    border-color:#999;
+
+}
+
+.searchButton{
+
+    width:auto;
+
+    margin:0;
+
+    padding:
+        13px
+        17px;
+
+    background:#222;
+
+    color:white;
+
+}
+
+
+/* =========================
+   搜索结果
+========================= */
+
+#results{
+
+    margin-top:10px;
+
+}
+
+.result{
+
+    padding:13px;
+
+    margin-bottom:7px;
+
+    background:#f0f0f0;
+
+    border-radius:11px;
+
+    cursor:pointer;
+
+}
+
+.resultEnglish{
+
+    font-size:17px;
+
+    font-weight:bold;
+
+}
+
+.resultChinese{
+
+    margin-top:5px;
+
+    color:#666;
+
+}
+
+
+/* =========================
+   当前句
+========================= */
+
+.scene{
+
+    margin-top:22px;
+
+    text-align:center;
+
+    color:#777;
+
+    font-size:15px;
+
+}
+
+.progress{
+
+    margin-top:6px;
+
+    text-align:center;
+
+    color:#999;
+
+    font-size:14px;
+
 }
 
 .english{
+
+    min-height:100px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:15px;
+
+    text-align:center;
+
     font-size:30px;
+
+    line-height:1.4;
+
     font-weight:bold;
-    margin:35px 0 15px;
+
 }
 
 .chinese{
-    font-size:20px;
+
+    min-height:45px;
+
+    text-align:center;
+
     color:#666;
-    margin-bottom:25px;
+
+    font-size:20px;
+
+    line-height:1.5;
+
 }
+
+
+/* =========================
+   HTML 音频播放器
+========================= */
+
+audio{
+
+    display:block;
+
+    width:100%;
+
+    margin-top:20px;
+
+}
+
+
+/* =========================
+   按钮
+========================= */
 
 button{
+
     width:100%;
+
     border:0;
+
     border-radius:12px;
-    padding:15px;
+
+    padding:14px;
+
     margin-top:10px;
-    font-size:18px;
+
+    font-size:17px;
+
+    cursor:pointer;
+
 }
 
-.play{
+.playButton{
+
     background:#222;
-    color:white;
+
+    color:#fff;
+
 }
 
-.next{
-    background:#e8e8e8;
+.repeatButton{
+
+    background:#e5e5e5;
+
 }
+
+.randomButton{
+
+    background:#eeeeee;
+
+}
+
+.nav{
+
+    display:flex;
+
+    gap:8px;
+
+}
+
+.nav button{
+
+    background:#eeeeee;
+
+}
+
+
+/* =========================
+   状态
+========================= */
 
 #status{
-    margin-top:18px;
+
+    min-height:24px;
+
+    margin-top:14px;
+
+    text-align:center;
+
     color:#777;
-    min-height:25px;
+
+    font-size:14px;
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="card">
 
-<h1>🎧 每句练耳</h1>
 
-<div class="english" id="english">
+<h1>
+🎧 每句练耳
+</h1>
+
+
+<div class="subtitle">
+听清 · 听懂 · 开口
+</div>
+
+
+<!-- =====================
+     搜索
+===================== -->
+
+<div class="searchBox">
+
+<input
+id="searchInput"
+type="search"
+placeholder="输入中文或英文搜索"
+autocomplete="off"
+>
+
+<button
+class="searchButton"
+onclick="searchLessons()"
+>
+搜索
+</button>
+
+</div>
+
+
+<div id="results"></div>
+
+
+<!-- =====================
+     当前句
+===================== -->
+
+<div
+id="scene"
+class="scene"
+>
+日常
+</div>
+
+
+<div
+id="progress"
+class="progress"
+>
+第 1 / 1000 句
+</div>
+
+
+<div
+id="english"
+class="english"
+>
 Good morning.
 </div>
 
-<div class="chinese" id="chinese">
+
+<div
+id="chinese"
+class="chinese"
+>
 早上好。
 </div>
 
-<button class="play" onclick="playSentence()">
+
+<!-- =====================
+     真正 HTML 音频播放器
+===================== -->
+
+<audio
+id="audioPlayer"
+controls
+preload="auto"
+playsinline
+>
+</audio>
+
+
+<button
+class="playButton"
+onclick="playCurrent()"
+>
 ▶ 播放英语
 </button>
 
-<button class="next" onclick="nextSentence()">
-➡ 下一句
+
+<button
+class="repeatButton"
+onclick="replayCurrent()"
+>
+🔁 重听
 </button>
 
-<div id="status">
+
+<div class="nav">
+
+<button onclick="previousSentence()">
+⬅ 上一句
+</button>
+
+<button onclick="nextSentence()">
+下一句 ➡
+</button>
+
+</div>
+
+
+<button
+class="randomButton"
+onclick="randomSentence()"
+>
+🎲 随机一句
+</button>
+
+
+<div
+id="status"
+>
 准备好了
 </div>
 
+
 </div>
+
 
 <script>
 
+
+/* ==================================================
+   句库
+   格式：
+
+   [场景, 英语, 中文]
+================================================== */
+
+
 const lessons = [
-    ["Good morning.","早上好。"],
-    ["How are you?","你好吗？"],
-    ["What are you doing?","你在做什么？"],
-    ["Where are you going?","你要去哪里？"],
-    ["Where do you live?","你住在哪里？"]
+
+    ["日常","Good morning.","早上好。"],
+
+    ["日常","How are you?","你好吗？"],
+
+    ["日常","What are you doing?","你在做什么？"],
+
+    ["日常","Where are you going?","你要去哪里？"],
+
+    ["日常","Where do you live?","你住在哪里？"],
+
+    ["日常","Where are you from?","你来自哪里？"],
+
+    ["日常","What do you do?","你是做什么工作的？"],
+
+    ["日常","Do you speak English?","你会说英语吗？"],
+
+    ["日常","I speak a little English.","我会说一点英语。"],
+
+    ["日常","Could you speak slowly?","你可以说慢一点吗？"],
+
+    ["日常","Could you say that again?","你可以再说一遍吗？"],
+
+    ["日常","I don't understand.","我听不懂。"],
+
+    ["日常","What does that mean?","那是什么意思？"],
+
+    ["日常","Can you help me?","你可以帮我吗？"],
+
+    ["日常","Please wait a moment.","请等一下。"],
+
+    ["日常","Let me check.","让我看一下。"],
+
+    ["日常","I'm not sure.","我不确定。"],
+
+    ["日常","I don't know.","我不知道。"],
+
+    ["日常","No problem.","没问题。"],
+
+    ["日常","Of course.","当然可以。"],
+
+
+    ["餐厅","A table for two, please.","请给我们一张两人桌。"],
+
+    ["餐厅","May I see the menu?","可以给我看看菜单吗？"],
+
+    ["餐厅","What do you recommend?","你推荐什么？"],
+
+    ["餐厅","Are you ready to order?","你准备好点餐了吗？"],
+
+    ["餐厅","I'd like some chicken.","我想要一些鸡肉。"],
+
+    ["餐厅","I'd like some rice.","我想要一些米饭。"],
+
+    ["餐厅","Can I have some water?","可以给我一些水吗？"],
+
+    ["餐厅","Is this spicy?","这个辣吗？"],
+
+    ["餐厅","Can you make it less spicy?","可以做得不那么辣吗？"],
+
+    ["餐厅","Could we have the bill, please?","请给我们账单好吗？"],
+
+
+    ["购物","How much is this?","这个多少钱？"],
+
+    ["购物","How much does it cost?","这个多少钱？"],
+
+    ["购物","Do you have a larger size?","有大一点的尺码吗？"],
+
+    ["购物","Do you have a smaller size?","有小一点的尺码吗？"],
+
+    ["购物","Can I try this on?","我可以试穿吗？"],
+
+    ["购物","Do you have another color?","还有其他颜色吗？"],
+
+    ["购物","Where can I pay?","在哪里付款？"],
+
+    ["购物","Can I pay by card?","可以刷卡吗？"],
+
+    ["购物","I'll take this one.","我就要这个。"],
+
+
+    ["酒店","Do you have a reservation?","你有预订吗？"],
+
+    ["酒店","May I see your passport?","可以看看你的护照吗？"],
+
+    ["酒店","What is your name?","你叫什么名字？"],
+
+    ["酒店","How many nights are you staying?","你住几个晚上？"],
+
+    ["酒店","What time is check-in?","几点可以入住？"],
+
+    ["酒店","What time is check-out?","几点退房？"],
+
+    ["酒店","Where is my room?","我的房间在哪里？"],
+
+    ["酒店","Do you have Wi-Fi?","有无线网络吗？"],
+
+    ["酒店","What is the Wi-Fi password?","无线网络密码是多少？"],
+
+
+    ["交通","How much is the fare?","车费多少钱？"],
+
+    ["交通","How long will it take?","需要多长时间？"],
+
+    ["交通","Please take me to this address.","请带我去这个地址。"],
+
+    ["交通","Can you stop here?","可以在这里停车吗？"],
+
+    ["交通","Where is the bus stop?","公交车站在哪里？"],
+
+    ["交通","Which bus should I take?","我应该坐哪路公交车？"],
+
+    ["交通","What time does the bus leave?","公交车几点出发？"],
+
+    ["交通","Is this the right train?","这是正确的火车吗？"],
+
+
+    ["机场","May I see your passport?","可以看看你的护照吗？"],
+
+    ["机场","Where are you going?","你要去哪里？"],
+
+    ["机场","Do you have any bags?","你有行李吗？"],
+
+    ["机场","How many bags do you have?","你有几件行李？"],
+
+    ["机场","Do you want a window seat?","你想要靠窗的座位吗？"],
+
+    ["机场","Do you need any help?","你需要帮助吗？"],
+
+    ["机场","Here is your boarding pass.","这是你的登机牌。"],
+
+
+    ["厨房","Are the vegetables ready?","蔬菜准备好了吗？"],
+
+    ["厨房","Can you clean the fish?","你可以把鱼处理好吗？"],
+
+    ["厨房","Is the chicken ready?","鸡肉准备好了吗？"],
+
+    ["厨房","Please wash the vegetables.","请把蔬菜洗一下。"],
+
+    ["厨房","Cut the onions, please.","请把洋葱切一下。"],
+
+    ["厨房","The soup is ready.","汤好了。"],
+
+    ["厨房","Taste the soup, please.","请尝一下汤。"],
+
+    ["厨房","Is it too salty?","是不是太咸了？"],
+
+    ["厨房","Is it spicy enough?","辣味够吗？"],
+
+    ["厨房","We need more rice.","我们需要更多米饭。"],
+
+    ["厨房","Lunch is ready.","午餐好了。"],
+
+    ["厨房","Please clean the kitchen.","请把厨房清理干净。"],
+
+    ["厨房","Good job.","做得好。"],
+
+
+    ["工作","Are you ready?","你准备好了吗？"],
+
+    ["工作","Let's start.","我们开始吧。"],
+
+    ["工作","Let's do it.","我们开始做吧。"],
+
+    ["工作","Please help me.","请帮帮我。"],
+
+    ["工作","I need your help.","我需要你的帮助。"],
+
+    ["工作","Please wait.","请等一下。"],
+
+    ["工作","Come here, please.","请到这里来。"],
+
+    ["工作","Please follow me.","请跟我来。"],
+
+    ["工作","I'll check it.","我来检查一下。"],
+
+    ["工作","It's ready.","准备好了。"],
+
+    ["工作","Good work.","干得好。"],
+
+    ["工作","Be careful.","小心一点。"],
+
+
+    ["实用","Please write it down.","请把它写下来。"],
+
+    ["实用","I need some help.","我需要一些帮助。"],
+
+    ["实用","One more time, please.","请再来一次。"],
+
+    ["实用","Can you show me?","你可以给我看看吗？"],
+
+    ["实用","Please speak more slowly.","请说慢一点。"],
+
+    ["实用","Please say it again.","请再说一遍。"],
+
+    ["实用","I need water.","我需要水。"],
+
+    ["实用","I need a minute.","我需要一点时间。"],
+
+    ["实用","I want to learn English.","我想学英语。"],
+
+    ["实用","I want to go home.","我想回家。"],
+
+    ["实用","I want to eat.","我想吃东西。"],
+
+    ["实用","I want to sleep.","我想睡觉。"],
+
+    ["实用","I want to go.","我想去。"],
+
+    ["实用","I want to use it.","我想用它。"],
+
+    ["实用","I want to buy it.","我想买它。"]
+
 ];
+
 
 let current = 0;
 
+
+/* ==================================================
+   DOM
+================================================== */
+
+const player =
+    document.getElementById("audioPlayer");
+
+const status =
+    document.getElementById("status");
+
+
+/* ==================================================
+   显示句子
+================================================== */
+
 function showSentence(){
 
-    document.getElementById("english").innerText =
-        lessons[current][0];
+    const item =
+        lessons[current];
 
-    document.getElementById("chinese").innerText =
-        lessons[current][1];
+    document.getElementById("scene")
+        .innerText =
+        item[0];
+
+    document.getElementById("english")
+        .innerText =
+        item[1];
+
+    document.getElementById("chinese")
+        .innerText =
+        item[2];
+
+    document.getElementById("progress")
+        .innerText =
+        "第 " +
+        (current + 1) +
+        " / " +
+        lessons.length +
+        " 句";
 
 }
 
-function playSentence(){
 
-    speechSynthesis.cancel();
+/* ==================================================
+   停止并清理播放器
+================================================== */
 
-    const text =
-        lessons[current][0];
+function stopPlayer(){
 
-    const utterance =
-        new SpeechSynthesisUtterance(text);
+    player.pause();
 
-    utterance.lang = "en-US";
-    utterance.rate = 0.72;
-    utterance.pitch = 1;
-    utterance.volume = 1;
+    player.removeAttribute("src");
 
-    utterance.onstart = function(){
-        document.getElementById("status").innerText =
-            "🎧 正在播放……";
-    };
+    player.load();
 
-    utterance.onend = function(){
-        document.getElementById("status").innerText =
-            "✅ 播放完成";
-    };
+}
 
-    utterance.onerror = function(){
-        document.getElementById("status").innerText =
+
+/* ==================================================
+   播放当前句
+================================================== */
+
+function playCurrent(){
+
+    stopPlayer();
+
+    const number =
+        String(current + 1)
+        .padStart(3,"0");
+
+    const source =
+        "audio/" +
+        number +
+        ".mp3";
+
+    status.innerText =
+        "🎧 正在加载 " +
+        number +
+        ".mp3 ……";
+
+    player.src = source;
+
+    player.load();
+
+
+    const playPromise =
+        player.play();
+
+
+    if(playPromise !== undefined){
+
+        playPromise
+
+        .then(function(){
+
+            status.innerText =
+                "🎧 正在播放……";
+
+        })
+
+        .catch(function(error){
+
+            console.log(
+                "Audio play error:",
+                error
+            );
+
+            status.innerText =
+                "⚠️ 播放失败：请确认 " +
+                number +
+                ".mp3 已上传";
+
+        });
+
+    }
+
+}
+
+
+/* ==================================================
+   重听
+================================================== */
+
+function replayCurrent(){
+
+    if(!player.src){
+
+        playCurrent();
+
+        return;
+
+    }
+
+    player.currentTime = 0;
+
+    player.play()
+
+    .then(function(){
+
+        status.innerText =
+            "🎧 重听中……";
+
+    })
+
+    .catch(function(){
+
+        status.innerText =
             "⚠️ 播放失败";
-    };
 
-    speechSynthesis.speak(utterance);
+    });
+
 }
+
+
+/* ==================================================
+   下一句
+================================================== */
 
 function nextSentence(){
 
-    speechSynthesis.cancel();
+    stopPlayer();
 
     current++;
 
-    if(current >= lessons.length){
+    if(
+        current >=
+        lessons.length
+    ){
+
         current = 0;
+
     }
 
     showSentence();
+
+    status.innerText =
+        "准备好了";
+
 }
+
+
+/* ==================================================
+   上一句
+================================================== */
+
+function previousSentence(){
+
+    stopPlayer();
+
+    current--;
+
+    if(current < 0){
+
+        current =
+            lessons.length - 1;
+
+    }
+
+    showSentence();
+
+    status.innerText =
+        "准备好了";
+
+}
+
+
+/* ==================================================
+   随机
+================================================== */
+
+function randomSentence(){
+
+    stopPlayer();
+
+    current =
+        Math.floor(
+            Math.random() *
+            lessons.length
+        );
+
+    showSentence();
+
+    status.innerText =
+        "🎲 已随机选择";
+
+}
+
+
+/* ==================================================
+   搜索
+   中文 / 英文 / 场景
+================================================== */
+
+function searchLessons(){
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+    const keyword =
+        input.value
+        .trim()
+        .toLowerCase();
+
+    const results =
+        document.getElementById(
+            "results"
+        );
+
+    results.innerHTML = "";
+
+
+    if(keyword === ""){
+
+        return;
+
+    }
+
+
+    const found =
+        lessons.filter(
+            function(item){
+
+                return (
+
+                    item[0]
+                    .toLowerCase()
+                    .includes(keyword)
+
+                    ||
+
+                    item[1]
+                    .toLowerCase()
+                    .includes(keyword)
+
+                    ||
+
+                    item[2]
+                    .toLowerCase()
+                    .includes(keyword)
+
+                );
+
+            }
+        );
+
+
+    if(found.length === 0){
+
+        results.innerHTML =
+            "<div class='result'>" +
+            "没有找到相关句子" +
+            "</div>";
+
+        return;
+
+    }
+
+
+    found.forEach(
+        function(item){
+
+            const index =
+                lessons.indexOf(item);
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+            box.className =
+                "result";
+
+
+            box.innerHTML =
+
+                "<div class='resultEnglish'>" +
+
+                item[1] +
+
+                "</div>" +
+
+                "<div class='resultChinese'>" +
+
+                item[2] +
+
+                "</div>";
+
+
+            box.onclick =
+                function(){
+
+                    stopPlayer();
+
+                    current =
+                        index;
+
+                    showSentence();
+
+                    results.innerHTML =
+                        "";
+
+                    input.value =
+                        "";
+
+                    window.scrollTo({
+
+                        top:0,
+
+                        behavior:"smooth"
+
+                    });
+
+                };
+
+
+            results.appendChild(box);
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   搜索框回车
+================================================== */
+
+document
+.getElementById("searchInput")
+.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Enter"
+        ){
+
+            searchLessons();
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   播放器状态
+================================================== */
+
+player.addEventListener(
+    "loadstart",
+    function(){
+
+        status.innerText =
+            "🎧 正在读取音频……";
+
+    }
+);
+
+
+player.addEventListener(
+    "canplay",
+    function(){
+
+        status.innerText =
+            "▶ 可以播放";
+
+    }
+);
+
+
+player.addEventListener(
+    "playing",
+    function(){
+
+        status.innerText =
+            "🎧 正在播放……";
+
+    }
+);
+
+
+player.addEventListener(
+    "waiting",
+    function(){
+
+        status.innerText =
+            "⏳ 音频正在缓冲……";
+
+    }
+);
+
+
+player.addEventListener(
+    "ended",
+    function(){
+
+        status.innerText =
+            "✅ 播放完成";
+
+    }
+);
+
+
+player.addEventListener(
+    "error",
+    function(){
+
+        status.innerText =
+            "⚠️ 找不到当前 MP3";
+
+    }
+);
+
+
+/* ==================================================
+   启动
+================================================== */
 
 showSentence();
 
@@ -167,3 +1180,103 @@ showSentence();
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
