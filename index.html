@@ -435,35 +435,33 @@ function showSentence() {
 /* =================================
    播放英语
    注意：只播放 lessons[current][1]
-================================= */
+================================= */function playSentence() {
 
-function playSentence() {
+    // 彻底停止上一句
+    speechSynthesis.cancel();
 
-    window.speechSynthesis.cancel();
+    const text = lessons[current][1];
 
-    document.getElementById("status").innerText =
-        "🎧 正在准备……";
+    const voice = new SpeechSynthesisUtterance(text);
 
+    voice.lang = "en-US";
 
-    setTimeout(function() {
+    // 清晰慢速
+    voice.rate = 0.65;
 
-        const english =
-            lessons[current][1];
+    // 正常音调
+    voice.pitch = 1.0;
 
-        const voice =
-            new SpeechSynthesisUtterance(english);
+    // 最大音量
+    voice.volume = 1.0;
 
-        voice.lang = "en-US";
+    // 播放前稍微等待，避免连续播放卡顿
+    setTimeout(function () {
 
-        /*
-           清晰慢速
-        */
+        speechSynthesis.speak(voice);
 
-        voice.rate = 0.62;
-
-        voice.pitch = 1.0;
-
-        voice.volume = 1.0;
+    }, 300);
+}
 
 
         voice.onstart = function() {
