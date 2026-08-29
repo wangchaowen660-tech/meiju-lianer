@@ -438,75 +438,51 @@ function showSentence() {
 ================================= */
 function playSentence() {
 
-    // 先彻底清空语音队列
     window.speechSynthesis.cancel();
 
     document.getElementById("status").innerText =
         "🎧 正在准备……";
 
-    setTimeout(function() {
+    setTimeout(function () {
 
-        const english = lessons[current][1];
+        const text = lessons[current][1];
 
         const voice =
-            new SpeechSynthesisUtterance(english);
+            new SpeechSynthesisUtterance(text);
 
-        // 英语发音
         voice.lang = "en-US";
 
-        // 清晰慢速
-        voice.rate = 0.65;
+        // 不要太慢，避免系统语音出现拖顿
+        voice.rate = 0.78;
 
-        // 正常音调
         voice.pitch = 1.0;
 
-        // 最大音量
         voice.volume = 1.0;
 
-        voice.onstart = function() {
+        voice.onstart = function () {
 
             document.getElementById("status").innerText =
                 "🎧 正在播放……";
 
         };
 
-        voice.onend = function() {
+        voice.onend = function () {
 
             document.getElementById("status").innerText =
                 "✅ 听完了";
 
         };
 
-        voice.onerror = function() {
+        voice.onerror = function () {
 
             document.getElementById("status").innerText =
-                "⚠️ 播放出现问题，请再试一次";
+                "⚠️ 播放失败，请再试一次";
 
         };
 
-        // 开始播放
         window.speechSynthesis.speak(voice);
 
-        /*
-           iPhone / Safari 有时会让语音暂停。
-           定时 resume 可以减少这种情况。
-        */
-
-        const keepAlive = setInterval(function() {
-
-            if (!window.speechSynthesis.speaking) {
-
-                clearInterval(keepAlive);
-
-                return;
-
-            }
-
-            window.speechSynthesis.resume();
-
-        }, 1000);
-
-    }, 400);
+    }, 600);
 }
 
 function nextSentence() {
