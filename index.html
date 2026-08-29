@@ -529,29 +529,22 @@ function nextSentence() {
 /* =================================
    中文 / 英文搜索
 ================================= */
-
 function searchLessons() {
 
-    const keyword =
-        document.getElementById("searchInput")
-        .value
-        .trim()
-        .toLowerCase();
+    const input =
+        document.getElementById("searchInput");
 
+    const keyword =
+        input.value.trim().toLowerCase();
 
     const results =
         document.getElementById("results");
 
-
     results.innerHTML = "";
 
-
     if (keyword === "") {
-
         return;
-
     }
-
 
     const found = lessons.filter(function(item) {
 
@@ -564,7 +557,6 @@ function searchLessons() {
         const chinese =
             item[2].toLowerCase();
 
-
         return (
             scene.includes(keyword) ||
             english.includes(keyword) ||
@@ -572,7 +564,6 @@ function searchLessons() {
         );
 
     });
-
 
     const title =
         document.createElement("div");
@@ -598,7 +589,6 @@ function searchLessons() {
         results.appendChild(noResult);
 
         return;
-
     }
 
 
@@ -642,14 +632,19 @@ function searchLessons() {
 
         /*
            点击搜索结果
-           直接跳到对应句子
+           直接切换当前卡片
         */
 
         box.onclick = function() {
 
+            window.speechSynthesis.cancel();
+
             current = index;
 
             showSentence();
+
+            document.getElementById("status").innerText =
+                "已找到这句话";
 
             window.scrollTo({
                 top: 0,
@@ -664,6 +659,7 @@ function searchLessons() {
     });
 
 }
+
 
 
 /* =================================
