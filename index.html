@@ -447,31 +447,43 @@ function nextSentence(){
    上一句
 ================================= */
 
-function previousSentence(){
 
-    stopSpeech();
-
-    current--;
-
-    if(current < 0){
-
-        current =
-        lessons.length - 1;
-
-    }
-
-    showSentence();
-
-    status.innerText =
-    "准备好了";
-
-}
 
 
 /* =================================
    随机一句
 ================================= */
+const item = lessons[current];
 
+const utterance =
+    new SpeechSynthesisUtterance(item.en);
+
+utterance.lang = "en-US";
+utterance.rate = 0.85;
+utterance.pitch = 1;
+utterance.volume = 1;
+
+utterance.onstart = function(){
+    speaking = true;
+    status.innerText = "🎧 正在播放……";
+};
+
+utterance.onend = function(){
+    speaking = false;
+    status.innerText = "✅ 播放完成";
+};
+
+utterance.onerror = function(){
+    speaking = false;
+    status.innerText = "⚠️ 播放失败";
+};
+
+// 关键实验：
+// 不 cancel
+// 不 setTimeout
+// 直接播放
+
+window.speechSynthesis.speak(utterance);
 function randomSentence(){
 
     stopSpeech();
