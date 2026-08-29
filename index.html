@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>每句练耳 V2.0</title>
+    <title>每句练耳 V2.0（优化版）</title>
 
     <style>
         /* ===== 全局重置 & 基础 ===== */
@@ -351,13 +351,16 @@
             .english {
                 font-size: 21px;
             }
+
             .chinese {
                 font-size: 16px;
             }
+
             .nav {
                 flex-direction: column;
                 gap: 0;
             }
+
             .nav button {
                 margin-top: 8px;
             }
@@ -367,7 +370,7 @@
 
 <body>
 
-    <!-- ===== Toast 提示容器 ===== -->
+    <!-- Toast 提示容器 -->
     <div id="toast" class="toast"></div>
 
     <div class="container">
@@ -410,9 +413,9 @@
 
         </div>
 
-        <!-- 键盘快捷键提示（仅桌面） -->
+        <!-- 键盘快捷键提示 -->
         <div style="text-align:center;margin-top:16px;font-size:13px;color:#b9c2d0;user-select:none;">
-            ⌨ 左右方向键切换 · 空格键播放
+            ⌨ 左右方向键切换 · 空格键播放/停止
         </div>
 
     </div>
@@ -446,10 +449,12 @@
                状态
                ============================================================== */
 
-        let currentIndex = 0; // 当前句子索引
+        let currentIndex = 0;
         let currentUtterance = null; // 当前语音对象
         let isSpeaking = false; // 是否正在播放
-        let isSpeechSupported = false; // 浏览器是否支持语音
+        let isSpeechSupported = false;
+        let playTimer = null; // 延迟播放定时器
+        let statusResetTimer = null; // 状态重置定时器
 
         // DOM 缓存
         const dom = {
@@ -472,7 +477,6 @@
         (function checkSpeech() {
             if (window.speechSynthesis && window.SpeechSynthesisUtterance) {
                 isSpeechSupported = true;
-                // 预唤醒（某些浏览器需要）
                 try { window.speechSynthesis.getVoices(); } catch (_) { /* 静默 */ }
             } else {
                 isSpeechSupported = false;
@@ -502,10 +506,16 @@
 
 
         /* ==============================================================
-               停止当前语音（如果有）
+               停止当前语音（并清除所有相关定时器）
                ============================================================== */
 
         function cancelSpeech() {
+            // 清除延迟播放定时器
+            if (playTimer) {
+                clearTimeout(playTimer);
+                playTimer = null;
+            }
+            // 取消语音
             if (window.speechSynthesis) {
                 try {
                     window.speechSynthesis.cancel();
@@ -513,92 +523,110 @@
             }
             currentUtterance = null;
             isSpeaking = false;
-            // 不改变 status 文本，由调用方决定
+            // 清除状态重置定时器
+            if (statusResetTimer) {
+                clearTimeout(statusResetTimer);
+                statusResetTimer = null;
+            }
         }
 
 
         /* ==============================================================
-               播放当前句子
+               播放当前句子（优化版：延迟 + 防重叠）
                ============================================================== */
 
         function playCurrent() {
-            // 检测支持
             if (!isSpeechSupported) {
                 showToast('⚠️ 浏览器不支持语音播报');
                 return;
             }
 
+            // 如果正在播放，先取消
+            if (isSpeaking) {
+                cancelSpeech();
+            }
+
             const item = lessons[currentIndex];
             if (!item) return;
 
-            // 先取消任何正在播放的语音
-            cancelSpeech();
+            // 清除可能残留的播放定时器
+            if (playTimer) {
+                clearTimeout(playTimer);
+                playTimer = null;
+            }
 
-            // 创建语音对象
-            const utterance = new SpeechSynthesisUtterance(item.en);
-            currentUtterance = utterance;
+            // 更新状态为“准备播放”
+            dom.status.textContent = '⏳ 准备中...';
+            dom.status.className = 'status';
 
-            utterance.lang = 'en-US';
-            utterance.rate = 0.85; // 清晰慢速
-            utterance.pitch = 1.0;
-            utterance.volume = 1.0;
+            // 延迟播放，给 cancel 留出处理时间（关键优化）
+            playTimer = setTimeout(() => {
+                playTimer = null; // 执行后清空标记
 
-            // --- 事件监听 ---
-            utterance.onstart = function() {
-                if (currentUtterance !== utterance) return;
-                isSpeaking = true;
-                dom.status.textContent = '🎧 正在播放……';
-                dom.status.className = 'status speaking';
-            };
+                const utterance = new SpeechSynthesisUtterance(item.en);
+                currentUtterance = utterance;
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
 
-            utterance.onend = function() {
-                if (currentUtterance !== utterance) return;
-                isSpeaking = false;
-                currentUtterance = null;
-                dom.status.textContent = '✅ 播放完成';
-                dom.status.className = 'status done';
-                // 2秒后恢复为普通状态
-                clearTimeout(window._statusResetTimer);
-                window._statusResetTimer = setTimeout(() => {
-                    if (!isSpeaking && !currentUtterance) {
+                // --- 事件监听 ---
+                utterance.onstart = function() {
+                    if (currentUtterance !== utterance) return;
+                    isSpeaking = true;
+                    dom.status.textContent = '🎧 正在播放……';
+                    dom.status.className = 'status speaking';
+                };
+
+                utterance.onend = function() {
+                    if (currentUtterance !== utterance) return;
+                    isSpeaking = false;
+                    currentUtterance = null;
+                    dom.status.textContent = '✅ 播放完成';
+                    dom.status.className = 'status done';
+                    // 2秒后恢复为普通状态
+                    clearTimeout(statusResetTimer);
+                    statusResetTimer = setTimeout(() => {
+                        if (!isSpeaking && !currentUtterance) {
+                            dom.status.textContent = '准备好了';
+                            dom.status.className = 'status';
+                        }
+                        statusResetTimer = null;
+                    }, 2000);
+                };
+
+                utterance.onerror = function(ev) {
+                    if (currentUtterance !== utterance) return;
+                    isSpeaking = false;
+                    currentUtterance = null;
+
+                    if (ev.error === 'canceled' || ev.error === 'interrupted') {
                         dom.status.textContent = '准备好了';
                         dom.status.className = 'status';
+                        return;
                     }
-                }, 2000);
-            };
 
-            utterance.onerror = function(ev) {
-                if (currentUtterance !== utterance) return;
-                isSpeaking = false;
-                currentUtterance = null;
+                    dom.status.textContent = '⚠️ 播放失败';
+                    dom.status.className = 'status error';
+                    showToast('语音播放失败，请重试');
+                };
 
-                // cancel / interrupt 是正常操作，不报错
-                if (ev.error === 'canceled' || ev.error === 'interrupted') {
-                    dom.status.textContent = '准备好了';
-                    dom.status.className = 'status';
-                    return;
+                // 开始播放
+                try {
+                    window.speechSynthesis.speak(utterance);
+                } catch (err) {
+                    isSpeaking = false;
+                    currentUtterance = null;
+                    dom.status.textContent = '⚠️ 播放异常';
+                    dom.status.className = 'status error';
+                    showToast('语音引擎异常');
                 }
-
-                dom.status.textContent = '⚠️ 播放失败';
-                dom.status.className = 'status error';
-                showToast('语音播放失败，请重试');
-            };
-
-            // 开始播放
-            try {
-                window.speechSynthesis.speak(utterance);
-            } catch (err) {
-                isSpeaking = false;
-                currentUtterance = null;
-                dom.status.textContent = '⚠️ 播放失败';
-                dom.status.className = 'status error';
-                showToast('语音引擎异常');
-            }
+            }, 80); // 80ms 延迟，可根据实际情况微调
         }
 
 
         /* ==============================================================
-               重听
+               重听（重新播放当前句）
                ============================================================== */
 
         function repeatCurrent() {
@@ -606,9 +634,8 @@
                 showToast('⚠️ 浏览器不支持语音播报');
                 return;
             }
-            // 如果正在播放，先停止再重播（实现"重新听"的效果）
             cancelSpeech();
-            // 延迟一帧确保 cancel 生效
+            // 使用 requestAnimationFrame 确保 cancel 已生效
             requestAnimationFrame(() => {
                 playCurrent();
             });
@@ -628,7 +655,7 @@
             dom.english.textContent = item.en;
             dom.chinese.textContent = item.cn;
 
-            // 如果当前没有在播放，状态置为"准备好了"
+            // 如果当前没有在播放，状态置为“准备好了”
             if (!isSpeaking && !currentUtterance) {
                 dom.status.textContent = '准备好了';
                 dom.status.className = 'status';
@@ -644,8 +671,7 @@
             cancelSpeech();
             currentIndex = (currentIndex + 1) % lessons.length;
             showSentence();
-            // 取消之前的 status 重置定时器
-            clearTimeout(window._statusResetTimer);
+            clearTimeout(statusResetTimer);
             dom.status.textContent = '准备好了';
             dom.status.className = 'status';
         }
@@ -654,7 +680,7 @@
             cancelSpeech();
             currentIndex = (currentIndex - 1 + lessons.length) % lessons.length;
             showSentence();
-            clearTimeout(window._statusResetTimer);
+            clearTimeout(statusResetTimer);
             dom.status.textContent = '准备好了';
             dom.status.className = 'status';
         }
@@ -663,7 +689,7 @@
             cancelSpeech();
             currentIndex = Math.floor(Math.random() * lessons.length);
             showSentence();
-            clearTimeout(window._statusResetTimer);
+            clearTimeout(statusResetTimer);
             dom.status.textContent = '🎲 已选择随机句子';
             dom.status.className = 'status';
             showToast('🎲 随机跳转');
@@ -678,7 +704,6 @@
             const keyword = dom.searchInput.value.trim();
             const resultsEl = dom.results;
 
-            // 空关键词 —— 清空结果并提示
             if (keyword === '') {
                 resultsEl.innerHTML = '';
                 showToast('请输入关键词');
@@ -696,7 +721,6 @@
                 }
             });
 
-            // 渲染结果
             if (matches.length === 0) {
                 resultsEl.innerHTML = `<div class="no-result">🔍 没有找到相关句子</div>`;
                 return;
@@ -705,27 +729,25 @@
             let html = '';
             matches.forEach(m => {
                 html += `
-                        <div class="result" data-index="${m.index}">
-                            <div class="result-en">${m.en}</div>
-                            <div class="result-cn">${m.cn}</div>
-                        </div>
-                    `;
+                            <div class="result" data-index="${m.index}">
+                                <div class="result-en">${m.en}</div>
+                                <div class="result-cn">${m.cn}</div>
+                            </div>
+                        `;
             });
             resultsEl.innerHTML = html;
 
-            // 为每个结果绑定点击事件（事件委托也可，但这里更直观）
             resultsEl.querySelectorAll('.result').forEach(el => {
                 el.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.index, 10);
                     if (!isNaN(idx) && idx >= 0 && idx < lessons.length) {
-                        // 跳转到该句子
                         cancelSpeech();
                         currentIndex = idx;
                         showSentence();
-                        resultsEl.innerHTML = ''; // 清空结果
+                        resultsEl.innerHTML = '';
                         dom.searchInput.value = '';
                         dom.searchInput.blur();
-                        clearTimeout(window._statusResetTimer);
+                        clearTimeout(statusResetTimer);
                         dom.status.textContent = '准备好了';
                         dom.status.className = 'status';
                         showToast('已跳转');
@@ -733,7 +755,6 @@
                 });
             });
 
-            // 滚动到结果区域（移动端友好）
             resultsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
@@ -743,9 +764,7 @@
                ============================================================== */
 
         document.addEventListener('keydown', function(e) {
-            // 如果焦点在输入框中，不干扰输入
             if (document.activeElement === dom.searchInput) {
-                // 但 Enter 已经由 input 的 keydown 处理，这里不重复
                 return;
             }
 
@@ -761,10 +780,9 @@
                 case ' ':
                     e.preventDefault();
                     if (isSpeechSupported) {
-                        // 如果正在播放，则停止；否则播放
                         if (isSpeaking) {
                             cancelSpeech();
-                            dom.status.textContent = '已暂停';
+                            dom.status.textContent = '⏸ 已停止';
                             dom.status.className = 'status';
                             showToast('⏸ 已停止');
                         } else {
@@ -775,7 +793,6 @@
             }
         });
 
-        // 搜索框 Enter 触发搜索
         dom.searchInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -783,45 +800,37 @@
             }
         });
 
-        // 点击页面其他地方，如果搜索结果可见，点击外部不自动关闭（用户可手动清空或点击结果）
-        // 但点击卡片外部时，保留搜索结果，用户可继续操作。
-
 
         /* ==============================================================
                初始化
                ============================================================== */
 
-        // 确保索引有效
         if (currentIndex >= lessons.length) currentIndex = 0;
         showSentence();
 
-        // 如果语音支持，预加载 voices（某些浏览器需要）
         if (isSpeechSupported && window.speechSynthesis) {
-            // 部分浏览器需要触发一次 getVoices 才能加载语音列表
             try {
                 window.speechSynthesis.getVoices();
             } catch (_) { /* 忽略 */ }
-            // 某些浏览器在页面加载后需要一点时间加载语音，延迟一下
             setTimeout(() => {
                 try { window.speechSynthesis.getVoices(); } catch (_) {}
             }, 300);
         }
 
-        // 控制台提示
-        console.log('🎧 每句练耳 V2.0 已加载');
-        console.log(`📚 共 ${lessons.length} 个句子，当前第 ${currentIndex + 1} 句`);
-        console.log('⌨ 快捷键: 左右方向键切换 · 空格键播放/停止');
-        if (!isSpeechSupported) {
-            console.warn('⚠️ 当前浏览器不支持 Web Speech API');
-        }
-
-        // ===== 暴露全局函数供 HTML onclick 调用 =====
+        // 暴露全局函数
         window.playCurrent = playCurrent;
         window.repeatCurrent = repeatCurrent;
         window.nextSentence = nextSentence;
         window.previousSentence = previousSentence;
         window.randomSentence = randomSentence;
         window.searchSentence = searchSentence;
+
+        console.log('🎧 每句练耳 V2.0（优化版）已加载');
+        console.log(`📚 共 ${lessons.length} 个句子，当前第 ${currentIndex + 1} 句`);
+        console.log('⌨ 快捷键: 左右方向键切换 · 空格键播放/停止');
+        if (!isSpeechSupported) {
+            console.warn('⚠️ 当前浏览器不支持 Web Speech API');
+        }
     </script>
 
 </body>
