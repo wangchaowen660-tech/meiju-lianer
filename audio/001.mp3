@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MP3播放测试</title>
+
+<style>
+body{
+    margin:0;
+    padding:30px 15px;
+    font-family:Arial,"Microsoft YaHei",sans-serif;
+    background:#f5f5f5;
+}
+
+.card{
+    max-width:500px;
+    margin:auto;
+    padding:25px 18px;
+    background:white;
+    border-radius:20px;
+    text-align:center;
+}
+
+h1{
+    margin-top:0;
+}
+
+.english{
+    font-size:30px;
+    font-weight:bold;
+    margin:30px 0 10px;
+}
+
+.chinese{
+    font-size:20px;
+    color:#666;
+    margin-bottom:25px;
+}
+
+audio{
+    width:100%;
+}
+
+button{
+    width:100%;
+    margin-top:15px;
+    padding:15px;
+    border:0;
+    border-radius:12px;
+    font-size:18px;
+    background:#222;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>🎧 每句练耳</h1>
+
+<div class="english">
+Good morning.
+</div>
+
+<div class="chinese">
+早上好。
+</div>
+
+<audio
+    id="player"
+    controls
+    preload="metadata"
+    playsinline>
+
+    <source
+        src="audio/001.mp3"
+        type="audio/mpeg">
+
+</audio>
+
+<button onclick="playMP3()">
+▶ 播放 Good morning.
+</button>
+
+<div id="status">
+准备好了
+</div>
+
+</div>
+
+
+<script>
+
+const player =
+document.getElementById("player");
+
+const status =
+document.getElementById("status");
+
+
+function playMP3(){
+
+    player.currentTime = 0;
+
+    player.play()
+
+    .then(function(){
+
+        status.innerText =
+        "🎧 正在播放……";
+
+    })
+
+    .catch(function(error){
+
+        console.log(error);
+
+        status.innerText =
+        "❌ 播放失败";
+
+    });
+
+}
+
+
+player.addEventListener(
+"ended",
+function(){
+
+    status.innerText =
+    "✅ 播放完成";
+
+});
+
+
+player.addEventListener(
+"error",
+function(){
+
+    status.innerText =
+    "❌ 001.mp3 无法读取";
+
+});
+
+</script>
+
+</body>
+</html>
