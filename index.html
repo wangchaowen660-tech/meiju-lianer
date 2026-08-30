@@ -654,10 +654,24 @@ function showSentence(){
         const span = document.createElement("span");
         span.className = "replace-item";
         span.textContent = word;
+        // ⬇️ 新增部分（从这里开始）
+        span.style.cursor = "pointer";
+        span.title = "点击听发音";
+        span.onclick = function(e){
+            e.stopPropagation();
+            playReplaceWord(word);
+        };
+        // ⬆️ 新增部分（结束）
         dom.replaceList.appendChild(span);
     });
     dom.status.textContent = "准备好了";
     dom.status.className = "status";
+}
+// ========== 新增：替换词点击发音 ==========
+function playReplaceWord(word){
+    if(!word) return;
+    speakText(word);
+    showToast("🔊 " + word);
 }
 
 function searchSentence(){
