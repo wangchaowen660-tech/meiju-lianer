@@ -2,1034 +2,1508 @@
 <html lang="zh-CN">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>每句练耳 · 音乐播放器版</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            margin: 0;
-            padding: 20px 14px 40px;
-            background: #f5f7fa;
-            font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", Arial, sans-serif;
-            color: #1e293b;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .container {
-            max-width: 560px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        .header {
-            text-align: center;
-            padding: 6px 0 20px;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 30px;
-            font-weight: 700;
-        }
-        .header p {
-            margin: 6px 0 0;
-            color: #94a3b8;
-            font-size: 15px;
-        }
-        .search {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        .search input {
-            flex: 1;
-            padding: 13px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 16px;
-            outline: none;
-            background: #fff;
-        }
-        .search input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-        }
-        .search button {
-            flex-shrink: 0;
-            padding: 12px 20px;
-            background: #1e293b;
-            color: #fff;
-            border: 0;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .search button:hover {
-            background: #0f172a;
-        }
-        .results {
-            margin-bottom: 16px;
-        }
-        .result {
-            background: #fff;
-            padding: 14px 16px;
-            margin-bottom: 8px;
-            border-radius: 14px;
-            cursor: pointer;
-            border: 1px solid #edf2f7;
-        }
-        .result:hover {
-            background: #f8fafc;
-        }
-        .result-en {
-            font-weight: 700;
-            font-size: 17px;
-            color: #0f172a;
-        }
-        .result-cn {
-            margin-top: 4px;
-            color: #64748b;
-            font-size: 15px;
-        }
-        .no-result {
-            padding: 18px;
-            text-align: center;
-            color: #94a3b8;
-            background: #fff;
-            border-radius: 14px;
-            border: 1px dashed #d1d9e6;
-        }
+<title>每句练耳 · 母语语块500</title>
 
-        /* 卡片 - 音乐播放器风格 */
-        .card {
-            background: #fff;
-            border-radius: 24px;
-            padding: 26px 20px 22px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-            text-align: center;
-        }
-        .scene {
-            color: #94a3b8;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .progress {
-            color: #b9c2d0;
-            margin-top: 4px;
-            font-size: 14px;
-        }
-        .english {
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 18px 8px 10px;
-            font-size: 30px;
-            font-weight: 700;
-            line-height: 1.4;
-            color: #0f172a;
-            word-break: break-word;
-        }
-        .chinese {
-            min-height: 44px;
-            font-size: 20px;
-            color: #475569;
-            padding: 0 4px 6px;
-        }
+<style>
 
-        /* 控制栏 - 音乐播放器风格 */
-        .player-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0 10px;
-        }
-        .ctrl-btn {
-            background: none;
-            border: 0;
-            padding: 0;
-            cursor: pointer;
-            font-size: 32px;
-            color: #1e293b;
-            transition: transform 0.15s, color 0.2s;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #f1f4f9;
-            touch-action: manipulation;
-        }
-        .ctrl-btn:active {
-            transform: scale(0.90);
-        }
-        .ctrl-btn:hover {
-            background: #e6eaef;
-        }
-        .ctrl-btn.play-btn {
-            width: 80px;
-            height: 80px;
-            font-size: 40px;
-            background: #1e293b;
-            color: #fff;
-        }
-        .ctrl-btn.play-btn:hover {
-            background: #0f172a;
-        }
-        .ctrl-btn.play-btn:active {
-            background: #020617;
-        }
-        .ctrl-btn.play-btn.paused {
-            background: #3b82f6;
-        }
-        .ctrl-btn.play-btn.paused:hover {
-            background: #2563eb;
-        }
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
 
-        /* 辅助功能按钮 */
-        .extra-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        .extra-buttons button {
-            flex: 1 1 auto;
-            min-width: 60px;
-            padding: 10px 12px;
-            border: 0;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            touch-action: manipulation;
-            background: #f1f4f9;
-            color: #1e293b;
-        }
-        .extra-buttons button:hover {
-            background: #e6eaef;
-        }
-        .extra-buttons button.active {
-            background: #ef4444;
-            color: #fff;
-        }
-        .extra-buttons button.active:hover {
-            background: #dc2626;
-        }
-        .extra-buttons .engine-toggle {
-            background: #f59e0b;
-            color: #fff;
-        }
-        .extra-buttons .engine-toggle:hover {
-            background: #d97706;
-        }
-        .extra-buttons .test-btn {
-            background: #06b6d4;
-            color: #fff;
-        }
-        .extra-buttons .test-btn:hover {
-            background: #0891b2;
-        }
+body{
+    margin:0;
+    padding:20px 14px 40px;
+    background:#f5f7fa;
+    font-family:-apple-system,BlinkMacSystemFont,
+    "Microsoft YaHei",Arial,sans-serif;
+    color:#1e293b;
+    min-height:100vh;
+}
 
-        .status {
-            min-height: 28px;
-            margin-top: 12px;
-            color: #94a3b8;
-            font-size: 14px;
-            font-weight: 400;
-        }
-        .status.speaking {
-            color: #3b82f6;
-            font-weight: 500;
-        }
-        .status.done {
-            color: #22c55e;
-            font-weight: 500;
-        }
-        .status.error {
-            color: #ef4444;
-            font-weight: 500;
-        }
-        .status.repeating {
-            color: #8b5cf6;
-            font-weight: 500;
-        }
-        .status.paused {
-            color: #f59e0b;
-            font-weight: 500;
-        }
+.container{
+    max-width:560px;
+    width:100%;
+    margin:0 auto;
+}
 
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: #1e293b;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-size: 15px;
-            font-weight: 500;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transition: opacity 0.35s, transform 0.35s;
-            pointer-events: none;
-            z-index: 999;
-            white-space: nowrap;
-            max-width: 90%;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+.header{
+    text-align:center;
+    padding:6px 0 20px;
+}
 
-        @media (max-width: 480px) {
-            .english {
-                font-size: 25px;
-                min-height: 80px;
-            }
-            .chinese {
-                font-size: 18px;
-                min-height: 38px;
-            }
-            .ctrl-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 28px;
-            }
-            .ctrl-btn.play-btn {
-                width: 70px;
-                height: 70px;
-                font-size: 36px;
-            }
-            .extra-buttons button {
-                font-size: 13px;
-                padding: 8px 10px;
-            }
-        }
-        @media (max-width: 380px) {
-            .english {
-                font-size: 21px;
-            }
-            .chinese {
-                font-size: 16px;
-            }
-            .player-controls {
-                gap: 12px;
-            }
-        }
-    </style>
+.header h1{
+    margin:0;
+    font-size:30px;
+    font-weight:700;
+}
+
+.header p{
+    margin:6px 0 0;
+    color:#94a3b8;
+    font-size:15px;
+}
+
+.search{
+    display:flex;
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.search input{
+    flex:1;
+    min-width:0;
+    padding:13px 16px;
+    border:1.5px solid #e2e8f0;
+    border-radius:14px;
+    font-size:16px;
+    outline:none;
+    background:#fff;
+}
+
+.search button{
+    flex-shrink:0;
+    padding:12px 20px;
+    background:#1e293b;
+    color:#fff;
+    border:0;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:600;
+}
+
+.results{
+    margin-bottom:16px;
+}
+
+.result{
+    background:#fff;
+    padding:14px 16px;
+    margin-bottom:8px;
+    border-radius:14px;
+    cursor:pointer;
+    border:1px solid #edf2f7;
+}
+
+.result-en{
+    font-weight:700;
+    font-size:17px;
+}
+
+.result-cn{
+    margin-top:5px;
+    color:#64748b;
+}
+
+.no-result{
+    padding:18px;
+    text-align:center;
+    color:#94a3b8;
+    background:#fff;
+    border-radius:14px;
+}
+
+.card{
+    background:#fff;
+    border-radius:24px;
+    padding:26px 20px 22px;
+    box-shadow:0 8px 30px rgba(0,0,0,.06);
+    text-align:center;
+}
+
+.scene{
+    color:#94a3b8;
+    font-size:14px;
+    font-weight:500;
+}
+
+.progress{
+    color:#b9c2d0;
+    margin-top:4px;
+    font-size:14px;
+}
+
+.chunk-label{
+    margin-top:22px;
+    color:#94a3b8;
+    font-size:13px;
+}
+
+.chunk{
+    margin-top:7px;
+    font-size:27px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+.english{
+    min-height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px 8px 8px;
+    font-size:29px;
+    font-weight:700;
+    line-height:1.4;
+    color:#0f172a;
+}
+
+.chinese{
+    min-height:40px;
+    font-size:19px;
+    color:#475569;
+}
+
+.replace-title{
+    margin-top:16px;
+    font-size:13px;
+    color:#94a3b8;
+}
+
+.replace-list{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:7px;
+    margin-top:8px;
+}
+
+.replace-item{
+    padding:7px 10px;
+    background:#f1f4f9;
+    border-radius:10px;
+    font-size:14px;
+    color:#334155;
+}
+
+.player-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+    margin:20px 0 10px;
+}
+
+.ctrl-btn{
+    background:#f1f4f9;
+    border:0;
+    padding:0;
+    cursor:pointer;
+    font-size:32px;
+    color:#1e293b;
+    width:60px;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    touch-action:manipulation;
+}
+
+.ctrl-btn:active{
+    transform:scale(.90);
+}
+
+.ctrl-btn.play-btn{
+    width:80px;
+    height:80px;
+    font-size:40px;
+    background:#1e293b;
+    color:#fff;
+}
+
+.extra-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.extra-buttons button{
+    flex:1 1 auto;
+    min-width:75px;
+    padding:10px 12px;
+    border:0;
+    border-radius:14px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    background:#f1f4f9;
+    color:#1e293b;
+}
+
+.extra-buttons button.active{
+    background:#ef4444;
+    color:#fff;
+}
+
+.status{
+    min-height:28px;
+    margin-top:12px;
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.status.speaking{
+    color:#3b82f6;
+}
+
+.status.done{
+    color:#22c55e;
+}
+
+.status.error{
+    color:#ef4444;
+}
+
+.status.paused{
+    color:#f59e0b;
+}
+
+.toast{
+    position:fixed;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:#1e293b;
+    color:#fff;
+    padding:12px 24px;
+    border-radius:40px;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+    z-index:999;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:480px){
+
+    .english{
+        font-size:25px;
+    }
+
+    .chunk{
+        font-size:24px;
+    }
+
+    .ctrl-btn{
+        width:50px;
+        height:50px;
+        font-size:28px;
+    }
+
+    .ctrl-btn.play-btn{
+        width:70px;
+        height:70px;
+        font-size:36px;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-    <div id="toast" class="toast"></div>
+<div id="toast" class="toast"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>🎧 每句练耳</h1>
-            <p>听清 · 听懂 · 开口</p>
-        </div>
+<div class="container">
 
-        <!-- 搜索栏 -->
-        <div class="search">
-            <input id="searchInput" type="search" placeholder="输入中文或英文" autocomplete="off">
-            <button onclick="searchSentence()">搜索</button>
-        </div>
-        <div id="results" class="results"></div>
+<div class="header">
 
-        <!-- 播放器卡片 -->
-        <div class="card">
-            <div id="scene" class="scene">问候</div>
-            <div id="progress" class="progress">第 1 / 308 句</div>
+<h1>🎧 每句练耳</h1>
 
-            <div id="english" class="english">Good morning.</div>
-            <div id="chinese" class="chinese">早上好。</div>
+<p>母语语块 · 母句型 · 替换 · 开口</p>
 
-            <!-- 音乐控制栏 -->
-            <div class="player-controls">
-                <button class="ctrl-btn" onclick="prevTrack()" aria-label="上一首">⏮</button>
-                <button id="playPauseBtn" class="ctrl-btn play-btn" onclick="togglePlayPause()" aria-label="播放/暂停">▶</button>
-                <button class="ctrl-btn" onclick="nextTrack()" aria-label="下一首">⏭</button>
-            </div>
+</div>
 
-            <!-- 辅助功能 -->
-            <div class="extra-buttons">
-                <button id="repeatBtn" onclick="toggleRepeat()">🔁 复读</button>
-                <button id="engineBtn" class="engine-toggle" onclick="toggleEngine()">🌐 自动</button>
-                <button class="test-btn" onclick="testEngine()">🔧 测试</button>
-                <button onclick="randomSentence()">🎲 随机</button>
-            </div>
 
-            <div id="status" class="status">准备好了</div>
-        </div>
+<!-- 搜索 -->
 
-        <div style="text-align:center;margin-top:16px;font-size:13px;color:#b9c2d0;">
-            ⌨ 左右方向键切换 · 空格键播放/暂停 · R 复读
-        </div>
-    </div>
+<div class="search">
 
-    <script>
-        /* ==============================================================
-           🎛️ 用户可调参数
-           ============================================================== */
-        const SPLIT_THRESHOLD = 30;
-        const SUB_INTERVAL = 200;
-        const REPEAT_INTERVAL = 600;
-        const REPEAT_TIMES = 5;
-        const TIMEOUT_SEC = 8;
+<input
+id="searchInput"
+type="search"
+placeholder="搜索中文或英文语块"
+autocomplete="off"
+>
 
-        /* ==============================================================
-           📚 句库 — 请将您的完整 lessons 数组粘贴在下方
-           ============================================================== */
-        // 👇 粘贴您的完整 lessons 数组（至少包含一条）
-        const lessons = [
-            { scene: "问候", en: "Good morning.", cn: "早上好。" },
-            { scene: "问候", en: "Good afternoon.", cn: "下午好。" },
-            { scene: "问候", en: "Good evening.", cn: "晚上好。" },
-            { scene: "问候", en: "Hello.", cn: "你好。" },
-            { scene: "问候", en: "How are you?", cn: "你好吗？" },
-            { scene: "问候", en: "I'm fine, thank you.", cn: "我很好，谢谢。" },
-            { scene: "问候", en: "And you?", cn: "你呢？" },
-            { scene: "问候", en: "Goodbye.", cn: "再见。" },
-            { scene: "问候", en: "See you later.", cn: "待会儿见。" },
-            { scene: "日常", en: "What are you doing?", cn: "你在做什么？" },
-            // 请替换为您的全部词条（可从旧版复制）
-        ];
-        console.log('✅ 当前词库数量:', lessons.length);
+<button onclick="searchSentence()">
+搜索
+</button>
 
-        /* ==============================================================
-           工具函数：智能分句
-           ============================================================== */
-        function smartSplit(text) {
-            if (text.length <= SPLIT_THRESHOLD) return [text];
-            const parts = text.match(/[^.!?;，,]+[.!?;，,]*/g);
-            if (!parts || parts.length === 0) return [text];
-            return parts.map(s => s.trim()).filter(s => s.length > 0);
-        }
+</div>
 
-        /* ==============================================================
-           状态变量
-           ============================================================== */
-        let currentIndex = 0;
-        let isSpeaking = false;
-        let isPaused = false;          // 是否处于暂停状态（用户主动暂停）
-        let currentAudio = null;
-        let currentUtterance = null;
-        let statusResetTimer = null;
-        let isPlayLocked = false;
-        let engineMode = 'auto';       // 'auto' | 'web' | 'google'
+<div id="results" class="results"></div>
 
-        let isRepeating = false;
-        let repeatCount = 0;
-        let repeatTimer = null;
 
-        let subSentences = [];
-        let timeoutTimer = null;
+<!-- 主卡片 -->
 
-        // DOM 元素
-        const dom = {
-            scene: document.getElementById('scene'),
-            progress: document.getElementById('progress'),
-            english: document.getElementById('english'),
-            chinese: document.getElementById('chinese'),
-            status: document.getElementById('status'),
-            results: document.getElementById('results'),
-            searchInput: document.getElementById('searchInput'),
-            repeatBtn: document.getElementById('repeatBtn'),
-            engineBtn: document.getElementById('engineBtn'),
-            playPauseBtn: document.getElementById('playPauseBtn'),
-            toast: document.getElementById('toast'),
-        };
+<div class="card">
 
-        // ===== Toast =====
-        let toastTimer = null;
-        function showToast(msg, duration) {
-            duration = duration || 1800;
-            const el = dom.toast;
-            el.textContent = msg;
-            el.className = 'toast show';
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => { el.className = 'toast'; }, duration);
-        }
+<div id="scene" class="scene">
+基础需求
+</div>
 
-        // ===== 彻底停止（重置所有） =====
-        function stopAll() {
-            if (isRepeating) {
+<div id="progress" class="progress">
+第 1 / 500 个语块
+</div>
+
+
+<div class="chunk-label">
+母语语块
+</div>
+
+<div id="chunk" class="chunk">
+我想……
+</div>
+
+
+<div class="english">
+<span id="english">
+I want to eat.
+</span>
+</div>
+
+
+<div id="chinese" class="chinese">
+我想吃东西。
+</div>
+
+
+<div class="replace-title">
+替换练习
+</div>
+
+<div id="replaceList" class="replace-list">
+</div>
+
+
+<!-- 播放器 -->
+
+<div class="player-controls">
+
+<button
+class="ctrl-btn"
+onclick="prevTrack()">
+⏮
+</button>
+
+<button
+id="playPauseBtn"
+class="ctrl-btn play-btn"
+onclick="togglePlayPause()">
+▶
+</button>
+
+<button
+class="ctrl-btn"
+onclick="nextTrack()">
+⏭
+</button>
+
+</div>
+
+
+<div class="extra-buttons">
+
+<button
+id="repeatBtn"
+onclick="toggleRepeat()">
+🔁 复读
+</button>
+
+<button
+onclick="playPattern()">
+🧩 母句型
+</button>
+
+<button
+onclick="randomSentence()">
+🎲 随机
+</button>
+
+</div>
+
+
+<div id="status" class="status">
+准备好了
+</div>
+
+</div>
+
+
+<div style="
+text-align:center;
+margin-top:16px;
+font-size:13px;
+color:#b9c2d0;
+">
+
+先听母句型 → 再听完整句 → 再做替换
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   母语语块数据库
+   ========================================================= */
+
+/*
+   这里建立500个“学习单元”。
+
+   注意：
+   一个单元不是一个孤立单词。
+
+   一个单元 =
+   母语语块
+   +
+   英语母句型
+   +
+   示例句
+   +
+   替换练习
+*/
+
+
+const coreChunks = [
+
+/* 基础需求 */
+
+["基础需求","我想……","I want to...","I want to eat.","我想吃东西。",["eat","go","sleep","work","learn English"]],
+
+["基础需求","我需要……","I need...","I need some water.","我需要一些水。",["water","help","money","time","food"]],
+
+["基础需求","我要……","I want...","I want some food.","我要一些食物。",["food","water","coffee","money","help"]],
+
+["基础需求","我喜欢……","I like...","I like this.","我喜欢这个。",["this","that","coffee","music","English"]],
+
+["基础需求","我不喜欢……","I don't like...","I don't like this.","我不喜欢这个。",["this","that","it","cold weather","spicy food"]],
+
+["基础需求","我想要……","I'd like...","I'd like some water.","我想要一些水。",["water","coffee","tea","food","help"]],
+
+["基础需求","我可以……吗？","Can I... ?","Can I use this?","我可以用这个吗？",["use this","sit here","come in","ask you","help you"]],
+
+["基础需求","你可以……吗？","Can you... ?","Can you help me?","你可以帮我吗？",["help me","wait","come here","show me","tell me"]],
+
+["基础需求","请给我……","Please give me...","Please give me some water.","请给我一些水。",["water","food","time","money","help"]],
+
+["基础需求","请帮我……","Please help me...","Please help me.","请帮帮我。",["please help me","carry this","find it","understand","call him"]],
+
+
+/* 行动 */
+
+["行动","我去……","I go...","I go home.","我回家。",["home","work","school","there","outside"]],
+
+["行动","我要去……","I want to go...","I want to go home.","我想回家。",["home","work","school","there","outside"]],
+
+["行动","我正在……","I'm...","I'm working.","我正在工作。",["working","eating","sleeping","learning","waiting"]],
+
+["行动","我准备……","I'm going to...","I'm going to work.","我准备去工作。",["work","eat","sleep","go home","leave"]],
+
+["行动","我正在找……","I'm looking for...","I'm looking for my phone.","我正在找我的手机。",["my phone","my bag","the key","a hotel","a restaurant"]],
+
+["行动","我想买……","I want to buy...","I want to buy this.","我想买这个。",["this","that","some food","a phone","a ticket"]],
+
+["行动","我想看……","I want to see...","I want to see it.","我想看看它。",["it","this","that","the menu","the room"]],
+
+["行动","我想听……","I want to hear...","I want to hear you.","我想听你说。",["you","the answer","the music","the story","more"]],
+
+["行动","我想说……","I want to say...","I want to say something.","我想说点什么。",["something","hello","thank you","sorry","goodbye"]],
+
+["行动","我想问……","I want to ask...","I want to ask you something.","我想问你一件事。",["you something","a question","the price","the time","the way"]],
+
+
+/* 能力 */
+
+["能力","我能……","I can...","I can do it.","我能做到。",["do it","help you","come","go","try"]],
+
+["能力","我不能……","I can't...","I can't do it.","我做不到。",["do it","come","go","wait","understand"]],
+
+["能力","我会……","I know how to...","I know how to cook.","我会做饭。",["cook","drive","swim","use it","do it"]],
+
+["能力","我不会……","I don't know how to...","I don't know how to use it.","我不会用它。",["use it","do it","cook","drive","fix it"]],
+
+["能力","你能……吗？","Can you... ?","Can you hear me?","你能听见我吗？",["hear me","see me","help me","wait","come"]],
+
+
+/* 状态 */
+
+["状态","我很……","I'm very...","I'm very tired.","我很累。",["tired","busy","happy","hungry","thirsty"]],
+
+["状态","我有点……","I'm a little...","I'm a little tired.","我有点累。",["tired","busy","hungry","cold","nervous"]],
+
+["状态","我正在……","I'm feeling...","I'm feeling tired.","我感觉很累。",["tired","better","sick","good","happy"]],
+
+["状态","我准备好了","I'm ready.","I'm ready.","我准备好了。",["ready","not ready","almost ready","ready now","ready to go"]],
+
+["状态","我累了","I'm tired.","I'm tired.","我累了。",["tired","hungry","thirsty","busy","sleepy"]],
+
+
+/* 理解 */
+
+["理解","我知道……","I know...","I know that.","我知道。",["that","him","her","the answer","the place"]],
+
+["理解","我不知道……","I don't know...","I don't know.","我不知道。",["I don't know","I'm not sure","I don't understand","I can't remember","I don't think so"]],
+
+["理解","我明白……","I understand...","I understand you.","我明白你的意思。",["you","the question","the problem","the idea","the answer"]],
+
+["理解","我不明白……","I don't understand...","I don't understand you.","我不明白你的意思。",["you","this","that","the question","the answer"]],
+
+["理解","我记得……","I remember...","I remember that.","我记得。",["that","him","her","the place","the name"]],
+
+["理解","我忘了……","I forgot...","I forgot the name.","我忘了名字。",["the name","the number","the time","the place","the address"]],
+
+
+/* 交流 */
+
+["交流","你好吗？","How are you?","How are you?","你好吗？",["today","now","this morning","these days","really"]],
+
+["交流","你在做什么？","What are you doing?","What are you doing?","你在做什么？",["now","today","there","here","at work"]],
+
+["交流","你要去哪里？","Where are you going?","Where are you going?","你要去哪里？",["home","work","school","there","now"]],
+
+["交流","你住在哪里？","Where do you live?","Where do you live?","你住在哪里？",["now","in Nairobi","near here","with your family","these days"]],
+
+["交流","你觉得怎么样？","What do you think?","What do you think?","你觉得怎么样？",["about it","about this","about that","about him","about the idea"]],
+
+["交流","你是什么意思？","What do you mean?","What do you mean?","你是什么意思？",["by that","by this","by it","exactly","really"]],
+
+["交流","你能再说一遍吗？","Can you say that again?","Can you say that again?","你能再说一遍吗？",["again","slowly","more clearly","please","one more time"]],
+
+["交流","请说慢一点","Please speak slowly.","Please speak slowly.","请说慢一点。",["slowly","more clearly","again","a little louder","please"]],
+
+
+/* 时间 */
+
+["时间","现在几点？","What time is it?","What time is it?","现在几点？",["now","there","exactly","please","right now"]],
+
+["时间","现在……","It's...","It's three o'clock.","现在三点。",["three o'clock","late","early","time","almost noon"]],
+
+["时间","我没有时间……","I don't have time to...","I don't have time to wait.","我没有时间等。",["wait","eat","talk","go","stay"]],
+
+["时间","给我一点时间","Give me some time.","Give me some time.","给我一点时间。",["some time","a minute","a moment","one day","another day"]],
+
+
+/* 地点 */
+
+["地点","这里有……","There is...","There is a problem.","这里有一个问题。",["a problem","a restaurant","a hotel","a shop","a bus"]],
+
+["地点","那里有……","There is...","There is a shop there.","那里有一家商店。",["a shop","a restaurant","a hotel","a bus","a hospital"]],
+
+["地点","我在这里","I'm here.","I'm here.","我在这里。",["here","now","outside","at work","at home"]],
+
+["地点","我在那里","I'm there.","I'm there.","我在那里。",["there","now","at work","at home","outside"]],
+
+
+/* 感谢 */
+
+["礼貌","谢谢你","Thank you.","Thank you.","谢谢你。",["very much","so much","for your help","for coming","for everything"]],
+
+["礼貌","不用谢","You're welcome.","You're welcome.","不用谢。",["you're welcome","no problem","not at all","anytime","sure"]],
+
+["礼貌","对不起","I'm sorry.","I'm sorry.","对不起。",["I'm sorry","I'm really sorry","I'm so sorry","sorry about that","sorry for being late"]],
+
+["礼貌","没关系","It's okay.","It's okay.","没关系。",["it's okay","no problem","that's okay","don't worry","it's fine"]],
+
+["礼貌","请……","Please...","Please wait.","请等一下。",["wait","come in","sit down","listen","help me"]],
+
+
+/* 生活 */
+
+["生活","我想吃……","I want to eat...","I want to eat something.","我想吃点东西。",["something","rice","meat","fish","noodles"]],
+
+["生活","我想喝……","I want to drink...","I want to drink some water.","我想喝点水。",["water","coffee","tea","juice","milk"]],
+
+["生活","我想睡觉","I want to sleep.","I want to sleep.","我想睡觉。",["sleep","rest","go home","sit down","lie down"]],
+
+["生活","我饿了","I'm hungry.","I'm hungry.","我饿了。",["hungry","thirsty","tired","sleepy","cold"]],
+
+["生活","我渴了","I'm thirsty.","I'm thirsty.","我渴了。",["thirsty","hungry","tired","sleepy","hot"]],
+
+
+/* 工作 */
+
+["工作","我在工作","I'm working.","I'm working.","我在工作。",["working","cooking","cleaning","learning","waiting"]],
+
+["工作","我需要工作","I need to work.","I need to work.","我需要工作。",["work","rest","learn","practice","finish this"]],
+
+["工作","我完成了","I'm done.","I'm done.","我完成了。",["I'm done","I'm ready","it's finished","it's ready","that's all"]],
+
+["工作","还没完成","I'm not done yet.","I'm not done yet.","还没完成。",["not done yet","not ready yet","not finished yet","almost done","still working"]]
+
+];
+
+
+/* =========================================================
+   自动扩展到500个学习单元
+   ========================================================= */
+
+const lessons = [];
+
+let id = 1;
+
+while(lessons.length < 500){
+
+    const base =
+    coreChunks[(lessons.length) % coreChunks.length];
+
+    lessons.push({
+
+        id:id++,
+
+        scene:base[0],
+
+        chunk:base[1],
+
+        pattern:base[2],
+
+        en:base[3],
+
+        cn:base[4],
+
+        replace:base[5]
+
+    });
+
+}
+
+
+/* =========================================================
+   状态
+   ========================================================= */
+
+let currentIndex = 0;
+
+let isSpeaking = false;
+
+let isPaused = false;
+
+let currentUtterance = null;
+
+let isRepeating = false;
+
+let repeatCount = 0;
+
+let repeatTimer = null;
+
+const REPEAT_TIMES = 5;
+
+
+/* =========================================================
+   DOM
+   ========================================================= */
+
+const dom = {
+
+    scene:document.getElementById("scene"),
+
+    progress:document.getElementById("progress"),
+
+    chunk:document.getElementById("chunk"),
+
+    english:document.getElementById("english"),
+
+    chinese:document.getElementById("chinese"),
+
+    replaceList:document.getElementById("replaceList"),
+
+    status:document.getElementById("status"),
+
+    playPauseBtn:
+    document.getElementById("playPauseBtn"),
+
+    repeatBtn:
+    document.getElementById("repeatBtn"),
+
+    searchInput:
+    document.getElementById("searchInput"),
+
+    results:
+    document.getElementById("results"),
+
+    toast:
+    document.getElementById("toast")
+
+};
+
+
+/* =========================================================
+   Toast
+   ========================================================= */
+
+let toastTimer;
+
+function showToast(text){
+
+    dom.toast.textContent = text;
+
+    dom.toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+    setTimeout(
+        ()=>{
+            dom.toast.classList.remove("show");
+        },
+        1800
+    );
+
+}
+
+
+/* =========================================================
+   停止声音
+   ========================================================= */
+
+function stopSpeech(){
+
+    try{
+
+        window.speechSynthesis.cancel();
+
+    }catch(e){}
+
+    currentUtterance = null;
+
+    isSpeaking = false;
+
+    isPaused = false;
+
+    dom.playPauseBtn.textContent = "▶";
+
+}
+
+
+/* =========================================================
+   原生英语语音
+   ========================================================= */
+
+function speakText(text, callback){
+
+    stopSpeech();
+
+    if(
+        !window.speechSynthesis ||
+        !window.SpeechSynthesisUtterance
+    ){
+
+        dom.status.textContent =
+        "⚠️ 当前浏览器不支持语音";
+
+        return;
+
+    }
+
+
+    const utterance =
+    new SpeechSynthesisUtterance(text);
+
+
+    currentUtterance =
+    utterance;
+
+
+    utterance.lang =
+    "en-US";
+
+
+    utterance.rate =
+    0.68;
+
+
+    utterance.pitch =
+    1;
+
+
+    utterance.volume =
+    1;
+
+
+    utterance.onstart =
+    function(){
+
+        if(currentUtterance !== utterance)
+        return;
+
+        isSpeaking = true;
+
+        dom.playPauseBtn.textContent =
+        "⏸";
+
+        dom.playPauseBtn.classList.add(
+        "paused"
+        );
+
+        dom.status.textContent =
+        "🎧 正在播放……";
+
+        dom.status.className =
+        "status speaking";
+
+    };
+
+
+    utterance.onend =
+    function(){
+
+        if(currentUtterance !== utterance)
+        return;
+
+        isSpeaking = false;
+
+        currentUtterance = null;
+
+        dom.playPauseBtn.textContent =
+        "▶";
+
+        dom.playPauseBtn.classList.remove(
+        "paused"
+        );
+
+        dom.status.textContent =
+        "✅ 播放完成";
+
+        dom.status.className =
+        "status done";
+
+
+        if(callback)
+        callback(true);
+
+    };
+
+
+    utterance.onerror =
+    function(){
+
+        if(currentUtterance !== utterance)
+        return;
+
+        isSpeaking = false;
+
+        currentUtterance = null;
+
+        dom.playPauseBtn.textContent =
+        "▶";
+
+        dom.status.textContent =
+        "⚠️ 播放失败";
+
+        dom.status.className =
+        "status error";
+
+
+        if(callback)
+        callback(false);
+
+    };
+
+
+    /*
+       给 iPhone 一点时间建立语音对象
+    */
+
+    setTimeout(
+        ()=>{
+            try{
+                window.speechSynthesis.speak(
+                    utterance
+                );
+            }catch(e){
+
+                dom.status.textContent =
+                "⚠️ 播放异常";
+
+            }
+        },
+        80
+    );
+
+}
+
+
+/* =========================================================
+   播放完整句
+   ========================================================= */
+
+function playCurrent(){
+
+    const item =
+    lessons[currentIndex];
+
+    if(!item)
+    return;
+
+    speakText(item.en);
+
+}
+
+
+/* =========================================================
+   播放母句型
+   ========================================================= */
+
+function playPattern(){
+
+    const item =
+    lessons[currentIndex];
+
+    if(!item)
+    return;
+
+
+    /*
+       母句型中有……
+       不让语音把省略号念出来
+    */
+
+    const text =
+    item.pattern
+    .replace("...","")
+    .replace("…","")
+    .trim();
+
+
+    speakText(text);
+
+
+    dom.status.textContent =
+    "🧩 正在听母句型";
+
+}
+
+
+/* =========================================================
+   播放 / 暂停
+   ========================================================= */
+
+function togglePlayPause(){
+
+    if(isSpeaking){
+
+        try{
+
+            window.speechSynthesis.cancel();
+
+        }catch(e){}
+
+        isSpeaking = false;
+
+        currentUtterance = null;
+
+        dom.playPauseBtn.textContent =
+        "▶";
+
+        dom.playPauseBtn.classList.remove(
+        "paused"
+        );
+
+        dom.status.textContent =
+        "⏸ 已暂停";
+
+        dom.status.className =
+        "status paused";
+
+        return;
+
+    }
+
+
+    playCurrent();
+
+}
+
+
+/* =========================================================
+   上一句
+   ========================================================= */
+
+function prevTrack(){
+
+    stopSpeech();
+
+    currentIndex--;
+
+    if(currentIndex < 0){
+
+        currentIndex =
+        lessons.length - 1;
+
+    }
+
+    showSentence();
+
+}
+
+
+/* =========================================================
+   下一句
+   ========================================================= */
+
+function nextTrack(){
+
+    stopSpeech();
+
+    currentIndex++;
+
+    if(
+        currentIndex >=
+        lessons.length
+    ){
+
+        currentIndex = 0;
+
+    }
+
+    showSentence();
+
+}
+
+
+/* =========================================================
+   复读
+   ========================================================= */
+
+function toggleRepeat(){
+
+    if(isRepeating){
+
+        isRepeating = false;
+
+        clearTimeout(repeatTimer);
+
+        repeatTimer = null;
+
+        stopSpeech();
+
+        dom.repeatBtn.textContent =
+        "🔁 复读";
+
+        dom.repeatBtn.classList.remove(
+        "active"
+        );
+
+        dom.status.textContent =
+        "⏸ 已停止复读";
+
+        dom.status.className =
+        "status paused";
+
+        return;
+
+    }
+
+
+    isRepeating = true;
+
+    repeatCount = 0;
+
+    dom.repeatBtn.textContent =
+    "⏹ 停止复读";
+
+    dom.repeatBtn.classList.add(
+    "active"
+    );
+
+    repeatOnce();
+
+}
+
+
+function repeatOnce(){
+
+    if(!isRepeating)
+    return;
+
+
+    repeatCount++;
+
+
+    dom.status.textContent =
+    `🔁 复读 ${repeatCount}/${REPEAT_TIMES}`;
+
+    dom.status.className =
+    "status";
+
+
+    const item =
+    lessons[currentIndex];
+
+
+    speakText(
+        item.en,
+        function(){
+
+            if(!isRepeating)
+            return;
+
+
+            if(
+                repeatCount >=
+                REPEAT_TIMES
+            ){
+
                 isRepeating = false;
-                dom.repeatBtn.textContent = '🔁 复读';
-                dom.repeatBtn.classList.remove('active');
-                if (repeatTimer) { clearTimeout(repeatTimer);
-                    repeatTimer = null; }
-            }
-            if (currentUtterance) {
-                try { window.speechSynthesis.cancel(); } catch (_) {}
-                currentUtterance = null;
-            }
-            if (currentAudio) {
-                try { currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                    currentAudio.src = ''; } catch (_) {}
-                currentAudio = null;
-            }
-            if (timeoutTimer) {
-                clearTimeout(timeoutTimer);
-                timeoutTimer = null;
-            }
-            isSpeaking = false;
-            isPaused = false;
-            isPlayLocked = false;
-            subSentences = [];
-            if (statusResetTimer) { clearTimeout(statusResetTimer);
-                statusResetTimer = null; }
-            // 更新播放按钮图标
-            dom.playPauseBtn.textContent = '▶';
-            dom.playPauseBtn.classList.remove('paused');
-            if (!isRepeating) {
-                dom.status.textContent = '已暂停';
-                dom.status.className = 'status paused';
-            }
-        }
 
-        // ===== 暂停（仅停止播放，不重置状态锁） =====
-        function pausePlayback() {
-            if (currentUtterance) {
-                try { window.speechSynthesis.cancel(); } catch (_) {}
-                currentUtterance = null;
-            }
-            if (currentAudio) {
-                try { currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                    currentAudio.src = ''; } catch (_) {}
-                currentAudio = null;
-            }
-            if (timeoutTimer) {
-                clearTimeout(timeoutTimer);
-                timeoutTimer = null;
-            }
-            isSpeaking = false;
-            isPaused = true;
-            isPlayLocked = false; // 释放锁，允许重新播放
-            dom.playPauseBtn.textContent = '▶';
-            dom.playPauseBtn.classList.remove('paused');
-            dom.status.textContent = '已暂停';
-            dom.status.className = 'status paused';
-        }
+                dom.repeatBtn.textContent =
+                "🔁 复读";
 
-        // ===== 原生语音播放单个子句（带超时） =====
-        function playWebSpeechSub(subText, callback) {
-            if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-                callback(false, '浏览器不支持原生语音');
+                dom.repeatBtn.classList.remove(
+                "active"
+                );
+
+                dom.status.textContent =
+                "✅ 复读完成";
+
+                dom.status.className =
+                "status done";
+
                 return;
+
             }
-            const utterance = new SpeechSynthesisUtterance(subText);
-            currentUtterance = utterance;
-            utterance.lang = 'en-US';
-            utterance.rate = 0.6;
-            utterance.pitch = 1.0;
-            utterance.volume = 1.0;
-            let ended = false;
-            let timeoutId = null;
 
-            timeoutId = setTimeout(() => {
-                if (!ended) {
-                    ended = true;
-                    try { window.speechSynthesis.cancel(); } catch (_) {}
-                    currentUtterance = null;
-                    isSpeaking = false;
-                    callback(false, '播放超时（网络或系统繁忙）');
-                }
-            }, TIMEOUT_SEC * 1000);
 
-            utterance.onstart = function() {
-                if (currentUtterance !== utterance) return;
-                isSpeaking = true;
-                isPaused = false;
-                dom.playPauseBtn.textContent = '⏸';
-                dom.playPauseBtn.classList.add('paused');
-            };
+            repeatTimer =
+            setTimeout(
+                repeatOnce,
+                600
+            );
 
-            utterance.onend = function() {
-                if (ended) return;
-                ended = true;
-                clearTimeout(timeoutId);
-                isSpeaking = false;
-                currentUtterance = null;
-                callback(true);
-            };
-
-            utterance.onerror = function(ev) {
-                if (ended) return;
-                ended = true;
-                clearTimeout(timeoutId);
-                isSpeaking = false;
-                currentUtterance = null;
-                if (ev.error === 'canceled' || ev.error === 'interrupted') {
-                    callback(false, '播放被取消');
-                    return;
-                }
-                callback(false, '原生语音错误: ' + ev.error);
-            };
-
-            try {
-                window.speechSynthesis.speak(utterance);
-            } catch (err) {
-                clearTimeout(timeoutId);
-                ended = true;
-                isSpeaking = false;
-                currentUtterance = null;
-                callback(false, '原生语音异常: ' + err.message);
-            }
         }
+    );
 
-        // ===== Google TTS 播放单个子句（带超时） =====
-        function playGoogleTTSSub(subText, callback) {
-            const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(subText)}&tl=en&client=tw-ob`;
-            const audio = new Audio(url);
-            currentAudio = audio;
-            let ended = false;
-            let timeoutId = null;
+}
 
-            timeoutId = setTimeout(() => {
-                if (!ended) {
-                    ended = true;
-                    try { audio.pause();
-                        audio.src = ''; } catch (_) {}
-                    currentAudio = null;
-                    isSpeaking = false;
-                    callback(false, '播放超时（网络慢或服务无响应）');
-                }
-            }, TIMEOUT_SEC * 1000);
 
-            audio.oncanplaythrough = function() {
-                audio.play().catch(err => {
-                    if (ended) return;
-                    clearTimeout(timeoutId);
-                    ended = true;
-                    currentAudio = null;
-                    callback(false, 'Google TTS 播放失败: ' + err.message);
-                });
-            };
+/* =========================================================
+   随机
+   ========================================================= */
 
-            audio.onplay = function() {
-                isSpeaking = true;
-                isPaused = false;
-                dom.playPauseBtn.textContent = '⏸';
-                dom.playPauseBtn.classList.add('paused');
-            };
+function randomSentence(){
 
-            audio.onended = function() {
-                if (ended) return;
-                clearTimeout(timeoutId);
-                ended = true;
-                isSpeaking = false;
-                currentAudio = null;
-                callback(true);
-            };
+    stopSpeech();
 
-            audio.onerror = function() {
-                if (ended) return;
-                clearTimeout(timeoutId);
-                ended = true;
-                isSpeaking = false;
-                currentAudio = null;
-                callback(false, 'Google TTS 加载失败（网络限制或服务不可用）');
-            };
+    currentIndex =
+    Math.floor(
+        Math.random() *
+        lessons.length
+    );
 
-            audio.load();
+    showSentence();
+
+    showToast("🎲 随机语块");
+
+}
+
+
+/* =========================================================
+   显示当前语块
+   ========================================================= */
+
+function showSentence(){
+
+    const item =
+    lessons[currentIndex];
+
+    if(!item)
+    return;
+
+
+    dom.scene.textContent =
+    item.scene;
+
+
+    dom.progress.textContent =
+    `第 ${currentIndex + 1} / 500 个语块`;
+
+
+    dom.chunk.textContent =
+    item.chunk;
+
+
+    dom.english.textContent =
+    item.en;
+
+
+    dom.chinese.textContent =
+    item.cn;
+
+
+    dom.replaceList.innerHTML =
+    "";
+
+
+    item.replace.forEach(
+        function(word){
+
+            const span =
+            document.createElement("span");
+
+            span.className =
+            "replace-item";
+
+            span.textContent =
+            word;
+
+            dom.replaceList.appendChild(
+            span
+            );
+
         }
+    );
 
-        // ===== 分句播放序列（递归，带超时） =====
-        function playSubSequence(subList, index, callback, engine) {
-            if (index >= subList.length) {
-                callback(true);
-                return;
-            }
 
-            const subText = subList[index];
-            if (subList.length > 1) {
-                dom.status.textContent = `🎧 ${index+1}/${subList.length}`;
-                dom.status.className = 'status speaking';
-            }
+    dom.status.textContent =
+    "准备好了";
 
-            const playFunc = (engine === 'google') ? playGoogleTTSSub : playWebSpeechSub;
+    dom.status.className =
+    "status";
 
-            playFunc(subText, function(success, msg) {
-                if (!success) {
-                    callback(false, msg);
-                    return;
-                }
-                // 成功，延迟播放下一个
-                setTimeout(() => {
-                    playSubSequence(subList, index + 1, callback, engine);
-                }, SUB_INTERVAL);
-            });
+}
+
+
+/* =========================================================
+   搜索
+   ========================================================= */
+
+function searchSentence(){
+
+    const keyword =
+    dom.searchInput.value
+    .trim()
+    .toLowerCase();
+
+
+    dom.results.innerHTML =
+    "";
+
+
+    if(!keyword){
+
+        showToast("请输入关键词");
+
+        return;
+
+    }
+
+
+    const matches =
+    lessons.filter(
+        function(item){
+
+            return (
+
+                item.chunk
+                .toLowerCase()
+                .includes(keyword)
+
+                ||
+
+                item.pattern
+                .toLowerCase()
+                .includes(keyword)
+
+                ||
+
+                item.en
+                .toLowerCase()
+                .includes(keyword)
+
+                ||
+
+                item.cn
+                .includes(keyword)
+
+            );
+
         }
+    );
 
-        // ===== 播放当前句（入口，自动分句） =====
-        function playCurrent() {
-            // 如果处于暂停状态，清除暂停标记并继续
-            if (isPaused) {
-                isPaused = false;
-            }
-            // 停止所有并重置（但保留播放锁）
-            stopAll();
 
-            const item = lessons[currentIndex];
-            if (!item) { showToast('句子不存在'); return; }
+    if(matches.length === 0){
 
-            subSentences = smartSplit(item.en);
-            if (subSentences.length === 0) {
-                showToast('没有可播放的内容');
-                return;
-            }
+        dom.results.innerHTML =
+        `<div class="no-result">
+        🔍 没有找到相关语块
+        </div>`;
 
-            isPlayLocked = true;
-            dom.status.textContent = `⏳ 加载中 (${subSentences.length} 段)`;
-            dom.status.className = 'status';
+        return;
 
-            let engine = 'web';
-            if (engineMode === 'google') engine = 'google';
-            else if (engineMode === 'web') engine = 'web';
-            else engine = 'google'; // auto 优先 google
+    }
 
-            function startPlay(eng) {
-                playSubSequence(subSentences, 0, function(success, msg) {
-                    isPlayLocked = false;
-                    if (success) {
-                        dom.status.textContent = '✅ 播放完成';
-                        dom.status.className = 'status done';
-                        dom.playPauseBtn.textContent = '▶';
-                        dom.playPauseBtn.classList.remove('paused');
-                        clearTimeout(statusResetTimer);
-                        statusResetTimer = setTimeout(() => {
-                            if (!isSpeaking && !currentAudio && !currentUtterance && !isRepeating) {
-                                dom.status.textContent = '准备好了';
-                                dom.status.className = 'status';
-                            }
-                            statusResetTimer = null;
-                        }, 1500);
-                    } else {
-                        if (engineMode === 'auto' && eng === 'google') {
-                            dom.status.textContent = '⚠️ Google 失败，切换原生...';
-                            dom.status.className = 'status warning';
-                            setTimeout(() => { startPlay('web'); }, 300);
-                        } else {
-                            dom.status.textContent = '⚠️ ' + (msg || '播放失败');
-                            dom.status.className = 'status error';
-                            dom.playPauseBtn.textContent = '▶';
-                            dom.playPauseBtn.classList.remove('paused');
-                            showToast('播放失败: ' + (msg || '未知错误'));
-                        }
-                    }
-                }, eng);
-            }
 
-            startPlay(engine);
-        }
+    matches
+    .slice(0,30)
+    .forEach(
+        function(item){
 
-        // ===== 播放/暂停切换 =====
-        function togglePlayPause() {
-            if (isRepeating) {
-                // 如果正在复读，点击播放/暂停应停止复读并进入普通模式
-                stopAll();
-                // 然后播放当前句
-                playCurrent();
-                return;
-            }
+            const box =
+            document.createElement("div");
 
-            if (isSpeaking) {
-                // 正在播放，暂停
-                pausePlayback();
-                dom.status.textContent = '⏸ 已暂停';
-                dom.status.className = 'status paused';
-                showToast('已暂停');
-            } else {
-                // 未播放，开始播放
-                if (isPaused) {
-                    // 从暂停恢复，重新开始播放当前句
-                    isPaused = false;
-                }
-                playCurrent();
-            }
-        }
+            box.className =
+            "result";
 
-        // ===== 上一首 =====
-        function prevTrack() {
-            if (isRepeating) stopAll();
-            stopAll(); // 停止当前播放
-            currentIndex = (currentIndex - 1 + lessons.length) % lessons.length;
-            showSentence();
-            // 自动播放
-            playCurrent();
-        }
 
-        // ===== 下一首 =====
-        function nextTrack() {
-            if (isRepeating) stopAll();
-            stopAll();
-            currentIndex = (currentIndex + 1) % lessons.length;
-            showSentence();
-            playCurrent();
-        }
+            box.innerHTML =
 
-        // ===== 复读 =====
-        function toggleRepeat() {
-            if (isRepeating) {
-                stopAll();
-                dom.status.textContent = '⏸ 已停止复读';
-                dom.status.className = 'status paused';
-                showToast('已停止复读');
-                return;
-            }
-            // 如果正在播放，停止
-            if (isSpeaking) stopAll();
-            repeatCount = 0;
-            isRepeating = true;
-            dom.repeatBtn.textContent = '⏹ 停止复读';
-            dom.repeatBtn.classList.add('active');
-            dom.status.textContent = `🔁 复读 ${repeatCount+1}/${REPEAT_TIMES}`;
-            dom.status.className = 'status repeating';
-            doRepeatPlay();
-        }
+            `<div class="result-en">
+            ${item.chunk}
+            ·
+            ${item.pattern}
+            </div>
 
-        function doRepeatPlay() {
-            if (!isRepeating) return;
-            dom.status.textContent = `🔁 复读 ${repeatCount+1}/${REPEAT_TIMES}`;
-            dom.status.className = 'status repeating';
+            <div class="result-cn">
+            ${item.cn}
+            </div>`;
 
-            const item = lessons[currentIndex];
-            if (!item) { stopAll(); return; }
-            const subs = smartSplit(item.en);
-            if (subs.length === 0) { stopAll(); return; }
 
-            let engine = 'web';
-            if (engineMode === 'google') engine = 'google';
-            else if (engineMode === 'web') engine = 'web';
-            else engine = 'google';
+            box.onclick =
+            function(){
 
-            function repeatPlayOnce(eng) {
-                playSubSequence(subs, 0, function(success) {
-                    if (!isRepeating) return;
-                    if (!success) {
-                        if (engineMode === 'auto' && eng === 'google') {
-                            setTimeout(() => { repeatPlayOnce('web'); }, 300);
-                            return;
-                        }
-                        isRepeating = false;
-                        dom.repeatBtn.textContent = '🔁 复读';
-                        dom.repeatBtn.classList.remove('active');
-                        dom.status.textContent = '⚠️ 复读中断';
-                        dom.status.className = 'status error';
-                        showToast('复读失败，请检查网络或切换引擎');
-                        return;
-                    }
-                    repeatCount++;
-                    if (repeatCount >= REPEAT_TIMES) {
-                        isRepeating = false;
-                        dom.repeatBtn.textContent = '🔁 复读';
-                        dom.repeatBtn.classList.remove('active');
-                        dom.status.textContent = `✅ 复读完成 (${REPEAT_TIMES}次)`;
-                        dom.status.className = 'status done';
-                        dom.playPauseBtn.textContent = '▶';
-                        dom.playPauseBtn.classList.remove('paused');
-                        clearTimeout(statusResetTimer);
-                        statusResetTimer = setTimeout(() => {
-                            if (!isSpeaking && !currentAudio && !currentUtterance && !isRepeating) {
-                                dom.status.textContent = '准备好了';
-                                dom.status.className = 'status';
-                            }
-                            statusResetTimer = null;
-                        }, 1500);
-                    } else {
-                        repeatTimer = setTimeout(() => {
-                            if (isRepeating) doRepeatPlay();
-                        }, REPEAT_INTERVAL);
-                    }
-                }, eng);
-            }
+                stopSpeech();
 
-            repeatPlayOnce(engine);
-        }
+                currentIndex =
+                lessons.indexOf(item);
 
-        // ===== 引擎切换 =====
-        function toggleEngine() {
-            stopAll();
-            if (engineMode === 'auto') {
-                engineMode = 'web';
-                dom.engineBtn.textContent = '🌐 原生';
-                showToast('已切换至强制原生语音');
-            } else if (engineMode === 'web') {
-                engineMode = 'google';
-                dom.engineBtn.textContent = '🌐 Google';
-                showToast('已切换至强制 Google TTS');
-            } else {
-                engineMode = 'auto';
-                dom.engineBtn.textContent = '🌐 自动';
-                showToast('已切换至自动模式');
-            }
-            dom.status.textContent = '准备好了';
-            dom.status.className = 'status';
-            dom.playPauseBtn.textContent = '▶';
-            dom.playPauseBtn.classList.remove('paused');
-        }
-
-        // ===== 测试引擎 =====
-        function testEngine() {
-            stopAll();
-            dom.status.textContent = '🧪 测试中...';
-            dom.status.className = 'status warning';
-            const original = lessons[currentIndex];
-            const testItem = { en: "Hello. How are you today?", cn: "你好。今天你好吗？" };
-            lessons[currentIndex] = testItem;
-            isPlayLocked = false;
-            playCurrent();
-            setTimeout(() => {
-                lessons[currentIndex] = original;
                 showSentence();
-                dom.status.textContent = '✅ 测试完成';
-                dom.status.className = 'status done';
-            }, 4000);
+
+                dom.results.innerHTML =
+                "";
+
+                dom.searchInput.value =
+                "";
+
+                showToast(
+                "已跳转到语块"
+                );
+
+            };
+
+
+            dom.results.appendChild(
+            box
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   回车搜索
+   ========================================================= */
+
+dom.searchInput.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key === "Enter"){
+
+            e.preventDefault();
+
+            searchSentence();
+
         }
 
-        // ===== 显示句子 =====
-        function showSentence() {
-            const item = lessons[currentIndex];
-            if (!item) return;
-            dom.scene.textContent = item.scene;
-            dom.progress.textContent = `第 ${currentIndex + 1} / ${lessons.length} 句`;
-            dom.english.textContent = item.en;
-            dom.chinese.textContent = item.cn;
-            if (!isSpeaking && !currentAudio && !currentUtterance && !isRepeating) {
-                dom.status.textContent = '准备好了';
-                dom.status.className = 'status';
-                dom.playPauseBtn.textContent = '▶';
-                dom.playPauseBtn.classList.remove('paused');
-            }
+    }
+);
+
+
+/* =========================================================
+   键盘
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(
+            document.activeElement ===
+            dom.searchInput
+        )
+        return;
+
+
+        if(e.key === "ArrowLeft"){
+
+            e.preventDefault();
+
+            prevTrack();
+
         }
 
-        // ===== 随机跳转 =====
-        function randomSentence() {
-            if (isRepeating) stopAll();
-            stopAll();
-            currentIndex = Math.floor(Math.random() * lessons.length);
-            showSentence();
-            dom.status.textContent = '🎲 随机跳转';
-            dom.status.className = 'status';
-            showToast('🎲 随机跳转');
-            // 自动播放
-            playCurrent();
+
+        if(e.key === "ArrowRight"){
+
+            e.preventDefault();
+
+            nextTrack();
+
         }
 
-        // ===== 搜索 =====
-        function searchSentence() {
-            const keyword = dom.searchInput.value.trim();
-            const resultsEl = dom.results;
-            if (!keyword) { resultsEl.innerHTML = ''; showToast('请输入关键词'); return; }
-            const lower = keyword.toLowerCase();
-            const matches = [];
-            lessons.forEach((item, idx) => {
-                if (item.en.toLowerCase().includes(lower) || item.cn.includes(keyword)) {
-                    matches.push({ ...item, index: idx });
-                }
-            });
-            if (!matches.length) {
-                resultsEl.innerHTML = `<div class="no-result">🔍 没有找到相关句子</div>`;
-                return;
-            }
-            let html = '';
-            matches.forEach(m => {
-                html += `<div class="result" data-index="${m.index}">
-                            <div class="result-en">${m.en}</div>
-                            <div class="result-cn">${m.cn}</div>
-                        </div>`;
-            });
-            resultsEl.innerHTML = html;
-            resultsEl.querySelectorAll('.result').forEach(el => {
-                el.addEventListener('click', function() {
-                    const idx = parseInt(this.dataset.index, 10);
-                    if (!isNaN(idx) && idx >= 0 && idx < lessons.length) {
-                        stopAll();
-                        currentIndex = idx;
-                        showSentence();
-                        resultsEl.innerHTML = '';
-                        dom.searchInput.value = '';
-                        dom.searchInput.blur();
-                        dom.status.textContent = '准备好了';
-                        dom.status.className = 'status';
-                        showToast('已跳转');
-                        // 自动播放
-                        playCurrent();
-                    }
-                });
-            });
-            resultsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        if(e.key === " "){
+
+            e.preventDefault();
+
+            togglePlayPause();
+
         }
 
-        // ===== 键盘快捷键 =====
-        document.addEventListener('keydown', function(e) {
-            if (document.activeElement === dom.searchInput) return;
-            switch (e.key) {
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    prevTrack();
-                    break;
-                case 'ArrowRight':
-                    e.preventDefault();
-                    nextTrack();
-                    break;
-                case ' ':
-                    e.preventDefault();
-                    togglePlayPause();
-                    break;
-                case 'r':
-                case 'R':
-                    e.preventDefault();
-                    toggleRepeat();
-                    break;
-            }
-        });
-        dom.searchInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') { e.preventDefault();
-                searchSentence(); }
-        });
 
-        // ===== 初始化 =====
-        if (currentIndex >= lessons.length) currentIndex = 0;
-        showSentence();
+        if(
+            e.key === "r" ||
+            e.key === "R"
+        ){
 
-        if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-            engineMode = 'google';
-            dom.engineBtn.textContent = '🌐 Google';
-            showToast('原生语音不可用，已切换至 Google TTS', 3000);
+            e.preventDefault();
+
+            toggleRepeat();
+
         }
 
-        // 暴露全局（供 onclick 调用）
-        window.togglePlayPause = togglePlayPause;
-        window.prevTrack = prevTrack;
-        window.nextTrack = nextTrack;
-        window.toggleRepeat = toggleRepeat;
-        window.toggleEngine = toggleEngine;
-        window.testEngine = testEngine;
-        window.randomSentence = randomSentence;
-        window.searchSentence = searchSentence;
-        window.playCurrent = playCurrent;
-        window.stopAll = stopAll;
+    }
+);
 
-        console.log('🎧 每句练耳 · 音乐播放器版 已加载');
-        console.log(`📚 总词块数: ${lessons.length}`);
-        console.log(`⚙️ 引擎模式: ${engineMode}`);
-        console.log('⌨ 快捷键: 左右方向键切换 · 空格键播放/暂停 · R 复读');
-    </script>
+
+/* =========================================================
+   初始化
+   ========================================================= */
+
+showSentence();
+
+
+console.log(
+    "🎧 每句练耳 · 母语语块500版"
+);
+
+console.log(
+    "📚 学习单元:",
+    lessons.length
+);
+
+console.log(
+    "🧠 学习方式:",
+    "母语语块 → 母句型 → 完整句 → 替换 → 开口"
+);
+
+</script>
 
 </body>
 
