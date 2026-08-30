@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>每句练耳 V2.0（Google TTS 版）</title>
+    <title>每句练耳 · 双引擎版</title>
 
     <style>
         * {
@@ -235,6 +235,32 @@
             background: #d5dce5;
         }
 
+        .repeat-btn {
+            background: #8b5cf6;
+            color: #fff;
+        }
+
+        .repeat-btn:hover {
+            background: #7c3aed;
+        }
+
+        .repeat-btn.active {
+            background: #ef4444;
+        }
+
+        .repeat-btn.active:hover {
+            background: #dc2626;
+        }
+
+        .engine-toggle {
+            background: #f59e0b;
+            color: #fff;
+        }
+
+        .engine-toggle:hover {
+            background: #d97706;
+        }
+
         .nav {
             display: flex;
             gap: 10px;
@@ -266,6 +292,11 @@
 
         .status.error {
             color: #ef4444;
+            font-weight: 500;
+        }
+
+        .status.repeating {
+            color: #8b5cf6;
             font-weight: 500;
         }
 
@@ -356,7 +387,7 @@
 
         <div class="header">
             <h1>🎧 每句练耳</h1>
-            <p>听清 · 听懂 · 开口</p>
+            <p>听清 · 听懂 · 开口 · 复读</p>
         </div>
 
         <div class="search">
@@ -377,6 +408,12 @@
             <button class="play" id="playBtn" onclick="playCurrent()">▶ 播放英语</button>
             <button class="normal" onclick="repeatCurrent()">🔁 重听</button>
 
+            <button id="repeatBtn" class="repeat-btn" onclick="toggleRepeat()">🔁 复读（5次）</button>
+
+            <button id="engineBtn" class="engine-toggle" onclick="toggleEngine()">
+                🌐 当前：原生语音
+            </button>
+
             <div class="nav">
                 <button class="normal" onclick="previousSentence()">⬅ 上一句</button>
                 <button class="normal" onclick="nextSentence()">下一句 ➡</button>
@@ -389,14 +426,14 @@
         </div>
 
         <div style="text-align:center;margin-top:16px;font-size:13px;color:#b9c2d0;user-select:none;">
-            ⌨ 左右方向键切换 · 空格键播放/停止
+            ⌨ 左右方向键切换 · 空格键播放/停止 · R 键复读
         </div>
 
     </div>
 
     <script>
         /* ==============================================================
-               句库（可自由增删改）
+               句库
                ============================================================== */
 
         const lessons = [
@@ -424,8 +461,18 @@
 
         let currentIndex = 0;
         let isSpeaking = false;
-        let currentAudio = null; // 当前播放的 Audio 对象
+        let currentAudio = null; // 用于 Google TTS
+        let currentUtterance = null; // 用于 Web Speech
         let statusResetTimer = null;
+
+        // 引擎选择：'web' 或 'google'
+        let currentEngine = 'web'; // 默认使用原生语音（无需网络）
+
+        // 复读相关
+        let isRepeating = false;
+        let repeatCount = 0;
+        let repeatMax = 5;
+        let repeatTimer = null;
 
         const dom = {
             scene: document.getElementById('scene'),
@@ -436,6 +483,8 @@
             results: document.getElementById('results'),
             searchInput: document.getElementById('searchInput'),
             playBtn: document.getElementById('playBtn'),
+            repeatBtn: document.getElementById('repeatBtn'),
+            engineBtn: document.getElementById('engineBtn'),
             toast: document.getElementById('toast'),
         };
 
@@ -459,15 +508,31 @@
 
 
         /* ==============================================================
-               停止当前播放
+               停止所有
                ============================================================== */
 
-        function stopAudio() {
+        function stopAll() {
+            // 停止复读
+            if (isRepeating) {
+                isRepeating = false;
+                dom.repeatBtn.textContent = '🔁 复读（5次）';
+                dom.repeatBtn.classList.remove('active');
+                if (repeatTimer) {
+                    clearTimeout(repeatTimer);
+                    repeatTimer = null;
+                }
+            }
+            // 停止 Web Speech
+            if (currentUtterance) {
+                try { window.speechSynthesis.cancel(); } catch (_) {}
+                currentUtterance = null;
+            }
+            // 停止 Google TTS
             if (currentAudio) {
                 try {
                     currentAudio.pause();
                     currentAudio.currentTime = 0;
-                    currentAudio.src = ''; // 释放资源
+                    currentAudio.src = '';
                 } catch (_) {}
                 currentAudio = null;
             }
@@ -476,8 +541,7 @@
                 clearTimeout(statusResetTimer);
                 statusResetTimer = null;
             }
-            // 如果状态是播放中，更新为准备好
-            if (dom.status.classList.contains('speaking')) {
+            if (!isRepeating) {
                 dom.status.textContent = '准备好了';
                 dom.status.className = 'status';
             }
@@ -485,81 +549,207 @@
 
 
         /* ==============================================================
-               播放当前句（Google TTS 方案）
+               引擎切换
                ============================================================== */
 
-        function playCurrent() {
-            // 如果正在播放，先停止
-            if (isSpeaking) {
-                stopAudio();
-                // 短暂延迟后再播，防止快速点击
-                setTimeout(() => {
-                    playCurrent();
-                }, 100);
+        function toggleEngine() {
+            stopAll();
+            if (currentEngine === 'web') {
+                currentEngine = 'google';
+                dom.engineBtn.textContent = '🌐 当前：Google TTS';
+                showToast('已切换至 Google TTS（需网络）');
+            } else {
+                currentEngine = 'web';
+                dom.engineBtn.textContent = '🌐 当前：原生语音';
+                showToast('已切换至浏览器原生语音');
+            }
+            dom.status.textContent = '准备好了';
+            dom.status.className = 'status';
+        }
+
+
+        /* ==============================================================
+               Web Speech 播放（优化版）
+               ============================================================== */
+
+        function playWebSpeech(callback) {
+            if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+                if (callback) callback(false);
                 return;
             }
 
             const item = lessons[currentIndex];
-            if (!item) return;
+            if (!item) {
+                if (callback) callback(false);
+                return;
+            }
 
-            // 构建 Google TTS URL
-            // 参数：q=文本, tl=语言(en), client=tw-ob (公共客户端)
+            // 取消旧语音
+            try { window.speechSynthesis.cancel(); } catch (_) {}
+
+            // 等待引擎空闲并延迟播放
+            let waitCount = 0;
+
+            function waitAndSpeak() {
+                if (window.speechSynthesis.pending || window.speechSynthesis.speaking) {
+                    waitCount++;
+                    if (waitCount > 20) { // 最多等待2秒
+                        if (callback) callback(false);
+                        return;
+                    }
+                    setTimeout(waitAndSpeak, 100);
+                    return;
+                }
+
+                // 引擎空闲，创建语音
+                const utterance = new SpeechSynthesisUtterance(item.en);
+                currentUtterance = utterance;
+                utterance.lang = 'en-US';
+                utterance.rate = 0.7; // 慢速，更稳
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+
+                let ended = false;
+
+                utterance.onstart = function() {
+                    if (currentUtterance !== utterance) return;
+                    isSpeaking = true;
+                    if (!isRepeating) {
+                        dom.status.textContent = '🎧 正在播放……';
+                        dom.status.className = 'status speaking';
+                    }
+                };
+
+                utterance.onend = function() {
+                    if (ended) return;
+                    ended = true;
+                    isSpeaking = false;
+                    currentUtterance = null;
+                    if (callback) callback(true);
+                };
+
+                utterance.onerror = function(ev) {
+                    if (ended) return;
+                    ended = true;
+                    isSpeaking = false;
+                    currentUtterance = null;
+                    if (ev.error === 'canceled' || ev.error === 'interrupted') {
+                        if (callback) callback(false);
+                        return;
+                    }
+                    if (callback) callback(false);
+                };
+
+                try {
+                    window.speechSynthesis.speak(utterance);
+                } catch (err) {
+                    ended = true;
+                    isSpeaking = false;
+                    currentUtterance = null;
+                    if (callback) callback(false);
+                }
+            }
+
+            // 先延迟 300ms 再开始检查，让引擎稳定
+            setTimeout(waitAndSpeak, 300);
+        }
+
+
+        /* ==============================================================
+               Google TTS 播放
+               ============================================================== */
+
+        function playGoogleTTS(callback) {
+            const item = lessons[currentIndex];
+            if (!item) {
+                if (callback) callback(false);
+                return;
+            }
+
             const text = item.en;
             const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en&client=tw-ob`;
 
-            // 创建 Audio 对象
             const audio = new Audio(url);
             currentAudio = audio;
+            let ended = false;
 
-            // 更新状态
-            dom.status.textContent = '⏳ 加载中...';
-            dom.status.className = 'status';
-
-            // 事件监听
             audio.oncanplaythrough = function() {
-                // 当可以播放时，自动播放
                 audio.play().catch(err => {
-                    // 播放失败处理
-                    isSpeaking = false;
+                    ended = true;
                     currentAudio = null;
-                    dom.status.textContent = '⚠️ 播放失败';
-                    dom.status.className = 'status error';
-                    showToast('播放失败，请检查网络或重试');
+                    if (callback) callback(false);
                 });
             };
 
             audio.onplay = function() {
                 isSpeaking = true;
-                dom.status.textContent = '🎧 正在播放……';
-                dom.status.className = 'status speaking';
+                if (!isRepeating) {
+                    dom.status.textContent = '🎧 正在播放……';
+                    dom.status.className = 'status speaking';
+                }
             };
 
             audio.onended = function() {
+                if (ended) return;
+                ended = true;
                 isSpeaking = false;
                 currentAudio = null;
-                dom.status.textContent = '✅ 播放完成';
-                dom.status.className = 'status done';
-                // 2秒后恢复
-                clearTimeout(statusResetTimer);
-                statusResetTimer = setTimeout(() => {
-                    if (!isSpeaking && !currentAudio) {
-                        dom.status.textContent = '准备好了';
-                        dom.status.className = 'status';
-                    }
-                    statusResetTimer = null;
-                }, 2000);
+                if (callback) callback(true);
             };
 
-            audio.onerror = function(e) {
+            audio.onerror = function() {
+                if (ended) return;
+                ended = true;
                 isSpeaking = false;
                 currentAudio = null;
-                dom.status.textContent = '⚠️ 加载失败';
-                dom.status.className = 'status error';
-                showToast('语音加载失败，请检查网络');
+                if (callback) callback(false);
             };
 
-            // 开始加载
             audio.load();
+        }
+
+
+        /* ==============================================================
+               播放当前句（根据引擎选择）
+               ============================================================== */
+
+        function playCurrent() {
+            if (isRepeating) {
+                stopAll();
+            }
+            if (isSpeaking) {
+                stopAll();
+                setTimeout(() => { playCurrent(); }, 150);
+                return;
+            }
+
+            dom.status.textContent = '⏳ 加载中...';
+            dom.status.className = 'status';
+
+            const playFunc = (currentEngine === 'web') ? playWebSpeech : playGoogleTTS;
+
+            playFunc(function(success) {
+                if (success) {
+                    dom.status.textContent = '✅ 播放完成';
+                    dom.status.className = 'status done';
+                    clearTimeout(statusResetTimer);
+                    statusResetTimer = setTimeout(() => {
+                        if (!isSpeaking && !currentAudio && !currentUtterance && !isRepeating) {
+                            dom.status.textContent = '准备好了';
+                            dom.status.className = 'status';
+                        }
+                        statusResetTimer = null;
+                    }, 2000);
+                } else {
+                    dom.status.textContent = '⚠️ 播放失败';
+                    dom.status.className = 'status error';
+                    if (currentEngine === 'google') {
+                        showToast('Google TTS 加载失败，可切换至原生语音');
+                    } else {
+                        showToast('播放失败，请重试');
+                    }
+                }
+            });
         }
 
 
@@ -568,11 +758,82 @@
                ============================================================== */
 
         function repeatCurrent() {
-            stopAudio();
-            // 延迟再播
-            setTimeout(() => {
-                playCurrent();
-            }, 100);
+            if (isRepeating) stopAll();
+            stopAll();
+            setTimeout(() => { playCurrent(); }, 150);
+        }
+
+
+        /* ==============================================================
+               复读
+               ============================================================== */
+
+        function toggleRepeat() {
+            if (isRepeating) {
+                stopAll();
+                dom.status.textContent = '⏸ 已停止复读';
+                dom.status.className = 'status';
+                showToast('已停止复读');
+                return;
+            }
+
+            if (isSpeaking) stopAll();
+
+            repeatCount = 0;
+            isRepeating = true;
+            dom.repeatBtn.textContent = '⏹ 停止复读';
+            dom.repeatBtn.classList.add('active');
+            dom.status.textContent = `🔁 正在复读 (${repeatCount + 1}/${repeatMax})...`;
+            dom.status.className = 'status repeating';
+
+            doRepeatPlay();
+        }
+
+        function doRepeatPlay() {
+            if (!isRepeating) return;
+
+            dom.status.textContent = `🔁 正在复读 (${repeatCount + 1}/${repeatMax})...`;
+            dom.status.className = 'status repeating';
+
+            const playFunc = (currentEngine === 'web') ? playWebSpeech : playGoogleTTS;
+
+            playFunc(function(success) {
+                if (!isRepeating) return;
+
+                if (!success) {
+                    isRepeating = false;
+                    dom.repeatBtn.textContent = '🔁 复读（5次）';
+                    dom.repeatBtn.classList.remove('active');
+                    dom.status.textContent = '⚠️ 复读中断';
+                    dom.status.className = 'status error';
+                    showToast('复读失败，请检查网络或切换引擎');
+                    return;
+                }
+
+                repeatCount++;
+                if (repeatCount >= repeatMax) {
+                    isRepeating = false;
+                    dom.repeatBtn.textContent = '🔁 复读（5次）';
+                    dom.repeatBtn.classList.remove('active');
+                    dom.status.textContent = `✅ 复读完成 (${repeatMax}次)`;
+                    dom.status.className = 'status done';
+                    clearTimeout(statusResetTimer);
+                    statusResetTimer = setTimeout(() => {
+                        if (!isSpeaking && !currentAudio && !currentUtterance && !isRepeating) {
+                            dom.status.textContent = '准备好了';
+                            dom.status.className = 'status';
+                        }
+                        statusResetTimer = null;
+                    }, 2000);
+                    return;
+                }
+
+                repeatTimer = setTimeout(() => {
+                    if (isRepeating) {
+                        doRepeatPlay();
+                    }
+                }, 500);
+            });
         }
 
 
@@ -589,7 +850,7 @@
             dom.english.textContent = item.en;
             dom.chinese.textContent = item.cn;
 
-            if (!isSpeaking && !currentAudio) {
+            if (!isSpeaking && !currentAudio && !currentUtterance && !isRepeating) {
                 dom.status.textContent = '准备好了';
                 dom.status.className = 'status';
             }
@@ -601,23 +862,19 @@
                ============================================================== */
 
         function nextSentence() {
-            stopAudio();
+            stopAll();
             currentIndex = (currentIndex + 1) % lessons.length;
             showSentence();
-            dom.status.textContent = '准备好了';
-            dom.status.className = 'status';
         }
 
         function previousSentence() {
-            stopAudio();
+            stopAll();
             currentIndex = (currentIndex - 1 + lessons.length) % lessons.length;
             showSentence();
-            dom.status.textContent = '准备好了';
-            dom.status.className = 'status';
         }
 
         function randomSentence() {
-            stopAudio();
+            stopAll();
             currentIndex = Math.floor(Math.random() * lessons.length);
             showSentence();
             dom.status.textContent = '🎲 已选择随机句子';
@@ -671,7 +928,7 @@
                 el.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.index, 10);
                     if (!isNaN(idx) && idx >= 0 && idx < lessons.length) {
-                        stopAudio();
+                        stopAll();
                         currentIndex = idx;
                         showSentence();
                         resultsEl.innerHTML = '';
@@ -707,13 +964,18 @@
                 case ' ':
                     e.preventDefault();
                     if (isSpeaking) {
-                        stopAudio();
+                        stopAll();
                         dom.status.textContent = '⏸ 已停止';
                         dom.status.className = 'status';
                         showToast('⏸ 已停止');
                     } else {
                         playCurrent();
                     }
+                    break;
+                case 'r':
+                case 'R':
+                    e.preventDefault();
+                    toggleRepeat();
                     break;
             }
         });
@@ -733,6 +995,13 @@
         if (currentIndex >= lessons.length) currentIndex = 0;
         showSentence();
 
+        // 检测 Web Speech 是否支持，若不支持则默认 Google
+        if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+            currentEngine = 'google';
+            dom.engineBtn.textContent = '🌐 当前：Google TTS';
+            showToast('原生语音不可用，已切换至 Google TTS', 3000);
+        }
+
         // 暴露全局函数
         window.playCurrent = playCurrent;
         window.repeatCurrent = repeatCurrent;
@@ -740,10 +1009,13 @@
         window.previousSentence = previousSentence;
         window.randomSentence = randomSentence;
         window.searchSentence = searchSentence;
+        window.toggleRepeat = toggleRepeat;
+        window.toggleEngine = toggleEngine;
 
-        console.log('🎧 每句练耳（Google TTS 版）已加载');
+        console.log('🎧 每句练耳 · 双引擎版 已加载');
         console.log(`📚 共 ${lessons.length} 个句子，当前第 ${currentIndex + 1} 句`);
-        console.log('⌨ 快捷键: 左右方向键切换 · 空格键播放/停止');
+        console.log(`⚙️ 当前语音引擎: ${currentEngine === 'web' ? '原生语音' : 'Google TTS'}`);
+        console.log('⌨ 快捷键: 左右方向键切换 · 空格键播放/停止 · R 键复读');
     </script>
 
 </body>
