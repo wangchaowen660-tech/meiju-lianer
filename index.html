@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每句练耳 · 英语学习版（1300+语块）</title>
+<title>每句练耳 · 中英双语解锁版</title>
 <style>
-/* ===== 完整样式 ===== */
+/* ===== 完整样式（基于原版，增加中文按钮样式） ===== */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Microsoft YaHei",Arial,sans-serif;color:#1e293b;min-height:100vh;}
 .container{max-width:560px;width:100%;margin:0 auto;}
@@ -35,6 +35,9 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .ctrl-btn{background:#f1f4f9;border:0;padding:0;cursor:pointer;font-size:32px;color:#1e293b;width:60px;height:60px;display:flex;align-items:center;justify-content:center;border-radius:50%;touch-action:manipulation;}
 .ctrl-btn:active{transform:scale(.90);}
 .ctrl-btn.play-btn{width:80px;height:80px;font-size:40px;background:#1e293b;color:#fff;}
+/* 新增中文按钮 */
+.ctrl-btn.cn-btn{background:#f59e0b;color:#fff;width:60px;height:60px;font-size:28px;}
+.ctrl-btn.cn-btn:active{transform:scale(.90);}
 .extra-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
 .extra-buttons button{flex:1 1 auto;min-width:75px;padding:10px 12px;border:0;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;background:#f1f4f9;color:#1e293b;}
 .extra-buttons button.active{background:#ef4444;color:#fff;}
@@ -47,6 +50,8 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .extra-buttons .mic-toggle.listening{background:#ef4444;}
 .extra-buttons .mic-toggle:disabled{opacity:0.5;cursor:not-allowed;}
 .extra-buttons .hd-toggle:disabled{opacity:0.5;cursor:not-allowed;}
+.extra-buttons .unlock-cn-btn{background:#8b5cf6;color:#fff;}
+.extra-buttons .unlock-cn-btn:hover{background:#7c3aed;}
 .status{min-height:28px;margin-top:12px;color:#94a3b8;font-size:14px;}
 .status.speaking{color:#3b82f6;}
 .status.done{color:#22c55e;}
@@ -55,6 +60,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e293b;color:#fff;padding:12px 24px;border-radius:40px;opacity:0;pointer-events:none;transition:.3s;z-index:999;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .premium-badge{display:inline-block;background:#f59e0b;color:#fff;font-size:11px;padding:2px 10px;border-radius:20px;margin-left:8px;vertical-align:middle;}
+.cn-status{font-size:13px;color:#8b5cf6;margin-top:4px;}
 .chat-box{background:#f8fafc;border-radius:16px;padding:16px;margin-top:12px;max-height:300px;overflow-y:auto;text-align:left;border:1px solid #e2e8f0;display:none;}
 .chat-msg{margin:8px 0;padding:8px 12px;border-radius:12px;max-width:90%;word-break:break-word;}
 .chat-msg.user{background:#dbeafe;margin-left:auto;}
@@ -64,18 +70,22 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .chat-input-area{display:flex;gap:8px;margin-top:8px;display:none;}
 .chat-input-area input{flex:1;padding:10px;border:1.5px solid #e2e8f0;border-radius:14px;font-size:15px;outline:none;}
 .chat-input-area button{padding:10px 16px;background:#10b981;color:#fff;border:0;border-radius:14px;font-weight:600;cursor:pointer;}
-@media(max-width:480px){.english{font-size:25px;}.chunk{font-size:24px;}.ctrl-btn{width:50px;height:50px;font-size:28px;}.ctrl-btn.play-btn{width:70px;height:70px;font-size:36px;}}
+.admin-panel{display:none;margin-top:20px;padding:16px;background:#f1f5f9;border-radius:16px;text-align:left;}
+.admin-panel input{width:100%;padding:10px;border:1px solid #d1d9e6;border-radius:10px;margin-bottom:10px;}
+.admin-panel .code-box{background:#fff;padding:10px;border-radius:8px;font-family:monospace;font-size:18px;margin:10px 0;word-break:break-all;}
+.admin-panel button{background:#1e293b;color:#fff;border:0;padding:10px;border-radius:10px;cursor:pointer;width:auto;}
+@media(max-width:480px){.english{font-size:25px;}.chunk{font-size:24px;}.ctrl-btn{width:50px;height:50px;font-size:28px;}.ctrl-btn.play-btn{width:70px;height:70px;font-size:36px;}.ctrl-btn.cn-btn{width:50px;height:50px;font-size:24px;}}
 </style>
 </head>
 <body>
 
-<!-- Toast 提示 -->
+<!-- Toast -->
 <div id="toast" class="toast"></div>
 
 <div class="container">
 <div class="header">
 <h1>🎧 每句练耳</h1>
-<p>母语语块 · 离线智能 · 中英双语 <span id="badge" class="premium-badge">个人版</span></p>
+<p>母语语块 · 中英双语 · 中文发音解锁 <span id="badge" class="premium-badge">个人版</span></p>
 </div>
 
 <!-- 搜索 -->
@@ -96,12 +106,16 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 <div class="replace-title">替换练习</div>
 <div id="replaceList" class="replace-list"></div>
 
-<!-- 播放控制 -->
+<!-- 播放控制（新增中文按钮） -->
 <div class="player-controls">
 <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
 <button id="playPauseBtn" class="ctrl-btn play-btn" onclick="togglePlayPause()">▶</button>
+<button class="ctrl-btn cn-btn" onclick="playChinese()" id="cnPlayBtn">🔊中</button>
 <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
 </div>
+
+<!-- 中文可用状态 -->
+<div id="cnStatus" class="cn-status">中文发音可用：前 50 句</div>
 
 <!-- 功能按钮 -->
 <div class="extra-buttons">
@@ -111,6 +125,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 <button id="hdToggle" class="hd-toggle" onclick="toggleHD()">✨ 高清</button>
 <button id="micBtn" class="mic-toggle" onclick="toggleMic()">🎤 语音输入</button>
 <button id="aiToggle" class="ai-toggle" onclick="toggleChat()">💬 智能对话</button>
+<button id="unlockCnBtn" class="unlock-cn-btn" onclick="showUnlockDialog()">🔓 解锁中文</button>
 </div>
 
 <!-- 聊天区域 -->
@@ -121,6 +136,28 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 </div>
 
 <div id="status" class="status">准备好了</div>
+
+<!-- 管理员后台（连续点击标题5次打开） -->
+<div id="adminPanel" class="admin-panel">
+    <h4 style="margin-top:0;">🔐 管理员后台</h4>
+    <input type="password" id="adminPwd" placeholder="输入管理密码">
+    <button onclick="adminLogin()">登录管理</button>
+    <div id="adminContent" style="display:none; margin-top:12px;">
+        <div style="display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
+            <select id="levelSelect">
+                <option value="20">解锁 20 句中文</option>
+                <option value="50">解锁 50 句中文</option>
+                <option value="100">解锁 100 句中文</option>
+            </select>
+            <button onclick="generateCnCode()">生成中文解锁码</button>
+        </div>
+        <div class="code-box" id="generatedCode">点击生成</div>
+        <div style="font-size:14px; color:#64748b; margin-top:8px;">
+            💡 复制解锁码发给付费用户，用户输入后增加中文发音额度。
+        </div>
+        <button onclick="hideAdmin()" style="margin-top:10px; background:#ef4444;">关闭后台</button>
+    </div>
+</div>
 </div>
 <div style="text-align:center;margin-top:16px;font-size:13px;color:#b9c2d0;">
 先听母句型 → 再听完整句 → 替换练习 → 🎤 开口对话
@@ -129,7 +166,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 
 <script>
 /* =========================================================
-   1. 完整语块库（基础 112 个 + 母语者问句 → 扩展至 1000 基础）
+   1. 完整语块库（与原版完全一致）
    ========================================================= */
 const coreChunks = [
 // ---- 基础需求 (10) ----
@@ -298,7 +335,7 @@ const coreChunks = [
 ];
 
 /* =========================================================
-   2. 高级语块（300 个，商务/雅思/旅行进阶）
+   2. 高级语块（300个）
    ========================================================= */
 const premiumChunks = [
 ["商务","我会处理","I'll handle it.","I'll handle it.","我来处理。",["handle it","take care of it","manage it","deal with it","fix it"]],
@@ -400,7 +437,182 @@ if(lessons.length > 1300) lessons = lessons.slice(0,1300);
 console.log('总语块数:', lessons.length);
 
 /* =========================================================
-   4. 播放引擎（完整版）
+   4. 中文发音解锁管理（新增）
+   ========================================================= */
+const BASE_FREE_CN = 50; // 免费前50句
+let cnUnlockedCount = parseInt(localStorage.getItem('cnUnlockedCount')) || 0; // 额外解锁的句数
+
+// 获取当前可用的中文发音最大索引（0-based）
+function getCnMaxIndex() {
+    return BASE_FREE_CN + cnUnlockedCount;
+}
+
+// 更新中文状态显示
+function updateCnStatus() {
+    const total = lessons.length;
+    const max = Math.min(getCnMaxIndex(), total);
+    const statusEl = document.getElementById('cnStatus');
+    if (max >= total) {
+        statusEl.textContent = '🎉 中文发音：全部解锁（' + total + '句）';
+        statusEl.style.color = '#22c55e';
+    } else {
+        statusEl.textContent = '🔊 中文发音可用：前 ' + max + ' 句（共 ' + total + ' 句）';
+        statusEl.style.color = '#8b5cf6';
+    }
+    // 更新解锁按钮文字
+    const unlockBtn = document.getElementById('unlockCnBtn');
+    if (max >= total) {
+        unlockBtn.textContent = '✅ 已全部解锁';
+        unlockBtn.disabled = true;
+        unlockBtn.style.opacity = '0.6';
+    } else {
+        unlockBtn.textContent = '🔓 解锁中文（' + (total - max) + '句剩余）';
+        unlockBtn.disabled = false;
+        unlockBtn.style.opacity = '1';
+    }
+}
+
+// 用户输入解锁码（弹窗）
+function showUnlockDialog() {
+    const max = Math.min(getCnMaxIndex(), lessons.length);
+    if (max >= lessons.length) {
+        showToast('您已解锁全部中文发音！');
+        return;
+    }
+    const remaining = lessons.length - max;
+    const msg = '💳 解锁中文发音\n\n' +
+                '📱 M-PESA Paybill: 0768033524\n' +
+                '💰 每 1 美元解锁 20 句中文发音\n' +
+                '（当前剩余 ' + remaining + ' 句可解锁）\n\n' +
+                '付款后，将付款截图发送至 WhatsApp/Telegram，我们会回复解锁码。\n\n' +
+                '如果您已有解锁码，请输入：';
+    const code = prompt(msg);
+    if (code && code.trim() !== '') {
+        const unlockAmount = verifyCnCode(code.trim());
+        if (unlockAmount > 0) {
+            cnUnlockedCount += unlockAmount;
+            localStorage.setItem('cnUnlockedCount', String(cnUnlockedCount));
+            updateCnStatus();
+            showToast('🎉 解锁成功！新增 ' + unlockAmount + ' 句中文发音');
+            // 如果当前句子超出可用范围，自动跳转到可用范围内
+            if (currentIndex >= getCnMaxIndex()) {
+                currentIndex = getCnMaxIndex() - 1;
+                if (currentIndex < 0) currentIndex = 0;
+                showSentence();
+            }
+        } else {
+            showToast('❌ 解锁码无效，请检查或联系客服。');
+        }
+    }
+}
+
+// 验证中文解锁码
+function verifyCnCode(code) {
+    const validCodes = {
+        "CN-20-2025": 20,
+        "CN-50-2025": 50,
+        "CN-100-2025": 100
+    };
+    const dynamicCodes = JSON.parse(localStorage.getItem('cn_valid_codes')) || {};
+    const allCodes = { ...validCodes, ...dynamicCodes };
+    return code in allCodes ? allCodes[code] : 0;
+}
+
+/* =========================================================
+   5. 中文发音播放
+   ========================================================= */
+function playChinese() {
+    const item = getCurrentItem();
+    if (!item) return;
+    const idx = currentIndex; // 0-based
+    const max = Math.min(getCnMaxIndex(), lessons.length);
+    if (idx >= max) {
+        // 超出可用范围，提示解锁
+        showToast('⚠️ 此句中文发音已锁定，请解锁更多中文额度');
+        // 弹出解锁对话框
+        setTimeout(showUnlockDialog, 300);
+        return;
+    }
+    // 播放中文翻译
+    if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+        dom.status.textContent = "⚠️ 浏览器不支持语音";
+        dom.status.className = "status error";
+        return;
+    }
+    const text = item.cn;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    // 简单播放，不干扰英文播放
+    try {
+        window.speechSynthesis.speak(utterance);
+        dom.status.textContent = "🔊 中文发音播放中";
+        dom.status.className = "status speaking";
+        utterance.onend = function() {
+            dom.status.textContent = "✅ 中文发音完成";
+            dom.status.className = "status done";
+        };
+        utterance.onerror = function() {
+            dom.status.textContent = "⚠️ 中文发音错误";
+            dom.status.className = "status error";
+        };
+    } catch(e) {
+        dom.status.textContent = "⚠️ 播放异常";
+        dom.status.className = "status error";
+    }
+}
+
+/* =========================================================
+   6. 管理员后台（增加中文解锁码生成）
+   ========================================================= */
+const ADMIN_PASSWORD = "admin123";
+let clickCount = 0;
+document.querySelector('.header h1').addEventListener('click', function() {
+    clickCount++;
+    if (clickCount >= 5) {
+        toggleAdmin();
+        clickCount = 0;
+    }
+    setTimeout(() => clickCount = 0, 2000);
+});
+
+function toggleAdmin() {
+    const panel = document.getElementById('adminPanel');
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+}
+
+function adminLogin() {
+    const pwd = document.getElementById('adminPwd').value;
+    if (pwd === ADMIN_PASSWORD) {
+        document.getElementById('adminContent').style.display = 'block';
+        document.getElementById('adminPwd').style.display = 'none';
+        document.querySelector('#adminPanel button[onclick="adminLogin()"]').style.display = 'none';
+        showToast('✅ 管理员已登录');
+    } else {
+        showToast('❌ 密码错误');
+    }
+}
+
+function generateCnCode() {
+    const amount = parseInt(document.getElementById('levelSelect').value);
+    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const code = `CN-${amount}-${random}`;
+    document.getElementById('generatedCode').textContent = code;
+    // 存储到 localStorage
+    const codes = JSON.parse(localStorage.getItem('cn_valid_codes')) || {};
+    codes[code] = amount;
+    localStorage.setItem('cn_valid_codes', JSON.stringify(codes));
+    showToast('✅ 中文解锁码已生成（' + amount + '句）');
+}
+
+function hideAdmin() {
+    document.getElementById('adminPanel').style.display = 'none';
+}
+
+/* =========================================================
+   7. 原有播放引擎（完全保留，仅添加中文状态更新）
    ========================================================= */
 let currentIndex = 0;
 let isSpeaking = false;
@@ -454,7 +666,7 @@ function stopSpeech(){
 }
 
 function getAvailableLessons(){
-    return lessons; // 个人版全部开放
+    return lessons;
 }
 
 function getCurrentItem(){
@@ -668,6 +880,8 @@ function showSentence(){
     });
     dom.status.textContent = "准备好了";
     dom.status.className = "status";
+    // 更新中文状态
+    updateCnStatus();
 }
 
 function searchSentence(){
@@ -705,10 +919,9 @@ function searchSentence(){
 }
 
 /* =========================================================
-   5. 离线模式管理
+   8. 离线模式管理（保留）
    ========================================================= */
 let isOffline = !navigator.onLine;
-
 function updateOfflineUI() {
     const micBtn = dom.micBtn;
     const hdBtn = dom.hdToggle;
@@ -741,7 +954,6 @@ function updateOfflineUI() {
         statusEl.className = 'status done';
     }
 }
-
 window.addEventListener('online', function() {
     isOffline = false;
     updateOfflineUI();
@@ -754,7 +966,7 @@ window.addEventListener('offline', function() {
 });
 
 /* =========================================================
-   6. 中英双语智能对话
+   9. 中英双语智能对话（保留）
    ========================================================= */
 let chatMode = false;
 let isListening = false;
@@ -767,7 +979,6 @@ function containsChinese(text) {
     return /[\u4e00-\u9fa5]/.test(text);
 }
 
-// 中文规则库
 const chineseRules = [
     { keywords: ['你好','嗨','hi','hello'], reply: '你好！很高兴见到你。😊 (Hello! Nice to meet you.)' },
     { keywords: ['你好吗','怎么样','how are you'], reply: '我很好，谢谢！你呢？ (I\'m great, thanks! How about you?)' },
@@ -793,7 +1004,6 @@ const chineseRules = [
     { keywords: ['再见','拜拜','bye'], reply: '再见！祝你今天愉快！ (Goodbye! Have a great day!)' },
 ];
 
-// 英文规则库
 const englishRules = [
     { keywords: ['hello','hi','hey'], reply: "Hello! How are you today? I'm your English practice partner." },
     { keywords: ['how are you',"how're you","how r u"], reply: "I'm great, thanks! How are you doing?" },
@@ -819,7 +1029,6 @@ const englishRules = [
     { keywords: ['bye','goodbye'], reply: "Goodbye! Have a great day!" },
 ];
 
-// 英文纠错
 const correctionRules = [
     { pattern: /\bwant\s+go\b/i, correct: "want to go" },
     { pattern: /\bwant\s+eat\b/i, correct: "want to eat" },
@@ -1013,7 +1222,7 @@ recognition.onend = function() {
 };
 
 /* =========================================================
-   7. 键盘事件 & 初始化
+   10. 键盘事件 & 初始化
    ========================================================= */
 document.addEventListener("keydown", function(e){
     if(document.activeElement === dom.searchInput || document.activeElement === dom.chatInput) return;
@@ -1030,13 +1239,16 @@ if(window.speechSynthesis){
     };
 }
 
+// 初始化
 updateOfflineUI();
 showSentence();
+updateCnStatus();
 
-console.log('🎧 每句练耳 · 英语学习版（1300语块）已加载');
+console.log('🎧 每句练耳 · 中英双语解锁版已加载');
 console.log('📚 总语块数:', lessons.length);
-console.log('💬 中英双语智能对话已启用');
-console.log('📶 离线模式自动切换');
+console.log('🔊 中文免费额度: 前50句，之后1美元/20句');
+console.log('📱 M-PESA: 0768033524');
+console.log('🔑 管理员入口: 连续点击标题5次');
 </script>
 </body>
 </html>
