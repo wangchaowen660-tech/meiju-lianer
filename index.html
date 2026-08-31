@@ -1,534 +1,598 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>中文练耳 · M-PESA 收款版</title>
-<style>
-/* ===== 样式（完整） ===== */
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Microsoft YaHei",Arial,sans-serif;color:#1e293b;min-height:100vh;}
-.container{max-width:560px;width:100%;margin:0 auto;}
-.header{text-align:center;padding:6px 0 20px;}
-.header h1{margin:0;font-size:30px;font-weight:700;}
-.header p{margin:6px 0 0;color:#94a3b8;font-size:15px;}
-.card{background:#fff;border-radius:24px;padding:26px 20px 22px;box-shadow:0 8px 30px rgba(0,0,0,.06);text-align:center;}
-.progress{color:#b9c2d0;margin-top:4px;font-size:14px;}
-.chinese{font-size:30px;font-weight:700;color:#0f172a;margin:12px 0;}
-.pinyin{color:#64748b;font-size:20px;margin-bottom:6px;}
-.english{font-size:22px;color:#475569;margin-bottom:12px;}
-.replace-title{margin-top:16px;font-size:13px;color:#94a3b8;}
-.replace-list{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:8px;}
-.replace-item{cursor:pointer;padding:7px 10px;background:#f1f4f9;border-radius:10px;font-size:14px;color:#334155;transition:background 0.2s;}
-.replace-item:hover{background:#d1d9e6;}
-.player-controls{display:flex;align-items:center;justify-content:center;gap:20px;margin:20px 0 10px;}
-.ctrl-btn{background:#f1f4f9;border:0;padding:0;cursor:pointer;font-size:32px;color:#1e293b;width:60px;height:60px;display:flex;align-items:center;justify-content:center;border-radius:50%;touch-action:manipulation;}
-.ctrl-btn:active{transform:scale(.90);}
-.ctrl-btn.play-btn{width:80px;height:80px;font-size:40px;background:#1e293b;color:#fff;}
-.extra-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
-.extra-buttons button{flex:1 1 auto;min-width:75px;padding:10px 12px;border:0;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;background:#f1f4f9;color:#1e293b;}
-.extra-buttons .unlock-btn{background:#f59e0b;color:#fff;}
-.extra-buttons .unlock-btn:hover{background:#d97706;}
-.extra-buttons .unlock-btn.premium{background:#22c55e;}
-.status{min-height:28px;margin-top:12px;color:#94a3b8;font-size:14px;}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e293b;color:#fff;padding:12px 24px;border-radius:40px;opacity:0;pointer-events:none;transition:.3s;z-index:999;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.lock-badge{display:inline-block;background:#f43f5e;color:#fff;font-size:12px;padding:2px 10px;border-radius:20px;margin-left:8px;}
-/* 管理后台 */
-.admin-panel{display:none;margin-top:20px;padding:16px;background:#f1f5f9;border-radius:16px;text-align:left;}
-.admin-panel input{width:100%;padding:10px;border:1px solid #d1d9e6;border-radius:10px;margin-bottom:10px;}
-.admin-panel .code-box{background:#fff;padding:10px;border-radius:8px;font-family:monospace;font-size:18px;margin:10px 0;word-break:break-all;}
-.admin-panel button{background:#1e293b;color:#fff;border:0;padding:10px;border-radius:10px;cursor:pointer;width:auto;}
-@media(max-width:480px){.chinese{font-size:25px;}.pinyin{font-size:18px;}.english{font-size:19px;}.ctrl-btn{width:50px;height:50px;font-size:28px;}.ctrl-btn.play-btn{width:70px;height:70px;font-size:36px;}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>双语学习 · 搞钱套装</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .app {
+      max-width: 480px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 32px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      padding: 24px 20px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* 顶部状态栏 */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .badge {
+      background: #eef2f6;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    .badge.vip {
+      background: #ffd700;
+      color: #7a5f00;
+    }
+    /* 语言切换 */
+    .lang-toggle {
+      display: flex;
+      background: #eef2f6;
+      border-radius: 30px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+    .lang-toggle button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 0;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #7f8c8d;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .lang-toggle button.active {
+      background: #ffffff;
+      color: #2c3e50;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    /* 句子卡片 */
+    .sentence-box {
+      background: #f8faff;
+      border-radius: 20px;
+      padding: 32px 20px;
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 500;
+      color: #1a2634;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      border: 1px solid #edf2f7;
+    }
+    /* 进度条 */
+    .progress-area {
+      margin-bottom: 24px;
+    }
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #5a6b7c;
+      margin-bottom: 6px;
+    }
+    .bar-bg {
+      width: 100%;
+      height: 6px;
+      background: #e9edf2;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: #4a90d9;
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    /* 按钮 */
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 60px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(44,62,80,0.2);
+      transition: 0.2s;
+      margin-bottom: 12px;
+    }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      background: #eef2f6;
+      color: #2c3e50;
+      border: none;
+      border-radius: 60px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    /* 付费弹窗 (覆盖层) */
+    .paywall {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 20px;
+    }
+    .paywall.show { display: flex; }
+    .pay-card {
+      background: white;
+      max-width: 360px;
+      width: 100%;
+      border-radius: 32px;
+      padding: 32px 24px;
+      text-align: center;
+      animation: pop 0.3s ease;
+    }
+    @keyframes pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .pay-card h2 { font-size: 24px; margin-bottom: 8px; }
+    .pay-card .price { font-size: 38px; font-weight: 800; color: #2c3e50; margin: 12px 0; }
+    .pay-card .desc { color: #5a6b7c; font-size: 15px; line-height: 1.5; margin-bottom: 24px; }
+    .pay-btn {
+      width: 100%;
+      padding: 16px;
+      background: #ffd700;
+      border: none;
+      border-radius: 60px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #2c3e50;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255,215,0,0.4);
+    }
+    .close-pay {
+      margin-top: 16px;
+      background: none;
+      border: none;
+      color: #9aa6b2;
+      text-decoration: underline;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    /* 隐藏管理入口提示 */
+    .admin-hint {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #c0c8d2;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
-<div id="toast" class="toast"></div>
-<div class="container">
-<div class="header">
-<h1>🎧 中文练耳</h1>
-<p>为英语母语者设计 · M-PESA 收款 <span id="badge" class="lock-badge">免费体验</span></p>
-</div>
-<div class="card">
-<div id="progress" class="progress">第 1 / 5 句（免费体验）</div>
-<div id="chinese" class="chinese">你好</div>
-<div id="pinyin" class="pinyin">nǐ hǎo</div>
-<div id="english" class="english">Hello</div>
-<div class="replace-title">替换练习</div>
-<div id="replaceList" class="replace-list"></div>
-<div class="player-controls">
-<button class="ctrl-btn" onclick="prevTrack()">⏮</button>
-<button id="playPauseBtn" class="ctrl-btn play-btn" onclick="togglePlayPause()">▶</button>
-<button class="ctrl-btn" onclick="nextTrack()">⏭</button>
-</div>
-<div class="extra-buttons">
-<button onclick="toggleRepeat()">🔁 复读</button>
-<button onclick="randomSentence()">🎲 随机</button>
-<button id="unlockBtn" class="unlock-btn" onclick="showUnlockDialog()">💎 解锁更多</button>
-</div>
-<div id="status" class="status">准备好了</div>
 
-<!-- 管理员后台（连续点击标题5次打开） -->
-<div id="adminPanel" class="admin-panel">
-    <h4 style="margin-top:0;">🔐 管理员激活码生成</h4>
-    <input type="password" id="adminPwd" placeholder="输入管理密码">
-    <button onclick="adminLogin()">登录管理</button>
-    <div id="adminContent" style="display:none; margin-top:12px;">
-        <div style="display:flex; gap:10px; margin-bottom:10px;">
-            <select id="levelSelect">
-                <option value="basic">解锁 200 句 (Level 1)</option>
-                <option value="premium">解锁 1000 句 (Level 2)</option>
-            </select>
-            <button onclick="generateCode()">生成激活码</button>
-        </div>
-        <div class="code-box" id="generatedCode">点击生成</div>
-        <div style="font-size:14px; color:#64748b; margin-top:8px;">
-            💡 复制激活码发给已付款用户，用户输入即解锁。
-        </div>
-        <button onclick="hideAdmin()" style="margin-top:10px; background:#ef4444;">关闭后台</button>
+<div class="app" id="app">
+  <!-- 头部 -->
+  <div class="header">
+    <span class="badge" id="levelBadge">🔓 免费版</span>
+    <span class="badge" id="countBadge">📖 0 / 50</span>
+  </div>
+
+  <!-- 语言切换 -->
+  <div class="lang-toggle">
+    <button class="active" data-lang="zh">🇨🇳 中文</button>
+    <button data-lang="en">🇺🇸 英文</button>
+  </div>
+
+  <!-- 句子展示 -->
+  <div class="sentence-box" id="sentenceDisplay">点击下方按钮开始学习</div>
+
+  <!-- 进度条 -->
+  <div class="progress-area">
+    <div class="progress-text">
+      <span>学习进度</span>
+      <span id="progressPercent">0%</span>
     </div>
+    <div class="bar-bg"><div class="bar-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <!-- 主按钮 -->
+  <button class="btn-primary" id="playBtn">🔊 点击播放 / 下一句</button>
+  <button class="btn-secondary" id="resetBtn">↺ 重置进度 (重新开始)</button>
+
+  <div class="admin-hint">👆 双击页面空白区域 → 输入 admin888 解锁全部</div>
 </div>
-</div>
+
+<!-- ========== 付费弹窗 ========== -->
+<div class="paywall" id="paywall">
+  <div class="pay-card">
+    <h2 id="payTitle">🚀 解锁全部内容</h2>
+    <div class="price" id="payPrice">$5</div>
+    <div class="desc" id="payDesc">包含全部中文300句 + 英文全套学习</div>
+    <button class="pay-btn" id="payConfirmBtn">💳 立即支付 (模拟)</button>
+    <button class="close-pay" id="payCloseBtn">暂时跳过，继续免费学</button>
+  </div>
 </div>
 
 <script>
-/* =========================================================
-   1. 中文语块数据（请替换为您的 1000 条真实数据）
-   下方提供了生成脚本，可快速生成示例数据。
-   ========================================================= */
-const allLessons = [];
-// ---- 免费 5 句（固定） ----
-const freeSentences = [
-  { chinese:"你好", pinyin:"nǐ hǎo", english:"Hello", replace:["你好吗","您好","嗨","嘿","大家好"] },
-  { chinese:"谢谢", pinyin:"xiè xie", english:"Thank you", replace:["谢谢您","多谢","感谢","感恩","十分感谢"] },
-  { chinese:"再见", pinyin:"zài jiàn", english:"Goodbye", replace:["拜拜","回见","后会有期","告辞","明天见"] },
-  { chinese:"对不起", pinyin:"duì bu qǐ", english:"Sorry", replace:["抱歉","请原谅","是我的错","不好意思","很抱歉"] },
-  { chinese:"没关系", pinyin:"méi guān xi", english:"It's okay", replace:["没事","不要紧","别在意","算了","没问题"] }
-];
-// 将免费句加入
-freeSentences.forEach(item => allLessons.push(item));
-
-// ---- 生成付费数据（示例：自动生成至1000条） ----
-// 实际使用时，您可以用自己的数据替换。这里为演示提供生成逻辑。
-// 如果您没有现成数据，请使用下方脚本生成1000条占位数据（含拼音、英文、替换词）。
-function generatePlaceholderData(count) {
-    const basePhrases = [
-        { chinese: "今天天气很好", pinyin: "jīn tiān tiān qì hěn hǎo", english: "The weather is nice today" },
-        { chinese: "我想学中文", pinyin: "wǒ xiǎng xué zhōng wén", english: "I want to learn Chinese" },
-        { chinese: "你吃饭了吗？", pinyin: "nǐ chī fàn le ma？", english: "Have you eaten?" },
-        { chinese: "我很高兴认识你", pinyin: "wǒ hěn gāo xìng rèn shi nǐ", english: "Nice to meet you" },
-        { chinese: "这是什么？", pinyin: "zhè shì shén me？", english: "What is this?" }
-    ];
-    const replaces = [["好","很好","不错","真棒","优秀"], ["学习","练习","进步","加油","坚持"], ["吃饭","吃面","吃饺子","吃米饭","喝汤"], ["高兴","开心","快乐","兴奋","愉快"], ["什么","哪个","哪里","怎样","为何"]];
-    let data = [];
-    let id = 6;
-    while (data.length < count) {
-        const base = basePhrases[data.length % basePhrases.length];
-        const rep = replaces[data.length % replaces.length];
-        data.push({
-            chinese: base.chinese + (data.length % 3 === 0 ? "吗" : ""),
-            pinyin: base.pinyin + " ...",
-            english: base.english + " " + (data.length % 2 === 0 ? "?" : "."),
-            replace: rep.map(r => r + (data.length % 3 === 0 ? "吗" : ""))
-        });
-    }
-    return data;
-}
-// 如果您的数据不足，可以使用生成函数补齐至 1000 条
-const needed = 1000 - allLessons.length;
-if (needed > 0) {
-    const extra = generatePlaceholderData(needed);
-    allLessons.push(...extra);
-}
-
-// 最终确保所有数据有唯一的 id
-allLessons.forEach((item, idx) => item.id = idx + 1);
-
-console.log('✅ 总语块数:', allLessons.length);
-
-/* =========================================================
-   2. 解锁核心逻辑（M-PESA 收款 + 激活码）
-   ========================================================= */
-const LEVEL_FREE = 0, LEVEL_BASIC = 1, LEVEL_PREMIUM = 2;
-let userLevel = parseInt(localStorage.getItem('chinese_level')) || LEVEL_FREE;
-
-// 验证激活码
-function verifyActivationCode(code) {
-    const validCodes = {
-        "CHN-BASIC-2025": LEVEL_BASIC,
-        "CHN-PREMIUM-2025": LEVEL_PREMIUM
-    };
-    const dynamicCodes = JSON.parse(localStorage.getItem('valid_codes')) || {};
-    const allCodes = { ...validCodes, ...dynamicCodes };
-    return code in allCodes ? allCodes[code] : -1;
-}
-
-function applyUnlock(level) {
-    userLevel = level;
-    localStorage.setItem('chinese_level', String(level));
-    updateUnlockUI();
-    showToast('🎉 解锁成功！');
-    currentIndex = 0;
-    showSentence();
-    setTimeout(playCurrent, 300);
-}
-
-// 显示解锁弹窗（含M-PESA收款信息）
-function showUnlockDialog() {
-    if (userLevel === LEVEL_PREMIUM) {
-        showToast('您已解锁全部内容！');
-        return;
-    }
-    const cost = userLevel === LEVEL_FREE ? '1 美元 (约 130 KES)' : '3 美元 (约 390 KES)';
-    const msg = `💳 付款说明\n\n📱 M-PESA Paybill: 0768033524\n💰 金额: ${cost}\n\n付款后，请将您的付款截图和激活码请求发送至 WhatsApp/Telegram，我们将立即为您生成激活码。\n\n（如果您已有激活码，请直接输入）`;
-    const code = prompt(msg + '\n\n请输入您的激活码（如果已有）');
-    if (code && code.trim() !== '') {
-        const level = verifyActivationCode(code.trim());
-        if (level !== -1) {
-            applyUnlock(level);
-        } else {
-            showToast('❌ 激活码无效，请检查或联系客服。');
-        }
-    }
-}
-
-function getMaxIndex() {
-    if (userLevel === LEVEL_PREMIUM) return 1000;
-    if (userLevel === LEVEL_BASIC) return 200;
-    return 5;
-}
-function getAvailableLessons() {
-    const max = getMaxIndex();
-    // 如果数据不足，循环填充
-    while (allLessons.length < max) {
-        allLessons.push({ 
-            id: allLessons.length+1, 
-            chinese: `示例句 ${allLessons.length+1}`, 
-            pinyin: "shì lì jù", 
-            english: `Example ${allLessons.length+1}`, 
-            replace: ["替换1","替换2","替换3","替换4","替换5"] 
-        });
-    }
-    return allLessons.slice(0, max);
-}
-
-function updateUnlockUI() {
-    const badge = document.getElementById('badge');
-    const unlockBtn = document.getElementById('unlockBtn');
-    const total = getAvailableLessons().length;
-    document.getElementById('progress').textContent = `第 ${currentIndex+1} / ${total} 句`;
-    if (userLevel === LEVEL_PREMIUM) {
-        badge.textContent = '⭐ 全部解锁';
-        badge.style.background = '#22c55e';
-        unlockBtn.textContent = '✅ 已解锁';
-        unlockBtn.disabled = true;
-        unlockBtn.style.opacity = '0.6';
-    } else if (userLevel === LEVEL_BASIC) {
-        badge.textContent = '🔓 基础 (200句)';
-        badge.style.background = '#f59e0b';
-        unlockBtn.textContent = '💎 升级到全部';
-        unlockBtn.disabled = false;
-        unlockBtn.style.opacity = '1';
-    } else {
-        badge.textContent = '🔒 免费 (5句)';
-        badge.style.background = '#f43f5e';
-        unlockBtn.textContent = '💎 解锁更多';
-        unlockBtn.disabled = false;
-        unlockBtn.style.opacity = '1';
-    }
-    showSentence();
-}
-
-/* =========================================================
-   3. 管理员后台
-   ========================================================= */
-const ADMIN_PASSWORD = "admin123"; // ← 请修改为您自己的密码
-let clickCount = 0;
-
-// 连续点击标题 5 次打开后台
-document.querySelector('.header h1').addEventListener('click', function() {
-    clickCount++;
-    if (clickCount >= 5) {
-        toggleAdmin();
-        clickCount = 0;
-    }
-    setTimeout(() => clickCount = 0, 2000);
-});
-
-function toggleAdmin() {
-    const panel = document.getElementById('adminPanel');
-    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-}
-
-function adminLogin() {
-    const pwd = document.getElementById('adminPwd').value;
-    if (pwd === ADMIN_PASSWORD) {
-        document.getElementById('adminContent').style.display = 'block';
-        document.getElementById('adminPwd').style.display = 'none';
-        document.querySelector('#adminPanel button[onclick="adminLogin()"]').style.display = 'none';
-        showToast('✅ 管理员已登录');
-    } else {
-        showToast('❌ 密码错误');
-    }
-}
-
-function generateCode() {
-    const level = document.getElementById('levelSelect').value;
-    const prefix = level === 'basic' ? 'CHN-BASIC' : 'CHN-PREMIUM';
-    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-    const code = `${prefix}-${random}`;
-    document.getElementById('generatedCode').textContent = code;
-    
-    const codes = JSON.parse(localStorage.getItem('valid_codes')) || {};
-    codes[code] = level === 'basic' ? LEVEL_BASIC : LEVEL_PREMIUM;
-    localStorage.setItem('valid_codes', JSON.stringify(codes));
-    showToast('✅ 激活码已生成，可复制发给用户');
-}
-
-function hideAdmin() {
-    document.getElementById('adminPanel').style.display = 'none';
-}
-
-/* =========================================================
-   4. 播放引擎（中文语音）
-   ========================================================= */
-let currentIndex = 0, isSpeaking = false, currentUtterance = null, isRepeating = false, repeatCount = 0, repeatTimer = null;
-const REPEAT_TIMES = 5;
-const dom = { 
-    progress:document.getElementById("progress"), 
-    chinese:document.getElementById("chinese"), 
-    pinyin:document.getElementById("pinyin"), 
-    english:document.getElementById("english"), 
-    replaceList:document.getElementById("replaceList"), 
-    status:document.getElementById("status"), 
-    playPauseBtn:document.getElementById("playPauseBtn") 
+// ============================================================
+// 1. 语料库 (中文300句精简示例 + 英文50句示例，可自行扩充)
+// ============================================================
+const SENTENCES = {
+  zh: [
+    "你好，世界！", "今天天气真好。", "我在学习编程。", "苹果很好吃。", "我喜欢读书。",
+    "我的家人很幸福。", "这个城市很美丽。", "我想去旅行。", "你叫什么名字？", "很高兴认识你。",
+    "早上好！", "晚安，做个好梦。", "请给我一杯水。", "多少钱？", "谢谢你的帮助。",
+    "对不起，我迟到了。", "没关系。", "你住在哪里？", "我在公司工作。", "周末愉快！",
+    "生日快乐！", "新年快乐！", "这个菜很好吃。", "我喜欢听音乐。", "你会说英语吗？",
+    "我们去看电影吧。", "好的，没问题。", "今天星期几？", "现在是几点？", "我饿了。",
+    "我们吃饭吧。", "你想喝什么？", "我要一杯咖啡。", "这个怎么用？", "太棒了！",
+    "加油！", "我相信你。", "好好休息。", "注意安全。", "明天见。",
+    "好久不见。", "你看起来很棒。", "我也这么想。", "当然可以。", "那太遗憾了。",
+    "恭喜你！", "祝你好运！", "我支持你。", "保持联系。", "爱你哦！",
+    // === 扩充至300句（为了演示，这里循环填充，实际可替换为你的真实语料）===
+    ...Array.from({ length: 250 }, (_, i) => `中文句子 ${i+51}：坚持学习，每天进步。`)
+  ],
+  en: [
+    "Hello, world!", "The weather is nice today.", "I am learning programming.", "Apples are delicious.", "I love reading books.",
+    "My family is very happy.", "This city is beautiful.", "I want to travel.", "What is your name?", "Nice to meet you.",
+    "Good morning!", "Good night, sweet dreams.", "Please give me a glass of water.", "How much is it?", "Thank you for your help.",
+    "Sorry, I am late.", "No problem.", "Where do you live?", "I work at a company.", "Have a nice weekend!",
+    "Happy birthday!", "Happy new year!", "This dish is tasty.", "I like listening to music.", "Can you speak English?",
+    "Let's go to the movies.", "OK, no problem.", "What day is it today?", "What time is it now?", "I am hungry.",
+    "Let's eat.", "What would you like to drink?", "I would like a coffee.", "How do you use this?", "Awesome!",
+    "Come on!", "I believe in you.", "Take a good rest.", "Stay safe.", "See you tomorrow.",
+    "Long time no see.", "You look great.", "I think so too.", "Of course.", "That's too bad.",
+    "Congratulations!", "Good luck!", "I support you.", "Stay in touch.", "Love you!"
+  ]
 };
 
-function getCurrentItem(){
-    const available = getAvailableLessons();
-    if (currentIndex >= available.length) currentIndex = 0;
-    return available[currentIndex] || null;
+// ============================================================
+// 2. 核心状态 (全部保存在浏览器本地)
+// ============================================================
+const STORAGE_KEY = 'bilingual_learning_data';
+
+function getDefaultState() {
+  return {
+    level: 'free',        // 'free' | 'zh_300' | 'all'
+    learnedCount: 0,      // 仅中文计数
+    currentLang: 'zh',
+    currentIndex: 0,
+    totalZh: SENTENCES.zh.length,
+    totalEn: SENTENCES.en.length
+  };
 }
 
-function stopSpeech(){
-    if (currentUtterance) {
-        try { window.speechSynthesis.cancel(); } catch(e) {}
-        currentUtterance = null;
-    }
-    isSpeaking = false;
-    dom.playPauseBtn.textContent = "▶";
-    dom.playPauseBtn.classList.remove("paused");
-}
+let state = getDefaultState();
 
-function speakChinese(text, callback){
-    if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-        dom.status.textContent = "⚠️ 浏览器不支持语音";
-        dom.status.className = "status error";
-        if (callback) callback(false);
-        return;
-    }
-    const utterance = new SpeechSynthesisUtterance(text);
-    currentUtterance = utterance;
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.8;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-    let ended = false;
-    utterance.onstart = function(){
-        if (currentUtterance !== utterance) return;
-        isSpeaking = true;
-        dom.playPauseBtn.textContent = "⏸";
-        dom.playPauseBtn.classList.add("paused");
-        dom.status.textContent = "🎧 播放中（中文）";
-        dom.status.className = "status speaking";
-    };
-    utterance.onend = function(){
-        if (ended) return;
-        ended = true;
-        isSpeaking = false;
-        currentUtterance = null;
-        dom.playPauseBtn.textContent = "▶";
-        dom.playPauseBtn.classList.remove("paused");
-        dom.status.textContent = "✅ 播放完成";
-        dom.status.className = "status done";
-        if (callback) callback(true);
-    };
-    utterance.onerror = function(ev){
-        if (ended) return;
-        ended = true;
-        isSpeaking = false;
-        currentUtterance = null;
-        dom.playPauseBtn.textContent = "▶";
-        dom.playPauseBtn.classList.remove("paused");
-        dom.status.textContent = "⚠️ 语音错误";
-        dom.status.className = "status error";
-        if (callback) callback(false);
-    };
-    try {
-        window.speechSynthesis.speak(utterance);
-    } catch(e) {
-        ended = true;
-        isSpeaking = false;
-        currentUtterance = null;
-        dom.status.textContent = "⚠️ 播放异常";
-        dom.status.className = "status error";
-        if (callback) callback(false);
-    }
-}
-
-function playCurrent(){
-    if (isSpeaking) { stopSpeech(); setTimeout(playCurrent, 200); return; }
-    const item = getCurrentItem();
-    if (!item) return;
-    dom.status.textContent = "⏳ 加载中...";
-    dom.status.className = "status";
-    speakChinese(item.chinese);
-}
-
-function togglePlayPause(){
-    if (isSpeaking) {
-        stopSpeech();
-        dom.status.textContent = "⏸ 已暂停";
-        dom.status.className = "status paused";
+// 加载本地存储
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // 合并默认值，防止新增字段缺失
+      state = { ...getDefaultState(), ...parsed };
+      // 确保语料库长度更新
+      state.totalZh = SENTENCES.zh.length;
+      state.totalEn = SENTENCES.en.length;
     } else {
-        playCurrent();
+      // 首次使用，初始化
+      state = getDefaultState();
+      state.totalZh = SENTENCES.zh.length;
+      state.totalEn = SENTENCES.en.length;
+      saveState();
     }
+  } catch (e) {
+    console.warn('读取存储失败，重置状态');
+    state = getDefaultState();
+  }
 }
 
-function prevTrack(){
-    stopSpeech();
-    const available = getAvailableLessons();
-    if (available.length === 0) return;
-    currentIndex = (currentIndex - 1 + available.length) % available.length;
-    showSentence();
-    setTimeout(playCurrent, 150);
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) { /* ignore */ }
 }
 
-function nextTrack(){
-    stopSpeech();
-    const available = getAvailableLessons();
-    if (available.length === 0) return;
-    currentIndex = (currentIndex + 1) % available.length;
-    showSentence();
-    setTimeout(playCurrent, 150);
+// ============================================================
+// 3. UI 渲染与交互
+// ============================================================
+const langBtns = document.querySelectorAll('.lang-toggle button');
+const displayEl = document.getElementById('sentenceDisplay');
+const playBtn = document.getElementById('playBtn');
+const resetBtn = document.getElementById('resetBtn');
+const countBadge = document.getElementById('countBadge');
+const levelBadge = document.getElementById('levelBadge');
+const progressFill = document.getElementById('progressFill');
+const progressPercent = document.getElementById('progressPercent');
+
+// 付费弹窗元素
+const paywall = document.getElementById('paywall');
+const payTitle = document.getElementById('payTitle');
+const payPrice = document.getElementById('payPrice');
+const payDesc = document.getElementById('payDesc');
+const payConfirmBtn = document.getElementById('payConfirmBtn');
+const payCloseBtn = document.getElementById('payCloseBtn');
+
+// 当前显示的语言
+function getCurrentSentences() {
+  return state.currentLang === 'zh' ? SENTENCES.zh : SENTENCES.en;
 }
 
-function randomSentence(){
-    stopSpeech();
-    const available = getAvailableLessons();
-    if (available.length === 0) return;
-    currentIndex = Math.floor(Math.random() * available.length);
-    showSentence();
-    setTimeout(playCurrent, 150);
+function getCurrentTotal() {
+  return state.currentLang === 'zh' ? state.totalZh : state.totalEn;
 }
 
-function toggleRepeat(){
-    if (isRepeating) {
-        isRepeating = false;
-        clearTimeout(repeatTimer);
-        stopSpeech();
-        dom.status.textContent = "⏸ 已停止复读";
-        dom.status.className = "status paused";
-        return;
+// 更新UI
+function updateUI() {
+  const sentences = getCurrentSentences();
+  const total = getCurrentTotal();
+  // 防止索引越界
+  if (state.currentIndex >= total) {
+    state.currentIndex = 0;
+    saveState();
+  }
+  const currentText = sentences[state.currentIndex] || '请添加更多句子';
+  displayEl.textContent = currentText;
+
+  // 更新计数徽章
+  const limit = (state.currentLang === 'zh' && state.level === 'free') ? 50 : total;
+  const showCount = state.currentLang === 'zh' ? state.learnedCount : 0;
+  countBadge.textContent = `📖 ${Math.min(showCount, 50)} / 50`;
+
+  // 更新等级徽章
+  if (state.level === 'all') {
+    levelBadge.innerHTML = '👑 尊贵VIP (全解锁)';
+    levelBadge.className = 'badge vip';
+  } else if (state.level === 'zh_300') {
+    levelBadge.innerHTML = '🌟 中文高级版';
+    levelBadge.className = 'badge';
+  } else {
+    levelBadge.innerHTML = '🔓 免费版 (限50句)';
+    levelBadge.className = 'badge';
+  }
+
+  // 进度条 (针对中文免费版显示进度)
+  if (state.currentLang === 'zh' && state.level === 'free') {
+    const progress = Math.min((state.learnedCount / 50) * 100, 100);
+    progressFill.style.width = progress + '%';
+    progressPercent.textContent = Math.round(progress) + '%';
+  } else if (state.currentLang === 'zh' && state.level !== 'free') {
+    progressFill.style.width = '100%';
+    progressPercent.textContent = '已解锁 ✅';
+  } else {
+    // 英文模式
+    const enProgress = Math.min((state.currentIndex / getCurrentTotal()) * 100, 100);
+    progressFill.style.width = enProgress + '%';
+    progressPercent.textContent = Math.round(enProgress) + '%';
+  }
+
+  // 更新语言按钮激活状态
+  langBtns.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === state.currentLang);
+  });
+
+  saveState();
+}
+
+// 播放语音 + 下一句 (核心逻辑)
+function handlePlay() {
+  const lang = state.currentLang;
+  const sentences = getCurrentSentences();
+  const total = getCurrentTotal();
+  const text = sentences[state.currentIndex];
+
+  // --- 权限检查 (搞钱核心) ---
+  // 1. 如果是英文，检查是否全开
+  if (lang === 'en' && state.level !== 'all') {
+    showPaywall('en');
+    return;
+  }
+
+  // 2. 如果是中文，检查是否达到50句限制
+  if (lang === 'zh' && state.level === 'free' && state.learnedCount >= 50) {
+    showPaywall('zh');
+    return;
+  }
+
+  // --- 发音 (使用浏览器原生语音，免费且支持中英文) ---
+  if ('speechSynthesis' in window) {
+    // 取消任何正在进行的语音，避免重叠
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang === 'zh' ? 'zh-CN' : 'en-US';
+    utterance.rate = 0.9;   // 语速
+    utterance.pitch = 1.0;
+    utterance.volume = 1;
+    
+    // 尝试选择更自然的声音
+    const voices = window.speechSynthesis.getVoices();
+    if (lang === 'zh') {
+      const zhVoice = voices.find(v => v.lang.includes('zh'));
+      if (zhVoice) utterance.voice = zhVoice;
+    } else {
+      const enVoice = voices.find(v => v.lang.includes('en-US') && v.name.includes('Google'));
+      if (enVoice) utterance.voice = enVoice;
+      else {
+        const fallbackEn = voices.find(v => v.lang.includes('en'));
+        if (fallbackEn) utterance.voice = fallbackEn;
+      }
     }
-    isRepeating = true;
-    repeatCount = 0;
-    dom.status.textContent = `🔁 复读 ${repeatCount+1}/${REPEAT_TIMES}`;
-    dom.status.className = "status";
-    doRepeat();
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert('您的浏览器不支持语音播放，请使用Chrome或Safari。');
+  }
+
+  // --- 计数逻辑 (仅中文免费版计入进度) ---
+  if (lang === 'zh' && state.level === 'free') {
+    state.learnedCount += 1;
+    // 如果刚达到50，保存状态并提示
+    if (state.learnedCount >= 50) {
+      saveState();
+      updateUI();
+      // 弹出付费提示 (但用户点击下一句时才会触发)
+      // 这里不自动弹，等待下次点击play时触发上面的拦截
+      alert('🎉 恭喜你学完50句！再点播放即可解锁全部内容。');
+      // 索引向前
+      state.currentIndex = (state.currentIndex + 1) % total;
+      saveState();
+      updateUI();
+      return;
+    }
+  }
+
+  // --- 移到下一句 ---
+  state.currentIndex = (state.currentIndex + 1) % total;
+  saveState();
+  updateUI();
 }
 
-function doRepeat(){
-    if (!isRepeating) return;
-    repeatCount++;
-    dom.status.textContent = `🔁 复读 ${repeatCount}/${REPEAT_TIMES}`;
-    dom.status.className = "status";
-    const item = getCurrentItem();
-    if (!item) { stopSpeech(); return; }
-    speakChinese(item.chinese, function(success){
-        if (!isRepeating) return;
-        if (!success) {
-            isRepeating = false;
-            dom.status.textContent = "⚠️ 复读中断";
-            dom.status.className = "status error";
-            return;
-        }
-        if (repeatCount >= REPEAT_TIMES) {
-            isRepeating = false;
-            dom.status.textContent = "✅ 复读完成";
-            dom.status.className = "status done";
-            return;
-        }
-        repeatTimer = setTimeout(doRepeat, 600);
-    });
+// ============================================================
+// 4. 付费弹窗逻辑 (模拟收款)
+// ============================================================
+function showPaywall(type) {
+  if (type === 'en') {
+    payTitle.textContent = '🇺🇸 解锁全部英文学习';
+    payPrice.textContent = '$5';
+    payDesc.textContent = '解锁全部英文对话 + 场景，永久有效！';
+    // 设置按钮动作：支付5美元升级为 all
+    payConfirmBtn.onclick = function() {
+      if (confirm('💳 模拟支付 $5 成功！(实际对接时替换为支付SDK)')) {
+        state.level = 'all';
+        state.learnedCount = 999; // 防止计数干扰
+        saveState();
+        updateUI();
+        paywall.classList.remove('show');
+        alert('🎉 恭喜！全部内容已永久解锁！');
+      }
+    };
+  } else {
+    payTitle.textContent = '🇨🇳 解锁全部中文300句';
+    payPrice.textContent = '$5';
+    payDesc.textContent = '解锁全部中文课程，继续提升！';
+    payConfirmBtn.onclick = function() {
+      if (confirm('💳 模拟支付 $5 成功！(实际对接时替换为支付SDK)')) {
+        state.level = 'zh_300';
+        state.learnedCount = 999; 
+        saveState();
+        updateUI();
+        paywall.classList.remove('show');
+        alert('🎉 恭喜！中文全部内容已解锁！');
+      }
+    };
+  }
+  paywall.classList.add('show');
 }
 
-function playReplaceWord(word){
-    if (!word) return;
-    speakChinese(word);
-    showToast("🔊 " + word);
-}
+// 关闭弹窗
+payCloseBtn.onclick = function() {
+  paywall.classList.remove('show');
+};
+// 点击外部关闭
+paywall.onclick = function(e) {
+  if (e.target === this) paywall.classList.remove('show');
+};
 
-function showSentence(){
-    const item = getCurrentItem();
-    if (!item) return;
-    const available = getAvailableLessons();
-    dom.progress.textContent = `第 ${currentIndex+1} / ${available.length} 句`;
-    dom.chinese.textContent = item.chinese;
-    dom.pinyin.textContent = item.pinyin || '';
-    dom.english.textContent = item.english;
-    dom.replaceList.innerHTML = "";
-    (item.replace || []).forEach(function(word){
-        const span = document.createElement("span");
-        span.className = "replace-item";
-        span.textContent = word;
-        span.style.cursor = "pointer";
-        span.title = "点击听发音";
-        span.onclick = function(e){
-            e.stopPropagation();
-            playReplaceWord(word);
-        };
-        dom.replaceList.appendChild(span);
-    });
-    dom.status.textContent = "准备好了";
-    dom.status.className = "status";
-}
-
-function showToast(text){
-    const el = document.getElementById('toast');
-    el.textContent = text;
-    el.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { el.classList.remove('show'); }, 2500);
-}
-let toastTimer;
-
-/* =========================================================
-   5. 键盘快捷键 & 初始化
-   ========================================================= */
-document.addEventListener("keydown", function(e){
-    if (e.key === "ArrowLeft") { e.preventDefault(); prevTrack(); }
-    if (e.key === "ArrowRight") { e.preventDefault(); nextTrack(); }
-    if (e.key === " ") { e.preventDefault(); togglePlayPause(); }
-    if (e.key === "r" || e.key === "R") { e.preventDefault(); toggleRepeat(); }
+// ============================================================
+// 5. 管理入口 (双击空白解锁全部 admin888)
+// ============================================================
+document.addEventListener('dblclick', function(e) {
+  // 防止点到按钮触发两次
+  if (e.target.closest('.app')) {
+    const pwd = prompt('🔐 管理员激活码：');
+    if (pwd === 'admin888') {
+      state.level = 'all';
+      state.learnedCount = 999;
+      saveState();
+      updateUI();
+      alert('👑 已永久解锁全部中文 + 英文！');
+    } else if (pwd !== null) {
+      alert('❌ 激活码错误，请重试。');
+    }
+  }
 });
 
-// 预加载中文语音
-if (window.speechSynthesis) {
+// ============================================================
+// 6. 事件绑定与初始化
+// ============================================================
+// 语言切换
+langBtns.forEach(btn => {
+  btn.addEventListener('click', function() {
+    const lang = this.dataset.lang;
+    if (state.currentLang !== lang) {
+      state.currentLang = lang;
+      state.currentIndex = 0; // 切换语言重置到第一句（可根据喜好调整）
+      saveState();
+      updateUI();
+      // 如果有正在播放的语音，取消
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+  });
+});
+
+// 主按钮
+playBtn.addEventListener('click', handlePlay);
+
+// 重置按钮 (仅重置学习计数)
+resetBtn.addEventListener('click', function() {
+  if (confirm('确定要重置学习进度吗？(不会影响VIP解锁状态)')) {
+    state.learnedCount = 0;
+    state.currentIndex = 0;
+    // 如果当前是all或zh_300，重置计数但保留等级
+    if (state.level === 'free') {
+      // 保持free
+    }
+    saveState();
+    updateUI();
+    alert('已重置，重新开始学习吧！');
+  }
+});
+
+// 预加载语音列表 (Chrome需要)
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => {
     window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = function() {
-        window.speechSynthesis.getVoices();
-    };
+  };
 }
 
-// 初始化
-updateUnlockUI();
+// 启动
+loadState();
+updateUI();
 
-console.log('🎧 中文练耳 · M-PESA 收款版已加载');
-console.log('📚 总语块数:', allLessons.length);
-console.log('🔓 当前等级:', userLevel === LEVEL_FREE ? '免费' : userLevel === LEVEL_BASIC ? '基础(200句)' : '全部(1000句)');
-console.log('🔑 管理员入口: 连续点击标题 "🎧 中文练耳" 5 次');
-console.log('📱 M-PESA 号码: 0768033524 (已嵌入收款提示)');
+console.log('🚀 双语学习套装已启动！双击空白输入 admin888 自用全开。');
 </script>
 </body>
 </html>
