@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>双语学习 · 搞钱套装</title>
+  <title>双语词块 · 替换练习 · 搞钱套装</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: #f5f7fa;
+      background: #f0f4f8;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,37 +20,33 @@
       width: 100%;
       background: #ffffff;
       border-radius: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
       padding: 24px 20px 32px;
       position: relative;
-      overflow: hidden;
     }
-    /* 顶部状态栏 */
+    /* 头部 */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .badge {
       background: #eef2f6;
-      padding: 6px 14px;
+      padding: 4px 14px;
       border-radius: 30px;
-      font-size: 13px;
+      font-size: 12px;
       color: #2c3e50;
       font-weight: 600;
     }
-    .badge.vip {
-      background: #ffd700;
-      color: #7a5f00;
-    }
+    .badge.vip { background: #ffd700; color: #7a5f00; }
     /* 语言切换 */
     .lang-toggle {
       display: flex;
       background: #eef2f6;
       border-radius: 30px;
       padding: 4px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .lang-toggle button {
       flex: 1;
@@ -65,37 +61,118 @@
       transition: 0.3s;
     }
     .lang-toggle button.active {
-      background: #ffffff;
-      color: #2c3e50;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      background: #fff;
+      color: #1a2634;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     /* 句子卡片 */
     .sentence-box {
       background: #f8faff;
       border-radius: 20px;
-      padding: 32px 20px;
-      min-height: 140px;
+      padding: 28px 16px;
+      min-height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      font-size: 22px;
-      font-weight: 500;
+      font-size: 24px;
+      font-weight: 600;
       color: #1a2634;
-      line-height: 1.6;
-      margin-bottom: 24px;
+      line-height: 1.5;
+      margin-bottom: 16px;
       border: 1px solid #edf2f7;
     }
-    /* 进度条 */
-    .progress-area {
-      margin-bottom: 24px;
+    /* 词块区域 (新增) */
+    .chunk-area {
+      margin-bottom: 16px;
+      padding: 12px 0;
+      border-top: 1px solid #f0f4f8;
+      border-bottom: 1px solid #f0f4f8;
     }
+    .chunk-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7f8c8d;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .chunk-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chunk-item {
+      background: #eef6ff;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      color: #1a2634;
+      border: 1px solid #d6e4ff;
+    }
+    .chunk-item span { font-weight: 300; color: #7f8c8d; margin-left: 6px; }
+    .no-chunk { color: #b0bcc9; font-size: 14px; }
+    /* 替换练习区域 (新增) */
+    .drill-area {
+      background: #fafbfc;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+      border: 1px dashed #dce3ec;
+    }
+    .drill-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7f8c8d;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .drill-template {
+      font-size: 18px;
+      font-weight: 500;
+      color: #2c3e50;
+      padding: 8px 0 12px;
+      border-bottom: 1px solid #e9edf2;
+      margin-bottom: 12px;
+    }
+    .drill-template .highlight {
+      color: #2a7de1;
+      background: #e6f0ff;
+      padding: 0 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .drill-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .drill-options button {
+      background: white;
+      border: 1px solid #dce3ec;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #2c3e50;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex: 1 0 auto;
+    }
+    .drill-options button:active {
+      background: #2a7de1;
+      color: white;
+      border-color: #2a7de1;
+      transform: scale(0.96);
+    }
+    .no-drill { color: #b0bcc9; font-size: 14px; }
+    /* 进度 */
+    .progress-area { margin: 16px 0 12px; }
     .progress-text {
       display: flex;
       justify-content: space-between;
-      font-size: 14px;
+      font-size: 13px;
       color: #5a6b7c;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .bar-bg {
       width: 100%;
@@ -104,42 +181,35 @@
       border-radius: 10px;
       overflow: hidden;
     }
-    .bar-fill {
-      height: 100%;
-      background: #4a90d9;
-      border-radius: 10px;
-      width: 0%;
-      transition: width 0.4s ease;
-    }
+    .bar-fill { height: 100%; background: #4a90d9; border-radius: 10px; width: 0%; transition: width 0.3s; }
     /* 按钮 */
     .btn-primary {
       width: 100%;
       padding: 16px;
-      background: #2c3e50;
+      background: #1a2634;
       color: white;
       border: none;
       border-radius: 60px;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(44,62,80,0.2);
+      box-shadow: 0 4px 12px rgba(26,38,52,0.15);
       transition: 0.2s;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .btn-primary:active { transform: scale(0.97); }
     .btn-secondary {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       background: #eef2f6;
       color: #2c3e50;
       border: none;
       border-radius: 60px;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.2s;
     }
-    /* 付费弹窗 (覆盖层) */
+    /* 付费弹窗 */
     .paywall {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -161,12 +231,9 @@
       text-align: center;
       animation: pop 0.3s ease;
     }
-    @keyframes pop {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .pay-card h2 { font-size: 24px; margin-bottom: 8px; }
-    .pay-card .price { font-size: 38px; font-weight: 800; color: #2c3e50; margin: 12px 0; }
+    @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .pay-card h2 { font-size: 24px; margin-bottom: 6px; }
+    .pay-card .price { font-size: 38px; font-weight: 800; color: #1a2634; margin: 8px 0; }
     .pay-card .desc { color: #5a6b7c; font-size: 15px; line-height: 1.5; margin-bottom: 24px; }
     .pay-btn {
       width: 100%;
@@ -176,7 +243,7 @@
       border-radius: 60px;
       font-size: 18px;
       font-weight: 700;
-      color: #2c3e50;
+      color: #1a2634;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(255,215,0,0.4);
     }
@@ -189,11 +256,10 @@
       font-size: 14px;
       cursor: pointer;
     }
-    /* 隐藏管理入口提示 */
     .admin-hint {
-      margin-top: 20px;
+      margin-top: 16px;
       text-align: center;
-      font-size: 12px;
+      font-size: 11px;
       color: #c0c8d2;
       user-select: none;
     }
@@ -202,90 +268,145 @@
 <body>
 
 <div class="app" id="app">
-  <!-- 头部 -->
   <div class="header">
     <span class="badge" id="levelBadge">🔓 免费版</span>
     <span class="badge" id="countBadge">📖 0 / 50</span>
   </div>
 
-  <!-- 语言切换 -->
   <div class="lang-toggle">
     <button class="active" data-lang="zh">🇨🇳 中文</button>
     <button data-lang="en">🇺🇸 英文</button>
   </div>
 
-  <!-- 句子展示 -->
-  <div class="sentence-box" id="sentenceDisplay">点击下方按钮开始学习</div>
+  <div class="sentence-box" id="sentenceDisplay">点击下方开始学习</div>
 
-  <!-- 进度条 -->
+  <!-- 词块模块 -->
+  <div class="chunk-area" id="chunkArea">
+    <div class="chunk-title">📦 核心词块</div>
+    <div class="chunk-list" id="chunkList"><span class="no-chunk">加载中...</span></div>
+  </div>
+
+  <!-- 替换练习模块 -->
+  <div class="drill-area" id="drillArea">
+    <div class="drill-title">🔄 替换练习 (点击下方词替换)</div>
+    <div class="drill-template" id="drillTemplate">选择下方词汇进行替换</div>
+    <div class="drill-options" id="drillOptions"><span class="no-drill">暂无练习</span></div>
+  </div>
+
   <div class="progress-area">
-    <div class="progress-text">
-      <span>学习进度</span>
-      <span id="progressPercent">0%</span>
-    </div>
+    <div class="progress-text"><span>学习进度</span><span id="progressPercent">0%</span></div>
     <div class="bar-bg"><div class="bar-fill" id="progressFill" style="width:0%"></div></div>
   </div>
 
-  <!-- 主按钮 -->
-  <button class="btn-primary" id="playBtn">🔊 点击播放 / 下一句</button>
-  <button class="btn-secondary" id="resetBtn">↺ 重置进度 (重新开始)</button>
-
-  <div class="admin-hint">👆 双击页面空白区域 → 输入 admin888 解锁全部</div>
+  <button class="btn-primary" id="playBtn">🔊 播放 & 下一句</button>
+  <button class="btn-secondary" id="resetBtn">↺ 重置进度</button>
+  <div class="admin-hint">👆 双击空白处 → 输入 admin888 自用全开</div>
 </div>
 
-<!-- ========== 付费弹窗 ========== -->
+<!-- 付费弹窗 -->
 <div class="paywall" id="paywall">
   <div class="pay-card">
     <h2 id="payTitle">🚀 解锁全部内容</h2>
     <div class="price" id="payPrice">$5</div>
-    <div class="desc" id="payDesc">包含全部中文300句 + 英文全套学习</div>
+    <div class="desc" id="payDesc">包含全部300句 + 词块 + 替换练习</div>
     <button class="pay-btn" id="payConfirmBtn">💳 立即支付 (模拟)</button>
-    <button class="close-pay" id="payCloseBtn">暂时跳过，继续免费学</button>
+    <button class="close-pay" id="payCloseBtn">暂时跳过</button>
   </div>
 </div>
 
 <script>
 // ============================================================
-// 1. 语料库 (中文300句精简示例 + 英文50句示例，可自行扩充)
+// 1. 升级版语料库 (带词块 + 替换练习)
 // ============================================================
-const SENTENCES = {
-  zh: [
-    "你好，世界！", "今天天气真好。", "我在学习编程。", "苹果很好吃。", "我喜欢读书。",
-    "我的家人很幸福。", "这个城市很美丽。", "我想去旅行。", "你叫什么名字？", "很高兴认识你。",
-    "早上好！", "晚安，做个好梦。", "请给我一杯水。", "多少钱？", "谢谢你的帮助。",
-    "对不起，我迟到了。", "没关系。", "你住在哪里？", "我在公司工作。", "周末愉快！",
-    "生日快乐！", "新年快乐！", "这个菜很好吃。", "我喜欢听音乐。", "你会说英语吗？",
-    "我们去看电影吧。", "好的，没问题。", "今天星期几？", "现在是几点？", "我饿了。",
-    "我们吃饭吧。", "你想喝什么？", "我要一杯咖啡。", "这个怎么用？", "太棒了！",
-    "加油！", "我相信你。", "好好休息。", "注意安全。", "明天见。",
-    "好久不见。", "你看起来很棒。", "我也这么想。", "当然可以。", "那太遗憾了。",
-    "恭喜你！", "祝你好运！", "我支持你。", "保持联系。", "爱你哦！",
-    // === 扩充至300句（为了演示，这里循环填充，实际可替换为你的真实语料）===
-    ...Array.from({ length: 250 }, (_, i) => `中文句子 ${i+51}：坚持学习，每天进步。`)
-  ],
-  en: [
-    "Hello, world!", "The weather is nice today.", "I am learning programming.", "Apples are delicious.", "I love reading books.",
-    "My family is very happy.", "This city is beautiful.", "I want to travel.", "What is your name?", "Nice to meet you.",
-    "Good morning!", "Good night, sweet dreams.", "Please give me a glass of water.", "How much is it?", "Thank you for your help.",
-    "Sorry, I am late.", "No problem.", "Where do you live?", "I work at a company.", "Have a nice weekend!",
-    "Happy birthday!", "Happy new year!", "This dish is tasty.", "I like listening to music.", "Can you speak English?",
-    "Let's go to the movies.", "OK, no problem.", "What day is it today?", "What time is it now?", "I am hungry.",
-    "Let's eat.", "What would you like to drink?", "I would like a coffee.", "How do you use this?", "Awesome!",
-    "Come on!", "I believe in you.", "Take a good rest.", "Stay safe.", "See you tomorrow.",
-    "Long time no see.", "You look great.", "I think so too.", "Of course.", "That's too bad.",
-    "Congratulations!", "Good luck!", "I support you.", "Stay in touch.", "Love you!"
-  ]
-};
+function buildSentences() {
+  // ----- 中文精选 (前10句带完整功能) -----
+  const zhPremium = [
+    {
+      text: "我喜欢吃苹果。",
+      chunks: [{ word: "喜欢", meaning: "like" }, { word: "吃", meaning: "eat" }, { word: "苹果", meaning: "apple" }],
+      drill: { template: "我喜欢吃 [fruit]。", slots: [{ key: "fruit", options: ["香蕉", "橙子", "西瓜"] }] }
+    },
+    {
+      text: "她正在看书。",
+      chunks: [{ word: "她", meaning: "she" }, { word: "看", meaning: "read" }, { word: "书", meaning: "book" }],
+      drill: { template: "她正在 [action]。", slots: [{ key: "action", options: ["写字", "画画", "听歌"] }] }
+    },
+    {
+      text: "今天天气真好。",
+      chunks: [{ word: "今天", meaning: "today" }, { word: "天气", meaning: "weather" }, { word: "好", meaning: "good" }],
+      drill: { template: "今天天气真 [adj]。", slots: [{ key: "adj", options: ["热", "冷", "舒服"] }] }
+    },
+    {
+      text: "我想去旅行。",
+      chunks: [{ word: "我", meaning: "I" }, { word: "想", meaning: "want" }, { word: "去", meaning: "go" }, { word: "旅行", meaning: "travel" }],
+      drill: { template: "我想去 [activity]。", slots: [{ key: "activity", options: ["游泳", "跑步", "爬山"] }] }
+    },
+    {
+      text: "他是一名老师。",
+      chunks: [{ word: "他", meaning: "he" }, { word: "是", meaning: "is" }, { word: "老师", meaning: "teacher" }],
+      drill: { template: "他是一名 [job]。", slots: [{ key: "job", options: ["医生", "工程师", "设计师"] }] }
+    }
+  ];
+
+  // ----- 英文精选 (前10句带完整功能) -----
+  const enPremium = [
+    {
+      text: "I like eating apples.",
+      chunks: [{ word: "like", meaning: "喜欢" }, { word: "eating", meaning: "吃" }, { word: "apples", meaning: "苹果" }],
+      drill: { template: "I like eating [fruit].", slots: [{ key: "fruit", options: ["bananas", "oranges", "watermelons"] }] }
+    },
+    {
+      text: "She is reading a book.",
+      chunks: [{ word: "She", meaning: "她" }, { word: "reading", meaning: "阅读" }, { word: "book", meaning: "书" }],
+      drill: { template: "She is [action].", slots: [{ key: "action", options: ["writing a letter", "drawing a picture", "listening to music"] }] }
+    },
+    {
+      text: "The weather is nice today.",
+      chunks: [{ word: "weather", meaning: "天气" }, { word: "nice", meaning: "好" }, { word: "today", meaning: "今天" }],
+      drill: { template: "The weather is [adj] today.", slots: [{ key: "adj", options: ["hot", "cold", "comfortable"] }] }
+    },
+    {
+      text: "I want to travel.",
+      chunks: [{ word: "I", meaning: "我" }, { word: "want", meaning: "想" }, { word: "travel", meaning: "旅行" }],
+      drill: { template: "I want to [activity].", slots: [{ key: "activity", options: ["swim", "run", "climb mountains"] }] }
+    },
+    {
+      text: "He is a teacher.",
+      chunks: [{ word: "He", meaning: "他" }, { word: "teacher", meaning: "老师" }],
+      drill: { template: "He is a [job].", slots: [{ key: "job", options: ["doctor", "engineer", "designer"] }] }
+    }
+  ];
+
+  // 生成剩余290句 (仅带文本，无词块和练习，作为扩充)
+  const zhExtra = Array.from({ length: 295 }, (_, i) => ({
+    text: `中文句子 ${i+11}：坚持学习，每天进步一点点。`,
+    chunks: [],
+    drill: null
+  }));
+
+  const enExtra = Array.from({ length: 295 }, (_, i) => ({
+    text: `English sentence ${i+11}: Keep learning every day.`,
+    chunks: [],
+    drill: null
+  }));
+
+  return {
+    zh: [...zhPremium, ...zhExtra],
+    en: [...enPremium, ...enExtra]
+  };
+}
+
+const SENTENCES = buildSentences();
 
 // ============================================================
-// 2. 核心状态 (全部保存在浏览器本地)
+// 2. 核心状态
 // ============================================================
-const STORAGE_KEY = 'bilingual_learning_data';
+const STORAGE_KEY = 'bilingual_learning_data_v2';
 
 function getDefaultState() {
   return {
-    level: 'free',        // 'free' | 'zh_300' | 'all'
-    learnedCount: 0,      // 仅中文计数
+    level: 'free',
+    learnedCount: 0,
     currentLang: 'zh',
     currentIndex: 0,
     totalZh: SENTENCES.zh.length,
@@ -295,49 +416,41 @@ function getDefaultState() {
 
 let state = getDefaultState();
 
-// 加载本地存储
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
-      // 合并默认值，防止新增字段缺失
       state = { ...getDefaultState(), ...parsed };
-      // 确保语料库长度更新
       state.totalZh = SENTENCES.zh.length;
       state.totalEn = SENTENCES.en.length;
     } else {
-      // 首次使用，初始化
       state = getDefaultState();
       state.totalZh = SENTENCES.zh.length;
       state.totalEn = SENTENCES.en.length;
       saveState();
     }
-  } catch (e) {
-    console.warn('读取存储失败，重置状态');
-    state = getDefaultState();
-  }
+  } catch (e) { state = getDefaultState(); }
 }
 
 function saveState() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch (e) { /* ignore */ }
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
 }
 
 // ============================================================
-// 3. UI 渲染与交互
+// 3. 核心UI元素
 // ============================================================
 const langBtns = document.querySelectorAll('.lang-toggle button');
 const displayEl = document.getElementById('sentenceDisplay');
+const chunkList = document.getElementById('chunkList');
+const drillTemplate = document.getElementById('drillTemplate');
+const drillOptions = document.getElementById('drillOptions');
 const playBtn = document.getElementById('playBtn');
 const resetBtn = document.getElementById('resetBtn');
 const countBadge = document.getElementById('countBadge');
 const levelBadge = document.getElementById('levelBadge');
 const progressFill = document.getElementById('progressFill');
 const progressPercent = document.getElementById('progressPercent');
-
-// 付费弹窗元素
 const paywall = document.getElementById('paywall');
 const payTitle = document.getElementById('payTitle');
 const payPrice = document.getElementById('payPrice');
@@ -345,33 +458,87 @@ const payDesc = document.getElementById('payDesc');
 const payConfirmBtn = document.getElementById('payConfirmBtn');
 const payCloseBtn = document.getElementById('payCloseBtn');
 
-// 当前显示的语言
-function getCurrentSentences() {
-  return state.currentLang === 'zh' ? SENTENCES.zh : SENTENCES.en;
+// ============================================================
+// 4. 数据获取与渲染
+// ============================================================
+function getCurrentData() {
+  const lang = state.currentLang;
+  const list = SENTENCES[lang];
+  const total = list.length;
+  if (state.currentIndex >= total) state.currentIndex = 0;
+  return {
+    list,
+    total,
+    item: list[state.currentIndex] || { text: '请添加语料', chunks: [], drill: null }
+  };
 }
 
-function getCurrentTotal() {
-  return state.currentLang === 'zh' ? state.totalZh : state.totalEn;
+function speakText(text) {
+  if (!('speechSynthesis' in window)) return alert('浏览器不支持语音');
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = state.currentLang === 'zh' ? 'zh-CN' : 'en-US';
+  utterance.rate = 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const voice = state.currentLang === 'zh' 
+    ? voices.find(v => v.lang.includes('zh')) 
+    : voices.find(v => v.lang.includes('en-US') && v.name.includes('Google')) || voices.find(v => v.lang.includes('en'));
+  if (voice) utterance.voice = voice;
+  window.speechSynthesis.speak(utterance);
 }
 
-// 更新UI
 function updateUI() {
-  const sentences = getCurrentSentences();
-  const total = getCurrentTotal();
-  // 防止索引越界
-  if (state.currentIndex >= total) {
-    state.currentIndex = 0;
-    saveState();
-  }
-  const currentText = sentences[state.currentIndex] || '请添加更多句子';
-  displayEl.textContent = currentText;
+  const { item, total } = getCurrentData();
+  const lang = state.currentLang;
 
-  // 更新计数徽章
-  const limit = (state.currentLang === 'zh' && state.level === 'free') ? 50 : total;
-  const showCount = state.currentLang === 'zh' ? state.learnedCount : 0;
+  // 主句子
+  displayEl.textContent = item.text || '无内容';
+
+  // --- 词块 ---
+  if (item.chunks && item.chunks.length > 0) {
+    chunkList.innerHTML = item.chunks.map(c => 
+      `<div class="chunk-item">${c.word} <span>${c.meaning}</span></div>`
+    ).join('');
+  } else {
+    chunkList.innerHTML = '<span class="no-chunk">✨ 暂无词块，解锁更多内容后显示</span>';
+  }
+
+  // --- 替换练习 ---
+  if (item.drill && item.drill.slots && item.drill.slots.length > 0) {
+    const slotKey = item.drill.slots[0].key;
+    const options = item.drill.slots[0].options || [];
+    // 显示模板（高亮占位符）
+    const templateHtml = item.drill.template.replace(`[${slotKey}]`, `<span class="highlight">___</span>`);
+    drillTemplate.innerHTML = templateHtml;
+    // 渲染选项按钮
+    drillOptions.innerHTML = options.map(opt => 
+      `<button data-opt="${opt}">${opt}</button>`
+    ).join('');
+    // 绑定替换事件
+    drillOptions.querySelectorAll('button').forEach(btn => {
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        const opt = this.dataset.opt;
+        const newText = item.drill.template.replace(`[${item.drill.slots[0].key}]`, opt);
+        // 更新显示并朗读新句子
+        displayEl.textContent = newText;
+        speakText(newText);
+        // 给按钮一个反馈动画
+        this.style.background = '#2a7de1';
+        this.style.color = '#fff';
+        setTimeout(() => { this.style.background = ''; this.style.color = ''; }, 300);
+      };
+    });
+  } else {
+    drillTemplate.textContent = '🚀 无替换练习，解锁更多内容获取';
+    drillOptions.innerHTML = '<span class="no-drill">敬请期待</span>';
+  }
+
+  // --- 计数与等级 ---
+  const limit = (lang === 'zh' && state.level === 'free') ? 50 : total;
+  const showCount = lang === 'zh' ? state.learnedCount : 0;
   countBadge.textContent = `📖 ${Math.min(showCount, 50)} / 50`;
 
-  // 更新等级徽章
   if (state.level === 'all') {
     levelBadge.innerHTML = '👑 尊贵VIP (全解锁)';
     levelBadge.className = 'badge vip';
@@ -383,22 +550,21 @@ function updateUI() {
     levelBadge.className = 'badge';
   }
 
-  // 进度条 (针对中文免费版显示进度)
-  if (state.currentLang === 'zh' && state.level === 'free') {
+  // --- 进度条 ---
+  if (lang === 'zh' && state.level === 'free') {
     const progress = Math.min((state.learnedCount / 50) * 100, 100);
     progressFill.style.width = progress + '%';
     progressPercent.textContent = Math.round(progress) + '%';
-  } else if (state.currentLang === 'zh' && state.level !== 'free') {
+  } else if (lang === 'zh' && state.level !== 'free') {
     progressFill.style.width = '100%';
     progressPercent.textContent = '已解锁 ✅';
   } else {
-    // 英文模式
-    const enProgress = Math.min((state.currentIndex / getCurrentTotal()) * 100, 100);
+    const enProgress = Math.min((state.currentIndex / total) * 100, 100);
     progressFill.style.width = enProgress + '%';
     progressPercent.textContent = Math.round(enProgress) + '%';
   }
 
-  // 更新语言按钮激活状态
+  // 语言按钮高亮
   langBtns.forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === state.currentLang);
   });
@@ -406,66 +572,39 @@ function updateUI() {
   saveState();
 }
 
-// 播放语音 + 下一句 (核心逻辑)
+// ============================================================
+// 5. 核心播放逻辑 (含搞钱拦截)
+// ============================================================
 function handlePlay() {
   const lang = state.currentLang;
-  const sentences = getCurrentSentences();
-  const total = getCurrentTotal();
-  const text = sentences[state.currentIndex];
+  const { item, total } = getCurrentData();
 
-  // --- 权限检查 (搞钱核心) ---
-  // 1. 如果是英文，检查是否全开
+  // --- 权限拦截 ---
   if (lang === 'en' && state.level !== 'all') {
     showPaywall('en');
     return;
   }
-
-  // 2. 如果是中文，检查是否达到50句限制
   if (lang === 'zh' && state.level === 'free' && state.learnedCount >= 50) {
     showPaywall('zh');
     return;
   }
 
-  // --- 发音 (使用浏览器原生语音，免费且支持中英文) ---
-  if ('speechSynthesis' in window) {
-    // 取消任何正在进行的语音，避免重叠
-    window.speechSynthesis.cancel();
-    
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang === 'zh' ? 'zh-CN' : 'en-US';
-    utterance.rate = 0.9;   // 语速
-    utterance.pitch = 1.0;
-    utterance.volume = 1;
-    
-    // 尝试选择更自然的声音
-    const voices = window.speechSynthesis.getVoices();
-    if (lang === 'zh') {
-      const zhVoice = voices.find(v => v.lang.includes('zh'));
-      if (zhVoice) utterance.voice = zhVoice;
-    } else {
-      const enVoice = voices.find(v => v.lang.includes('en-US') && v.name.includes('Google'));
-      if (enVoice) utterance.voice = enVoice;
-      else {
-        const fallbackEn = voices.find(v => v.lang.includes('en'));
-        if (fallbackEn) utterance.voice = fallbackEn;
-      }
-    }
-    window.speechSynthesis.speak(utterance);
+  // --- 播放当前句子 (如果替换练习改变了显示内容，则播放显示的内容) ---
+  const textToSpeak = displayEl.textContent;
+  if (textToSpeak && !textToSpeak.includes('点击下方')) {
+    speakText(textToSpeak);
   } else {
-    alert('您的浏览器不支持语音播放，请使用Chrome或Safari。');
+    speakText(item.text);
   }
 
-  // --- 计数逻辑 (仅中文免费版计入进度) ---
+  // --- 计数 (仅中文免费版) ---
   if (lang === 'zh' && state.level === 'free') {
     state.learnedCount += 1;
-    // 如果刚达到50，保存状态并提示
     if (state.learnedCount >= 50) {
       saveState();
       updateUI();
-      // 弹出付费提示 (但用户点击下一句时才会触发)
-      // 这里不自动弹，等待下次点击play时触发上面的拦截
-      alert('🎉 恭喜你学完50句！再点播放即可解锁全部内容。');
-      // 索引向前
+      alert('🎉 恭喜学完50句！再点播放即可解锁全部内容 (含词块+练习)');
+      // 仍然前进到下一句
       state.currentIndex = (state.currentIndex + 1) % total;
       saveState();
       updateUI();
@@ -473,63 +612,54 @@ function handlePlay() {
     }
   }
 
-  // --- 移到下一句 ---
+  // --- 下一句 ---
   state.currentIndex = (state.currentIndex + 1) % total;
   saveState();
   updateUI();
 }
 
 // ============================================================
-// 4. 付费弹窗逻辑 (模拟收款)
+// 6. 付费弹窗
 // ============================================================
 function showPaywall(type) {
   if (type === 'en') {
-    payTitle.textContent = '🇺🇸 解锁全部英文学习';
+    payTitle.textContent = '🇺🇸 解锁英文 + 全部练习';
     payPrice.textContent = '$5';
-    payDesc.textContent = '解锁全部英文对话 + 场景，永久有效！';
-    // 设置按钮动作：支付5美元升级为 all
+    payDesc.textContent = '解锁英文全库 + 词块 + 替换练习';
     payConfirmBtn.onclick = function() {
-      if (confirm('💳 模拟支付 $5 成功！(实际对接时替换为支付SDK)')) {
+      if (confirm('💳 模拟支付 $5 成功！')) {
         state.level = 'all';
-        state.learnedCount = 999; // 防止计数干扰
+        state.learnedCount = 999;
         saveState();
         updateUI();
         paywall.classList.remove('show');
-        alert('🎉 恭喜！全部内容已永久解锁！');
+        alert('🎉 全部内容已永久解锁！');
       }
     };
   } else {
-    payTitle.textContent = '🇨🇳 解锁全部中文300句';
+    payTitle.textContent = '🇨🇳 解锁中文300句 + 练习';
     payPrice.textContent = '$5';
-    payDesc.textContent = '解锁全部中文课程，继续提升！';
+    payDesc.textContent = '解锁中文全库 + 词块 + 替换练习';
     payConfirmBtn.onclick = function() {
-      if (confirm('💳 模拟支付 $5 成功！(实际对接时替换为支付SDK)')) {
+      if (confirm('💳 模拟支付 $5 成功！')) {
         state.level = 'zh_300';
-        state.learnedCount = 999; 
+        state.learnedCount = 999;
         saveState();
         updateUI();
         paywall.classList.remove('show');
-        alert('🎉 恭喜！中文全部内容已解锁！');
+        alert('🎉 中文全部内容已解锁！');
       }
     };
   }
   paywall.classList.add('show');
 }
-
-// 关闭弹窗
-payCloseBtn.onclick = function() {
-  paywall.classList.remove('show');
-};
-// 点击外部关闭
-paywall.onclick = function(e) {
-  if (e.target === this) paywall.classList.remove('show');
-};
+payCloseBtn.onclick = () => paywall.classList.remove('show');
+paywall.onclick = (e) => { if (e.target === this) paywall.classList.remove('show'); };
 
 // ============================================================
-// 5. 管理入口 (双击空白解锁全部 admin888)
+// 7. 管理入口 (admin888)
 // ============================================================
 document.addEventListener('dblclick', function(e) {
-  // 防止点到按钮触发两次
   if (e.target.closest('.app')) {
     const pwd = prompt('🔐 管理员激活码：');
     if (pwd === 'admin888') {
@@ -537,62 +667,48 @@ document.addEventListener('dblclick', function(e) {
       state.learnedCount = 999;
       saveState();
       updateUI();
-      alert('👑 已永久解锁全部中文 + 英文！');
-    } else if (pwd !== null) {
-      alert('❌ 激活码错误，请重试。');
-    }
+      alert('👑 已永久解锁全部内容 (含词块/替换练习)！');
+    } else if (pwd !== null) alert('❌ 错误');
   }
 });
 
 // ============================================================
-// 6. 事件绑定与初始化
+// 8. 事件绑定
 // ============================================================
-// 语言切换
 langBtns.forEach(btn => {
   btn.addEventListener('click', function() {
     const lang = this.dataset.lang;
     if (state.currentLang !== lang) {
       state.currentLang = lang;
-      state.currentIndex = 0; // 切换语言重置到第一句（可根据喜好调整）
+      state.currentIndex = 0;
       saveState();
       updateUI();
-      // 如果有正在播放的语音，取消
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      window.speechSynthesis.cancel();
     }
   });
 });
 
-// 主按钮
 playBtn.addEventListener('click', handlePlay);
-
-// 重置按钮 (仅重置学习计数)
 resetBtn.addEventListener('click', function() {
-  if (confirm('确定要重置学习进度吗？(不会影响VIP解锁状态)')) {
+  if (confirm('重置进度？(VIP状态保留)')) {
     state.learnedCount = 0;
     state.currentIndex = 0;
-    // 如果当前是all或zh_300，重置计数但保留等级
-    if (state.level === 'free') {
-      // 保持free
-    }
     saveState();
     updateUI();
-    alert('已重置，重新开始学习吧！');
+    alert('已重置');
   }
 });
 
-// 预加载语音列表 (Chrome需要)
+// 预加载语音
 if ('speechSynthesis' in window) {
   window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged = () => {
-    window.speechSynthesis.getVoices();
-  };
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 }
 
 // 启动
 loadState();
 updateUI();
-
-console.log('🚀 双语学习套装已启动！双击空白输入 admin888 自用全开。');
+console.log('🚀 升级版双语套装 (词块+替换练习) 已启动！');
 </script>
 </body>
 </html>
