@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每句练耳 · 完整智能版</title>
+<title>每句练耳 · 离线智能版（1300语块）</title>
 <style>
-/* ===== 全部样式（完整） ===== */
+/* ===== 完整样式 ===== */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Microsoft YaHei",Arial,sans-serif;color:#1e293b;min-height:100vh;}
 .container{max-width:560px;width:100%;margin:0 auto;}
@@ -45,6 +45,8 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .extra-buttons .mic-toggle{background:#f59e0b;color:#fff;}
 .extra-buttons .mic-toggle:hover{background:#d97706;}
 .extra-buttons .mic-toggle.listening{background:#ef4444;}
+.extra-buttons .mic-toggle:disabled{opacity:0.5;cursor:not-allowed;}
+.extra-buttons .hd-toggle:disabled{opacity:0.5;cursor:not-allowed;}
 .status{min-height:28px;margin-top:12px;color:#94a3b8;font-size:14px;}
 .status.speaking{color:#3b82f6;}
 .status.done{color:#22c55e;}
@@ -67,20 +69,23 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 </head>
 <body>
 
+<!-- Toast 提示 -->
 <div id="toast" class="toast"></div>
 
 <div class="container">
 <div class="header">
 <h1>🎧 每句练耳</h1>
-<p>母语语块 · 免费智能对话 · 语音输入 <span id="badge" class="premium-badge">免费版</span></p>
+<p>母语语块 · 离线智能 · 中英双语 <span id="badge" class="premium-badge">免费版</span></p>
 </div>
 
+<!-- 搜索 -->
 <div class="search">
 <input id="searchInput" type="search" placeholder="搜索中文或英文语块" autocomplete="off">
 <button onclick="searchSentence()">搜索</button>
 </div>
 <div id="results" class="results"></div>
 
+<!-- 主卡片 -->
 <div class="card" id="mainCard">
 <div id="scene" class="scene">基础需求</div>
 <div id="progress" class="progress">第 1 / 1300 个语块</div>
@@ -91,12 +96,14 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 <div class="replace-title">替换练习</div>
 <div id="replaceList" class="replace-list"></div>
 
+<!-- 播放控制 -->
 <div class="player-controls">
 <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
 <button id="playPauseBtn" class="ctrl-btn play-btn" onclick="togglePlayPause()">▶</button>
 <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
 </div>
 
+<!-- 功能按钮 -->
 <div class="extra-buttons">
 <button id="repeatBtn" onclick="toggleRepeat()">🔁 复读</button>
 <button onclick="playPattern()">🧩 母句型</button>
@@ -109,7 +116,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 <!-- 聊天区域 -->
 <div id="chatBox" class="chat-box"></div>
 <div id="chatInputArea" class="chat-input-area">
-<input id="chatInput" type="text" placeholder="输入英文，按 Enter 发送" autocomplete="off">
+<input id="chatInput" type="text" placeholder="输入英文或中文，按 Enter 发送" autocomplete="off">
 <button onclick="sendTextMessage()">发送</button>
 </div>
 
@@ -122,7 +129,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 
 <script>
 /* =========================================================
-   1. 完整语块库（基础 112 个核心 + 母语者问句）
+   1. 完整语块库（基础 112 个 + 母语者问句 → 扩展至 1000 基础）
    ========================================================= */
 const coreChunks = [
 // ---- 基础需求 (10) ----
@@ -283,7 +290,7 @@ const coreChunks = [
 ["日常问句","我可以借一下……吗？","Can I borrow...?","Can I borrow your pen?","我可以借一下您的笔吗？",["your pen","your phone","your charger","your book","your umbrella"]],
 ["日常问句","您周末有什么计划？","What are your plans for the weekend?","What are your plans for the weekend?","您周末有什么计划？",["weekend","today","tomorrow","next week","this evening"]],
 ["日常问句","您能告诉我怎么走吗？","Can you tell me how to get there?","Can you tell me how to get there?","您能告诉我怎么走吗？",["get there","find this place","get to the station","go downtown","arrive on time"]],
-// ---- 工作 (4) ----
+// ---- 工作补充 (4) ----
 ["工作","您方便接电话吗？","Are you available to take a call?","Are you available to take a call?","您方便接电话吗？",["take a call","have a meeting","talk later","answer emails","review the report"]],
 ["工作","我们什么时候再聊？","When can we talk again?","When can we talk again?","我们什么时候再聊？",["talk again","meet again","continue this","follow up","schedule a call"]],
 ["工作","您能发给我吗？","Could you send it to me?","Could you send it to me?","您能发给我吗？",["send it to me","forward it","email it","upload it","share it"]],
@@ -375,45 +382,25 @@ const premiumChunks = [
 ];
 
 /* =========================================================
-   3. 生成语块库（基础 1000 + 高级 300）
+   3. 生成完整语块库（基础 1000 + 高级 300）
    ========================================================= */
 let lessons = [];
 let id = 1;
-// 基础 1000
 while(lessons.length < 1000){
     const base = coreChunks[lessons.length % coreChunks.length];
-    lessons.push({
-        id:id++,
-        scene:base[0],
-        chunk:base[1],
-        pattern:base[2],
-        en:base[3],
-        cn:base[4],
-        replace:base[5],
-        isPremium:false
-    });
+    lessons.push({id:id++, scene:base[0], chunk:base[1], pattern:base[2], en:base[3], cn:base[4], replace:base[5], isPremium:false});
 }
-// 高级 300
 let premiumIdx = 0;
 while(lessons.length < 1300){
     const base = premiumChunks[premiumIdx % premiumChunks.length];
-    lessons.push({
-        id:id++,
-        scene:"⭐ " + base[0],
-        chunk:base[1],
-        pattern:base[2],
-        en:base[3],
-        cn:base[4],
-        replace:base[5] || ["it","this","that","one","thing"],
-        isPremium:true
-    });
+    lessons.push({id:id++, scene:"⭐ "+base[0], chunk:base[1], pattern:base[2], en:base[3], cn:base[4], replace:base[5]||["it","this"], isPremium:true});
     premiumIdx++;
 }
 if(lessons.length > 1300) lessons = lessons.slice(0,1300);
-console.log(`总语块数: ${lessons.length}，基础 ${lessons.filter(l=>!l.isPremium).length}，高级 ${lessons.filter(l=>l.isPremium).length}`);
+console.log('总语块数:', lessons.length);
 
 /* =========================================================
-   4. 播放引擎（完整版，含队列、重试、超时、高清切换）
+   4. 播放引擎（完整版，包含队列、重试、超时、高清切换）
    ========================================================= */
 let currentIndex = 0;
 let isSpeaking = false;
@@ -447,11 +434,11 @@ const dom = {
     hdToggle:document.getElementById("hdToggle"),
     micBtn:document.getElementById("micBtn"),
     chatBox:document.getElementById("chatBox"),
-    chatInput:document.getElementById("chatInput")
+    chatInput:document.getElementById("chatInput"),
+    aiToggle:document.getElementById("aiToggle")
 };
 
 let toastTimer;
-
 function showToast(text){
     dom.toast.textContent = text;
     dom.toast.classList.add("show");
@@ -464,6 +451,11 @@ function stopSpeech(){
     if(currentAudio){ try{ currentAudio.pause(); currentAudio.src=''; }catch(e){} currentAudio=null; }
     isSpeaking=false; isPaused=false; dom.playPauseBtn.textContent="▶"; dom.playPauseBtn.classList.remove("paused");
     playQueue=[]; isProcessingQueue=false; retryCount=0;
+}
+
+function getAvailableLessons(){
+    // 简易版：所有语块均可用（无付费解锁）
+    return lessons;
 }
 
 function getCurrentItem(){
@@ -625,7 +617,7 @@ function doRepeat(){
     dom.status.textContent = `🔁 复读 ${repeatCount}/${REPEAT_TIMES}`;
     dom.status.className = "status";
     const item = getCurrentItem();
-    if(!item){ stopAll(); return; }
+    if(!item){ stopSpeech(); return; }
     speakText(item.en, function(success){
         if(!isRepeating) return;
         if(!success){ isRepeating=false; dom.repeatBtn.textContent="🔁 复读"; dom.repeatBtn.classList.remove("active"); dom.status.textContent="⚠️ 复读中断"; dom.status.className="status error"; return; }
@@ -635,6 +627,11 @@ function doRepeat(){
 }
 
 function toggleHD(){
+    // 离线时禁用
+    if(isOffline){
+        showToast('离线模式下无法使用高清语音');
+        return;
+    }
     hdMode = !hdMode;
     dom.hdToggle.textContent = hdMode ? "✨ 高清(开)" : "✨ 高清";
     dom.hdToggle.style.background = hdMode ? "#22c55e" : "#8b5cf6";
@@ -648,17 +645,12 @@ function playReplaceWord(word){
     showToast("🔊 " + word);
 }
 
-function getAvailableLessons(){
-    const unlocked = localStorage.getItem('meiju_premium') === 'true';
-    return unlocked ? lessons : lessons.filter(l => !l.isPremium);
-}
-
 function showSentence(){
     const item = getCurrentItem();
     if(!item) return;
     const available = getAvailableLessons();
     dom.scene.textContent = item.scene + (item.isPremium ? ' ⭐' : '');
-    dom.progress.textContent = `第 ${currentIndex + 1} / ${available.length} 个语块${localStorage.getItem('meiju_premium') === 'true' ? ' (含高级)' : ''}`;
+    dom.progress.textContent = `第 ${currentIndex + 1} / ${available.length} 个语块`;
     dom.chunk.textContent = item.chunk;
     dom.english.textContent = item.en;
     dom.chinese.textContent = item.cn;
@@ -714,16 +706,96 @@ function searchSentence(){
 }
 
 /* =========================================================
-   5. 免费智能对话模块（语音输入 + 规则引擎 + 纠错）
+   5. 离线模式管理
+   ========================================================= */
+let isOffline = !navigator.onLine;
+
+function updateOfflineUI() {
+    const micBtn = dom.micBtn;
+    const hdBtn = dom.hdToggle;
+    const statusEl = dom.status;
+    if (isOffline) {
+        if (hdMode) {
+            hdMode = false;
+            hdBtn.textContent = '✨ 高清';
+            hdBtn.style.background = '#8b5cf6';
+        }
+        hdBtn.disabled = true;
+        hdBtn.style.opacity = '0.5';
+        micBtn.disabled = true;
+        micBtn.style.opacity = '0.5';
+        micBtn.textContent = '🎤 离线不可用';
+        statusEl.textContent = '📶 离线模式 · 原生语音 + 文字对话可用';
+        statusEl.className = 'status';
+        if (window.isListening) {
+            try { recognition.stop(); } catch(e) {}
+            micBtn.classList.remove('listening');
+            window.isListening = false;
+        }
+    } else {
+        hdBtn.disabled = false;
+        hdBtn.style.opacity = '1';
+        micBtn.disabled = false;
+        micBtn.style.opacity = '1';
+        micBtn.textContent = '🎤 语音输入';
+        statusEl.textContent = '🌐 在线模式 · 所有功能可用';
+        statusEl.className = 'status done';
+    }
+}
+
+window.addEventListener('online', function() {
+    isOffline = false;
+    updateOfflineUI();
+    showToast('网络已恢复，所有功能可用');
+});
+window.addEventListener('offline', function() {
+    isOffline = true;
+    updateOfflineUI();
+    showToast('已进入离线模式，语音识别和高清语音已禁用');
+});
+
+/* =========================================================
+   6. 中英双语智能对话
    ========================================================= */
 let chatMode = false;
 let isListening = false;
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'en-US';
+recognition.lang = 'zh-CN'; // 支持中文
 recognition.continuous = false;
 recognition.interimResults = true;
 
-const responseRules = [
+function containsChinese(text) {
+    return /[\u4e00-\u9fa5]/.test(text);
+}
+
+// 中文规则库
+const chineseRules = [
+    { keywords: ['你好','嗨','hi','hello'], reply: '你好！很高兴见到你。😊 (Hello! Nice to meet you.)' },
+    { keywords: ['你好吗','怎么样','how are you'], reply: '我很好，谢谢！你呢？ (I\'m great, thanks! How about you?)' },
+    { keywords: ['好','不错','挺好','很好'], reply: '听到这个我很开心！你想聊点什么呢？ (I\'m glad to hear that! What would you like to talk about?)' },
+    { keywords: ['吃','食物','饿了'], reply: '你最喜欢吃什么？我推荐试试当地特色菜。 (What do you like to eat? I recommend trying local dishes.)' },
+    { keywords: ['喝','水','咖啡','茶'], reply: '咖啡还是茶？我个人早上喜欢来一杯好咖啡。 (Coffee or tea? I love a good cup of coffee in the morning.)' },
+    { keywords: ['去','旅行','机场','旅游'], reply: '旅行总是令人兴奋！你接下来打算去哪里？ (Traveling is exciting! Where are you planning to go next?)' },
+    { keywords: ['工作','上班','办公室'], reply: '工作让我们忙碌。你是做什么工作的？ (Work keeps us busy. What do you do for a living?)' },
+    { keywords: ['学习','学英语','学校','上课'], reply: '学习英语是一段伟大的旅程！坚持每天练习。 (Learning English is a great journey! Keep practicing every day.)' },
+    { keywords: ['天气','雨','晴','多云'], reply: '天气影响我们的心情。你喜欢晴天还是雨天？ (The weather affects our mood. Do you prefer sunny or rainy days?)' },
+    { keywords: ['帮助','帮帮我','求助'], reply: '我在这里帮你！尽管告诉我你需要什么。 (I\'m here to help! Just tell me what you need.)' },
+    { keywords: ['谢谢','感谢'], reply: '不客气！很高兴能帮你练习。 (You\'re welcome! It\'s my pleasure to help you practice.)' },
+    { keywords: ['对不起','抱歉'], reply: '不必道歉。犯错是学习的一部分！ (No need to apologize. Making mistakes is part of learning!)' },
+    { keywords: ['时间','几点','钟'], reply: '学习的时候时间过得真快！你今天日程紧吗？ (Time flies when you\'re learning! Do you have a busy schedule today?)' },
+    { keywords: ['家','房子','家人'], reply: '家是心之所在。跟我聊聊你的家人吧。 (Home is where the heart is. Tell me about your family.)' },
+    { keywords: ['音乐','歌','听'], reply: '音乐让一切更美好。你喜欢什么类型的音乐？ (Music makes everything better. What kind of music do you enjoy?)' },
+    { keywords: ['电影','影片','看'], reply: '看电影是学英语的好方法。你有最喜欢的电影吗？ (Watching movies is a great way to learn English. Do you have a favorite film?)' },
+    { keywords: ['书','读','小说'], reply: '阅读能扩大词汇量！你最近在读什么书？ (Reading expands your vocabulary! What are you reading right now?)' },
+    { keywords: ['喜欢','爱','最爱'], reply: '每个人都有自己的最爱！你空闲时间最喜欢做什么？ (Everyone has favorites! What\'s your favorite thing to do in your free time?)' },
+    { keywords: ['讨厌','不喜欢','不喜欢'], reply: '有自己的偏好很正常。你最不喜欢什么？ (It\'s okay to have preferences. What do you dislike the most?)' },
+    { keywords: ['计划','周末','明天'], reply: '提前计划是聪明的做法。你周末有什么计划？ (Planning ahead is smart. What are your plans for the weekend?)' },
+    { keywords: ['练习','提高','进步'], reply: '熟能生巧！你通过说英语做得很棒。 (Practice makes perfect! You\'re doing a great job by speaking English.)' },
+    { keywords: ['再见','拜拜','bye'], reply: '再见！祝你今天愉快！ (Goodbye! Have a great day!)' },
+];
+
+// 英文规则库
+const englishRules = [
     { keywords: ['hello','hi','hey'], reply: "Hello! How are you today? I'm your English practice partner." },
     { keywords: ['how are you',"how're you","how r u"], reply: "I'm great, thanks! How are you doing?" },
     { keywords: ['fine','good','great','well'], reply: "I'm glad to hear that! What would you like to talk about?" },
@@ -745,8 +817,10 @@ const responseRules = [
     { keywords: ['hate','dislike',"don't like"], reply: "It's okay to have preferences. What do you dislike the most?" },
     { keywords: ['plan','weekend','tomorrow'], reply: "Planning ahead is smart. What are your plans for the weekend?" },
     { keywords: ['learn','practice','improve'], reply: "Practice makes perfect! You're doing a great job by speaking English." },
+    { keywords: ['bye','goodbye'], reply: "Goodbye! Have a great day!" },
 ];
 
+// 英文纠错
 const correctionRules = [
     { pattern: /\bwant\s+go\b/i, correct: "want to go" },
     { pattern: /\bwant\s+eat\b/i, correct: "want to eat" },
@@ -770,14 +844,23 @@ function findCorrection(text) {
     return null;
 }
 
-function getReply(text) {
+function getReply(text, isChinese) {
     const lower = text.toLowerCase();
-    for (let rule of responseRules) {
-        if (rule.keywords.some(kw => lower.includes(kw))) {
-            return rule.reply;
+    if (isChinese) {
+        for (let rule of chineseRules) {
+            if (rule.keywords.some(kw => lower.includes(kw))) {
+                return rule.reply;
+            }
         }
+        return "有意思！你能再多说一点吗？我很想听听你的想法。 (That's interesting! Could you tell me more about it? I'd love to hear your thoughts.)";
+    } else {
+        for (let rule of englishRules) {
+            if (rule.keywords.some(kw => lower.includes(kw))) {
+                return rule.reply;
+            }
+        }
+        return "That's interesting! Could you tell me more about it? I'd love to hear your thoughts.";
     }
-    return "That's interesting! Could you tell me more about it? I'd love to hear your thoughts.";
 }
 
 function appendMessage(role, content, correction = null) {
@@ -800,29 +883,83 @@ function appendMessage(role, content, correction = null) {
 
 function processUserInput(text) {
     if (!text.trim()) return;
+    const isChinese = containsChinese(text);
     appendMessage('user', text);
-    const corrected = findCorrection(text);
-    if (corrected && corrected !== text) {
-        appendMessage('ai', `I noticed you might mean: "${corrected}".`, corrected);
+
+    if (!isChinese) {
+        const corrected = findCorrection(text);
+        if (corrected && corrected !== text) {
+            appendMessage('ai', `I noticed you might mean: "${corrected}".`, corrected);
+        }
     }
-    const reply = getReply(text);
+
+    const reply = getReply(text, isChinese);
     setTimeout(() => {
         appendMessage('ai', reply);
+        // 播报英文部分
+        let speakTextContent = reply;
+        if (isChinese) {
+            const match = reply.match(/\(([^)]+)\)/);
+            if (match) speakTextContent = match[1];
+            else speakTextContent = reply; // 无英文则播报全部（可能含中文，但语音引擎不支持中文，忽略）
+        }
         if (typeof speakText === 'function') {
-            speakText(reply);
+            speakText(speakTextContent);
         }
         dom.status.textContent = '✅ 已回复';
         dom.status.className = 'status done';
     }, 300);
 }
 
+function toggleChat() {
+    chatMode = !chatMode;
+    const btn = dom.aiToggle;
+    if (chatMode) {
+        dom.chatBox.style.display = 'block';
+        document.getElementById('chatInputArea').style.display = 'flex';
+        btn.textContent = '❌ 关闭对话';
+        btn.style.background = '#ef4444';
+        if (dom.chatBox.children.length === 0) {
+            appendMessage('ai', "👋 你好！我是你的免费英语练习伙伴。你可以输入英文或中文，也可以点击🎤语音输入。我们开始吧！ (Hello! I'm your free English practice partner. You can type or speak in English or Chinese. Let's get started!)");
+        }
+    } else {
+        dom.chatBox.style.display = 'none';
+        document.getElementById('chatInputArea').style.display = 'none';
+        btn.textContent = '💬 智能对话';
+        btn.style.background = '#10b981';
+        if (isListening) {
+            try { recognition.stop(); } catch(e) {}
+            dom.micBtn.textContent = '🎤 语音输入';
+            dom.micBtn.classList.remove('listening');
+            isListening = false;
+        }
+    }
+}
+
+function sendTextMessage() {
+    const text = dom.chatInput.value.trim();
+    if (!text) return;
+    dom.chatInput.value = '';
+    processUserInput(text);
+}
+
+dom.chatInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        sendTextMessage();
+    }
+});
+
+// 语音识别
 function toggleMic() {
+    if (isOffline) {
+        showToast('离线模式下语音识别不可用，请使用文字输入');
+        return;
+    }
     if (isListening) {
         recognition.stop();
         dom.micBtn.textContent = '🎤 语音输入';
         dom.micBtn.classList.remove('listening');
-        dom.status.textContent = '⏹ 已停止录音';
-        dom.status.className = 'status paused';
         isListening = false;
         return;
     }
@@ -831,7 +968,7 @@ function toggleMic() {
         recognition.start();
         dom.micBtn.textContent = '⏺ 录音中...';
         dom.micBtn.classList.add('listening');
-        dom.status.textContent = '🎤 请用英语说话...';
+        dom.status.textContent = '🎤 请用英语或中文说话...';
         dom.status.className = 'status speaking';
         isListening = true;
     } catch (e) {
@@ -878,72 +1015,9 @@ recognition.onend = function() {
     }
 };
 
-function toggleChat() {
-    chatMode = !chatMode;
-    const btn = document.getElementById('aiToggle');
-    if (chatMode) {
-        dom.chatBox.style.display = 'block';
-        document.getElementById('chatInputArea').style.display = 'flex';
-        btn.textContent = '❌ 关闭对话';
-        btn.style.background = '#ef4444';
-        if (dom.chatBox.children.length === 0) {
-            appendMessage('ai', "👋 Hello! I'm your free English practice partner. You can type or click 🎤 to speak. Let's practice together! What do you want to talk about?");
-        }
-    } else {
-        dom.chatBox.style.display = 'none';
-        document.getElementById('chatInputArea').style.display = 'none';
-        btn.textContent = '💬 智能对话';
-        btn.style.background = '#10b981';
-        if (isListening) {
-            recognition.stop();
-            dom.micBtn.textContent = '🎤 语音输入';
-            dom.micBtn.classList.remove('listening');
-            isListening = false;
-        }
-    }
-}
-
-function sendTextMessage() {
-    const text = dom.chatInput.value.trim();
-    if (!text) return;
-    dom.chatInput.value = '';
-    processUserInput(text);
-}
-
-dom.chatInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        sendTextMessage();
-    }
-});
-
 /* =========================================================
-   6. 初始化
+   7. 键盘事件 & 初始化
    ========================================================= */
-// 预加载语音列表
-if(window.speechSynthesis){
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = function(){
-        window.speechSynthesis.getVoices();
-    };
-}
-
-// 网络状态监听
-window.addEventListener('online', function(){
-    showToast("网络已恢复，高清语音可用", 1500);
-    if(hdMode && isSpeaking){ stopSpeech(); setTimeout(playCurrent, 300); }
-});
-window.addEventListener('offline', function(){
-    showToast("网络已断开，自动切换至原生语音", 1500);
-    if(hdMode){
-        hdMode = false;
-        dom.hdToggle.textContent = "✨ 高清";
-        dom.hdToggle.style.background = "#8b5cf6";
-        if(isSpeaking){ stopSpeech(); setTimeout(playCurrent, 300); }
-    }
-});
-
-// 键盘事件
 document.addEventListener("keydown", function(e){
     if(document.activeElement === dom.searchInput || document.activeElement === dom.chatInput) return;
     if(e.key === "ArrowLeft"){ e.preventDefault(); prevTrack(); }
@@ -952,13 +1026,22 @@ document.addEventListener("keydown", function(e){
     if(e.key === "r" || e.key === "R"){ e.preventDefault(); toggleRepeat(); }
 });
 
-// 显示第一句
+// 预加载语音
+if(window.speechSynthesis){
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = function(){
+        window.speechSynthesis.getVoices();
+    };
+}
+
+// 初始化
+updateOfflineUI();
 showSentence();
 
-console.log('🎧 每句练耳 · 完整智能版已加载');
-console.log(`📚 总语块数: ${lessons.length}`);
-console.log('💬 免费智能对话、语音输入已就绪');
-console.log('🎤 点击麦克风按钮用语音练习。');
+console.log('🎧 每句练耳 · 离线智能版（1300语块）已加载');
+console.log('📚 总语块数:', lessons.length);
+console.log('💬 中英双语智能对话已启用');
+console.log('📶 离线模式自动切换');
 </script>
 </body>
 </html>
