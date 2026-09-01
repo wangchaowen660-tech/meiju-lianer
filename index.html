@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,6 +51,8 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .extra-buttons .hd-toggle:disabled{opacity:0.5;cursor:not-allowed;}
 .extra-buttons .unlock-cn-btn{background:#8b5cf6;color:#fff;}
 .extra-buttons .unlock-cn-btn:hover{background:#7c3aed;}
+.extra-buttons .get-code-btn{background:#10b981;color:#fff;}
+.extra-buttons .get-code-btn:hover{background:#059669;}
 .status{min-height:28px;margin-top:12px;color:#94a3b8;font-size:14px;}
 .status.speaking{color:#3b82f6;}
 .status.done{color:#22c55e;}
@@ -119,6 +121,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 <button id="micBtn" class="mic-toggle" onclick="toggleMic()">🎤 Voice</button>
 <button id="aiToggle" class="ai-toggle" onclick="toggleChat()">💬 Chat</button>
 <button id="unlockCnBtn" class="unlock-cn-btn" onclick="showUnlockDialog()">🔓 Unlock Chinese</button>
+<button class="get-code-btn" onclick="getUnlockCode()">🔑 Get Code</button>
 </div>
 
 <div id="chatBox" class="chat-box"></div>
@@ -157,7 +160,7 @@ Listen to Pattern → Full Sentence → Replace → Speak
 
 <script>
 /* =========================================================
-   1. Full Lesson Database (same as original)
+   1. Full Lesson Database
    ========================================================= */
 const coreChunks = [
 ["Basic Needs","I want to...","I want to...","I want to eat.","我想吃东西。",["eat","go","sleep","work","learn English"]],
@@ -381,7 +384,7 @@ const premiumChunks = [
 ];
 
 /* =========================================================
-   2. Generate Lessons (1000 + 300)
+   2. Generate Lessons
    ========================================================= */
 let lessons = [];
 let id = 1;
@@ -399,7 +402,7 @@ if(lessons.length > 1300) lessons = lessons.slice(0,1300);
 console.log('Total lessons:', lessons.length);
 
 /* =========================================================
-   3. Chinese Audio Unlock System (English UI)
+   3. Chinese Audio Unlock System
    ========================================================= */
 const BASE_FREE_CN = 50;
 let cnUnlockedCount = parseInt(localStorage.getItem('cnUnlockedCount')) || 0;
@@ -431,7 +434,6 @@ function updateCnStatus() {
     }
 }
 
-// English unlock dialog
 function showUnlockDialog() {
     const max = Math.min(getCnMaxIndex(), lessons.length);
     if (max >= lessons.length) {
@@ -443,8 +445,7 @@ function showUnlockDialog() {
                 '📱 M-PESA Paybill: 0768033524\n' +
                 '💰 $1 USD unlocks 20 sentences\n' +
                 '（Remaining: ' + remaining + ' sentences）\n\n' +
-                'After payment, send the screenshot to WhatsApp/Telegram,\n' +
-                'and we will reply with your unlock code.\n\n' +
+                'After payment, click "Get Code" button to receive your unlock code via Telegram.\n\n' +
                 'If you already have an unlock code, enter it below:';
     const code = prompt(msg);
     if (code && code.trim() !== '') {
@@ -477,7 +478,38 @@ function verifyCnCode(code) {
 }
 
 /* =========================================================
-   4. Chinese Audio Playback
+   4. Get Unlock Code via Telegram (NEW!)
+   ========================================================= */
+function getUnlockCode() {
+    const chatId = prompt('📱 Enter your Telegram User ID\n\nHow to find it:\n1. Search @userinfobot on Telegram\n2. Click Start\n3. Copy your ID number');
+    if (!chatId) return;
+    
+    // 生成解锁码
+    const code = 'CN-20-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+    
+    // 发送到 Telegram
+    fetch('https://api.telegram.org/bot8806999050:AAHovISMWtd-XyEZvMMVNchrXWj9dF-PZWM/sendMessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: '✅ Your unlock code: ' + code + '\n\nEnter it in the app to activate Chinese audio.\n\n💳 M-PESA Paybill: 0768033524\n💰 $1 = 20 sentences'
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.ok) {
+            showToast('✅ Unlock code sent to your Telegram!');
+            showToast('🔑 Your code: ' + code);
+        } else {
+            showToast('❌ Failed to send. Check your Telegram ID.');
+        }
+    })
+    .catch(() => showToast('❌ Network error, please try again'));
+}
+
+/* =========================================================
+   5. Chinese Audio Playback
    ========================================================= */
 function playChinese() {
     const item = getCurrentItem();
@@ -519,7 +551,7 @@ function playChinese() {
 }
 
 /* =========================================================
-   5. Admin Panel (English)
+   6. Admin Panel
    ========================================================= */
 const ADMIN_PASSWORD = "admin123";
 let clickCount = 0;
@@ -565,7 +597,7 @@ function hideAdmin() {
 }
 
 /* =========================================================
-   6. Core Player Engine (same as original)
+   7. Core Player Engine
    ========================================================= */
 let currentIndex = 0;
 let isSpeaking = false;
@@ -870,7 +902,7 @@ function searchSentence(){
 }
 
 /* =========================================================
-   7. Offline mode
+   8. Offline mode
    ========================================================= */
 let isOffline = !navigator.onLine;
 function updateOfflineUI() {
@@ -917,7 +949,7 @@ window.addEventListener('offline', function() {
 });
 
 /* =========================================================
-   8. Bilingual Chat (English/Chinese)
+   9. Bilingual Chat
    ========================================================= */
 let chatMode = false;
 let isListening = false;
@@ -1173,7 +1205,7 @@ recognition.onend = function() {
 };
 
 /* =========================================================
-   9. Keyboard Shortcuts & Init
+   10. Keyboard Shortcuts & Init
    ========================================================= */
 document.addEventListener("keydown", function(e){
     if(document.activeElement === dom.searchInput || document.activeElement === dom.chatInput) return;
@@ -1199,6 +1231,7 @@ console.log('📚 Total chunks:', lessons.length);
 console.log('🔊 Free Chinese audio: first 50 sentences, then $1/20 sentences');
 console.log('📱 M-PESA: 0768033524');
 console.log('🔑 Admin: click title 5 times');
+console.log('💬 New: Click "Get Code" to receive unlock code via Telegram!');
 </script>
 </body>
 </html>
