@@ -89,8 +89,11 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 </div>
 
 <div class="search">
-<input id="searchInput" type="search" placeholder="Search English or Chinese" autocomplete="off">
-<button onclick="searchSentence()">Search</button>
+    <input id="searchInput" type="search" placeholder="Search English or Chinese" autocomplete="off">
+    <select id="sceneSelect" style="flex-shrink:0; padding:12px 10px; border:1.5px solid #e2e8f0; border-radius:14px; font-size:15px; background:#fff; color:#1e293b; outline:none; cursor:pointer;">
+        <option value="">📂 全部场景</option>
+    </select>
+    <button onclick="searchSentence()">Search</button>
 </div>
 <div id="results" class="results"></div>
 
@@ -1545,7 +1548,29 @@ if(window.speechSynthesis){
 }
 
 updateOfflineUI();
-showSentence();
+showSentence();// ===== 分类筛选下拉菜单 =====
+function populateSceneSelect() {
+    const select = document.getElementById('sceneSelect');
+    if (!select) return;
+    const scenes = new Set();
+    lessons.forEach(item => {
+        let scene = item.scene.replace(/^⭐\s*/, '').trim();
+        if (scene) scenes.add(scene);
+    });
+    select.innerHTML = '<option value="">📂 全部场景</option>';
+    Array.from(scenes).sort().forEach(scene => {
+        const opt = document.createElement('option');
+        opt.value = scene;
+        opt.textContent = scene;
+        select.appendChild(opt);
+    });
+    select.addEventListener('change', function() {
+        const input = document.getElementById('searchInput');
+        input.value = this.value;
+        searchSentence();
+    });
+}
+populateSceneSelect();
 updateCnStatus();
 
 console.log('🎧 Listen & Speak · Bilingual + Chinese Unlock loaded');
