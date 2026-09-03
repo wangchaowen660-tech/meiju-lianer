@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listen & Speak · English + Chinese Audio</title>
+<title>Listen & Speak · 厨房版</title>
 <style>
-/* ===== Full Styles ===== */
+/* ===== 完整样式 ===== */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#1e293b;min-height:100vh;}
 .container{max-width:560px;width:100%;margin:0 auto;}
@@ -14,6 +14,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .header p{margin:6px 0 0;color:#94a3b8;font-size:15px;}
 .search{display:flex;gap:10px;margin-bottom:16px;}
 .search input{flex:1;padding:13px 16px;border:1.5px solid #e2e8f0;border-radius:14px;font-size:16px;outline:none;background:#fff;}
+#sceneSelect{flex-shrink:0;padding:12px 10px;border:1.5px solid #e2e8f0;border-radius:14px;font-size:15px;background:#fff;color:#1e293b;outline:none;cursor:pointer;}
 .search button{flex-shrink:0;padding:12px 20px;background:#1e293b;color:#fff;border:0;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;}
 .results{margin-bottom:16px;}
 .result{background:#fff;padding:14px 16px;margin-bottom:8px;border-radius:14px;cursor:pointer;border:1px solid #edf2f7;}
@@ -75,7 +76,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .admin-panel input{width:100%;padding:10px;border:1px solid #d1d9e6;border-radius:10px;margin-bottom:10px;}
 .admin-panel .code-box{background:#fff;padding:10px;border-radius:8px;font-family:monospace;font-size:18px;margin:10px 0;word-break:break-all;}
 .admin-panel button{background:#1e293b;color:#fff;border:0;padding:10px;border-radius:10px;cursor:pointer;width:auto;}
-@media(max-width:480px){.english{font-size:25px;}.chunk{font-size:24px;}.ctrl-btn{width:50px;height:50px;font-size:28px;}.ctrl-btn.play-btn{width:70px;height:70px;font-size:36px;}.ctrl-btn.cn-btn{width:50px;height:50px;font-size:24px;}}
+@media(max-width:480px){.english{font-size:25px;}.chunk{font-size:24px;}.ctrl-btn{width:50px;height:50px;font-size:28px;}.ctrl-btn.play-btn{width:70px;height:70px;font-size:36px;}.ctrl-btn.cn-btn{width:50px;height:50px;font-size:24px;}#sceneSelect{font-size:13px;padding:10px 8px;}}
 </style>
 </head>
 <body>
@@ -89,11 +90,11 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 </div>
 
 <div class="search">
-    <input id="searchInput" type="search" placeholder="Search English or Chinese" autocomplete="off">
-    <select id="sceneSelect" style="flex-shrink:0; padding:12px 10px; border:1.5px solid #e2e8f0; border-radius:14px; font-size:15px; background:#fff; color:#1e293b; outline:none; cursor:pointer;">
-        <option value="">📂 全部场景</option>
-    </select>
-    <button onclick="searchSentence()">Search</button>
+<input id="searchInput" type="search" placeholder="Search English or Chinese" autocomplete="off">
+<select id="sceneSelect" style="flex-shrink:0; padding:12px 10px; border:1.5px solid #e2e8f0; border-radius:14px; font-size:15px; background:#fff; color:#1e293b; outline:none; cursor:pointer;">
+    <option value="">📂 全部场景</option>
+</select>
+<button onclick="searchSentence()">Search</button>
 </div>
 <div id="results" class="results"></div>
 
@@ -163,11 +164,11 @@ Listen to Pattern → Full Sentence → Replace → Speak
 
 <script>
 /* =========================================================
-   1. Full Lesson Database
+   1. 完整语块库（含问答优先 + 厨房语块）
    ========================================================= */
 const coreChunks = [
 // ============================================================
-// 🆕 500 个问答句（优先显示，覆盖工作、生活、社交、旅行、紧急、商务）
+// 🆕 500 个问答句（优先显示）
 // ============================================================
 // ========== 工作场景 (80句) ==========
 ["工作","What do you do?","What do you do?","What do you do?","你是做什么工作的？",["doctor|医生","engineer|工程师","manager|经理","designer|设计师","teacher|老师","nurse|护士","lawyer|律师","architect|建筑师","scientist|科学家","artist|艺术家"]],
@@ -183,83 +184,6 @@ const coreChunks = [
 ["工作","What do you like about your job?","What do you like about your job?","What do you like about your job?","你喜欢工作的哪一点？",["the people|同事","the salary|薪资","the flexibility|灵活性","the challenge|挑战","the benefits|福利","the environment|环境","the culture|文化","the location|地点","the hours|工作时间","the vacation|假期"]],
 ["工作","Do you have a boss?","Do you have a boss?","Do you have a boss?","你有老板吗？",["yes|是的","no|不","I have a manager|有经理","I report to someone|向某人汇报","I'm the boss|我是老板","I have a supervisor|有主管","I have a director|有总监","I'm self-employed|自雇","I'm the owner|我是老板","I have a mentor|有导师"]],
 ["工作","Do you take breaks?","Do you take breaks?","Do you take breaks?","你休息吗？",["yes|是的","sometimes|有时候","no|不","always|总是","rarely|很少","I take two breaks|休息两次","I take one break|休息一次","I take a lunch break|午休","I take coffee breaks|咖啡休息","I don't take breaks|不休息"]],
-// ============================================================
-// 🧑‍🍳 厨房 & 烹饪专用语块（适用于厨师、餐饮行业）
-// ============================================================
-// ---- 食材（蔬菜） ----
-["厨房","我需要……","I need...","I need some ginger.","我需要一些姜。",["ginger|姜","spring onion|葱","carrot|胡萝卜","chili pepper|辣椒","garlic|蒜"]],
-["厨房","把……切成片","Cut...into slices","Cut the ginger into slices.","把姜切成片。",["ginger|姜","carrot|胡萝卜","potato|土豆","onion|洋葱","cucumber|黄瓜"]],
-["厨房","把……切成丁","Dice...","Dice the onion.","把洋葱切成丁。",["onion|洋葱","carrot|胡萝卜","garlic|蒜","tomato|番茄","pepper|彩椒"]],
-["厨房","把……切成丝","Julienne...","Julienne the carrot.","把胡萝卜切成丝。",["carrot|胡萝卜","potato|土豆","ginger|姜","cucumber|黄瓜","bell pepper|彩椒"]],
-["厨房","把……剁碎","Mince...","Mince the garlic.","把蒜剁碎。",["garlic|蒜","ginger|姜","onion|洋葱","chili|辣椒","herbs|香草"]],
-["厨房","把……剥皮","Peel...","Peel the potato.","把土豆剥皮。",["potato|土豆","carrot|胡萝卜","onion|洋葱","ginger|姜","tomato|番茄"]],
-["厨房","把……洗净","Wash...","Wash the vegetables.","把蔬菜洗净。",["vegetables|蔬菜","lettuce|生菜","spinach|菠菜","cabbage|卷心菜","leek|韭葱"]],
-["厨房","把……沥干","Drain...","Drain the noodles.","把面条沥干。",["noodles|面条","rice|米饭","pasta|意面","vegetables|蔬菜","seafood|海鲜"]],
-["厨房","切好的……","Chopped...","Chopped spring onions.","切好的葱花。",["spring onions|葱花","garlic|蒜末","ginger|姜末","chili|辣椒圈","herbs|香草碎"]],
-["厨房","一把……","A bunch of...","A bunch of spring onions.","一把葱。",["spring onions|葱","parsley|欧芹","coriander|香菜","celery|芹菜","asparagus|芦笋"]],
-// ---- 食材（肉类 & 海鲜） ----
-["厨房","我需要一些……","I need some...","I need some chicken.","我需要一些鸡肉。",["chicken|鸡肉","pork|猪肉","beef|牛肉","lamb|羊肉","duck|鸭肉"]],
-["厨房","把……切成块","Cut...into chunks","Cut the chicken into chunks.","把鸡肉切成块。",["chicken|鸡肉","pork|猪肉","beef|牛肉","fish|鱼肉","tofu|豆腐"]],
-["厨房","把……去骨","Debone...","Debone the fish.","把鱼去骨。",["fish|鱼","chicken|鸡肉","duck|鸭肉","lamb|羊肉","pork|猪肉"]],
-["厨房","把……切成薄片","Slice...thinly","Slice the beef thinly.","把牛肉切成薄片。",["beef|牛肉","pork|猪肉","lamb|羊肉","fish|鱼肉","chicken|鸡肉"]],
-["厨房","新鲜的……","Fresh...","Fresh fish.","新鲜的鱼。",["fish|鱼","seafood|海鲜","vegetables|蔬菜","meat|肉类","herbs|香草"]],
-["厨房","冷冻的……","Frozen...","Frozen shrimp.","冷冻的虾。",["shrimp|虾","fish|鱼","meat|肉类","vegetables|蔬菜","dumplings|饺子"]],
-["厨房","海鲜……","Seafood...","Seafood platter.","海鲜拼盘。",["platter|拼盘","soup|汤","rice|饭","noodles|面","salad|沙拉"]],
-// ---- 烹饪方法 ----
-["厨房","炒……","Stir-fry...","Stir-fry the vegetables.","炒蔬菜。",["vegetables|蔬菜","meat|肉类","rice|米饭","noodles|面条","shrimp|虾"]],
-["厨房","煮……","Boil...","Boil the pasta.","煮意面。",["pasta|意面","rice|米饭","eggs|鸡蛋","potatoes|土豆","noodles|面条"]],
-["厨房","蒸……","Steam...","Steam the fish.","蒸鱼。",["fish|鱼","dumplings|饺子","vegetables|蔬菜","rice|米饭","buns|包子"]],
-["厨房","炸……","Deep-fry...","Deep-fry the chicken.","炸鸡。",["chicken|鸡肉","shrimp|虾","potatoes|土豆","spring rolls|春卷","fish|鱼"]],
-["厨房","烤……","Roast...","Roast the chicken.","烤鸡。",["chicken|鸡肉","beef|牛肉","pork|猪肉","vegetables|蔬菜","potatoes|土豆"]],
-["厨房","炖……","Stew...","Stew the beef.","炖牛肉。",["beef|牛肉","lamb|羊肉","pork|猪肉","chicken|鸡肉","vegetables|蔬菜"]],
-["厨房","焖……","Braise...","Braise the pork.","焖猪肉。",["pork|猪肉","beef|牛肉","lamb|羊肉","chicken|鸡肉","tofu|豆腐"]],
-["厨房","焯水……","Blanch...","Blanch the vegetables.","将蔬菜焯水。",["vegetables|蔬菜","broccoli|西兰花","green beans|青豆","asparagus|芦笋","spinach|菠菜"]],
-["厨房","调味……","Season...","Season with salt.","用盐调味。",["salt|盐","pepper|胡椒","soy sauce|酱油","sugar|糖","vinegar|醋"]],
-["厨房","加入……","Add...","Add some soy sauce.","加入一些酱油。",["soy sauce|酱油","salt|盐","oil|油","water|水","stock|高汤"]],
-["厨房","撒上……","Sprinkle...","Sprinkle some salt.","撒上一些盐。",["salt|盐","pepper|胡椒","sesame seeds|芝麻","herbs|香草","chili flakes|辣椒粉"]],
-["厨房","用……腌制","Marinate with...","Marinate with soy sauce.","用酱油腌制。",["soy sauce|酱油","wine|料酒","garlic|蒜","ginger|姜","spices|香料"]],
-["厨房","把……煮至变软","Cook...until soft","Cook the potatoes until soft.","把土豆煮至变软。",["potatoes|土豆","carrots|胡萝卜","onions|洋葱","beans|豆类","rice|米饭"]],
-["厨房","把……煮至金黄色","Fry...until golden","Fry the onions until golden.","把洋葱炒至金黄色。",["onions|洋葱","garlic|蒜","potatoes|土豆","chicken|鸡肉","fish|鱼"]],
-["厨房","把……煮至熟透","Cook...until done","Cook the chicken until done.","把鸡肉煮至熟透。",["chicken|鸡肉","beef|牛肉","fish|鱼","rice|米饭","pasta|意面"]],
-["厨房","把……捞出","Remove...from the heat","Remove the meat from the heat.","把肉捞出。",["meat|肉","vegetables|蔬菜","pasta|意面","eggs|鸡蛋","potatoes|土豆"]],
-["厨房","控油……","Drain excess oil...","Drain excess oil from the food.","把食物控油。",["food|食物","meat|肉","potatoes|土豆","spring rolls|春卷","dumplings|饺子"]],
-["厨房","品尝……","Taste...","Taste the sauce.","品尝酱汁。",["sauce|酱汁","soup|汤","dish|菜品","stock|高汤","seasoning|调味料"]],
-// ---- 厨房工具 ----
-["厨房","一把刀","A knife.","A knife.","一把刀。",["knife|刀","cleaver|剁骨刀","paring knife|削皮刀","chef's knife|主厨刀","bread knife|面包刀"]],
-["厨房","一块砧板","A chopping board.","A chopping board.","一块砧板。",["chopping board|砧板","cutting board|切菜板","wooden board|木砧板","plastic board|塑料砧板","large board|大砧板"]],
-["厨房","一个锅","A pot.","A pot.","一个锅。",["pot|锅","wok|炒锅","pan|平底锅","saucepan|汤锅","pressure cooker|高压锅"]],
-["厨房","一个平底锅","A frying pan.","A frying pan.","一个平底锅。",["frying pan|平底锅","skillet|煎锅","grill pan|烤盘","non-stick pan|不粘锅","cast iron pan|铸铁锅"]],
-["厨房","一个勺子","A spoon.","A spoon.","一个勺子。",["spoon|勺子","ladle|汤勺","slotted spoon|漏勺","wooden spoon|木勺","measuring spoon|量勺"]],
-["厨房","一个漏勺","A strainer.","A strainer.","一个漏勺。",["strainer|漏勺","colander|滤盆","sieve|筛网","mesh strainer|细网漏勺","pasta strainer|意面漏勺"]],
-["厨房","一个碗","A bowl.","A bowl.","一个碗。",["bowl|碗","mixing bowl|搅拌碗","serving bowl|上菜碗","glass bowl|玻璃碗","wooden bowl|木碗"]],
-["厨房","一个烤箱","An oven.","An oven.","一个烤箱。",["oven|烤箱","microwave|微波炉","toaster oven|烤面包机","convection oven|对流烤箱","gas oven|燃气烤箱"]],
-["厨房","一个蒸锅","A steamer.","A steamer.","一个蒸锅。",["steamer|蒸锅","bamboo steamer|竹蒸笼","electric steamer|电蒸锅","steamer basket|蒸架","metal steamer|金属蒸锅"]],
-["厨房","一个夹子","Tongs.","Tongs.","一个夹子。",["tongs|夹子","salad tongs|沙拉夹","grill tongs|烧烤夹","kitchen tongs|厨房夹","serving tongs|分菜夹"]],
-// ---- 厨房用语 & 对话 ----
-["厨房","这道菜需要……","This dish needs...","This dish needs garlic.","这道菜需要大蒜。",["garlic|大蒜","ginger|姜","salt|盐","oil|油","chili|辣椒"]],
-["厨房","这份菜要加辣吗？","Do you want it spicy?","Do you want it spicy?","要加辣吗？",["spicy|辣","mild|微辣","medium|中辣","extra spicy|特辣","not spicy|不辣"]],
-["厨房","少盐","Less salt, please.","Less salt, please.","少放盐。",["salt|盐","sugar|糖","oil|油","sauce|酱","spices|香料"]],
-["厨房","多加……","Add more...","Add more garlic, please.","多加蒜。",["garlic|蒜","ginger|姜","onion|洋葱","chili|辣椒","herbs|香草"]],
-["厨房","不要……","No...","No MSG, please.","不要味精。",["MSG|味精","sugar|糖","salt|盐","oil|油","spices|香料"]],
-["厨房","需要等多久？","How long does it take?","How long does it take to cook?","需要等多久？",["cook|烹饪","prepare|准备","bake|烘烤","fry|炸","steam|蒸"]],
-["厨房","可以打包吗？","Can I take it away?","Can I take it away?","可以打包吗？",["take away|打包","dine in|堂食","delivery|外卖","package|包装","box|盒子"]],
-["厨房","麻烦加一份……","Please add one more...","Please add one more portion.","麻烦加一份。",["portion|一份","side dish|配菜","sauce|酱汁","rice|米饭","soup|汤"]],
-["厨房","这个菜是什么？","What is this dish?","What is this dish?","这是什么菜？",["dish|菜","ingredient|食材","flavor|口味","style|做法","origin|来源"]],
-["厨房","今天的特价菜是什么？","What's today's special?","What's today's special?","今天的特价菜是什么？",["special|特价","chef's recommendation|主厨推荐","daily dish|每日菜品","seasonal|时令","new dish|新菜"]],
-["厨房","这个菜很受欢迎","This dish is very popular.","This dish is very popular.","这个菜很受欢迎。",["popular|受欢迎","famous|有名","delicious|美味","expensive|昂贵","healthy|健康"]],
-["厨房","厨师推荐……","The chef recommends...","The chef recommends the steak.","厨师推荐牛排。",["steak|牛排","fish|鱼","pasta|意面","soup|汤","salad|沙拉"]],
-["厨房","您对什么过敏？","Do you have any allergies?","Do you have any allergies?","您对什么过敏？",["allergies|过敏","seafood|海鲜","nuts|坚果","dairy|奶制品","gluten|麸质"]],
-["厨房","我们准备……","We are preparing...","We are preparing your order.","我们正在准备您的订单。",["order|订单","food|食物","dish|菜品","drink|饮品","dessert|甜点"]],
-["厨房","马上就好","Coming right up!","Coming right up!","马上就好！",["right up|马上","in a minute|一分钟","soon|很快","ready|准备","wait|稍等"]],
-["厨房","这是您的菜","Here is your dish.","Here is your dish.","这是您的菜。",["dish|菜","food|食物","order|订单","drink|饮品","dessert|甜点"]],
-["厨房","请慢用","Enjoy your meal!","Enjoy your meal!","请慢用！",["meal|用餐","food|食物","dish|菜品","appetite|好胃口","service|服务"]],
-["厨房","需要加饭吗？","Would you like more rice?","Would you like more rice?","需要加饭吗？",["rice|米饭","noodles|面条","bread|面包","soup|汤","side dish|配菜"]],
-["厨房","火候要适中","Medium heat.","Medium heat.","中火。",["high heat|大火","low heat|小火","medium heat|中火","simmer|小火慢炖","searing|大火煎"]],
-["厨房","食材要新鲜","The ingredients must be fresh.","The ingredients must be fresh.","食材要新鲜。",["fresh|新鲜","organic|有机","local|本地","seasonal|时令","quality|优质"]],
-];
-
-// 将这些语块追加到 coreChunks 末尾
-coreChunks.push(...kitchenChunks);
 ["工作","Do you work overtime?","Do you work overtime?","Do you work overtime?","你加班吗？",["sometimes|有时候","never|从不","always|总是","often|经常","rarely|很少","once a week|一周一次","twice a week|一周两次","every day|每天","on Fridays|周五","on weekends|周末"]],
 ["工作","Do you get paid well?","Do you get paid well?","Do you get paid well?","你薪水高吗？",["yes|是的","no|不","it's okay|还行","it's good|不错","it's fair|合理","it's competitive|有竞争力","it's low|低","it's high|高","it's average|一般","it's reasonable|合理"]],
 ["工作","Do you enjoy your work?","Do you enjoy your work?","Do you enjoy your work?","你享受你的工作吗？",["yes|是的","no|不","sometimes|有时候","I love it|我热爱","not really|不太享受","I enjoy most|大部分享受","I enjoy it sometimes|有时享受","I find it rewarding|有意义","I find it fulfilling|有成就感","I'm passionate|有热情"]],
@@ -563,7 +487,75 @@ coreChunks.push(...kitchenChunks);
 ["商务","Let's collaborate on this.","Let's collaborate on this.","Let's collaborate on this.","我们在这个项目上合作吧。",["collaborate|合作","work together|一起工作","team up|组队","partner|合作","cooperate|协作","join forces|联手","pool resources|集中资源","share expertise|分享专业知识","brainstorm|头脑风暴","plan|规划"]],
 ["商务","The future looks bright.","The future looks bright.","The future looks bright.","未来看起来很光明。",["bright|光明","promising|有前景","exciting|令人兴奋","optimistic|乐观","hopeful|有希望","full of opportunities|充满机会","challenging|有挑战","transformative|变革","positive|积极","great|很好"]],
 // ============================================================
-// 原有 112 个核心语块（问答优先，所以放在后面）
+// 🧑‍🍳 厨房 & 烹饪专用语块（80句）
+// ============================================================
+["厨房","我需要……","I need...","I need some ginger.","我需要一些姜。",["ginger|姜","spring onion|葱","carrot|胡萝卜","chili pepper|辣椒","garlic|蒜"]],
+["厨房","把……切成片","Cut...into slices","Cut the ginger into slices.","把姜切成片。",["ginger|姜","carrot|胡萝卜","potato|土豆","onion|洋葱","cucumber|黄瓜"]],
+["厨房","把……切成丁","Dice...","Dice the onion.","把洋葱切成丁。",["onion|洋葱","carrot|胡萝卜","garlic|蒜","tomato|番茄","pepper|彩椒"]],
+["厨房","把……切成丝","Julienne...","Julienne the carrot.","把胡萝卜切成丝。",["carrot|胡萝卜","potato|土豆","ginger|姜","cucumber|黄瓜","bell pepper|彩椒"]],
+["厨房","把……剁碎","Mince...","Mince the garlic.","把蒜剁碎。",["garlic|蒜","ginger|姜","onion|洋葱","chili|辣椒","herbs|香草"]],
+["厨房","把……剥皮","Peel...","Peel the potato.","把土豆剥皮。",["potato|土豆","carrot|胡萝卜","onion|洋葱","ginger|姜","tomato|番茄"]],
+["厨房","把……洗净","Wash...","Wash the vegetables.","把蔬菜洗净。",["vegetables|蔬菜","lettuce|生菜","spinach|菠菜","cabbage|卷心菜","leek|韭葱"]],
+["厨房","把……沥干","Drain...","Drain the noodles.","把面条沥干。",["noodles|面条","rice|米饭","pasta|意面","vegetables|蔬菜","seafood|海鲜"]],
+["厨房","切好的……","Chopped...","Chopped spring onions.","切好的葱花。",["spring onions|葱花","garlic|蒜末","ginger|姜末","chili|辣椒圈","herbs|香草碎"]],
+["厨房","一把……","A bunch of...","A bunch of spring onions.","一把葱。",["spring onions|葱","parsley|欧芹","coriander|香菜","celery|芹菜","asparagus|芦笋"]],
+["厨房","我需要一些……","I need some...","I need some chicken.","我需要一些鸡肉。",["chicken|鸡肉","pork|猪肉","beef|牛肉","lamb|羊肉","duck|鸭肉"]],
+["厨房","把……切成块","Cut...into chunks","Cut the chicken into chunks.","把鸡肉切成块。",["chicken|鸡肉","pork|猪肉","beef|牛肉","fish|鱼肉","tofu|豆腐"]],
+["厨房","把……去骨","Debone...","Debone the fish.","把鱼去骨。",["fish|鱼","chicken|鸡肉","duck|鸭肉","lamb|羊肉","pork|猪肉"]],
+["厨房","把……切成薄片","Slice...thinly","Slice the beef thinly.","把牛肉切成薄片。",["beef|牛肉","pork|猪肉","lamb|羊肉","fish|鱼肉","chicken|鸡肉"]],
+["厨房","新鲜的……","Fresh...","Fresh fish.","新鲜的鱼。",["fish|鱼","seafood|海鲜","vegetables|蔬菜","meat|肉类","herbs|香草"]],
+["厨房","冷冻的……","Frozen...","Frozen shrimp.","冷冻的虾。",["shrimp|虾","fish|鱼","meat|肉类","vegetables|蔬菜","dumplings|饺子"]],
+["厨房","海鲜……","Seafood...","Seafood platter.","海鲜拼盘。",["platter|拼盘","soup|汤","rice|饭","noodles|面","salad|沙拉"]],
+["厨房","炒……","Stir-fry...","Stir-fry the vegetables.","炒蔬菜。",["vegetables|蔬菜","meat|肉类","rice|米饭","noodles|面条","shrimp|虾"]],
+["厨房","煮……","Boil...","Boil the pasta.","煮意面。",["pasta|意面","rice|米饭","eggs|鸡蛋","potatoes|土豆","noodles|面条"]],
+["厨房","蒸……","Steam...","Steam the fish.","蒸鱼。",["fish|鱼","dumplings|饺子","vegetables|蔬菜","rice|米饭","buns|包子"]],
+["厨房","炸……","Deep-fry...","Deep-fry the chicken.","炸鸡。",["chicken|鸡肉","shrimp|虾","potatoes|土豆","spring rolls|春卷","fish|鱼"]],
+["厨房","烤……","Roast...","Roast the chicken.","烤鸡。",["chicken|鸡肉","beef|牛肉","pork|猪肉","vegetables|蔬菜","potatoes|土豆"]],
+["厨房","炖……","Stew...","Stew the beef.","炖牛肉。",["beef|牛肉","lamb|羊肉","pork|猪肉","chicken|鸡肉","vegetables|蔬菜"]],
+["厨房","焖……","Braise...","Braise the pork.","焖猪肉。",["pork|猪肉","beef|牛肉","lamb|羊肉","chicken|鸡肉","tofu|豆腐"]],
+["厨房","焯水……","Blanch...","Blanch the vegetables.","将蔬菜焯水。",["vegetables|蔬菜","broccoli|西兰花","green beans|青豆","asparagus|芦笋","spinach|菠菜"]],
+["厨房","调味……","Season...","Season with salt.","用盐调味。",["salt|盐","pepper|胡椒","soy sauce|酱油","sugar|糖","vinegar|醋"]],
+["厨房","加入……","Add...","Add some soy sauce.","加入一些酱油。",["soy sauce|酱油","salt|盐","oil|油","water|水","stock|高汤"]],
+["厨房","撒上……","Sprinkle...","Sprinkle some salt.","撒上一些盐。",["salt|盐","pepper|胡椒","sesame seeds|芝麻","herbs|香草","chili flakes|辣椒粉"]],
+["厨房","用……腌制","Marinate with...","Marinate with soy sauce.","用酱油腌制。",["soy sauce|酱油","wine|料酒","garlic|蒜","ginger|姜","spices|香料"]],
+["厨房","把……煮至变软","Cook...until soft","Cook the potatoes until soft.","把土豆煮至变软。",["potatoes|土豆","carrots|胡萝卜","onions|洋葱","beans|豆类","rice|米饭"]],
+["厨房","把……煮至金黄色","Fry...until golden","Fry the onions until golden.","把洋葱炒至金黄色。",["onions|洋葱","garlic|蒜","potatoes|土豆","chicken|鸡肉","fish|鱼"]],
+["厨房","把……煮至熟透","Cook...until done","Cook the chicken until done.","把鸡肉煮至熟透。",["chicken|鸡肉","beef|牛肉","fish|鱼","rice|米饭","pasta|意面"]],
+["厨房","把……捞出","Remove...from the heat","Remove the meat from the heat.","把肉捞出。",["meat|肉","vegetables|蔬菜","pasta|意面","eggs|鸡蛋","potatoes|土豆"]],
+["厨房","控油……","Drain excess oil...","Drain excess oil from the food.","把食物控油。",["food|食物","meat|肉","potatoes|土豆","spring rolls|春卷","dumplings|饺子"]],
+["厨房","品尝……","Taste...","Taste the sauce.","品尝酱汁。",["sauce|酱汁","soup|汤","dish|菜品","stock|高汤","seasoning|调味料"]],
+["厨房","一把刀","A knife.","A knife.","一把刀。",["knife|刀","cleaver|剁骨刀","paring knife|削皮刀","chef's knife|主厨刀","bread knife|面包刀"]],
+["厨房","一块砧板","A chopping board.","A chopping board.","一块砧板。",["chopping board|砧板","cutting board|切菜板","wooden board|木砧板","plastic board|塑料砧板","large board|大砧板"]],
+["厨房","一个锅","A pot.","A pot.","一个锅。",["pot|锅","wok|炒锅","pan|平底锅","saucepan|汤锅","pressure cooker|高压锅"]],
+["厨房","一个平底锅","A frying pan.","A frying pan.","一个平底锅。",["frying pan|平底锅","skillet|煎锅","grill pan|烤盘","non-stick pan|不粘锅","cast iron pan|铸铁锅"]],
+["厨房","一个勺子","A spoon.","A spoon.","一个勺子。",["spoon|勺子","ladle|汤勺","slotted spoon|漏勺","wooden spoon|木勺","measuring spoon|量勺"]],
+["厨房","一个漏勺","A strainer.","A strainer.","一个漏勺。",["strainer|漏勺","colander|滤盆","sieve|筛网","mesh strainer|细网漏勺","pasta strainer|意面漏勺"]],
+["厨房","一个碗","A bowl.","A bowl.","一个碗。",["bowl|碗","mixing bowl|搅拌碗","serving bowl|上菜碗","glass bowl|玻璃碗","wooden bowl|木碗"]],
+["厨房","一个烤箱","An oven.","An oven.","一个烤箱。",["oven|烤箱","microwave|微波炉","toaster oven|烤面包机","convection oven|对流烤箱","gas oven|燃气烤箱"]],
+["厨房","一个蒸锅","A steamer.","A steamer.","一个蒸锅。",["steamer|蒸锅","bamboo steamer|竹蒸笼","electric steamer|电蒸锅","steamer basket|蒸架","metal steamer|金属蒸锅"]],
+["厨房","一个夹子","Tongs.","Tongs.","一个夹子。",["tongs|夹子","salad tongs|沙拉夹","grill tongs|烧烤夹","kitchen tongs|厨房夹","serving tongs|分菜夹"]],
+["厨房","这道菜需要……","This dish needs...","This dish needs garlic.","这道菜需要大蒜。",["garlic|大蒜","ginger|姜","salt|盐","oil|油","chili|辣椒"]],
+["厨房","要加辣吗？","Do you want it spicy?","Do you want it spicy?","要加辣吗？",["spicy|辣","mild|微辣","medium|中辣","extra spicy|特辣","not spicy|不辣"]],
+["厨房","少放……","Less...","Less salt, please.","少放盐。",["salt|盐","sugar|糖","oil|油","sauce|酱","spices|香料"]],
+["厨房","多加……","Add more...","Add more garlic, please.","多加蒜。",["garlic|蒜","ginger|姜","onion|洋葱","chili|辣椒","herbs|香草"]],
+["厨房","不要……","No...","No MSG, please.","不要味精。",["MSG|味精","sugar|糖","salt|盐","oil|油","spices|香料"]],
+["厨房","需要等多久？","How long does it take?","How long does it take?","需要等多久？",["cook|烹饪","prepare|准备","bake|烘烤","fry|炸","steam|蒸"]],
+["厨房","可以打包吗？","Can I take it away?","Can I take it away?","可以打包吗？",["take away|打包","dine in|堂食","delivery|外卖","package|包装","box|盒子"]],
+["厨房","麻烦加一份……","Please add one more...","Please add one more portion.","麻烦加一份。",["portion|一份","side dish|配菜","sauce|酱汁","rice|米饭","soup|汤"]],
+["厨房","这是什么菜？","What is this dish?","What is this dish?","这是什么菜？",["dish|菜","ingredient|食材","flavor|口味","style|做法","origin|来源"]],
+["厨房","今天的特价菜是什么？","What's today's special?","What's today's special?","今天的特价菜是什么？",["special|特价","chef's recommendation|主厨推荐","daily dish|每日菜品","seasonal|时令","new dish|新菜"]],
+["厨房","这个菜很受欢迎","This dish is very popular.","This dish is very popular.","这个菜很受欢迎。",["popular|受欢迎","famous|有名","delicious|美味","expensive|昂贵","healthy|健康"]],
+["厨房","厨师推荐……","The chef recommends...","The chef recommends the steak.","厨师推荐牛排。",["steak|牛排","fish|鱼","pasta|意面","soup|汤","salad|沙拉"]],
+["厨房","您对什么过敏？","Do you have any allergies?","Do you have any allergies?","您对什么过敏？",["allergies|过敏","seafood|海鲜","nuts|坚果","dairy|奶制品","gluten|麸质"]],
+["厨房","我们正在准备……","We are preparing...","We are preparing your order.","我们正在准备您的订单。",["order|订单","food|食物","dish|菜品","drink|饮品","dessert|甜点"]],
+["厨房","马上就好！","Coming right up!","Coming right up!","马上就好！",["right up|马上","in a minute|一分钟","soon|很快","ready|准备","wait|稍等"]],
+["厨房","这是您的菜","Here is your dish.","Here is your dish.","这是您的菜。",["dish|菜","food|食物","order|订单","drink|饮品","dessert|甜点"]],
+["厨房","请慢用！","Enjoy your meal!","Enjoy your meal!","请慢用！",["meal|用餐","food|食物","dish|菜品","appetite|好胃口","service|服务"]],
+["厨房","需要加饭吗？","Would you like more rice?","Would you like more rice?","需要加饭吗？",["rice|米饭","noodles|面条","bread|面包","soup|汤","side dish|配菜"]],
+["厨房","中火","Medium heat.","Medium heat.","中火。",["high heat|大火","low heat|小火","medium heat|中火","simmer|小火慢炖","searing|大火煎"]],
+["厨房","食材要新鲜","The ingredients must be fresh.","The ingredients must be fresh.","食材要新鲜。",["fresh|新鲜","organic|有机","local|本地","seasonal|时令","quality|优质"]],
+// ============================================================
+// 原有 112 个核心语块（放在最后）
 // ============================================================
 ["基础需求","我想……","I want to...","I want to eat.","我想吃东西。",["eat|吃","go|去","sleep|睡觉","work|工作","learn English|学英语"]],
 ["基础需求","我需要……","I need...","I need some water.","我需要一些水。",["water|水","help|帮助","money|钱","time|时间","food|食物"]],
@@ -703,959 +695,3 @@ coreChunks.push(...kitchenChunks);
 ["工作","您能发给我吗？","Could you send it to me?","Could you send it to me?","您能发给我吗？",["send it to me|发给我","forward it|转发","email it|邮件发","upload it|上传","share it|分享"]],
 ["工作","我需要您的反馈","I need your feedback.","I need your feedback.","我需要您的反馈。",["feedback|反馈","opinion|意见","suggestion|建议","approval|批准","input|意见"]],
 ];
-
-const premiumChunks = [
-["Business","I'll handle it.","I'll handle it.","I'll handle it.","我来处理。",["handle it","take care of it","manage it","deal with it","fix it"]],
-["Business","Let's have a meeting.","Let's have a meeting.","Let's have a meeting.","我们开个会吧。",["a meeting","a call","a discussion","a chat","a briefing"]],
-["Business","The deadline is...","The deadline is...","The deadline is Friday.","截止日期是周五。",["Friday","Monday","next week","tomorrow","the end of the month"]],
-["Business","What's the budget?","What's the budget?","What's the budget?","预算是多少？",["budget","cost","price","expense","investment"]],
-["Business","I agree.","I agree.","I agree.","我同意。",["agree","approve","accept","support","go along"]],
-["Business","I disagree.","I disagree.","I disagree.","我不同意。",["disagree","object","oppose","argue","question"]],
-["Business","Thank you for your cooperation.","Thank you for your cooperation.","Thank you for your cooperation.","感谢您的合作。",["cooperation","support","help","understanding","time"]],
-["Business","I'll get back to you soon.","I'll get back to you soon.","I'll get back to you soon.","我会尽快回复您。",["soon","asap","today","tomorrow","within an hour"]],
-["Business","How's our progress?","How's our progress?","How's our progress?","我们进展如何？",["progress","work","plan","project","task"]],
-["Business","That's a good idea.","That's a good idea.","That's a good idea.","这是个好主意。",["idea","plan","suggestion","proposal","approach"]],
-["Business","Let's make a decision.","Let's make a decision.","Let's make a decision.","我们来做决定。",["decision","choice","plan","call","move"]],
-["Business","I'm in charge of this project.","I'm in charge of this project.","I'm in charge of this project.","我负责这个项目。",["project","task","team","budget","plan"]],
-["IELTS","In my opinion...","In my opinion...","In my opinion, it's good.","在我看来，这很好。",["it's good","it's important","it's necessary","it's useful","it's interesting"]],
-["IELTS","I think that...","I think that...","I think that is right.","我认为那是正确的。",["right","wrong","true","false","reasonable"]],
-["IELTS","On one hand...on the other hand...","On one hand...on the other hand...","On one hand, it's cheap. On the other hand, it's far.","一方面便宜，另一方面远。",["cheap/far","good/expensive","fast/slow","easy/hard","safe/dangerous"]],
-["IELTS","Therefore...","Therefore...","Therefore, we should act.","因此，我们应该行动。",["act","wait","decide","try","stop"]],
-["IELTS","In addition...","In addition...","In addition, I like it.","此外，我喜欢它。",["it","this","that","the idea","the plan"]],
-["IELTS","However...","However...","However, it's not easy.","然而，这并不容易。",["easy","cheap","possible","clear","available"]],
-["IELTS","In conclusion...","In conclusion...","In conclusion, it's worth it.","总之，这值得。",["worth it","useful","necessary","important","beneficial"]],
-["IELTS","First...second...","First...second...","First, it's affordable. Second, it's reliable.","首先，它便宜。其次，它可靠。",["affordable/reliable","cheap/good","fast/safe","easy/effective","simple/popular"]],
-["IELTS","It depends on...","It depends on...","It depends on the situation.","这取决于情况。",["situation","weather","time","person","budget"]],
-["IELTS","In other words...","In other words...","In other words, it's the same.","换句话说，它是一样的。",["same","different","important","useful","common"]],
-["Travel","I have a reservation for...","I have a reservation for...","I have a reservation for two.","我预订了两人。",["two","three","a room","a table","a flight"]],
-["Travel","What time is checkout?","What time is checkout?","What time is checkout?","退房时间是几点？",["checkout","check-in","breakfast","dinner","the shuttle"]],
-["Travel","Is there free WiFi?","Is there free WiFi?","Is there free WiFi?","这里有免费WiFi吗？",["WiFi","breakfast","parking","pool","gym"]],
-["Travel","I want to go to the beach.","I want to go to the beach.","I want to go to the beach.","我想去海滩。",["beach","mountain","museum","market","restaurant"]],
-["Travel","Is there a tour guide?","Is there a tour guide?","Is there a tour guide?","有导游服务吗？",["guide","interpreter","driver","helper","assistant"]],
-["Travel","I need a visa.","I need a visa.","I need a visa.","我需要签证。",["visa","passport","ticket","insurance","permit"]],
-["Travel","I can't find my luggage.","I can't find my luggage.","I can't find my luggage.","我的行李不见了。",["luggage","bag","suitcase","backpack","wallet"]],
-["Travel","Where should I transfer?","Where should I transfer?","Where should I transfer?","我该在哪里转机？",["transfer","stop","wait","change","connect"]],
-["Travel","I'd like to rent a car.","I'd like to rent a car.","I'd like to rent a car.","我想租车。",["car","bicycle","scooter","motorcycle","van"]],
-["Travel","Where is the gas station?","Where is the gas station?","Where is the gas station?","加油站在哪里？",["gas station","supermarket","pharmacy","restaurant","bank"]],
-["Emotion","I'm proud of you.","I'm proud of you.","I'm proud of you.","我为你感到骄傲。",["you","him","her","them","your work"]],
-["Emotion","I miss you.","I miss you.","I miss you.","我想念你。",["you","him","her","home","the place"]],
-["Emotion","Keep calm.","Keep calm.","Keep calm.","保持冷静。",["calm","cool","quiet","focused","relaxed"]],
-["Emotion","I'm looking forward to...","I'm looking forward to...","I'm looking forward to it.","我期待着它。",["it","the trip","the meeting","the party","the holiday"]],
-["Emotion","That sounds good.","That sounds good.","That sounds good.","听起来不错。",["good","great","interesting","fun","perfect"]],
-["Emotion","I'm fed up with...","I'm fed up with...","I'm fed up with this.","我受够了。",["this","that","it","the noise","the situation"]],
-["Emotion","Don't worry.","Don't worry.","Don't worry.","别担心。",["worry","stress","be upset","overthink","panic"]],
-["Emotion","I understand how you feel.","I understand how you feel.","I understand how you feel.","我理解你的感受。",["you","him","her","them","it"]],
-["Life","I'm considering...","I'm considering...","I'm considering this option.","我在考虑这个选择。",["this option","that idea","the plan","the offer","the suggestion"]],
-["Life","I've decided to...","I've decided to...","I've decided to go.","我决定去。",["go","stay","leave","try","ask"]],
-["Life","I regret...","I regret...","I regret it.","我后悔了。",["it","that","doing that","not doing it","the decision"]],
-["Life","I'm used to...","I'm used to...","I'm used to it.","我习惯了。",["it","this","that","the weather","the noise"]],
-["Life","I hate...","I hate...","I hate it.","我讨厌它。",["it","this","that","the smell","the taste"]],
-["Life","I doubt...","I doubt...","I doubt it.","我怀疑。",["it","that","him","her","the plan"]],
-["Life","I'm sure...","I'm sure...","I'm sure it's right.","我确信这是对的。",["it's right","it's true","he's coming","she's there","it's okay"]],
-["Life","I expect...","I expect...","I expect him to come.","我期待他来。",["him to come","her to call","them to arrive","it to happen","the result"]],
-["Life","I try to...","I try to...","I try to do my best.","我努力做到最好。",["do my best","help","understand","improve","change"]],
-["Life","I plan to...","I plan to...","I plan to travel.","我计划旅行。",["travel","study","work","rest","leave"]],
-["Social","Can I help you?","Can I help you?","Can I help you?","我能帮你吗？",["you","her","him","them","anyone"]],
-["Social","Do you mind...?","Do you mind...?","Do you mind if I sit here?","你介意我坐这里吗？",["if I sit here","if I open the window","if I close the door","if I turn on the TV","if I smoke"]],
-["Social","It's up to you.","It's up to you.","It's up to you.","随你便。",["you","them","your decision","your choice","your turn"]],
-["Social","Make yourself at home.","Make yourself at home.","Make yourself at home.","别客气，就像在自己家。",["at home","comfortable","relaxed","free","welcome"]],
-["Social","I'd like to invite you...","I'd like to invite you...","I'd like to invite you to dinner.","我想邀请你共进晚餐。",["to dinner","to lunch","to the party","to the movie","to the concert"]],
-["Social","I assure you...","I assure you...","I assure you it's safe.","我向你保证它安全。",["it's safe","it's true","it's fine","it's worth it","it's okay"]],
-["Social","I wish you...","I wish you...","I wish you the best.","我祝福你。",["the best","good luck","success","happiness","health"]],
-["Social","I admire you.","I admire you.","I admire you.","我欣赏你。",["you","her","him","them","your work"]],
-["Health","I can't sleep.","I can't sleep.","I can't sleep.","我失眠了。",["sleep","rest","relax","calm down","stop thinking"]],
-["Health","I'm stressed out.","I'm stressed out.","I'm stressed out.","我压力很大。",["stressed","overwhelmed","anxious","worried","burned out"]],
-["Health","I need to exercise.","I need to exercise.","I need to exercise.","我需要运动。",["exercise","walk","run","swim","stretch"]],
-["Health","I'm on a diet.","I'm on a diet.","I'm on a diet.","我在节食。",["diet","healthy eating","weight loss","exercise","fasting"]],
-["Health","I feel much better.","I feel much better.","I feel much better.","我感觉好多了。",["better","great","wonderful","relieved","recovered"]],
-["Health","Please call an ambulance.","Please call an ambulance.","Please call an ambulance.","请叫救护车。",["ambulance","doctor","police","firefighters","rescue"]],
-["Time","I'm extremely busy.","I'm extremely busy.","I'm extremely busy.","我忙极了。",["busy","overwhelmed","exhausted","occupied","tied up"]],
-["Time","I've been waiting for a long time.","I've been waiting for a long time.","I've been waiting for a long time.","我已经等了很久。",["a long time","ages","hours","days","weeks"]],
-["Time","I need more time.","I need more time.","I need more time.","我需要更多时间。",["time","space","rest","opportunity","support"]],
-["Time","Let's do it another day.","Let's do it another day.","Let's do it another day.","我们改天吧。",["another day","tomorrow","next week","next time","later"]],
-["Place","It's in the city center.","It's in the city center.","It's in the city center.","它在市中心。",["city center","suburbs","downtown","uptown","midtown"]],
-["Place","It's near the subway station.","It's near the subway station.","It's near the subway station.","它靠近地铁站。",["subway","bus stop","train station","airport","taxi stand"]],
-["Place","I live in the suburbs.","I live in the suburbs.","I live in the suburbs.","我住在郊区。",["suburbs","downtown","countryside","city","town"]],
-["Place","Here's the address.","Here's the address.","Here's the address.","这是地址。",["address","location","place","spot","site"]],
-["Work","I got promoted.","I got promoted.","I got promoted.","我升职了。",["promoted","raised","recognized","rewarded","praised"]],
-["Work","I quit my job.","I quit my job.","I quit my job.","我辞职了。",["quit","left","resigned","retired","stepped down"]],
-["Work","I was fired.","I was fired.","I was fired.","我被解雇了。",["fired","laid off","dismissed","terminated","let go"]],
-["Work","I passed the interview.","I passed the interview.","I passed the interview.","我通过了面试。",["interview","exam","test","audition","trial"]],
-["Work","We work well together.","We work well together.","We work well together.","我们合作愉快。",["together","as a team","effectively","harmoniously","productively"]],
-["Work","This job is challenging.","This job is challenging.","This job is challenging.","这个工作很有挑战。",["challenging","interesting","rewarding","demanding","exciting"]],
-];
-
-/* =========================================================
-   2. Generate Lessons
-   ========================================================= */
-let lessons = [];
-let id = 1;
-while(lessons.length < 1000){
-    const base = coreChunks[lessons.length % coreChunks.length];
-    lessons.push({id:id++, scene:base[0], chunk:base[1], pattern:base[2], en:base[3], cn:base[4], replace:base[5], isPremium:false});
-}
-let premiumIdx = 0;
-while(lessons.length < 1300){
-    const base = premiumChunks[premiumIdx % premiumChunks.length];
-    lessons.push({id:id++, scene:"⭐ "+base[0], chunk:base[1], pattern:base[2], en:base[3], cn:base[4], replace:base[5]||["it","this"], isPremium:true});
-    premiumIdx++;
-}
-if(lessons.length > 1300) lessons = lessons.slice(0,1300);
-console.log('Total lessons:', lessons.length);
-
-/* =========================================================
-   3. Chinese Audio Unlock System
-   ========================================================= */
-const BASE_FREE_CN = 50;
-let cnUnlockedCount = parseInt(localStorage.getItem('cnUnlockedCount')) || 0;
-
-function getCnMaxIndex() {
-    return BASE_FREE_CN + cnUnlockedCount;
-}
-
-function updateCnStatus() {
-    const total = lessons.length;
-    const max = Math.min(getCnMaxIndex(), total);
-    const statusEl = document.getElementById('cnStatus');
-    if (max >= total) {
-        statusEl.textContent = '🎉 Chinese audio: ALL UNLOCKED (' + total + ' sentences)';
-        statusEl.style.color = '#22c55e';
-    } else {
-        statusEl.textContent = '🔊 Chinese audio available: first ' + max + ' sentences (total ' + total + ')';
-        statusEl.style.color = '#8b5cf6';
-    }
-    const unlockBtn = document.getElementById('unlockCnBtn');
-    if (max >= total) {
-        unlockBtn.textContent = '✅ All Unlocked';
-        unlockBtn.disabled = true;
-        unlockBtn.style.opacity = '0.6';
-    } else {
-        unlockBtn.textContent = '🔓 Unlock Chinese (' + (total - max) + ' left)';
-        unlockBtn.disabled = false;
-        unlockBtn.style.opacity = '1';
-    }
-}
-
-function showUnlockDialog() {
-    const max = Math.min(getCnMaxIndex(), lessons.length);
-    if (max >= lessons.length) {
-        showToast('🎉 All Chinese audio is already unlocked!');
-        return;
-    }
-    const remaining = lessons.length - max;
-    const msg = '💳 UNLOCK CHINESE AUDIO\n\n' +
-                '📱 M-PESA Paybill: 0768033524\n' +
-                '💰 $1 USD unlocks 20 sentences\n' +
-                '（Remaining: ' + remaining + ' sentences）\n\n' +
-                'After payment, click "Get Code" button to receive your unlock code via Telegram.\n\n' +
-                'If you already have an unlock code, enter it below:';
-    const code = prompt(msg);
-    if (code && code.trim() !== '') {
-        const unlockAmount = verifyCnCode(code.trim());
-        if (unlockAmount > 0) {
-            cnUnlockedCount += unlockAmount;
-            localStorage.setItem('cnUnlockedCount', String(cnUnlockedCount));
-            updateCnStatus();
-            showToast('🎉 Unlocked! +' + unlockAmount + ' Chinese audio sentences');
-            if (currentIndex >= getCnMaxIndex()) {
-                currentIndex = getCnMaxIndex() - 1;
-                if (currentIndex < 0) currentIndex = 0;
-                showSentence();
-            }
-        } else {
-            showToast('❌ Invalid unlock code. Please check and try again.');
-        }
-    }
-}
-
-function verifyCnCode(code) {
-    const validCodes = {
-        "CN-20-2025": 20,
-        "CN-50-2025": 50,
-        "CN-100-2025": 100
-    };
-    const dynamicCodes = JSON.parse(localStorage.getItem('cn_valid_codes')) || {};
-    const allCodes = { ...validCodes, ...dynamicCodes };
-    return code in allCodes ? allCodes[code] : 0;
-}
-
-/* =========================================================
-   4. Get Unlock Code via Telegram (NEW!)
-   ========================================================= */
-function getUnlockCode() {
-    const chatId = prompt('📱 Enter your Telegram User ID\n\nHow to find it:\n1. Search @userinfobot on Telegram\n2. Click Start\n3. Copy your ID number');
-    if (!chatId) return;
-    
-    // 生成解锁码
-    const code = 'CN-20-' + Math.random().toString(36).substring(2, 6).toUpperCase();
-    
-    // 发送到 Telegram
-    fetch('https://api.telegram.org/bot8806999050:AAHovISMWtd-XyEZvMMVNchrXWj9dF-PZWM/sendMessage', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            chat_id: chatId,
-            text: '✅ Your unlock code: ' + code + '\n\nEnter it in the app to activate Chinese audio.\n\n💳 M-PESA Paybill: 0768033524\n💰 $1 = 20 sentences'
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.ok) {
-            showToast('✅ Unlock code sent to your Telegram!');
-            showToast('🔑 Your code: ' + code);
-        } else {
-            showToast('❌ Failed to send. Check your Telegram ID.');
-        }
-    })
-    .catch(() => showToast('❌ Network error, please try again'));
-}
-
-/* =========================================================
-   5. Chinese Audio Playback
-   ========================================================= */
-function playChinese() {
-    const item = getCurrentItem();
-    if (!item) return;
-    const idx = currentIndex;
-    const max = Math.min(getCnMaxIndex(), lessons.length);
-    if (idx >= max) {
-        showToast('⚠️ Chinese audio locked for this sentence. Unlock more!');
-        setTimeout(showUnlockDialog, 300);
-        return;
-    }
-    if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
-        dom.status.textContent = "⚠️ Browser doesn't support TTS";
-        dom.status.className = "status error";
-        return;
-    }
-    const text = item.cn;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.8;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-    try {
-        window.speechSynthesis.speak(utterance);
-        dom.status.textContent = "🔊 Playing Chinese audio...";
-        dom.status.className = "status speaking";
-        utterance.onend = function() {
-            dom.status.textContent = "✅ Chinese audio done";
-            dom.status.className = "status done";
-        };
-        utterance.onerror = function() {
-            dom.status.textContent = "⚠️ Chinese audio error";
-            dom.status.className = "status error";
-        };
-    } catch(e) {
-        dom.status.textContent = "⚠️ Playback error";
-        dom.status.className = "status error";
-    }
-}
-
-/* =========================================================
-   6. Admin Panel
-   ========================================================= */
-const ADMIN_PASSWORD = "admin123";
-let clickCount = 0;
-document.querySelector('.header h1').addEventListener('click', function() {
-    clickCount++;
-    if (clickCount >= 5) {
-        toggleAdmin();
-        clickCount = 0;
-    }
-    setTimeout(() => clickCount = 0, 2000);
-});
-
-function toggleAdmin() {
-    const panel = document.getElementById('adminPanel');
-    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-}
-
-function adminLogin() {
-    const pwd = document.getElementById('adminPwd').value;
-    if (pwd === ADMIN_PASSWORD) {
-        document.getElementById('adminContent').style.display = 'block';
-        document.getElementById('adminPwd').style.display = 'none';
-        document.querySelector('#adminPanel button[onclick="adminLogin()"]').style.display = 'none';
-        showToast('✅ Admin logged in');
-    } else {
-        showToast('❌ Wrong password');
-    }
-}
-
-function generateCnCode() {
-    const amount = parseInt(document.getElementById('levelSelect').value);
-    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const code = `CN-${amount}-${random}`;
-    document.getElementById('generatedCode').textContent = code;
-    const codes = JSON.parse(localStorage.getItem('cn_valid_codes')) || {};
-    codes[code] = amount;
-    localStorage.setItem('cn_valid_codes', JSON.stringify(codes));
-    showToast('✅ Unlock code generated (' + amount + ' sentences)');
-}
-
-function hideAdmin() {
-    document.getElementById('adminPanel').style.display = 'none';
-}
-
-/* =========================================================
-   7. Core Player Engine
-   ========================================================= */
-let currentIndex = 0;
-let isSpeaking = false;
-let isPaused = false;
-let currentUtterance = null;
-let currentAudio = null;
-let isRepeating = false;
-let repeatCount = 0;
-let repeatTimer = null;
-let hdMode = false;
-let playQueue = [];
-let isProcessingQueue = false;
-let retryCount = 0;
-const MAX_RETRY = 2;
-const REPEAT_TIMES = 5;
-const TIMEOUT_SEC = 8;
-
-const dom = {
-    scene:document.getElementById("scene"),
-    progress:document.getElementById("progress"),
-    chunk:document.getElementById("chunk"),
-    english:document.getElementById("english"),
-    chinese:document.getElementById("chinese"),
-    replaceList:document.getElementById("replaceList"),
-    status:document.getElementById("status"),
-    playPauseBtn:document.getElementById("playPauseBtn"),
-    repeatBtn:document.getElementById("repeatBtn"),
-    searchInput:document.getElementById("searchInput"),
-    results:document.getElementById("results"),
-    toast:document.getElementById("toast"),
-    hdToggle:document.getElementById("hdToggle"),
-    micBtn:document.getElementById("micBtn"),
-    chatBox:document.getElementById("chatBox"),
-    chatInput:document.getElementById("chatInput"),
-    aiToggle:document.getElementById("aiToggle")
-};
-
-let toastTimer;
-function showToast(text){
-    dom.toast.textContent = text;
-    dom.toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>{ dom.toast.classList.remove("show"); }, 1800);
-}
-
-function stopSpeech(){
-    if(currentUtterance){ try{ window.speechSynthesis.cancel(); }catch(e){} currentUtterance=null; }
-    if(currentAudio){ try{ currentAudio.pause(); currentAudio.src=''; }catch(e){} currentAudio=null; }
-    isSpeaking=false; isPaused=false; dom.playPauseBtn.textContent="▶"; dom.playPauseBtn.classList.remove("paused");
-    playQueue=[]; isProcessingQueue=false; retryCount=0;
-}
-
-function getAvailableLessons(){
-    return lessons;
-}
-
-function getCurrentItem(){
-    const available = getAvailableLessons();
-    if(currentIndex >= available.length) currentIndex = 0;
-    return available[currentIndex] || null;
-}
-
-function isSpeechSupported(){ return !!(window.speechSynthesis && window.SpeechSynthesisUtterance); }
-
-function speakNative(text, callback){
-    if(!isSpeechSupported()){ callback(false, "Browser doesn't support TTS"); return; }
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v => /Google UK|David|Zira|Samantha/i.test(v.name)) || voices.find(v => v.lang.startsWith('en')) || null;
-    const utterance = new SpeechSynthesisUtterance(text);
-    currentUtterance = utterance;
-    utterance.lang = 'en-US';
-    utterance.rate = 0.6;
-    utterance.pitch = 1.1;
-    utterance.volume = 1;
-    if(preferred) utterance.voice = preferred;
-    let ended = false;
-    let timeoutId = setTimeout(() => { if(!ended){ ended=true; try{ window.speechSynthesis.cancel(); }catch(e){} currentUtterance=null; callback(false, "Playback timeout"); } }, TIMEOUT_SEC*1000);
-    utterance.onstart = function(){ if(currentUtterance!==utterance) return; isSpeaking=true; dom.playPauseBtn.textContent="⏸"; dom.playPauseBtn.classList.add("paused"); dom.status.textContent="🎧 Playing (native)"; dom.status.className="status speaking"; };
-    utterance.onend = function(){ if(ended) return; ended=true; clearTimeout(timeoutId); isSpeaking=false; currentUtterance=null; dom.playPauseBtn.textContent="▶"; dom.playPauseBtn.classList.remove("paused"); dom.status.textContent="✅ Playback done"; dom.status.className="status done"; callback(true); };
-    utterance.onerror = function(ev){ if(ended) return; ended=true; clearTimeout(timeoutId); isSpeaking=false; currentUtterance=null; if(ev.error==='canceled'||ev.error==='interrupted'){ callback(false, "Canceled"); }else{ callback(false, "Native TTS error: "+ev.error); } };
-    try{ setTimeout(()=>{ window.speechSynthesis.speak(utterance); }, 100); }catch(e){ clearTimeout(timeoutId); ended=true; isSpeaking=false; currentUtterance=null; callback(false, "Native TTS exception: "+e.message); }
-}
-
-function speakGoogle(text, callback){
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en&client=tw-ob`;
-    const audio = new Audio(url);
-    currentAudio = audio;
-    let ended = false;
-    let timeoutId = setTimeout(() => { if(!ended){ ended=true; try{ audio.pause(); audio.src=''; }catch(e){} currentAudio=null; callback(false, "Network timeout"); } }, TIMEOUT_SEC*1000);
-    audio.oncanplaythrough = function(){ audio.play().catch(err => { if(ended) return; clearTimeout(timeoutId); ended=true; currentAudio=null; callback(false, "Google TTS error: "+err.message); }); };
-    audio.onplay = function(){ isSpeaking=true; dom.playPauseBtn.textContent="⏸"; dom.playPauseBtn.classList.add("paused"); dom.status.textContent="🎧 Playing (HD)"; dom.status.className="status speaking"; };
-    audio.onended = function(){ if(ended) return; clearTimeout(timeoutId); ended=true; isSpeaking=false; currentAudio=null; dom.playPauseBtn.textContent="▶"; dom.playPauseBtn.classList.remove("paused"); dom.status.textContent="✅ Playback done"; dom.status.className="status done"; callback(true); };
-    audio.onerror = function(){ if(ended) return; clearTimeout(timeoutId); ended=true; isSpeaking=false; currentAudio=null; callback(false, "Google TTS failed (network restriction)"); };
-    audio.load();
-}
-
-function speakText(text, callback){
-    if(!text){ if(callback) callback(false); return; }
-    playQueue.push({ text, callback, retries: 0 });
-    processQueue();
-}
-
-function processQueue(){
-    if(isProcessingQueue || playQueue.length === 0) return;
-    isProcessingQueue = true;
-    const task = playQueue.shift();
-    const { text, callback, retries } = task;
-    const useGoogle = hdMode && navigator.onLine;
-    function onResult(success, msg){
-        if(success){
-            isProcessingQueue = false;
-            if(callback) callback(true);
-            if(playQueue.length > 0) processQueue();
-        }else{
-            if(retries < MAX_RETRY){
-                if(useGoogle && msg.includes('network')){
-                    task.retries = retries + 1;
-                    task.engine = 'native';
-                    playQueue.unshift(task);
-                    isProcessingQueue = false;
-                    setTimeout(processQueue, 500);
-                    return;
-                }else{
-                    task.retries = retries + 1;
-                    playQueue.unshift(task);
-                    isProcessingQueue = false;
-                    setTimeout(processQueue, 800);
-                    return;
-                }
-            }else{
-                isProcessingQueue = false;
-                if(callback) callback(false);
-                dom.status.textContent = "⚠️ Playback failed. Check network or switch engine.";
-                dom.status.className = "status error";
-                if(playQueue.length > 0) processQueue();
-            }
-        }
-    }
-    if(useGoogle){
-        speakGoogle(text, onResult);
-    }else{
-        speakNative(text, onResult);
-    }
-}
-
-function playCurrent(){
-    if(isSpeaking){ stopSpeech(); setTimeout(playCurrent, 200); return; }
-    const item = getCurrentItem();
-    if(!item) return;
-    dom.status.textContent = "⏳ Loading...";
-    dom.status.className = "status";
-    speakText(item.en);
-}
-
-function playPattern(){
-    const item = getCurrentItem();
-    if(!item) return;
-    const text = item.pattern.replace(/\.{3}|…/g, "").trim();
-    if(!text) return;
-    stopSpeech();
-    setTimeout(() => { dom.status.textContent = "🧩 Pattern..."; speakText(text); }, 100);
-}
-
-function togglePlayPause(){
-    if(isSpeaking){ stopSpeech(); dom.status.textContent = "⏸ Paused"; dom.status.className = "status paused"; } else { playCurrent(); }
-}
-
-function prevTrack(){
-    stopSpeech();
-    const available = getAvailableLessons();
-    if(available.length === 0) return;
-    currentIndex = (currentIndex - 1 + available.length) % available.length;
-    showSentence();
-    setTimeout(playCurrent, 150);
-}
-function nextTrack(){
-    stopSpeech();
-    const available = getAvailableLessons();
-    if(available.length === 0) return;
-    currentIndex = (currentIndex + 1) % available.length;
-    showSentence();
-    setTimeout(playCurrent, 150);
-}
-function randomSentence(){
-    stopSpeech();
-    const available = getAvailableLessons();
-    if(available.length === 0) return;
-    currentIndex = Math.floor(Math.random() * available.length);
-    showSentence();
-    setTimeout(playCurrent, 150);
-}
-
-function toggleRepeat(){
-    if(isRepeating){
-        isRepeating = false;
-        clearTimeout(repeatTimer);
-        stopSpeech();
-        dom.repeatBtn.textContent = "🔁 Repeat";
-        dom.repeatBtn.classList.remove("active");
-        dom.status.textContent = "⏸ Repeat stopped";
-        dom.status.className = "status paused";
-        return;
-    }
-    isRepeating = true;
-    repeatCount = 0;
-    dom.repeatBtn.textContent = "⏹ Stop Repeat";
-    dom.repeatBtn.classList.add("active");
-    doRepeat();
-}
-function doRepeat(){
-    if(!isRepeating) return;
-    repeatCount++;
-    dom.status.textContent = `🔁 Repeat ${repeatCount}/${REPEAT_TIMES}`;
-    dom.status.className = "status";
-    const item = getCurrentItem();
-    if(!item){ stopSpeech(); return; }
-    speakText(item.en, function(success){
-        if(!isRepeating) return;
-        if(!success){ isRepeating=false; dom.repeatBtn.textContent="🔁 Repeat"; dom.repeatBtn.classList.remove("active"); dom.status.textContent="⚠️ Repeat interrupted"; dom.status.className="status error"; return; }
-        if(repeatCount >= REPEAT_TIMES){ isRepeating=false; dom.repeatBtn.textContent="🔁 Repeat"; dom.repeatBtn.classList.remove("active"); dom.status.textContent="✅ Repeat done"; dom.status.className="status done"; return; }
-        repeatTimer = setTimeout(doRepeat, 600);
-    });
-}
-
-function toggleHD(){
-    if(isOffline){
-        showToast('HD mode unavailable offline');
-        return;
-    }
-    hdMode = !hdMode;
-    dom.hdToggle.textContent = hdMode ? "✨ HD(ON)" : "✨ HD";
-    dom.hdToggle.style.background = hdMode ? "#22c55e" : "#8b5cf6";
-    showToast(hdMode ? "HD voice enabled (requires network)" : "Switched to native voice");
-    if(isSpeaking){ stopSpeech(); setTimeout(playCurrent, 200); }
-}
-
-function playReplaceWord(word){
-    if(!word) return;
-    speakText(word);
-    showToast("🔊 " + word);
-}
-
-function showSentence(){
-    const item = getCurrentItem();
-    if(!item) return;
-    const available = getAvailableLessons();
-    dom.scene.textContent = item.scene + (item.isPremium ? ' ⭐' : '');
-    dom.progress.textContent = `Chunk ${currentIndex + 1} / ${available.length}`;
-    dom.chunk.textContent = item.chunk;
-    dom.english.textContent = item.en;
-    dom.chinese.textContent = item.cn;
-    dom.replaceList.innerHTML = "";
-    (item.replace || []).forEach(function(word){
-        const span = document.createElement("span");
-        span.className = "replace-item";
-        span.textContent = word;
-        span.style.cursor = "pointer";
-        span.title = "Click to hear pronunciation";
-        span.onclick = function(e){
-            e.stopPropagation();
-            playReplaceWord(word);
-        };
-        dom.replaceList.appendChild(span);
-    });
-    dom.status.textContent = "Ready";
-    dom.status.className = "status";
-    updateCnStatus();
-}
-
-function searchSentence(){
-    const keyword = dom.searchInput.value.trim().toLowerCase();
-    dom.results.innerHTML = "";
-    if(!keyword){ showToast("Enter a keyword"); return; }
-    const available = getAvailableLessons();
-    const matches = available.filter(item =>
-        item.chunk.toLowerCase().includes(keyword) ||
-        item.pattern.toLowerCase().includes(keyword) ||
-        item.en.toLowerCase().includes(keyword) ||
-        item.cn.includes(keyword)
-    );
-    if(matches.length === 0){
-        dom.results.innerHTML = `<div class="no-result">🔍 No matching chunks found</div>`;
-        return;
-    }
-    matches.slice(0,30).forEach(function(item){
-        const box = document.createElement("div");
-        box.className = "result";
-        box.innerHTML = `<div class="result-en">${item.chunk} · ${item.pattern}${item.isPremium ? ' ⭐' : ''}</div>
-                         <div class="result-cn">${item.cn}</div>`;
-        box.onclick = function(){
-            stopSpeech();
-            const idx = available.indexOf(item);
-            if(idx !== -1) currentIndex = idx;
-            showSentence();
-            dom.results.innerHTML = "";
-            dom.searchInput.value = "";
-            setTimeout(playCurrent, 150);
-            showToast("Jumped to chunk");
-        };
-        dom.results.appendChild(box);
-    });
-}
-
-/* =========================================================
-   8. Offline mode
-   ========================================================= */
-let isOffline = !navigator.onLine;
-function updateOfflineUI() {
-    const micBtn = dom.micBtn;
-    const hdBtn = dom.hdToggle;
-    const statusEl = dom.status;
-    if (isOffline) {
-        if (hdMode) {
-            hdMode = false;
-            hdBtn.textContent = '✨ HD';
-            hdBtn.style.background = '#8b5cf6';
-        }
-        hdBtn.disabled = true;
-        hdBtn.style.opacity = '0.5';
-        micBtn.disabled = true;
-        micBtn.style.opacity = '0.5';
-        micBtn.textContent = '🎤 Offline';
-        statusEl.textContent = '📶 Offline mode · Native voice + text chat available';
-        statusEl.className = 'status';
-        if (window.isListening) {
-            try { recognition.stop(); } catch(e) {}
-            micBtn.classList.remove('listening');
-            window.isListening = false;
-        }
-    } else {
-        hdBtn.disabled = false;
-        hdBtn.style.opacity = '1';
-        micBtn.disabled = false;
-        micBtn.style.opacity = '1';
-        micBtn.textContent = '🎤 Voice';
-        statusEl.textContent = '🌐 Online mode · All features available';
-        statusEl.className = 'status done';
-    }
-}
-window.addEventListener('online', function() {
-    isOffline = false;
-    updateOfflineUI();
-    showToast('Network restored, all features available');
-});
-window.addEventListener('offline', function() {
-    isOffline = true;
-    updateOfflineUI();
-    showToast('Offline mode activated, voice recognition and HD disabled');
-});
-
-/* =========================================================
-   9. Bilingual Chat
-   ========================================================= */
-let chatMode = false;
-let isListening = false;
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'zh-CN';
-recognition.continuous = false;
-recognition.interimResults = true;
-
-function containsChinese(text) {
-    return /[\u4e00-\u9fa5]/.test(text);
-}
-
-const chineseRules = [
-    { keywords: ['你好','嗨','hi','hello'], reply: '你好！很高兴见到你。😊 (Hello! Nice to meet you.)' },
-    { keywords: ['你好吗','怎么样','how are you'], reply: '我很好，谢谢！你呢？ (I\'m great, thanks! How about you?)' },
-    { keywords: ['好','不错','挺好','很好'], reply: '听到这个我很开心！你想聊点什么呢？ (I\'m glad to hear that! What would you like to talk about?)' },
-    { keywords: ['吃','食物','饿了'], reply: '你最喜欢吃什么？我推荐试试当地特色菜。 (What do you like to eat? I recommend trying local dishes.)' },
-    { keywords: ['喝','水','咖啡','茶'], reply: '咖啡还是茶？我个人早上喜欢来一杯好咖啡。 (Coffee or tea? I love a good cup of coffee in the morning.)' },
-    { keywords: ['去','旅行','机场','旅游'], reply: '旅行总是令人兴奋！你接下来打算去哪里？ (Traveling is exciting! Where are you planning to go next?)' },
-    { keywords: ['工作','上班','办公室'], reply: '工作让我们忙碌。你是做什么工作的？ (Work keeps us busy. What do you do for a living?)' },
-    { keywords: ['学习','学英语','学校','上课'], reply: '学习英语是一段伟大的旅程！坚持每天练习。 (Learning English is a great journey! Keep practicing every day.)' },
-    { keywords: ['天气','雨','晴','多云'], reply: '天气影响我们的心情。你喜欢晴天还是雨天？ (The weather affects our mood. Do you prefer sunny or rainy days?)' },
-    { keywords: ['帮助','帮帮我','求助'], reply: '我在这里帮你！尽管告诉我你需要什么。 (I\'m here to help! Just tell me what you need.)' },
-    { keywords: ['谢谢','感谢'], reply: '不客气！很高兴能帮你练习。 (You\'re welcome! It\'s my pleasure to help you practice.)' },
-    { keywords: ['对不起','抱歉'], reply: '不必道歉。犯错是学习的一部分！ (No need to apologize. Making mistakes is part of learning!)' },
-    { keywords: ['时间','几点','钟'], reply: '学习的时候时间过得真快！你今天日程紧吗？ (Time flies when you\'re learning! Do you have a busy schedule today?)' },
-    { keywords: ['家','房子','家人'], reply: '家是心之所在。跟我聊聊你的家人吧。 (Home is where the heart is. Tell me about your family.)' },
-    { keywords: ['音乐','歌','听'], reply: '音乐让一切更美好。你喜欢什么类型的音乐？ (Music makes everything better. What kind of music do you enjoy?)' },
-    { keywords: ['电影','影片','看'], reply: '看电影是学英语的好方法。你有最喜欢的电影吗？ (Watching movies is a great way to learn English. Do you have a favorite film?)' },
-    { keywords: ['书','读','小说'], reply: '阅读能扩大词汇量！你最近在读什么书？ (Reading expands your vocabulary! What are you reading right now?)' },
-    { keywords: ['喜欢','爱','最爱'], reply: '每个人都有自己的最爱！你空闲时间最喜欢做什么？ (Everyone has favorites! What\'s your favorite thing to do in your free time?)' },
-    { keywords: ['讨厌','不喜欢','不喜欢'], reply: '有自己的偏好很正常。你最不喜欢什么？ (It\'s okay to have preferences. What do you dislike the most?)' },
-    { keywords: ['计划','周末','明天'], reply: '提前计划是聪明的做法。你周末有什么计划？ (Planning ahead is smart. What are your plans for the weekend?)' },
-    { keywords: ['练习','提高','进步'], reply: '熟能生巧！你通过说英语做得很棒。 (Practice makes perfect! You\'re doing a great job by speaking English.)' },
-    { keywords: ['再见','拜拜','bye'], reply: '再见！祝你今天愉快！ (Goodbye! Have a great day!)' },
-];
-
-const englishRules = [
-    { keywords: ['hello','hi','hey'], reply: "Hello! How are you today? I'm your English practice partner." },
-    { keywords: ['how are you',"how're you","how r u"], reply: "I'm great, thanks! How are you doing?" },
-    { keywords: ['fine','good','great','well'], reply: "I'm glad to hear that! What would you like to talk about?" },
-    { keywords: ['eat','food','hungry'], reply: "What do you like to eat? I recommend trying some local dishes." },
-    { keywords: ['drink','water','coffee','tea'], reply: "Coffee or tea? I love a good cup of coffee in the morning." },
-    { keywords: ['go','going','travel','airport'], reply: "Traveling is exciting! Where are you planning to go next?" },
-    { keywords: ['work','job','office'], reply: "Work keeps us busy. What do you do for a living?" },
-    { keywords: ['study','learn','english','school'], reply: "Learning English is a great journey! Keep practicing every day." },
-    { keywords: ['weather','rain','sunny','cloudy'], reply: "The weather affects our mood. Do you prefer sunny or rainy days?" },
-    { keywords: ['help','help me','assist'], reply: "I'm here to help! Just tell me what you need." },
-    { keywords: ['thank','thanks','thank you'], reply: "You're welcome! It's my pleasure to help you practice." },
-    { keywords: ['sorry','apologize'], reply: "No need to apologize. Making mistakes is part of learning!" },
-    { keywords: ['time','clock','hour'], reply: "Time flies when you're learning! Do you have a busy schedule today?" },
-    { keywords: ['home','house','family'], reply: "Home is where the heart is. Tell me about your family." },
-    { keywords: ['music','song','listen'], reply: "Music makes everything better. What kind of music do you enjoy?" },
-    { keywords: ['movie','film','watch'], reply: "Watching movies is a great way to learn English. Do you have a favorite film?" },
-    { keywords: ['book','read','novel'], reply: "Reading expands your vocabulary! What are you reading right now?" },
-    { keywords: ['love','like','favorite'], reply: "Everyone has favorites! What's your favorite thing to do in your free time?" },
-    { keywords: ['hate','dislike',"don't like"], reply: "It's okay to have preferences. What do you dislike the most?" },
-    { keywords: ['plan','weekend','tomorrow'], reply: "Planning ahead is smart. What are your plans for the weekend?" },
-    { keywords: ['learn','practice','improve'], reply: "Practice makes perfect! You're doing a great job by speaking English." },
-    { keywords: ['bye','goodbye'], reply: "Goodbye! Have a great day!" },
-];
-
-const correctionRules = [
-    { pattern: /\bwant\s+go\b/i, correct: "want to go" },
-    { pattern: /\bwant\s+eat\b/i, correct: "want to eat" },
-    { pattern: /\bwant\s+drink\b/i, correct: "want to drink" },
-    { pattern: /\bgo\s+home\s+to\b/i, correct: "go home" },
-    { pattern: /\blike\s+eat\b/i, correct: "like to eat" },
-    { pattern: /\bneed\s+go\b/i, correct: "need to go" },
-    { pattern: /\bI\s+is\b/i, correct: "I am" },
-    { pattern: /\bhe\s+is\s+do\b/i, correct: "he is doing" },
-    { pattern: /\bI\s+go\s+to\s+home\b/i, correct: "I go home" },
-    { pattern: /\bhow\s+you\b/i, correct: "how are you" },
-    { pattern: /\bwhat\s+you\s+do\b/i, correct: "what do you do" },
-];
-
-function findCorrection(text) {
-    for (let rule of correctionRules) {
-        if (rule.pattern.test(text)) {
-            return text.replace(rule.pattern, rule.correct);
-        }
-    }
-    return null;
-}
-
-function getReply(text, isChinese) {
-    const lower = text.toLowerCase();
-    if (isChinese) {
-        for (let rule of chineseRules) {
-            if (rule.keywords.some(kw => lower.includes(kw))) {
-                return rule.reply;
-            }
-        }
-        return "有意思！你能再多说一点吗？我很想听听你的想法。 (That's interesting! Could you tell me more about it? I'd love to hear your thoughts.)";
-    } else {
-        for (let rule of englishRules) {
-            if (rule.keywords.some(kw => lower.includes(kw))) {
-                return rule.reply;
-            }
-        }
-        return "That's interesting! Could you tell me more about it? I'd love to hear your thoughts.";
-    }
-}
-
-function appendMessage(role, content, correction = null) {
-    const div = document.createElement('div');
-    div.className = `chat-msg ${role}`;
-    div.textContent = content;
-    if (correction) {
-        const corrDiv = document.createElement('div');
-        corrDiv.className = 'correction';
-        corrDiv.textContent = '💡 ' + correction;
-        div.appendChild(corrDiv);
-    }
-    const time = document.createElement('div');
-    time.className = 'time';
-    time.textContent = new Date().toLocaleTimeString();
-    div.appendChild(time);
-    dom.chatBox.appendChild(div);
-    dom.chatBox.scrollTop = dom.chatBox.scrollHeight;
-}
-
-function processUserInput(text) {
-    if (!text.trim()) return;
-    const isChinese = containsChinese(text);
-    appendMessage('user', text);
-
-    if (!isChinese) {
-        const corrected = findCorrection(text);
-        if (corrected && corrected !== text) {
-            appendMessage('ai', `I noticed you might mean: "${corrected}".`, corrected);
-        }
-    }
-
-    const reply = getReply(text, isChinese);
-    setTimeout(() => {
-        appendMessage('ai', reply);
-        let speakTextContent = reply;
-        if (isChinese) {
-            const match = reply.match(/\(([^)]+)\)/);
-            if (match) speakTextContent = match[1];
-            else speakTextContent = reply;
-        }
-        if (typeof speakText === 'function') {
-            speakText(speakTextContent);
-        }
-        dom.status.textContent = '✅ Replied';
-        dom.status.className = 'status done';
-    }, 300);
-}
-
-function toggleChat() {
-    chatMode = !chatMode;
-    const btn = dom.aiToggle;
-    if (chatMode) {
-        dom.chatBox.style.display = 'block';
-        document.getElementById('chatInputArea').style.display = 'flex';
-        btn.textContent = '❌ Close Chat';
-        btn.style.background = '#ef4444';
-        if (dom.chatBox.children.length === 0) {
-            appendMessage('ai', "👋 Hello! I'm your free English practice partner. You can type or speak in English or Chinese. Let's get started! (你好！我是你的免费英语练习伙伴。你可以输入英文或中文，我们开始吧！)");
-        }
-    } else {
-        dom.chatBox.style.display = 'none';
-        document.getElementById('chatInputArea').style.display = 'none';
-        btn.textContent = '💬 Chat';
-        btn.style.background = '#10b981';
-        if (isListening) {
-            try { recognition.stop(); } catch(e) {}
-            dom.micBtn.textContent = '🎤 Voice';
-            dom.micBtn.classList.remove('listening');
-            isListening = false;
-        }
-    }
-}
-
-function sendTextMessage() {
-    const text = dom.chatInput.value.trim();
-    if (!text) return;
-    dom.chatInput.value = '';
-    processUserInput(text);
-}
-
-dom.chatInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        sendTextMessage();
-    }
-});
-
-function toggleMic() {
-    if (isOffline) {
-        showToast('Voice recognition unavailable offline');
-        return;
-    }
-    if (isListening) {
-        recognition.stop();
-        dom.micBtn.textContent = '🎤 Voice';
-        dom.micBtn.classList.remove('listening');
-        isListening = false;
-        return;
-    }
-    if (!chatMode) toggleChat();
-    try {
-        recognition.start();
-        dom.micBtn.textContent = '⏺ Recording...';
-        dom.micBtn.classList.add('listening');
-        dom.status.textContent = '🎤 Speak in English or Chinese...';
-        dom.status.className = 'status speaking';
-        isListening = true;
-    } catch (e) {
-        showToast('❌ Mic access denied. Check permissions.');
-        dom.micBtn.textContent = '🎤 Voice';
-        dom.micBtn.classList.remove('listening');
-        isListening = false;
-    }
-}
-
-recognition.onresult = function(event) {
-    let finalText = '';
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-        if (event.results[i].isFinal) {
-            finalText = event.results[i][0].transcript;
-            break;
-        }
-    }
-    if (finalText) {
-        dom.status.textContent = '✅ Recognized: ' + finalText;
-        dom.status.className = 'status done';
-        processUserInput(finalText);
-        recognition.stop();
-        dom.micBtn.textContent = '🎤 Voice';
-        dom.micBtn.classList.remove('listening');
-        isListening = false;
-    }
-};
-
-recognition.onerror = function(event) {
-    dom.status.textContent = '⚠️ Recognition error: ' + event.error;
-    dom.status.className = 'status error';
-    dom.micBtn.textContent = '🎤 Voice';
-    dom.micBtn.classList.remove('listening');
-    isListening = false;
-    showToast('Voice recognition failed. Try typing.');
-};
-
-recognition.onend = function() {
-    if (isListening) {
-        dom.micBtn.textContent = '🎤 Voice';
-        dom.micBtn.classList.remove('listening');
-        isListening = false;
-    }
-};
-
-/* =========================================================
-   10. Keyboard Shortcuts & Init
-   ========================================================= */
-document.addEventListener("keydown", function(e){
-    if(document.activeElement === dom.searchInput || document.activeElement === dom.chatInput) return;
-    if(e.key === "ArrowLeft"){ e.preventDefault(); prevTrack(); }
-    if(e.key === "ArrowRight"){ e.preventDefault(); nextTrack(); }
-    if(e.key === " "){ e.preventDefault(); togglePlayPause(); }
-    if(e.key === "r" || e.key === "R"){ e.preventDefault(); toggleRepeat(); }
-});
-
-if(window.speechSynthesis){
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = function(){
-        window.speechSynthesis.getVoices();
-    };
-}
-
-updateOfflineUI();
-showSentence();// ===== 分类筛选下拉菜单 =====
-function populateSceneSelect() {
-    const select = document.getElementById('sceneSelect');
-    if (!select) return;
-    const scenes = new Set();
-    lessons.forEach(item => {
-        let scene = item.scene.replace(/^⭐\s*/, '').trim();
-        if (scene) scenes.add(scene);
-    });
-    select.innerHTML = '<option value="">📂 全部场景</option>';
-    Array.from(scenes).sort().forEach(scene => {
-        const opt = document.createElement('option');
-        opt.value = scene;
-        opt.textContent = scene;
-        select.appendChild(opt);
-    });
-    select.addEventListener('change', function() {
-        const input = document.getElementById('searchInput');
-        input.value = this.value;
-        searchSentence();
-    });
-}
-populateSceneSelect();
-updateCnStatus();
-
-console.log('🎧 Listen & Speak · Bilingual + Chinese Unlock loaded');
-console.log('📚 Total chunks:', lessons.length);
-console.log('🔊 Free Chinese audio: first 50 sentences, then $1/20 sentences');
-console.log('📱 M-PESA: 0768033524');
-console.log('🔑 Admin: click title 5 times');
-console.log('💬 New: Click "Get Code" to receive unlock code via Telegram!');
-</script>
-</body>
-</html>
