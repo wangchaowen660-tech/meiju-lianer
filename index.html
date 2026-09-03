@@ -277,7 +277,27 @@ const coreChunks = [
 ["工作","您方便接电话吗？","Are you available to take a call?","Are you available to take a call?","您方便接电话吗？",["take a call|接电话","have a meeting|开会","talk later|晚点聊","answer emails|回邮件","review the report|审报告"]],
 ["工作","我们什么时候再聊？","When can we talk again?","When can we talk again?","我们什么时候再聊？",["talk again|再聊","meet again|再见","continue this|继续","follow up|跟进","schedule a call|安排通话"]],
 ["工作","您能发给我吗？","Could you send it to me?","Could you send it to me?","您能发给我吗？",["send it to me|发给我","forward it|转发","email it|邮件发","upload it|上传","share it|分享"]],
-["工作","我需要您的反馈","I need your feedback.","I need your feedback.","我需要您的反馈。",["feedback|反馈","opinion|意见","suggestion|建议","approval|批准","input|意见"]],
+["工作","我需要您的反馈","I need your feedback.","I need your feedback.","我需要您的反馈。",["feedback|反馈","opinion|意见","suggestion|建议","approval|批准","input|意见"]],// ========== 新增厨房语块 ==========
+["厨房","我需要……","I need...","I need some ginger.","我需要一些姜。",["ginger|姜","spring onion|葱","carrot|胡萝卜","chili pepper|辣椒","garlic|蒜"]],
+["厨房","把……切成片","Cut...into slices","Cut the ginger into slices.","把姜切成片。",["ginger|姜","carrot|胡萝卜","potato|土豆","onion|洋葱","cucumber|黄瓜"]],
+["厨房","把……切成丁","Dice...","Dice the onion.","把洋葱切成丁。",["onion|洋葱","carrot|胡萝卜","garlic|蒜","tomato|番茄","pepper|彩椒"]],
+["厨房","炒……","Stir-fry...","Stir-fry the vegetables.","炒蔬菜。",["vegetables|蔬菜","meat|肉类","rice|米饭","noodles|面条","shrimp|虾"]],
+["厨房","蒸……","Steam...","Steam the fish.","蒸鱼。",["fish|鱼","dumplings|饺子","vegetables|蔬菜","rice|米饭","buns|包子"]],
+// ========== 新增旅行语块 ==========
+["旅行","我想预订一个房间","I'd like to book a room.","I'd like to book a room.","我想预订一个房间。",["book a room|订房","make a reservation|预订","check in|入住","check out|退房","extend my stay|延住"]],
+["旅行","有免费WiFi吗？","Is there free WiFi?","Is there free WiFi?","有免费WiFi吗？",["WiFi|无线网","breakfast|早餐","parking|停车","pool|游泳池","gym|健身房"]],
+["旅行","退房时间是几点？","What time is checkout?","What time is checkout?","退房时间是几点？",["checkout|退房","check-in|入住","late checkout|晚退房","early check-in|早入住","express checkout|快速退房"]],
+// ========== 新增商务语块 ==========
+["商务","我能和您约个时间吗？","Can I schedule a meeting with you?","Can I schedule a meeting with you?","我能和您约个时间吗？",["schedule a meeting|安排会议","have a call|通电话","set up a discussion|安排讨论","arrange a chat|安排聊天","book a session|预订时段"]],
+["商务","我马上处理","I'll take care of it right away.","I'll take care of it right away.","我马上处理。",["take care of it|处理","handle it|处理","manage it|管理","deal with it|应对","fix it|解决"]],
+["商务","您能发给我一份报价吗？","Could you send me a quote?","Could you send me a quote?","您能发给我一份报价吗？",["quote|报价","proposal|提案","estimate|估算","invoice|发票","contract|合同"]],
+// ========== 新增日常交际 ==========
+["日常问句","您今天过得怎么样？","How was your day?","How was your day?","您今天过得怎么样？",["day|一天","weekend|周末","trip|旅行","meeting|会议","work|工作"]],
+["日常问句","您有什么推荐的吗？","What do you recommend?","What do you recommend?","您有什么推荐的吗？",["recommend|推荐","suggest|建议","advise|提议","offer|提供","propose|推荐"]],
+["日常问句","您介意我开窗吗？","Do you mind if I open the window?","Do you mind if I open the window?","您介意我开窗吗？",["open the window|开窗","close the door|关门","turn on the light|开灯","turn off the TV|关电视","use the phone|用电话"]],
+// ========== 新增健康类 ======
+["健康","我嗓子疼","I have a sore throat.","I have a sore throat.","我嗓子疼。",["sore throat|嗓子疼","stomachache|胃疼","backache|背疼","headache|头疼","toothache|牙疼"]],
+["健康","您能推荐一位好医生吗？","Can you recommend a good doctor?","Can you recommend a good doctor?","您能推荐一位好医生吗？",["doctor|医生","dentist|牙医","pharmacist|药剂师","nurse|护士","specialist|专科医生"]],
 ];
 // ========== 2. 生成 lessons ==========
 let lessons = coreChunks.map((item, i) => ({
