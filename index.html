@@ -698,21 +698,22 @@ const coreChunks = [
 ];
 let lessons = [];
 let id = 1;
-while (lessons.length < 200) {
-    const base = coreChunks[lessons.length % coreChunks.length];
-    lessons.push({
-        id: id++,
-        scene: base[0],
-        chunk: base[1],
-        pattern: base[2],
-        en: base[3],
-        cn: base[4],
-        replace: base[5],
-        isPremium: false
-    });
-}
-// 如果有 premiumChunks，可以合并，这里省略
 
+// 如果有 premiumChunks，可以合并，这里省略
+// 如果有 premiumChunks 数组
+if (typeof premiumChunks !== 'undefined' && premiumChunks.length) {
+    const premiumLessons = premiumChunks.map((item, index) => ({
+        id: lessons.length + index + 1,
+        scene: '⭐ ' + item[0],
+        chunk: item[1],
+        pattern: item[2],
+        en: item[3],
+        cn: item[4],
+        replace: item[5] || [],
+        isPremium: true
+    }));
+    lessons = lessons.concat(premiumLessons);
+}
 /* =========================================================
    2. 解锁、播放、对话等核心功能（与原版一致）
    ========================================================= */
