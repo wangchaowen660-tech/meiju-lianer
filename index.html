@@ -949,7 +949,6 @@ function showSentence(){
     dom.status.className = "status";
     updateCnStatus();
 }
-function searchSentence(){ /* 与之前相同，需匹配场景 */ }
 function populateSceneSelect() {
     const select = document.getElementById('sceneSelect');
     if (!select) return;
@@ -965,11 +964,14 @@ function populateSceneSelect() {
         opt.textContent = scene;
         select.appendChild(opt);
     });
-    select.addEventListener('change', function() {
+    // 移除旧的监听器（避免重复绑定）
+    select.removeEventListener('change', select._changeHandler);
+    select._changeHandler = function() {
         const input = document.getElementById('searchInput');
         input.value = this.value;
         searchSentence();
-    });
+    };
+    select.addEventListener('change', select._changeHandler);
 }
 populateSceneSelect();
 
