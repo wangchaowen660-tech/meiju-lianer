@@ -1013,3 +1013,206 @@ console.log('✅ 所有功能已加载，语块总数:', lessons.length);
 </script>
 </body>
 </html>
+// ===== 确保 dom 对象已定义 =====
+if (typeof dom === 'undefined') {
+    var dom = {
+        scene: document.getElementById("scene"),
+        progress: document.getElementById("progress"),
+        chunk: document.getElementById("chunk"),
+        english: document.getElementById("english"),
+        chinese: document.getElementById("chinese"),
+        replaceList: document.getElementById("replaceList"),
+        status: document.getElementById("status"),
+        playPauseBtn: document.getElementById("playPauseBtn"),
+        repeatBtn: document.getElementById("repeatBtn"),
+        searchInput: document.getElementById("searchInput"),
+        results: document.getElementById("results"),
+        toast: document.getElementById("toast"),
+        hdToggle: document.getElementById("hdToggle"),
+        micBtn: document.getElementById("micBtn"),
+        chatBox: document.getElementById("chatBox"),
+        chatInput: document.getElementById("chatInput"),
+        aiToggle: document.getElementById("aiToggle")
+    };
+}
+
+// ===== 搜索函数 =====
+function searchSentence() {
+    const keyword = dom.searchInput.value.trim().toLowerCase();
+    dom.results.innerHTML = "";
+    if (!keyword) {
+        showToast("Enter a keyword");
+        return;
+    }
+    const available = getAvailableLessons();
+    const matches = available.filter(item =>
+        item.chunk.toLowerCase().includes(keyword) ||
+        item.pattern.toLowerCase().includes(keyword) ||
+        item.en.toLowerCase().includes(keyword) ||
+        item.cn.includes(keyword) ||
+        item.scene.toLowerCase().includes(keyword)
+    );
+    if (matches.length === 0) {
+        dom.results.innerHTML = `<div class="no-result">🔍 No matching chunks found</div>`;
+        return;
+    }
+    matches.slice(0, 30).forEach(function(item) {
+        const box = document.createElement("div");
+        box.className = "result";
+        box.innerHTML = `<div class="result-en">${item.chunk} · ${item.pattern}${item.isPremium ? ' ⭐' : ''}</div>
+                         <div class="result-cn">${item.cn}</div>`;
+        box.onclick = function() {
+            stopSpeech();
+            const idx = available.indexOf(item);
+            if (idx !== -1) currentIndex = idx;
+            showSentence();
+            dom.results.innerHTML = "";
+            dom.searchInput.value = "";
+            setTimeout(playCurrent, 150);
+            showToast("Jumped to chunk");
+        };
+        dom.results.appendChild(box);
+    });
+}
+
+// ===== 分类下拉填充 =====
+function populateSceneSelect() {
+    const select = document.getElementById('sceneSelect');
+    if (!select) return;
+    const scenes = new Set();
+    lessons.forEach(item => {
+        let scene = item.scene.replace(/^⭐\s*/, '').trim();
+        if (scene) scenes.add(scene);
+    });
+    select.innerHTML = '<option value="">📂 全部场景</option>';
+    Array.from(scenes).sort().forEach(scene => {
+        const opt = document.createElement('option');
+        opt.value = scene;
+        opt.textContent = scene;
+        select.appendChild(opt);
+    });
+    // 移除旧监听器
+    select.removeEventListener('change', select._changeHandler);
+    select._changeHandler = function() {
+        const input = document.getElementById('searchInput');
+        input.value = this.value;
+        searchSentence();
+    };
+    select.addEventListener('change', select._changeHandler);
+}
+
+// ===== 获取可用语块 =====
+function getAvailableLessons() {
+    return lessons;
+}
+
+// ===== 页面加载完成后初始化 =====
+// 如果页面已加载，立即执行；否则等待 DOM 就绪
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    populateSceneSelect();
+} else {
+    document.addEventListener('DOMContentLoaded', function() {
+        populateSceneSelect();
+    }// ===== 确保 dom 对象已定义 =====
+if (typeof dom === 'undefined') {
+    var dom = {
+        scene: document.getElementById("scene"),
+        progress: document.getElementById("progress"),
+        chunk: document.getElementById("chunk"),
+        english: document.getElementById("english"),
+        chinese: document.getElementById("chinese"),
+        replaceList: document.getElementById("replaceList"),
+        status: document.getElementById("status"),
+        playPauseBtn: document.getElementById("playPauseBtn"),
+        repeatBtn: document.getElementById("repeatBtn"),
+        searchInput: document.getElementById("searchInput"),
+        results: document.getElementById("results"),
+        toast: document.getElementById("toast"),
+        hdToggle: document.getElementById("hdToggle"),
+        micBtn: document.getElementById("micBtn"),
+        chatBox: document.getElementById("chatBox"),
+        chatInput: document.getElementById("chatInput"),
+        aiToggle: document.getElementById("aiToggle")
+    };
+}
+
+// ===== 搜索函数 =====
+function searchSentence() {
+    const keyword = dom.searchInput.value.trim().toLowerCase();
+    dom.results.innerHTML = "";
+    if (!keyword) {
+        showToast("Enter a keyword");
+        return;
+    }
+    const available = getAvailableLessons();
+    const matches = available.filter(item =>
+        item.chunk.toLowerCase().includes(keyword) ||
+        item.pattern.toLowerCase().includes(keyword) ||
+        item.en.toLowerCase().includes(keyword) ||
+        item.cn.includes(keyword) ||
+        item.scene.toLowerCase().includes(keyword)
+    );
+    if (matches.length === 0) {
+        dom.results.innerHTML = `<div class="no-result">🔍 No matching chunks found</div>`;
+        return;
+    }
+    matches.slice(0, 30).forEach(function(item) {
+        const box = document.createElement("div");
+        box.className = "result";
+        box.innerHTML = `<div class="result-en">${item.chunk} · ${item.pattern}${item.isPremium ? ' ⭐' : ''}</div>
+                         <div class="result-cn">${item.cn}</div>`;
+        box.onclick = function() {
+            stopSpeech();
+            const idx = available.indexOf(item);
+            if (idx !== -1) currentIndex = idx;
+            showSentence();
+            dom.results.innerHTML = "";
+            dom.searchInput.value = "";
+            setTimeout(playCurrent, 150);
+            showToast("Jumped to chunk");
+        };
+        dom.results.appendChild(box);
+    });
+}
+
+// ===== 分类下拉填充 =====
+function populateSceneSelect() {
+    const select = document.getElementById('sceneSelect');
+    if (!select) return;
+    const scenes = new Set();
+    lessons.forEach(item => {
+        let scene = item.scene.replace(/^⭐\s*/, '').trim();
+        if (scene) scenes.add(scene);
+    });
+    select.innerHTML = '<option value="">📂 全部场景</option>';
+    Array.from(scenes).sort().forEach(scene => {
+        const opt = document.createElement('option');
+        opt.value = scene;
+        opt.textContent = scene;
+        select.appendChild(opt);
+    });
+    // 移除旧监听器
+    select.removeEventListener('change', select._changeHandler);
+    select._changeHandler = function() {
+        const input = document.getElementById('searchInput');
+        input.value = this.value;
+        searchSentence();
+    };
+    select.addEventListener('change', select._changeHandler);
+}
+
+// ===== 获取可用语块 =====
+function getAvailableLessons() {
+    return lessons;
+}
+
+// ===== 页面加载完成后初始化 =====
+// 如果页面已加载，立即执行；否则等待 DOM 就绪
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    populateSceneSelect();
+} else {
+    document.addEventListener('DOMContentLoaded', function() {
+        populateSceneSelect();
+    });
+});
+}
