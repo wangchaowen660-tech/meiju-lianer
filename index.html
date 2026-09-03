@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listen & Speak · 完整版</title>
+<title>Listen & Speak · 词库豪华版</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#1e293b;min-height:100vh;}
@@ -11,10 +11,13 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .header{text-align:center;padding:6px 0 20px;}
 .header h1{margin:0;font-size:30px;font-weight:700;}
 .header p{margin:6px 0 0;color:#94a3b8;font-size:15px;}
-.search{display:flex;gap:10px;margin-bottom:16px;}
-.search input{flex:1;padding:13px 16px;border:1.5px solid #e2e8f0;border-radius:14px;font-size:16px;outline:none;background:#fff;}
-#sceneSelect{flex-shrink:0;padding:12px 10px;border:1.5px solid #e2e8f0;border-radius:14px;font-size:15px;background:#fff;color:#1e293b;outline:none;cursor:pointer;}
-.search button{flex-shrink:0;padding:12px 20px;background:#1e293b;color:#fff;border:0;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;}
+
+/* ===== 修改后的搜索栏（缩小、对齐） ===== */
+.search{display:flex;gap:8px;margin-bottom:12px;align-items:center;}
+.search input{flex:1;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:12px;font-size:15px;outline:none;background:#fff;height:44px;box-sizing:border-box;}
+#sceneSelect{flex-shrink:0;padding:0 10px;border:1.5px solid #e2e8f0;border-radius:12px;font-size:14px;background:#fff;color:#1e293b;outline:none;cursor:pointer;height:44px;box-sizing:border-box;min-width:110px;}
+.search button{flex-shrink:0;padding:0 18px;background:#1e293b;color:#fff;border:0;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;height:44px;box-sizing:border-box;white-space:nowrap;}
+
 .results{margin-bottom:16px;}
 .result{background:#fff;padding:14px 16px;margin-bottom:8px;border-radius:14px;cursor:pointer;border:1px solid #edf2f7;}
 .result-en{font-weight:700;font-size:17px;}
@@ -77,13 +80,13 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 .admin-panel input{width:100%;padding:10px;border:1px solid #d1d9e6;border-radius:10px;margin-bottom:10px;}
 .admin-panel .code-box{background:#fff;padding:10px;border-radius:8px;font-family:monospace;font-size:18px;margin:10px 0;word-break:break-all;}
 .admin-panel button{background:#1e293b;color:#fff;border:0;padding:10px;border-radius:10px;cursor:pointer;width:auto;}
-@media(max-width:480px){.english{font-size:25px;}.chunk{font-size:24px;}.ctrl-btn{width:50px;height:50px;font-size:28px;}.ctrl-btn.play-btn{width:70px;height:70px;font-size:36px;}.ctrl-btn.cn-btn{width:50px;height:50px;font-size:24px;}#sceneSelect{font-size:13px;padding:10px 8px;}}
+@media(max-width:480px){.english{font-size:25px;}.chunk{font-size:24px;}.ctrl-btn{width:50px;height:50px;font-size:28px;}.ctrl-btn.play-btn{width:70px;height:70px;font-size:36px;}.ctrl-btn.cn-btn{width:50px;height:50px;font-size:24px;}#sceneSelect{font-size:13px;padding:0 8px;min-width:90px;}.search input{font-size:14px;padding:8px 12px;}}
 </style>
 </head>
 <body>
 <div id="toast" class="toast"></div>
 <div class="container">
-<div class="header"><h1>🎧 Listen & Speak</h1><p>Learn English · Unlock Chinese Audio</p></div>
+<div class="header"><h1>🎧 Listen & Speak</h1><p>Learn English · 海量替换词 · 流利口语</p></div>
 <div class="search">
 <input id="searchInput" type="search" placeholder="Search English or Chinese" autocomplete="off">
 <select id="sceneSelect"><option value="">📂 全部场景</option></select>
@@ -97,7 +100,7 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 <div id="chunk" class="chunk">I want to...</div>
 <div class="english"><span id="english">I want to eat.</span></div>
 <div id="chinese" class="chinese">我想吃东西。</div>
-<div class="replace-title">Replace & Practice</div>
+<div class="replace-title">Replace & Practice (点击替换词听发音)</div>
 <div id="replaceList" class="replace-list"></div>
 <div class="player-controls">
 <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
@@ -139,242 +142,240 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 </div>
 
 <script>
-// ========== 1. 核心语块库（包含所有场景，含厨房）==========
+// ========== 1. 核心语块库（每个词块均已扩充至10~15个替换词）==========
 const coreChunks = [
-// 基础需求
-["基础需求","我想……","I want to...","I want to eat.","我想吃东西。",["eat|吃","go|去","sleep|睡觉","work|工作","learn English|学英语"]],
-["基础需求","我需要……","I need...","I need some water.","我需要一些水。",["water|水","help|帮助","money|钱","time|时间","food|食物"]],
-["基础需求","我要……","I want...","I want some food.","我要一些食物。",["food|食物","water|水","coffee|咖啡","money|钱","help|帮助"]],
-["基础需求","我喜欢……","I like...","I like this.","我喜欢这个。",["this|这个","that|那个","coffee|咖啡","music|音乐","English|英语"]],
-["基础需求","我不喜欢……","I don't like...","I don't like this.","我不喜欢这个。",["this|这个","that|那个","it|它","cold weather|冷天","spicy food|辣食"]],
-["基础需求","我想要……","I'd like...","I'd like some water.","我想要一些水。",["water|水","coffee|咖啡","tea|茶","food|食物","help|帮助"]],
-["基础需求","我可以……吗？","Can I... ?","Can I use this?","我可以用这个吗？",["use this|用这个","sit here|坐这里","come in|进来","ask you|问你","help you|帮你"]],
-["基础需求","你可以……吗？","Can you... ?","Can you help me?","你可以帮我吗？",["help me|帮我","wait|等待","come here|过来","show me|给我看","tell me|告诉我"]],
-["基础需求","请给我……","Please give me...","Please give me some water.","请给我一些水。",["water|水","food|食物","time|时间","money|钱","help|帮助"]],
-["基础需求","请帮我……","Please help me...","Please help me.","请帮帮我。",["please help me|请帮我","carry this|拿这个","find it|找到它","understand|理解","call him|打给他"]],
+// 基础需求（每个均含丰富替换）
+["基础需求","我想……","I want to...","I want to eat.","我想吃东西。",["eat|吃","go|去","sleep|睡觉","work|工作","learn English|学英语","drink water|喝水","read|阅读","write|写作","cook|做饭","travel|旅行","sing|唱歌","dance|跳舞","run|跑步","swim|游泳","drive|开车"]],
+["基础需求","我需要……","I need...","I need some water.","我需要一些水。",["water|水","help|帮助","money|钱","time|时间","food|食物","rest|休息","space|空间","information|信息","advice|建议","support|支持","luck|运气","energy|精力","confidence|信心","change|零钱"]],
+["基础需求","我要……","I want...","I want some food.","我要一些食物。",["food|食物","water|水","coffee|咖啡","money|钱","help|帮助","a break|休息","a chance|机会","a job|工作","a car|汽车","a phone|电话","a ticket|票","a gift|礼物"]],
+["基础需求","我喜欢……","I like...","I like this.","我喜欢这个。",["this|这个","that|那个","coffee|咖啡","music|音乐","English|英语","reading|阅读","traveling|旅行","cooking|烹饪","swimming|游泳","dancing|跳舞","singing|唱歌","the weather|天气"]],
+["基础需求","我不喜欢……","I don't like...","I don't like this.","我不喜欢这个。",["this|这个","that|那个","it|它","cold weather|冷天","spicy food|辣食","loud music|吵闹音乐","waiting|等待","working late|加班","getting up early|早起","rainy days|雨天"]],
+["基础需求","我想要……","I'd like...","I'd like some water.","我想要一些水。",["water|水","coffee|咖啡","tea|茶","food|食物","help|帮助","a room|房间","a table|桌子","a ticket|票","some advice|建议","a moment|一会儿","a chance|机会","some privacy|隐私"]],
+["基础需求","我可以……吗？","Can I... ?","Can I use this?","我可以用这个吗？",["use this|用这个","sit here|坐这里","come in|进来","ask you|问你","help you|帮你","try it|试试","open it|打开","close it|关闭","turn it on|打开","turn it off|关闭","pay by card|刷卡"]],
+["基础需求","你可以……吗？","Can you... ?","Can you help me?","你可以帮我吗？",["help me|帮我","wait|等待","come here|过来","show me|给我看","tell me|告诉我","repeat|重复","slow down|慢点","turn it up|调大","turn it down|调小","explain|解释"]],
+["基础需求","请给我……","Please give me...","Please give me some water.","请给我一些水。",["water|水","food|食物","time|时间","money|钱","help|帮助","a chance|机会","a pen|笔","a paper|纸","your hand|手","a minute|一分钟"]],
+["基础需求","请帮我……","Please help me...","Please help me.","请帮帮我。",["please help me|请帮我","carry this|拿这个","find it|找到它","understand|理解","call him|打给他","send this|发送","check this|检查","wait here|等着","open the door|开门","take a photo|拍照"]],
 // 行动
-["行动","我去……","I go...","I go home.","我回家。",["home|家","work|工作","school|学校","there|那里","outside|外面"]],
-["行动","我要去……","I want to go...","I want to go home.","我想回家。",["home|家","work|工作","school|学校","there|那里","outside|外面"]],
-["行动","我正在……","I'm...","I'm working.","我正在工作。",["working|工作","eating|吃","sleeping|睡觉","learning|学习","waiting|等待"]],
-["行动","我准备……","I'm going to...","I'm going to work.","我准备去工作。",["work|工作","eat|吃","sleep|睡觉","go home|回家","leave|离开"]],
-["行动","我正在找……","I'm looking for...","I'm looking for my phone.","我正在找我的手机。",["my phone|我的手机","my bag|我的包","the key|钥匙","a hotel|酒店","a restaurant|餐厅"]],
-["行动","我想买……","I want to buy...","I want to buy this.","我想买这个。",["this|这个","that|那个","some food|一些食物","a phone|手机","a ticket|票"]],
-["行动","我想看……","I want to see...","I want to see it.","我想看看它。",["it|它","this|这个","that|那个","the menu|菜单","the room|房间"]],
-["行动","我想听……","I want to hear...","I want to hear you.","我想听你说。",["you|你","the answer|答案","the music|音乐","the story|故事","more|更多"]],
-["行动","我想说……","I want to say...","I want to say something.","我想说点什么。",["something|什么","hello|你好","thank you|谢谢","sorry|抱歉","goodbye|再见"]],
-["行动","我想问……","I want to ask...","I want to ask you something.","我想问你一件事。",["you something|你一件事","a question|一个问题","the price|价格","the time|时间","the way|路"]],
-// 能力
-["能力","我能……","I can...","I can do it.","我能做到。",["do it|做到","help you|帮你","come|来","go|去","try|试试"]],
-["能力","我不能……","I can't...","I can't do it.","我做不到。",["do it|做到","come|来","go|去","wait|等","understand|理解"]],
-["能力","我会……","I know how to...","I know how to cook.","我会做饭。",["cook|做饭","drive|开车","swim|游泳","use it|用它","do it|做"]],
-["能力","我不会……","I don't know how to...","I don't know how to use it.","我不会用它。",["use it|用它","do it|做","cook|做饭","drive|开车","fix it|修它"]],
-["能力","你能……吗？","Can you... ?","Can you hear me?","你能听见我吗？",["hear me|听我","see me|看我","help me|帮我","wait|等","come|来"]],
-// 状态
-["状态","我很……","I'm very...","I'm very tired.","我很累。",["tired|累","busy|忙","happy|高兴","hungry|饿","thirsty|渴"]],
-["状态","我有点……","I'm a little...","I'm a little tired.","我有点累。",["tired|累","busy|忙","hungry|饿","cold|冷","nervous|紧张"]],
-["状态","我正在……","I'm feeling...","I'm feeling tired.","我感觉很累。",["tired|累","better|好点","sick|生病","good|好","happy|高兴"]],
-["状态","我准备好了","I'm ready.","I'm ready.","我准备好了。",["ready|准备好了","not ready|没准备好","almost ready|快好了","ready now|现在好了","ready to go|准备走"]],
-["状态","我累了","I'm tired.","I'm tired.","我累了。",["tired|累","hungry|饿","thirsty|渴","busy|忙","sleepy|困"]],
-// 理解
-["理解","我知道……","I know...","I know that.","我知道。",["that|那","him|他","her|她","the answer|答案","the place|地方"]],
-["理解","我不知道……","I don't know...","I don't know.","我不知道。",["I don't know|我不知道","I'm not sure|不确定","I don't understand|不明白","I can't remember|记不住","I don't think so|我不这么认为"]],
-["理解","我明白……","I understand...","I understand you.","我明白你的意思。",["you|你","the question|问题","the problem|问题","the idea|想法","the answer|答案"]],
-["理解","我不明白……","I don't understand...","I don't understand you.","我不明白你的意思。",["you|你","this|这个","that|那个","the question|问题","the answer|答案"]],
-["理解","我记得……","I remember...","I remember that.","我记得。",["that|那","him|他","her|她","the place|地方","the name|名字"]],
-["理解","我忘了……","I forgot...","I forgot the name.","我忘了名字。",["the name|名字","the number|号码","the time|时间","the place|地方","the address|地址"]],
-// 交流
-["交流","你好吗？","How are you?","How are you?","你好吗？",["today|今天","now|现在","this morning|今早","these days|这几天","really|真的"]],
-["交流","你在做什么？","What are you doing?","What are you doing?","你在做什么？",["now|现在","today|今天","there|那里","here|这里","at work|在工作"]],
-["交流","你要去哪里？","Where are you going?","Where are you going?","你要去哪里？",["home|家","work|工作","school|学校","there|那里","now|现在"]],
-["交流","你住在哪里？","Where do you live?","Where do you live?","你住在哪里？",["now|现在","in Nairobi|在内罗毕","near here|附近","with your family|和家人","these days|最近"]],
-["交流","你觉得怎么样？","What do you think?","What do you think?","你觉得怎么样？",["about it|关于它","about this|关于这个","about that|关于那个","about him|关于他","about the idea|关于这个想法"]],
-["交流","你是什么意思？","What do you mean?","What do you mean?","你是什么意思？",["by that|指那个","by this|指这个","by it|指它","exactly|确切","really|真的"]],
-["交流","你能再说一遍吗？","Can you say that again?","Can you say that again?","你能再说一遍吗？",["again|再说一次","slowly|慢一点","more clearly|更清楚","please|请","one more time|再来一次"]],
-["交流","请说慢一点","Please speak slowly.","Please speak slowly.","请说慢一点。",["slowly|慢一点","more clearly|更清楚","again|再说一次","a little louder|大声一点","please|请"]],
+["行动","我去……","I go...","I go home.","我回家。",["home|家","work|工作","school|学校","there|那里","outside|外面","inside|里面","upstairs|楼上","downstairs|楼下","abroad|国外","nowhere|无处"]],
+["行动","我要去……","I want to go...","I want to go home.","我想回家。",["home|家","work|工作","school|学校","there|那里","outside|外面","to the park|公园","to the beach|海滩","to the shop|商店","to the gym|健身房","to the cinema|电影院"]],
+["行动","我正在……","I'm...","I'm working.","我正在工作。",["working|工作","eating|吃","sleeping|睡觉","learning|学习","waiting|等待","cooking|做饭","reading|阅读","writing|写作","listening|听","thinking|思考"]],
+["行动","我准备……","I'm going to...","I'm going to work.","我准备去工作。",["work|工作","eat|吃","sleep|睡觉","go home|回家","leave|离开","study|学习","travel|旅行","shop|购物","call|打电话","try|尝试"]],
+["行动","我正在找……","I'm looking for...","I'm looking for my phone.","我正在找我的手机。",["my phone|我的手机","my bag|我的包","the key|钥匙","a hotel|酒店","a restaurant|餐厅","my friend|朋友","the bathroom|洗手间","a parking lot|停车场","my glasses|眼镜","my wallet|钱包"]],
+["行动","我想买……","I want to buy...","I want to buy this.","我想买这个。",["this|这个","that|那个","some food|一些食物","a phone|手机","a ticket|票","a house|房子","a car|汽车","some clothes|衣服","a gift|礼物","a drink|饮料"]],
+["行动","我想看……","I want to see...","I want to see it.","我想看看它。",["it|它","this|这个","that|那个","the menu|菜单","the room|房间","the view|风景","the movie|电影","the doctor|医生","the manager|经理","the sunset|日落"]],
+["行动","我想听……","I want to hear...","I want to hear you.","我想听你说。",["you|你","the answer|答案","the music|音乐","the story|故事","more|更多","the news|新闻","the lecture|讲座","the song|歌曲","the radio|收音机","your voice|你的声音"]],
+["行动","我想说……","I want to say...","I want to say something.","我想说点什么。",["something|什么","hello|你好","thank you|谢谢","sorry|抱歉","goodbye|再见","yes|是的","no|不","maybe|也许","please|请","excuse me|打扰了"]],
+["行动","我想问……","I want to ask...","I want to ask you something.","我想问你一件事。",["you something|你一件事","a question|一个问题","the price|价格","the time|时间","the way|路","for help|求助","about it|关于它","for advice|征求意见","permission|许可","a favor|帮忙"]],
+// 能力（扩充）
+["能力","我能……","I can...","I can do it.","我能做到。",["do it|做到","help you|帮你","come|来","go|去","try|试试","win|赢","learn|学习","speak|说话","run|跑步","cook|做饭","drive|开车","swim|游泳"]],
+["能力","我不能……","I can't...","I can't do it.","我做不到。",["do it|做到","come|来","go|去","wait|等","understand|理解","believe|相信","imagine|想象","afford|负担","remember|记住","forget|忘记"]],
+["能力","我会……","I know how to...","I know how to cook.","我会做饭。",["cook|做饭","drive|开车","swim|游泳","use it|用它","do it|做","fix it|修它","write|写","read|阅读","draw|画画","dance|跳舞"]],
+["能力","我不会……","I don't know how to...","I don't know how to use it.","我不会用它。",["use it|用它","do it|做","cook|做饭","drive|开车","fix it|修它","explain|解释","answer|回答","solve|解决","operate|操作","speak|说"]],
+["能力","你能……吗？","Can you... ?","Can you hear me?","你能听见我吗？",["hear me|听我","see me|看我","help me|帮我","wait|等","come|来","understand|理解","believe|相信","remember|记住","follow|跟随","join|加入"]],
+// 状态（扩充）
+["状态","我很……","I'm very...","I'm very tired.","我很累。",["tired|累","busy|忙","happy|高兴","hungry|饿","thirsty|渴","excited|兴奋","nervous|紧张","sad|伤心","angry|生气","scared|害怕","proud|骄傲","lucky|幸运"]],
+["状态","我有点……","I'm a little...","I'm a little tired.","我有点累。",["tired|累","busy|忙","hungry|饿","cold|冷","nervous|紧张","confused|困惑","worried|担心","excited|兴奋","shy|害羞","sick|不舒服"]],
+["状态","我正在……","I'm feeling...","I'm feeling tired.","我感觉很累。",["tired|累","better|好点","sick|生病","good|好","happy|高兴","great|很棒","wonderful|好极了","terrible|很糟","alone|孤独","lost|迷路"]],
+["状态","我准备好了","I'm ready.","I'm ready.","我准备好了。",["ready|准备好了","not ready|没准备好","almost ready|快好了","ready now|现在好了","ready to go|准备走","ready for work|准备工作","ready for school|准备上学","ready to leave|准备离开","ready to eat|准备吃","ready to start|准备开始"]],
+["状态","我累了","I'm tired.","I'm tired.","我累了。",["tired|累","hungry|饿","thirsty|渴","busy|忙","sleepy|困","exhausted|筋疲力尽","stressed|压力大","bored|无聊","lazy|懒","sore|酸痛"]],
+// 理解（扩充）
+["理解","我知道……","I know...","I know that.","我知道。",["that|那","him|他","her|她","the answer|答案","the place|地方","the truth|真相","the secret|秘密","the way|路","the reason|原因","the result|结果"]],
+["理解","我不知道……","I don't know...","I don't know.","我不知道。",["I don't know|我不知道","I'm not sure|不确定","I don't understand|不明白","I can't remember|记不住","I don't think so|我不这么认为","I have no idea|我不知道","I'm lost|我迷路了","I'm confused|我困惑","maybe|也许","let me think|让我想想"]],
+["理解","我明白……","I understand...","I understand you.","我明白你的意思。",["you|你","the question|问题","the problem|问题","the idea|想法","the answer|答案","the situation|情况","the feeling|感受","the reason|原因","the rule|规则","the point|要点"]],
+["理解","我不明白……","I don't understand...","I don't understand you.","我不明白你的意思。",["you|你","this|这个","that|那个","the question|问题","the answer|答案","the instruction|指示","the rule|规则","the joke|笑话","the language|语言","the logic|逻辑"]],
+["理解","我记得……","I remember...","I remember that.","我记得。",["that|那","him|他","her|她","the place|地方","the name|名字","the day|那天","the story|故事","the song|歌曲","the face|面孔","the address|地址"]],
+["理解","我忘了……","I forgot...","I forgot the name.","我忘了名字。",["the name|名字","the number|号码","the time|时间","the place|地方","the address|地址","the date|日期","the key|钥匙","the password|密码","the appointment|预约","the meeting|会议"]],
+// 交流（扩充）
+["交流","你好吗？","How are you?","How are you?","你好吗？",["today|今天","now|现在","this morning|今早","these days|这几天","really|真的","doing|在做什么","feeling|感觉","getting on|过得","keeping|保持","holding up|撑得住"]],
+["交流","你在做什么？","What are you doing?","What are you doing?","你在做什么？",["now|现在","today|今天","there|那里","here|这里","at work|在工作","at home|在家","in the office|在办公室","on the weekend|周末","tonight|今晚","later|稍后"]],
+["交流","你要去哪里？","Where are you going?","Where are you going?","你要去哪里？",["home|家","work|工作","school|学校","there|那里","now|现在","outside|外面","downtown|市中心","abroad|国外","to the store|去商店","to the party|去聚会"]],
+["交流","你住在哪里？","Where do you live?","Where do you live?","你住在哪里？",["now|现在","in Nairobi|在内罗毕","near here|附近","with your family|和家人","these days|最近","alone|独自","in the city|在市区","in the suburbs|在郊区","in a house|在房子","in an apartment|在公寓"]],
+["交流","你觉得怎么样？","What do you think?","What do you think?","你觉得怎么样？",["about it|关于它","about this|关于这个","about that|关于那个","about him|关于他","about the idea|关于这个想法","about the plan|关于计划","about the movie|关于电影","about the food|关于食物","about the music|关于音乐","about the book|关于书"]],
+["交流","你是什么意思？","What do you mean?","What do you mean?","你是什么意思？",["by that|指那个","by this|指这个","by it|指它","exactly|确切","really|真的","precisely|精确","actually|实际上","specifically|具体","in general|大体","in detail|详细"]],
+["交流","你能再说一遍吗？","Can you say that again?","Can you say that again?","你能再说一遍吗？",["again|再说一次","slowly|慢一点","more clearly|更清楚","please|请","one more time|再来一次","louder|大声点","softer|小声点","in English|用英语","in Chinese|用中文","differently|换个方式"]],
+["交流","请说慢一点","Please speak slowly.","Please speak slowly.","请说慢一点。",["slowly|慢一点","more clearly|更清楚","again|再说一次","a little louder|大声一点","please|请","softly|柔和","naturally|自然","simply|简单","formally|正式","informally|非正式"]],
 // 时间
-["时间","现在几点？","What time is it?","What time is it?","现在几点？",["now|现在","there|那里","exactly|确切","please|请","right now|马上"]],
-["时间","现在……","It's...","It's three o'clock.","现在三点。",["three o'clock|三点","late|晚了","early|早了","time|时间","almost noon|快到中午"]],
-["时间","我没有时间……","I don't have time to...","I don't have time to wait.","我没有时间等。",["wait|等","eat|吃","talk|说话","go|去","stay|待"]],
-["时间","给我一点时间","Give me some time.","Give me some time.","给我一点时间。",["some time|一些时间","a minute|一分钟","a moment|一会儿","one day|一天","another day|改天"]],
+["时间","现在几点？","What time is it?","What time is it?","现在几点？",["now|现在","there|那里","exactly|确切","please|请","right now|马上","in your city|在你城市","in the morning|早上","in the evening|晚上","on your watch|你的表","approximately|大约"]],
+["时间","现在……","It's...","It's three o'clock.","现在三点。",["three o'clock|三点","late|晚了","early|早了","time|时间","almost noon|快到中午","midnight|午夜","dawn|黎明","noon|中午","dusk|黄昏","morning|早上"]],
+["时间","我没有时间……","I don't have time to...","I don't have time to wait.","我没有时间等。",["wait|等","eat|吃","talk|说话","go|去","stay|待","sleep|睡觉","cook|做饭","shop|购物","rest|休息","play|玩"]],
+["时间","给我一点时间","Give me some time.","Give me some time.","给我一点时间。",["some time|一些时间","a minute|一分钟","a moment|一会儿","one day|一天","another day|改天","a second|一秒","a while|一阵子","a few days|几天","a week|一周","a month|一月"]],
 // 地点
-["地点","这里有……","There is...","There is a problem.","这里有一个问题。",["a problem|问题","a restaurant|餐厅","a hotel|酒店","a shop|商店","a bus|公交"]],
-["地点","那里有……","There is...","There is a shop there.","那里有一家商店。",["a shop|商店","a restaurant|餐厅","a hotel|酒店","a bus|公交","a hospital|医院"]],
-["地点","我在这里","I'm here.","I'm here.","我在这里。",["here|这里","now|现在","outside|外面","at work|在工作","at home|在家"]],
-["地点","我在那里","I'm there.","I'm there.","我在那里。",["there|那里","now|现在","at work|在工作","at home|在家","outside|外面"]],
-// 礼貌
-["礼貌","谢谢你","Thank you.","Thank you.","谢谢你。",["very much|非常","so much|很多","for your help|谢谢你的帮助","for coming|谢谢光临","for everything|感谢一切"]],
-["礼貌","不用谢","You're welcome.","You're welcome.","不用谢。",["you're welcome|不客气","no problem|没问题","not at all|不用谢","anytime|随时","sure|当然"]],
-["礼貌","对不起","I'm sorry.","I'm sorry.","对不起。",["I'm sorry|我很抱歉","I'm really sorry|真的很抱歉","I'm so sorry|非常抱歉","sorry about that|对此抱歉","sorry for being late|抱歉迟到"]],
-["礼貌","没关系","It's okay.","It's okay.","没关系。",["it's okay|没事","no problem|没问题","that's okay|没关系","don't worry|别担心","it's fine|没事"]],
-["礼貌","请……","Please...","Please wait.","请等一下。",["wait|等","come in|进来","sit down|坐下","listen|听","help me|帮我"]],
-// 生活
-["生活","我想吃……","I want to eat...","I want to eat something.","我想吃点东西。",["something|点什么","rice|米饭","meat|肉","fish|鱼","noodles|面条"]],
-["生活","我想喝……","I want to drink...","I want to drink some water.","我想喝点水。",["water|水","coffee|咖啡","tea|茶","juice|果汁","milk|牛奶"]],
-["生活","我想睡觉","I want to sleep.","I want to sleep.","我想睡觉。",["sleep|睡觉","rest|休息","go home|回家","sit down|坐下","lie down|躺下"]],
-["生活","我饿了","I'm hungry.","I'm hungry.","我饿了。",["hungry|饿","thirsty|渴","tired|累","sleepy|困","cold|冷"]],
-["生活","我渴了","I'm thirsty.","I'm thirsty.","我渴了。",["thirsty|渴","hungry|饿","tired|累","sleepy|困","hot|热"]],
-// 工作（基础）
-["工作","我在工作","I'm working.","I'm working.","我在工作。",["working|工作","cooking|做饭","cleaning|打扫","learning|学习","waiting|等待"]],
-["工作","我需要工作","I need to work.","I need to work.","我需要工作。",["work|工作","rest|休息","learn|学习","practice|练习","finish this|完成这个"]],
-["工作","我完成了","I'm done.","I'm done.","我完成了。",["I'm done|我完成了","I'm ready|我准备好了","it's finished|完成了","it's ready|准备好了","that's all|就这样"]],
-["工作","还没完成","I'm not done yet.","I'm not done yet.","还没完成。",["not done yet|还没完成","not ready yet|还没准备好","not finished yet|还没完成","almost done|快好了","still working|还在工作"]],
-// 情感
-["情感","我很高兴","I'm very happy.","I'm very happy.","我很高兴。",["happy|高兴","excited|兴奋","pleased|满意","delighted|欣喜","glad|开心"]],
-["情感","我很伤心","I'm very sad.","I'm very sad.","我很伤心。",["sad|伤心","upset|难过","disappointed|失望","depressed|沮丧","blue|忧郁"]],
-["情感","我生气了","I'm angry.","I'm angry.","我生气了。",["angry|生气","mad|愤怒","frustrated|沮丧","annoyed|恼怒","irritated|烦躁"]],
-["情感","我害怕","I'm scared.","I'm scared.","我害怕。",["scared|害怕","afraid|恐惧","frightened|害怕","terrified|惊恐","nervous|紧张"]],
-["情感","我累了","I'm tired.","I'm tired.","我累了。",["tired|累","exhausted|筋疲力尽","worn out|累坏了","sleepy|困","drained|精力耗尽"]],
-["情感","我紧张","I'm nervous.","I'm nervous.","我紧张。",["nervous|紧张","anxious|焦虑","worried|担心","stressed|压力","uneasy|不安"]],
-// 社交
-["社交","请坐","Please sit down.","Please sit down.","请坐。",["sit down|坐下","have a seat|请坐","take a seat|请坐","please|请","relax|放松"]],
-["社交","请喝茶","Would you like some tea?","Would you like some tea?","你想喝杯茶吗？",["tea|茶","coffee|咖啡","water|水","juice|果汁","something|点东西"]],
-["社交","欢迎","You're welcome.","You're welcome.","欢迎。",["welcome|欢迎","you're welcome|不客气","my pleasure|我的荣幸","anytime|随时","not at all|没事"]],
-["社交","请稍等","Please wait a moment.","Please wait a moment.","请稍等。",["wait|等","hold on|稍等","just a second|等一下","one moment|一会儿","please|请"]],
-["社交","我叫……","My name is...","My name is John.","我叫约翰。",["John|约翰","Mary|玛丽","Peter|彼得","Lisa|丽莎","David|大卫"]],
-["社交","很高兴认识你","Nice to meet you.","Nice to meet you.","很高兴认识你。",["meet you|认识你","know you|认识你","see you|见到你","talk to you|和你说话","work with you|和你工作"]],
-// 旅行
-["旅行","我想去……","I want to go to...","I want to go to the airport.","我想去机场。",["the airport|机场","the station|车站","the hotel|酒店","the museum|博物馆","the beach|海滩"]],
-["旅行","我迷路了","I'm lost.","I'm lost.","我迷路了。",["lost|迷路","confused|困惑","not sure|不确定","turned around|转向","can't find|找不到"]],
-["旅行","我可以用地图吗？","Can I use the map?","Can I use the map?","我可以用地图吗？",["use the map|用地图","look at the map|看地图","see the map|看地图","use GPS|用GPS","get directions|获取路线"]],
-["旅行","这附近有……吗？","Is there... near here?","Is there a hotel near here?","这附近有酒店吗？",["a hotel|酒店","a restaurant|餐厅","a shop|商店","a toilet|厕所","a bank|银行"]],
-["旅行","票价多少？","How much is the ticket?","How much is the ticket?","票价多少？",["ticket|票","fare|车费","price|价格","cost|费用","fee|费"]],
-// 购物
-["购物","我在找……","I'm looking for...","I'm looking for a dress.","我在找一件连衣裙。",["a dress|连衣裙","a shirt|衬衫","shoes|鞋","a bag|包","a gift|礼物"]],
-["购物","这件多少钱？","How much is this?","How much is this?","这件多少钱？",["this|这个","that|那个","it|它","the red one|红色的","the blue one|蓝色的"]],
-["购物","你能便宜点吗？","Can you give me a discount?","Can you give me a discount?","你能给我打折吗？",["discount|折扣","a better price|更好的价格","a deal|优惠","reduce the price|降价","lower the price|降低价格"]],
-["购物","我要买这个","I'll take this.","I'll take this.","我要买这个。",["take this|拿这个","buy this|买这个","get this|买这个","choose this|选这个","pick this|挑这个"]],
-// 餐饮
-["餐饮","我想点……","I'd like to order...","I'd like to order a salad.","我想点一份沙拉。",["a salad|沙拉","a steak|牛排","fish|鱼","chicken|鸡肉","pasta|意面"]],
-["餐饮","有菜单吗？","Do you have a menu?","Do you have a menu?","有菜单吗？",["a menu|菜单","the menu|菜单","a drink list|酒水单","a wine list|酒单","a food menu|食物菜单"]],
-["餐饮","推荐什么？","What do you recommend?","What do you recommend?","你推荐什么？",["recommend|推荐","suggest|建议","advise|建议","propose|提议","offer|提供"]],
-["餐饮","买单","Can I have the bill?","Can I have the bill?","可以买单吗？",["the bill|账单","the check|账单","the receipt|收据","the invoice|发票","the total|总额"]],
-// 健康
-["健康","我头疼","I have a headache.","I have a headache.","我头疼。",["headache|头疼","stomachache|胃疼","backache|背疼","toothache|牙疼","sore throat|喉咙痛"]],
-["健康","我感冒了","I have a cold.","I have a cold.","我感冒了。",["a cold|感冒","a cough|咳嗽","a fever|发烧","flu|流感","sore throat|喉咙痛"]],
-["健康","我需要医生","I need a doctor.","I need a doctor.","我需要看医生。",["a doctor|医生","a nurse|护士","a hospital|医院","a clinic|诊所","medical help|医疗帮助"]],
-["健康","我发烧了","I have a fever.","I have a fever.","我发烧了。",["fever|发烧","temperature|体温","high temperature|高烧","hot|热","sick|生病"]],
-["健康","我受伤了","I'm injured.","I'm injured.","我受伤了。",["injured|受伤","hurt|受伤","wounded|受伤","bleeding|流血","in pain|在痛"]],
-// 家庭
-["家庭","我有一个哥哥","I have a brother.","I have a brother.","我有一个哥哥。",["brother|哥哥","sister|姐姐","father|父亲","mother|母亲","child|孩子"]],
-["家庭","我的家人……","My family is...","My family is big.","我的家庭很大。",["big|大","small|小","close|亲密","loving|充满爱","happy|幸福"]],
-["家庭","我结婚了","I'm married.","I'm married.","我结婚了。",["married|已婚","single|单身","divorced|离婚","engaged|订婚","in a relationship|恋爱"]],
-["家庭","我住……","I live...","I live in Nairobi.","我住内罗毕。",["in Nairobi|在内罗毕","with my family|和家人","near here|附近","alone|独自","in the city|在市区"]],
-// 天气
-["天气","天气怎么样？","What's the weather like?","What's the weather like?","天气怎么样？",["today|今天","tomorrow|明天","this week|这周","outside|外面","now|现在"]],
-["天气","很热","It's hot.","It's hot.","很热。",["hot|热","warm|暖和","cold|冷","cool|凉爽","sunny|晴朗"]],
-["天气","下雨了","It's raining.","It's raining.","下雨了。",["raining|下雨","snowing|下雪","windy|刮风","cloudy|多云","foggy|有雾"]],
-// 学习
-["学习","我在学习","I'm studying.","I'm studying.","我在学习。",["studying|学习","learning|学","reading|阅读","writing|写作","practicing|练习"]],
-["学习","我想学……","I want to learn...","I want to learn Chinese.","我想学中文。",["Chinese|中文","English|英语","French|法语","Spanish|西班牙语","Japanese|日语"]],
-["学习","我会说一点","I can speak a little.","I can speak a little.","我会说一点。",["a little|一点","some|一些","basic|基础","conversational|会话","fluent|流利"]],
-// 紧急
-["紧急","救命！","Help!","Help!","救命！",["help|救命","police|警察","fire|火","ambulance|救护车","emergency|紧急"]],
-["紧急","请报警","Call the police.","Call the police.","请报警。",["police|警察","ambulance|救护车","fire department|消防","emergency services|紧急服务","doctor|医生"]],
-["紧急","我丢了钱包","I lost my wallet.","I lost my wallet.","我丢了钱包。",["wallet|钱包","phone|手机","passport|护照","keys|钥匙","bag|包"]],
-// 机场
-["机场","您的航班号是多少？","What's your flight number?","What's your flight number?","您的航班号是多少？",["flight number|航班号","booking reference|预订号","passport number|护照号","ID|身份证","ticket|票"]],
-["机场","您有行李要托运吗？","Do you have any luggage to check?","Do you have any luggage to check?","您有行李要托运吗？",["luggage|行李","bags|包","suitcase|行李箱","carry-on|手提行李","backpack|背包"]],
-["机场","登机口在几号？","Which gate is the flight?","Which gate is the flight?","登机口在几号？",["gate|登机口","terminal|航站楼","departure|出发","arrival|到达","boarding|登机"]],
-["机场","航班延误了","The flight is delayed.","The flight is delayed.","航班延误了。",["delayed|延误","canceled|取消","on time|准时","boarding|登机","landing|降落"]],
-["机场","我想托运这个","I'd like to check this.","I'd like to check this.","我想托运这个。",["check this|托运这个","carry this|拿这个","store this|存这个","leave this|留这个","send this|寄这个"]],
-["机场","安检在哪里？","Where is security?","Where is security?","安检在哪里？",["security|安检","check-in|值机","gate|登机口","customs|海关","baggage claim|行李提取"]],
-["机场","我有转机航班","I have a connecting flight.","I have a connecting flight.","我有转机航班。",["connecting flight|转机航班","layover|中转","stopover|经停","transfer|转机","direct flight|直飞"]],
-["机场","我需要一个靠窗的座位","I'd like a window seat.","I'd like a window seat.","我想要一个靠窗的座位。",["window seat|靠窗座","aisle seat|过道座","middle seat|中间座","exit row|紧急出口排","bulkhead|隔板座"]],
-// 酒店
-["酒店","您需要叫醒服务吗？","Would you like a wake-up call?","Would you like a wake-up call?","您需要叫醒服务吗？",["wake-up call|叫醒服务","room service|客房服务","laundry service|洗衣服务","housekeeping|保洁","dry cleaning|干洗"]],
-["酒店","我可以办理入住吗？","Can I check in?","Can I check in?","我可以办理入住吗？",["check in|入住","check out|退房","book a room|订房","extend my stay|延住","change rooms|换房"]],
-["酒店","房间里有WiFi吗？","Does the room have WiFi?","Does the room have WiFi?","房间里有WiFi吗？",["WiFi|无线网络","TV|电视","air conditioning|空调","heating|暖气","mini bar|迷你吧"]],
-["酒店","早餐几点开始？","What time is breakfast?","What time is breakfast?","早餐几点开始？",["breakfast|早餐","dinner|晚餐","lunch|午餐","room service|客房服务","happy hour|欢乐时光"]],
-["酒店","我想多住一晚","I'd like to stay one more night.","I'd like to stay one more night.","我想多住一晚。",["one more night|多一晚","two more nights|多两晚","another day|多一天","extend my stay|延住","change rooms|换房"]],
-["酒店","退房时间是几点？","What time is checkout?","What time is checkout?","退房时间是几点？",["checkout|退房","check-in|入住","late checkout|晚退房","early check-in|早入住","express checkout|快速退房"]],
-// 餐厅
-["餐厅","您想坐室内还是室外？","Would you prefer indoor or outdoor seating?","Would you prefer indoor or outdoor seating?","您想坐室内还是室外？",["indoor|室内","outdoor|室外","by the window|靠窗","in the corner|角落","on the patio|露台"]],
-["餐厅","您要喝点什么？","What would you like to drink?","What would you like to drink?","您要喝点什么？",["drink|饮料","starters|前菜","main course|主菜","dessert|甜点","side dish|配菜"]],
-["餐厅","这个菜放辣椒吗？","Does this dish have chili?","Does this dish have chili?","这个菜放辣椒吗？",["chili|辣椒","spicy|辣的","pepper|胡椒","garlic|大蒜","onion|洋葱"]],
-["餐厅","我预订了一个位子","I have a reservation.","I have a reservation.","我预订了一个位子。",["reservation|预订","booking|预订","table|桌子","party of two|两人位","window seat|靠窗座"]],
-// 日常问句
-["日常问句","您能帮我拿一下吗？","Can you help me with this?","Can you help me with this?","您能帮我拿一下吗？",["this|这个","that|那个","my bag|我的包","my coat|我的外套","the door|门"]],
-["日常问句","您介意我坐这里吗？","Do you mind if I sit here?","Do you mind if I sit here?","您介意我坐这里吗？",["sit here|坐这里","open the window|开窗","close the door|关门","turn on the light|开灯","use the phone|用电话"]],
-["日常问句","您喜欢这个吗？","Do you like this?","Do you like this?","您喜欢这个吗？",["this|这个","that|那个","it|它","the color|颜色","the design|设计"]],
-["日常问句","我可以借一下……吗？","Can I borrow...?","Can I borrow your pen?","我可以借一下您的笔吗？",["your pen|你的笔","your phone|你的手机","your charger|你的充电器","your book|你的书","your umbrella|你的伞"]],
-["日常问句","您周末有什么计划？","What are your plans for the weekend?","What are your plans for the weekend?","您周末有什么计划？",["weekend|周末","today|今天","tomorrow|明天","next week|下周","this evening|今晚"]],
-["日常问句","您能告诉我怎么走吗？","Can you tell me how to get there?","Can you tell me how to get there?","您能告诉我怎么走吗？",["get there|去那里","find this place|找这个地方","get to the station|到车站","go downtown|去市中心","arrive on time|准时到达"]],
-// 工作补充
-["工作","您方便接电话吗？","Are you available to take a call?","Are you available to take a call?","您方便接电话吗？",["take a call|接电话","have a meeting|开会","talk later|晚点聊","answer emails|回邮件","review the report|审报告"]],
-["工作","我们什么时候再聊？","When can we talk again?","When can we talk again?","我们什么时候再聊？",["talk again|再聊","meet again|再见","continue this|继续","follow up|跟进","schedule a call|安排通话"]],
-["工作","您能发给我吗？","Could you send it to me?","Could you send it to me?","您能发给我吗？",["send it to me|发给我","forward it|转发","email it|邮件发","upload it|上传","share it|分享"]],
-["工作","我需要您的反馈","I need your feedback.","I need your feedback.","我需要您的反馈。",["feedback|反馈","opinion|意见","suggestion|建议","approval|批准","input|意见"]],
-// ===== 厨房场景（新增）=====
-["厨房","我需要……","I need...","I need some ginger.","我需要一些姜。",["ginger|姜","spring onion|葱","carrot|胡萝卜","chili pepper|辣椒","garlic|蒜"]],
-["厨房","把……切成片","Cut...into slices","Cut the ginger into slices.","把姜切成片。",["ginger|姜","carrot|胡萝卜","potato|土豆","onion|洋葱","cucumber|黄瓜"]],
-["厨房","把……切成丁","Dice...","Dice the onion.","把洋葱切成丁。",["onion|洋葱","carrot|胡萝卜","garlic|蒜","tomato|番茄","pepper|彩椒"]],
-["厨房","把……切成丝","Julienne...","Julienne the carrot.","把胡萝卜切成丝。",["carrot|胡萝卜","potato|土豆","ginger|姜","cucumber|黄瓜","bell pepper|彩椒"]],
-["厨房","把……剁碎","Mince...","Mince the garlic.","把蒜剁碎。",["garlic|蒜","ginger|姜","onion|洋葱","chili|辣椒","herbs|香草"]],
-["厨房","把……剥皮","Peel...","Peel the potato.","把土豆剥皮。",["potato|土豆","carrot|胡萝卜","onion|洋葱","ginger|姜","tomato|番茄"]],
-["厨房","把……洗净","Wash...","Wash the vegetables.","把蔬菜洗净。",["vegetables|蔬菜","lettuce|生菜","spinach|菠菜","cabbage|卷心菜","leek|韭葱"]],
-["厨房","把……沥干","Drain...","Drain the noodles.","把面条沥干。",["noodles|面条","rice|米饭","pasta|意面","vegetables|蔬菜","seafood|海鲜"]],
-["厨房","切好的……","Chopped...","Chopped spring onions.","切好的葱花。",["spring onions|葱花","garlic|蒜末","ginger|姜末","chili|辣椒圈","herbs|香草碎"]],
-["厨房","一把……","A bunch of...","A bunch of spring onions.","一把葱。",["spring onions|葱","parsley|欧芹","coriander|香菜","celery|芹菜","asparagus|芦笋"]],
-["厨房","炒……","Stir-fry...","Stir-fry the vegetables.","炒蔬菜。",["vegetables|蔬菜","meat|肉类","rice|米饭","noodles|面条","shrimp|虾"]],
-["厨房","煮……","Boil...","Boil the pasta.","煮意面。",["pasta|意面","rice|米饭","eggs|鸡蛋","potatoes|土豆","noodles|面条"]],
-["厨房","蒸……","Steam...","Steam the fish.","蒸鱼。",["fish|鱼","dumplings|饺子","vegetables|蔬菜","rice|米饭","buns|包子"]],
-["厨房","炸……","Deep-fry...","Deep-fry the chicken.","炸鸡。",["chicken|鸡肉","shrimp|虾","potatoes|土豆","spring rolls|春卷","fish|鱼"]],
-["厨房","烤……","Roast...","Roast the chicken.","烤鸡。",["chicken|鸡肉","beef|牛肉","pork|猪肉","vegetables|蔬菜","potatoes|土豆"]],
-["厨房","炖……","Stew...","Stew the beef.","炖牛肉。",["beef|牛肉","lamb|羊肉","pork|猪肉","chicken|鸡肉","vegetables|蔬菜"]],
-["厨房","调味……","Season...","Season with salt.","用盐调味。",["salt|盐","pepper|胡椒","soy sauce|酱油","sugar|糖","vinegar|醋"]],
-["厨房","加入……","Add...","Add some soy sauce.","加入一些酱油。",["soy sauce|酱油","salt|盐","oil|油","water|水","stock|高汤"]],
-["厨房","撒上……","Sprinkle...","Sprinkle some salt.","撒上一些盐。",["salt|盐","pepper|胡椒","sesame seeds|芝麻","herbs|香草","chili flakes|辣椒粉"]],
-["厨房","用……腌制","Marinate with...","Marinate with soy sauce.","用酱油腌制。",["soy sauce|酱油","wine|料酒","garlic|蒜","ginger|姜","spices|香料"]],
-["厨房","一个锅","A pot.","A pot.","一个锅。",["pot|锅","wok|炒锅","pan|平底锅","saucepan|汤锅","pressure cooker|高压锅"]],
-["厨房","一个平底锅","A frying pan.","A frying pan.","一个平底锅。",["frying pan|平底锅","skillet|煎锅","grill pan|烤盘","non-stick pan|不粘锅","cast iron pan|铸铁锅"]],
-// ===== 旅行补充 =====
-["旅行","我想预订一个房间","I'd like to book a room.","I'd like to book a room.","我想预订一个房间。",["book a room|订房","make a reservation|预订","check in|入住","check out|退房","extend my stay|延住"]],
-["旅行","有免费WiFi吗？","Is there free WiFi?","Is there free WiFi?","有免费WiFi吗？",["WiFi|无线网","breakfast|早餐","parking|停车","pool|游泳池","gym|健身房"]],
-["旅行","退房时间是几点？","What time is checkout?","What time is checkout?","退房时间是几点？",["checkout|退房","check-in|入住","late checkout|晚退房","early check-in|早入住","express checkout|快速退房"]],
-["旅行","我要去海滩","I want to go to the beach.","I want to go to the beach.","我要去海滩。",["beach|海滩","mountain|山","museum|博物馆","market|市场","restaurant|餐厅"]],
-["旅行","我需要签证","I need a visa.","I need a visa.","我需要签证。",["visa|签证","passport|护照","ticket|票","insurance|保险","permit|许可证"]],
-["旅行","我的行李不见了","I can't find my luggage.","I can't find my luggage.","我的行李不见了。",["luggage|行李","bag|包","suitcase|行李箱","backpack|背包","wallet|钱包"]],
-["旅行","我该在哪里转机？","Where should I transfer?","Where should I transfer?","我该在哪里转机？",["transfer|转机","stop|停留","wait|等待","change|换乘","connect|转乘"]],
-["旅行","我想租车","I'd like to rent a car.","I'd like to rent a car.","我想租车。",["car|汽车","bicycle|自行车","scooter|踏板车","motorcycle|摩托车","van|面包车"]],
-["旅行","加油站在哪里？","Where is the gas station?","Where is the gas station?","加油站在哪里？",["gas station|加油站","supermarket|超市","pharmacy|药店","restaurant|餐厅","bank|银行"]],
-["旅行","有导游服务吗？","Is there a tour guide?","Is there a tour guide?","有导游服务吗？",["guide|导游","interpreter|翻译","driver|司机","helper|助手","assistant|助理"]],
-["旅行","您能推荐一家餐厅吗？","Can you recommend a restaurant?","Can you recommend a restaurant?","您能推荐一家餐厅吗？",["recommend|推荐","suggest|建议","advise|提议","propose|推荐","offer|提供"]],
-["旅行","当地有什么特色菜？","What is the local specialty?","What is the local specialty?","当地有什么特色菜？",["specialty|特色菜","dish|菜","food|食物","seafood|海鲜","dessert|甜点"]],
-// ===== 商务 =====
-["商务","我们能安排会议吗？","Can we schedule a meeting?","Can we schedule a meeting?","我们能安排会议吗？",["meeting|会议","call|通话","discussion|讨论","chat|聊天","briefing|简报"]],
-["商务","预算是多少？","What's the budget?","What's the budget?","预算是多少？",["budget|预算","cost|成本","expense|费用","investment|投资","spend|支出"]],
-["商务","我会尽快回复你","I'll get back to you soon.","I'll get back to you soon.","我会尽快回复你。",["soon|尽快","asap|尽快","today|今天","tomorrow|明天","within an hour|一小时内"]],
-["商务","我们进展如何？","How's our progress?","How's our progress?","我们进展如何？",["progress|进展","work|工作","plan|计划","project|项目","task|任务"]],
-["商务","这是个好主意","That's a good idea.","That's a good idea.","这是个好主意。",["idea|主意","plan|计划","suggestion|建议","proposal|提议","approach|方法"]],
-["商务","我们来做决定","Let's make a decision.","Let's make a decision.","我们来做决定。",["decision|决定","choice|选择","plan|计划","call|决策","move|行动"]],
-["商务","您能发给我吗？","Could you send it to me?","Could you send it to me?","您能发给我吗？",["send it|发送","forward it|转发","email it|邮件发","upload it|上传","share it|分享"]],
-["商务","我需要您的反馈","I need your feedback.","I need your feedback.","我需要您的反馈。",["feedback|反馈","opinion|意见","suggestion|建议","approval|批准","input|意见"]],
-["商务","感谢您的合作","Thank you for your cooperation.","Thank you for your cooperation.","感谢您的合作。",["cooperation|合作","support|支持","help|帮助","understanding|理解","time|时间"]],
-["商务","我们合作愉快","We work well together.","We work well together.","我们合作愉快。",["together|一起","as a team|团队","effectively|有效","harmoniously|和谐","productively|高效"]],
-// ===== 日常问句补充 =====
-["日常问句","您今天过得怎么样？","How was your day?","How was your day?","您今天过得怎么样？",["day|一天","weekend|周末","trip|旅行","meeting|会议","work|工作"]],
-["日常问句","您有什么推荐的吗？","What do you recommend?","What do you recommend?","您有什么推荐的吗？",["recommend|推荐","suggest|建议","advise|提议","offer|提供","propose|推荐"]],
-["日常问句","您介意我开窗吗？","Do you mind if I open the window?","Do you mind if I open the window?","您介意我开窗吗？",["open the window|开窗","close the door|关门","turn on the light|开灯","turn off the TV|关电视","use the phone|用电话"]],
-["日常问句","您能告诉我去车站怎么走吗？","Can you tell me how to get to the station?","Can you tell me how to get to the station?","您能告诉我去车站怎么走吗？",["get to the station|去车站","find this place|找这个地方","go downtown|去市中心","arrive on time|准时到达","take the bus|坐公交"]],
-["日常问句","您经常出差吗？","Do you travel often?","Do you travel often?","您经常出差吗？",["often|经常","sometimes|有时候","rarely|很少","once a month|一月一次","twice a year|一年两次"]],
-["日常问句","您喜欢运动吗？","Do you like sports?","Do you like sports?","您喜欢运动吗？",["sports|运动","music|音乐","reading|阅读","traveling|旅行","cooking|烹饪"]],
-// ===== 健康补充 =====
-["健康","我嗓子疼","I have a sore throat.","I have a sore throat.","我嗓子疼。",["sore throat|嗓子疼","stomachache|胃疼","backache|背疼","headache|头疼","toothache|牙疼"]],
-["健康","您能推荐一位好医生吗？","Can you recommend a good doctor?","Can you recommend a good doctor?","您能推荐一位好医生吗？",["doctor|医生","dentist|牙医","pharmacist|药剂师","nurse|护士","specialist|专科医生"]],
-["健康","我需要预约","I need to make an appointment.","I need to make an appointment.","我需要预约。",["appointment|预约","check-up|体检","consultation|咨询","examination|检查","treatment|治疗"]],
-["健康","我过敏了","I'm having an allergic reaction.","I'm having an allergic reaction.","我过敏了。",["allergic reaction|过敏反应","rash|皮疹","hives|荨麻疹","itching|瘙痒","swelling|肿胀"]],
-["健康","请叫救护车","Please call an ambulance.","Please call an ambulance.","请叫救护车。",["ambulance|救护车","doctor|医生","police|警察","firefighters|消防员","rescue|救援"]],
-["健康","我感觉好多了","I feel much better.","I feel much better.","我感觉好多了。",["better|好多了","great|很棒","wonderful|好极了","relieved|宽慰","recovered|康复"]],
+["地点","这里有……","There is...","There is a problem.","这里有一个问题。",["a problem|问题","a restaurant|餐厅","a hotel|酒店","a shop|商店","a bus|公交","a bank|银行","a hospital|医院","a school|学校","a park|公园","a cinema|电影院"]],
+["地点","那里有……","There is...","There is a shop there.","那里有一家商店。",["a shop|商店","a restaurant|餐厅","a hotel|酒店","a bus|公交","a hospital|医院","a museum|博物馆","a library|图书馆","a church|教堂","a market|市场","a station|车站"]],
+["地点","我在这里","I'm here.","I'm here.","我在这里。",["here|这里","now|现在","outside|外面","at work|在工作","at home|在家","inside|里面","upstairs|楼上","downstairs|楼下","nearby|附近","around|周围"]],
+["地点","我在那里","I'm there.","I'm there.","我在那里。",["there|那里","now|现在","at work|在工作","at home|在家","outside|外面","inside|里面","at the office|在办公室","at the store|在商店","at the station|在车站","at the airport|在机场"]],
+// 礼貌（扩充）
+["礼貌","谢谢你","Thank you.","Thank you.","谢谢你。",["very much|非常","so much|很多","for your help|谢谢你的帮助","for coming|谢谢光临","for everything|感谢一切","for your time|感谢时间","for the gift|感谢礼物","for the meal|感谢款待","for the ride|感谢载我","for listening|感谢倾听"]],
+["礼貌","不用谢","You're welcome.","You're welcome.","不用谢。",["you're welcome|不客气","no problem|没问题","not at all|不用谢","anytime|随时","sure|当然","my pleasure|我的荣幸","don't mention it|别客气","it's nothing|没什么","of course|当然","glad to help|很高兴帮忙"]],
+["礼貌","对不起","I'm sorry.","I'm sorry.","对不起。",["I'm sorry|我很抱歉","I'm really sorry|真的很抱歉","I'm so sorry|非常抱歉","sorry about that|对此抱歉","sorry for being late|抱歉迟到","sorry for the trouble|抱歉麻烦","sorry to hear|很遗憾","sorry to interrupt|抱歉打扰","my apologies|我的歉意","please forgive me|请原谅我"]],
+["礼貌","没关系","It's okay.","It's okay.","没关系。",["it's okay|没事","no problem|没问题","that's okay|没关系","don't worry|别担心","it's fine|没事","it's alright|没关系","never mind|算了","forget it|算了","it happens|常有的事","no worries|别担心"]],
+["礼貌","请……","Please...","Please wait.","请等一下。",["wait|等","come in|进来","sit down|坐下","listen|听","help me|帮我","speak|说话","stay|留下","go|去","open|打开","close|关闭"]],
+// 生活（扩充）
+["生活","我想吃……","I want to eat...","I want to eat something.","我想吃点东西。",["something|点什么","rice|米饭","meat|肉","fish|鱼","noodles|面条","bread|面包","fruit|水果","vegetables|蔬菜","soup|汤","salad|沙拉","pizza|披萨","sandwich|三明治"]],
+["生活","我想喝……","I want to drink...","I want to drink some water.","我想喝点水。",["water|水","coffee|咖啡","tea|茶","juice|果汁","milk|牛奶","soda|苏打水","beer|啤酒","wine|葡萄酒","smoothie|奶昔","hot chocolate|热巧克力"]],
+["生活","我想睡觉","I want to sleep.","I want to sleep.","我想睡觉。",["sleep|睡觉","rest|休息","go home|回家","sit down|坐下","lie down|躺下","relax|放松","take a nap|小睡","take a break|休息","close my eyes|闭眼","meditate|冥想"]],
+["生活","我饿了","I'm hungry.","I'm hungry.","我饿了。",["hungry|饿","thirsty|渴","tired|累","sleepy|困","cold|冷","hot|热","sick|不舒服","happy|开心","sad|伤心","angry|生气"]],
+["生活","我渴了","I'm thirsty.","I'm thirsty.","我渴了。",["thirsty|渴","hungry|饿","tired|累","sleepy|困","hot|热","cold|冷","nervous|紧张","excited|兴奋","bored|无聊","confused|困惑"]],
+// 工作（扩充）
+["工作","我在工作","I'm working.","I'm working.","我在工作。",["working|工作","cooking|做饭","cleaning|打扫","learning|学习","waiting|等待","driving|开车","reading|阅读","writing|写作","thinking|思考","exercising|锻炼"]],
+["工作","我需要工作","I need to work.","I need to work.","我需要工作。",["work|工作","rest|休息","learn|学习","practice|练习","finish this|完成这个","start|开始","plan|计划","prepare|准备","organize|组织","focus|专注"]],
+["工作","我完成了","I'm done.","I'm done.","我完成了。",["I'm done|我完成了","I'm ready|我准备好了","it's finished|完成了","it's ready|准备好了","that's all|就这样","I'm finished|我完成了","I'm through|我完成了","it's over|结束了","mission complete|任务完成","job done|工作完成"]],
+["工作","还没完成","I'm not done yet.","I'm not done yet.","还没完成。",["not done yet|还没完成","not ready yet|还没准备好","not finished yet|还没完成","almost done|快好了","still working|还在工作","in progress|进行中","half done|做了一半","not complete|未完成","need more time|需要更多时间","just a minute|马上好"]],
+// 情感（扩充）
+["情感","我很高兴","I'm very happy.","I'm very happy.","我很高兴。",["happy|高兴","excited|兴奋","pleased|满意","delighted|欣喜","glad|开心","joyful|欢喜","cheerful|欢快","content|满足","optimistic|乐观","blessed|幸福"]],
+["情感","我很伤心","I'm very sad.","I'm very sad.","我很伤心。",["sad|伤心","upset|难过","disappointed|失望","depressed|沮丧","blue|忧郁","heartbroken|心碎","miserable|痛苦","gloomy|阴沉","lonely|孤独","hopeless|绝望"]],
+["情感","我生气了","I'm angry.","I'm angry.","我生气了。",["angry|生气","mad|愤怒","frustrated|沮丧","annoyed|恼怒","irritated|烦躁","furious|暴怒","outraged|震怒","bitter|苦涩","offended|被冒犯","hostile|敌对"]],
+["情感","我害怕","I'm scared.","I'm scared.","我害怕。",["scared|害怕","afraid|恐惧","frightened|害怕","terrified|惊恐","nervous|紧张","anxious|焦虑","worried|担心","alarmed|惊慌","panicked|恐慌","uneasy|不安"]],
+["情感","我累了","I'm tired.","I'm tired.","我累了。",["tired|累","exhausted|筋疲力尽","worn out|累坏了","sleepy|困","drained|精力耗尽","fatigued|疲劳","weary|疲倦","burned out|耗竭","lazy|懒","sluggish|迟钝"]],
+["情感","我紧张","I'm nervous.","I'm nervous.","我紧张。",["nervous|紧张","anxious|焦虑","worried|担心","stressed|压力","uneasy|不安","tense|紧绷","restless|坐立不安","on edge|紧张不安","panicky|惊慌","apprehensive|忧虑"]],
+// 社交（扩充）
+["社交","请坐","Please sit down.","Please sit down.","请坐。",["sit down|坐下","have a seat|请坐","take a seat|请坐","please|请","relax|放松","make yourself at home|别客气","settle in|安顿","get comfortable|舒服点","stay|留下","join us|加入"]],
+["社交","请喝茶","Would you like some tea?","Would you like some tea?","你想喝杯茶吗？",["tea|茶","coffee|咖啡","water|水","juice|果汁","something|点东西","milk|牛奶","a snack|点心","a drink|饮料","dinner|晚餐","lunch|午餐"]],
+["社交","欢迎","You're welcome.","You're welcome.","欢迎。",["welcome|欢迎","you're welcome|不客气","my pleasure|我的荣幸","anytime|随时","not at all|没事","glad to have you|很高兴你来","happy to help|很高兴帮忙","it's my honor|我的荣幸","come in|请进","make yourself at home|别客气"]],
+["社交","请稍等","Please wait a moment.","Please wait a moment.","请稍等。",["wait|等","hold on|稍等","just a second|等一下","one moment|一会儿","please|请","stay there|在那里等","be patient|耐心点","hang on|等一下","give me a minute|给我一分钟","I'll be right back|马上回来"]],
+["社交","我叫……","My name is...","My name is John.","我叫约翰。",["John|约翰","Mary|玛丽","Peter|彼得","Lisa|丽莎","David|大卫","Susan|苏珊","James|詹姆斯","Linda|琳达","Robert|罗伯特","Emma|艾玛"]],
+["社交","很高兴认识你","Nice to meet you.","Nice to meet you.","很高兴认识你。",["meet you|认识你","know you|认识你","see you|见到你","talk to you|和你说话","work with you|和你工作","spend time with you|和你相处","study with you|和你学习","travel with you|和你旅行","share with you|和你分享","laugh with you|和你笑"]],
+// 旅行（扩充）
+["旅行","我想去……","I want to go to...","I want to go to the airport.","我想去机场。",["the airport|机场","the station|车站","the hotel|酒店","the museum|博物馆","the beach|海滩","the mountains|山脉","the city center|市中心","the zoo|动物园","the temple|寺庙","the park|公园"]],
+["旅行","我迷路了","I'm lost.","I'm lost.","我迷路了。",["lost|迷路","confused|困惑","not sure|不确定","turned around|转向","can't find|找不到","disoriented|迷失方向","wandering|徘徊","off track|偏离路线","going the wrong way|走错路","need directions|需要指路"]],
+["旅行","我可以用地图吗？","Can I use the map?","Can I use the map?","我可以用地图吗？",["use the map|用地图","look at the map|看地图","see the map|看地图","use GPS|用GPS","get directions|获取路线","ask for help|求助","follow the signs|看标志","check online|网上查","download the app|下载应用","use a compass|用指南针"]],
+["旅行","这附近有……吗？","Is there... near here?","Is there a hotel near here?","这附近有酒店吗？",["a hotel|酒店","a restaurant|餐厅","a shop|商店","a toilet|厕所","a bank|银行","a pharmacy|药店","a supermarket|超市","a gas station|加油站","a bus stop|公交站","a subway|地铁"]],
+["旅行","票价多少？","How much is the ticket?","How much is the ticket?","票价多少？",["ticket|票","fare|车费","price|价格","cost|费用","fee|费","entrance fee|门票","admission|入场费","round trip|往返","one way|单程","discount|折扣"]],
+// 购物（扩充）
+["购物","我在找……","I'm looking for...","I'm looking for a dress.","我在找一件连衣裙。",["a dress|连衣裙","a shirt|衬衫","shoes|鞋","a bag|包","a gift|礼物","a watch|手表","a hat|帽子","a jacket|夹克","a belt|腰带","a scarf|围巾"]],
+["购物","这件多少钱？","How much is this?","How much is this?","这件多少钱？",["this|这个","that|那个","it|它","the red one|红色的","the blue one|蓝色的","the small one|小的","the large one|大的","the new one|新的","the old one|旧的","all of them|全部"]],
+["购物","你能便宜点吗？","Can you give me a discount?","Can you give me a discount?","你能给我打折吗？",["discount|折扣","a better price|更好的价格","a deal|优惠","reduce the price|降价","lower the price|降低价格","a bargain|便宜点","a special offer|特价","a sale|减价","a coupon|优惠券","a promotion|促销"]],
+["购物","我要买这个","I'll take this.","I'll take this.","我要买这个。",["take this|拿这个","buy this|买这个","get this|买这个","choose this|选这个","pick this|挑这个","have this|要这个","prefer this|更喜欢这个","go with this|选这个","select this|选这个","purchase this|购买这个"]],
+// 餐饮（扩充）
+["餐饮","我想点……","I'd like to order...","I'd like to order a salad.","我想点一份沙拉。",["a salad|沙拉","a steak|牛排","fish|鱼","chicken|鸡肉","pasta|意面","soup|汤","sandwich|三明治","pizza|披萨","noodles|面条","rice|米饭"]],
+["餐饮","有菜单吗？","Do you have a menu?","Do you have a menu?","有菜单吗？",["a menu|菜单","the menu|菜单","a drink list|酒水单","a wine list|酒单","a food menu|食物菜单","a kids menu|儿童菜单","a dessert menu|甜点单","specials|特色菜","today's special|今日特价","a lunch menu|午餐菜单"]],
+["餐饮","推荐什么？","What do you recommend?","What do you recommend?","你推荐什么？",["recommend|推荐","suggest|建议","advise|建议","propose|提议","offer|提供","the chef's special|主厨推荐","the house special|招牌菜","today's special|今日特价","something light|清淡的","something spicy|辣的"]],
+["餐饮","买单","Can I have the bill?","Can I have the bill?","可以买单吗？",["the bill|账单","the check|账单","the receipt|收据","the invoice|发票","the total|总额","to pay|付款","split the bill|分开付","pay by card|刷卡","pay cash|付现金","add tip|加小费"]],
+// 健康（扩充）
+["健康","我头疼","I have a headache.","I have a headache.","我头疼。",["headache|头疼","stomachache|胃疼","backache|背疼","toothache|牙疼","sore throat|喉咙痛","earache|耳朵疼","muscle pain|肌肉疼","joint pain|关节疼","chest pain|胸痛","allergy|过敏"]],
+["健康","我感冒了","I have a cold.","I have a cold.","我感冒了。",["a cold|感冒","a cough|咳嗽","a fever|发烧","flu|流感","sore throat|喉咙痛","runny nose|流鼻涕","sneezing|打喷嚏","chills|发冷","body aches|身体酸痛","sinus infection|鼻窦感染"]],
+["健康","我需要医生","I need a doctor.","I need a doctor.","我需要看医生。",["a doctor|医生","a nurse|护士","a hospital|医院","a clinic|诊所","medical help|医疗帮助","a specialist|专科医生","a dentist|牙医","a surgeon|外科医生","a therapist|治疗师","an ambulance|救护车"]],
+["健康","我发烧了","I have a fever.","I have a fever.","我发烧了。",["fever|发烧","temperature|体温","high temperature|高烧","hot|热","sick|生病","chills|发冷","sweating|出汗","weakness|虚弱","dehydrated|脱水","dizzy|头晕"]],
+["健康","我受伤了","I'm injured.","I'm injured.","我受伤了。",["injured|受伤","hurt|受伤","wounded|受伤","bleeding|流血","in pain|在痛","bruised|淤青","sprained|扭伤","burned|烧伤","cut|割伤","broken|骨折"]],
+// 家庭（扩充）
+["家庭","我有一个哥哥","I have a brother.","I have a brother.","我有一个哥哥。",["brother|哥哥","sister|姐姐","father|父亲","mother|母亲","child|孩子","son|儿子","daughter|女儿","cousin|表亲","uncle|叔叔","aunt|阿姨","grandmother|祖母","grandfather|祖父"]],
+["家庭","我的家人……","My family is...","My family is big.","我的家庭很大。",["big|大","small|小","close|亲密","loving|充满爱","happy|幸福","supportive|支持","traditional|传统","modern|现代","funny|有趣","important|重要"]],
+["家庭","我结婚了","I'm married.","I'm married.","我结婚了。",["married|已婚","single|单身","divorced|离婚","engaged|订婚","in a relationship|恋爱","widowed|丧偶","separated|分居","living together|同居","happily married|幸福已婚","not married|未婚"]],
+["家庭","我住……","I live...","I live in Nairobi.","我住内罗毕。",["in Nairobi|在内罗毕","with my family|和家人","near here|附近","alone|独自","in the city|在市区","in the suburbs|在郊区","in a house|在房子","in an apartment|在公寓","abroad|在国外","with my friends|和朋友"]],
+// 天气（扩充）
+["天气","天气怎么样？","What's the weather like?","What's the weather like?","天气怎么样？",["today|今天","tomorrow|明天","this week|这周","outside|外面","now|现在","here|这里","in your city|在你城市","this morning|今早","this afternoon|下午","tonight|今晚"]],
+["天气","很热","It's hot.","It's hot.","很热。",["hot|热","warm|暖和","cold|冷","cool|凉爽","sunny|晴朗","cloudy|多云","windy|刮风","rainy|下雨","snowy|下雪","humid|潮湿"]],
+["天气","下雨了","It's raining.","It's raining.","下雨了。",["raining|下雨","snowing|下雪","windy|刮风","cloudy|多云","foggy|有雾","stormy|暴风雨","sunny|晴","humid|潮湿","dry|干燥","freezing|冰冻"]],
+// 学习（扩充）
+["学习","我在学习","I'm studying.","I'm studying.","我在学习。",["studying|学习","learning|学","reading|阅读","writing|写作","practicing|练习","listening|听","speaking|说","memorizing|背诵","reviewing|复习","researching|研究"]],
+["学习","我想学……","I want to learn...","I want to learn Chinese.","我想学中文。",["Chinese|中文","English|英语","French|法语","Spanish|西班牙语","Japanese|日语","Korean|韩语","German|德语","Italian|意大利语","Russian|俄语","Arabic|阿拉伯语"]],
+["学习","我会说一点","I can speak a little.","I can speak a little.","我会说一点。",["a little|一点","some|一些","basic|基础","conversational|会话","fluent|流利","not very well|不太好","enough to get by|够用","with an accent|有口音","slowly|慢速","clearly|清晰"]],
+// 紧急（扩充）
+["紧急","救命！","Help!","Help!","救命！",["help|救命","police|警察","fire|火","ambulance|救护车","emergency|紧急","quick|快","now|现在","please|请","somebody|来人","anyone|有人吗"]],
+["紧急","请报警","Call the police.","Call the police.","请报警。",["police|警察","ambulance|救护车","fire department|消防","emergency services|紧急服务","doctor|医生","security|保安","my family|我的家人","my friend|我的朋友","the manager|经理","the rescue team|救援队"]],
+["紧急","我丢了钱包","I lost my wallet.","I lost my wallet.","我丢了钱包。",["wallet|钱包","phone|手机","passport|护照","keys|钥匙","bag|包","glasses|眼镜","watch|手表","jewelry|首饰","documents|文件","money|钱"]],
+// 机场（扩充）
+["机场","您的航班号是多少？","What's your flight number?","What's your flight number?","您的航班号是多少？",["flight number|航班号","booking reference|预订号","passport number|护照号","ID|身份证","ticket|票","boarding pass|登机牌","seat number|座位号","gate number|登机口","terminal|航站楼","airline|航空公司"]],
+["机场","您有行李要托运吗？","Do you have any luggage to check?","Do you have any luggage to check?","您有行李要托运吗？",["luggage|行李","bags|包","suitcase|行李箱","carry-on|手提行李","backpack|背包","box|箱子","parcel|包裹","handbag|手提包","duffel|行李袋","oversized|超大件"]],
+["机场","登机口在几号？","Which gate is the flight?","Which gate is the flight?","登机口在几号？",["gate|登机口","terminal|航站楼","departure|出发","arrival|到达","boarding|登机","check-in|值机","customs|海关","security|安检","lounge|休息室","runway|跑道"]],
+["机场","航班延误了","The flight is delayed.","The flight is delayed.","航班延误了。",["delayed|延误","canceled|取消","on time|准时","boarding|登机","landing|降落","overbooked|超售","rescheduled|改期","diverted|改道","grounded|停飞","taxiing|滑行"]],
+["机场","我想托运这个","I'd like to check this.","I'd like to check this.","我想托运这个。",["check this|托运这个","carry this|拿这个","store this|存这个","leave this|留这个","send this|寄这个","ship this|运送","tag this|贴标签","weigh this|称重","declare this|申报","insure this|保险"]],
+["机场","安检在哪里？","Where is security?","Where is security?","安检在哪里？",["security|安检","check-in|值机","gate|登机口","customs|海关","baggage claim|行李提取","restrooms|洗手间","shops|商店","restaurants|餐厅","information desk|咨询台","currency exchange|货币兑换"]],
+["机场","我有转机航班","I have a connecting flight.","I have a connecting flight.","我有转机航班。",["connecting flight|转机航班","layover|中转","stopover|经停","transfer|转机","direct flight|直飞","international|国际","domestic|国内","red-eye|红眼","overnight|过夜","early morning|早班"]],
+["机场","我需要一个靠窗的座位","I'd like a window seat.","I'd like a window seat.","我想要一个靠窗的座位。",["window seat|靠窗座","aisle seat|过道座","middle seat|中间座","exit row|紧急出口排","bulkhead|隔板座","front row|前排","back row|后排","business class|商务舱","first class|头等舱","economy class|经济舱"]],
+// 酒店（扩充）
+["酒店","您需要叫醒服务吗？","Would you like a wake-up call?","Would you like a wake-up call?","您需要叫醒服务吗？",["wake-up call|叫醒服务","room service|客房服务","laundry service|洗衣服务","housekeeping|保洁","dry cleaning|干洗","ironing|熨烫","shoe shine|擦鞋","massage|按摩","concierge|礼宾","valet parking|代客泊车"]],
+["酒店","我可以办理入住吗？","Can I check in?","Can I check in?","我可以办理入住吗？",["check in|入住","check out|退房","book a room|订房","extend my stay|延住","change rooms|换房","upgrade|升级","cancel|取消","confirm|确认","request|请求","prepay|预付"]],
+["酒店","房间里有WiFi吗？","Does the room have WiFi?","Does the room have WiFi?","房间里有WiFi吗？",["WiFi|无线网络","TV|电视","air conditioning|空调","heating|暖气","mini bar|迷你吧","safe|保险箱","balcony|阳台","view|景观","bathtub|浴缸","shower|淋浴"]],
+["酒店","早餐几点开始？","What time is breakfast?","What time is breakfast?","早餐几点开始？",["breakfast|早餐","dinner|晚餐","lunch|午餐","room service|客房服务","happy hour|欢乐时光","buffet|自助餐","brunch|早午餐","afternoon tea|下午茶","cocktail hour|鸡尾酒会","midnight snack|夜宵"]],
+["酒店","我想多住一晚","I'd like to stay one more night.","I'd like to stay one more night.","我想多住一晚。",["one more night|多一晚","two more nights|多两晚","another day|多一天","extend my stay|延住","change rooms|换房","late checkout|晚退房","early check-in|早入住","discount|折扣","upgrade|升级","package|套餐"]],
+["酒店","退房时间是几点？","What time is checkout?","What time is checkout?","退房时间是几点？",["checkout|退房","check-in|入住","late checkout|晚退房","early check-in|早入住","express checkout|快速退房","baggage storage|行李寄存","shuttle|摆渡车","taxi|出租车","car rental|租车","airport pickup|接机"]],
+// 餐厅（扩充）
+["餐厅","您想坐室内还是室外？","Would you prefer indoor or outdoor seating?","Would you prefer indoor or outdoor seating?","您想坐室内还是室外？",["indoor|室内","outdoor|室外","by the window|靠窗","in the corner|角落","on the patio|露台","in the garden|花园","at the bar|吧台","in a booth|卡座","near the fireplace|靠近壁炉","on the terrace|阳台"]],
+["餐厅","您要喝点什么？","What would you like to drink?","What would you like to drink?","您要喝点什么？",["drink|饮料","starters|前菜","main course|主菜","dessert|甜点","side dish|配菜","appetizer|开胃菜","soup|汤","salad|沙拉","beverage|饮品","refreshment|点心"]],
+["餐厅","这个菜放辣椒吗？","Does this dish have chili?","Does this dish have chili?","这个菜放辣椒吗？",["chili|辣椒","spicy|辣的","pepper|胡椒","garlic|大蒜","onion|洋葱","ginger|姜","herbs|香草","sauce|酱","cheese|奶酪","eggs|鸡蛋"]],
+["餐厅","我预订了一个位子","I have a reservation.","I have a reservation.","我预订了一个位子。",["reservation|预订","booking|预订","table|桌子","party of two|两人位","window seat|靠窗座","corner table|角落桌","private room|包间","outdoor table|室外桌","family table|家庭桌","bar seat|吧台座"]],
+// 日常问句（扩充）
+["日常问句","您能帮我拿一下吗？","Can you help me with this?","Can you help me with this?","您能帮我拿一下吗？",["this|这个","that|那个","my bag|我的包","my coat|我的外套","the door|门","the box|箱子","the luggage|行李","the groceries|杂货","the books|书","the gift|礼物"]],
+["日常问句","您介意我坐这里吗？","Do you mind if I sit here?","Do you mind if I sit here?","您介意我坐这里吗？",["sit here|坐这里","open the window|开窗","close the door|关门","turn on the light|开灯","use the phone|用电话","turn down the music|调小音乐","turn up the heat|调高暖气","park here|停这里","come in|进来","leave early|早走"]],
+["日常问句","您喜欢这个吗？","Do you like this?","Do you like this?","您喜欢这个吗？",["this|这个","that|那个","it|它","the color|颜色","the design|设计","the food|食物","the music|音乐","the movie|电影","the place|地方","the idea|想法"]],
+["日常问句","我可以借一下……吗？","Can I borrow...?","Can I borrow your pen?","我可以借一下您的笔吗？",["your pen|你的笔","your phone|你的手机","your charger|你的充电器","your book|你的书","your umbrella|你的伞","your keys|你的钥匙","your car|你的车","your jacket|你的夹克","your notes|你的笔记","your tablet|你的平板"]],
+["日常问句","您周末有什么计划？","What are your plans for the weekend?","What are your plans for the weekend?","您周末有什么计划？",["weekend|周末","today|今天","tomorrow|明天","next week|下周","this evening|今晚","the holidays|假期","the summer|夏天","the future|未来","your day off|休息日","the coming days|未来几天"]],
+["日常问句","您能告诉我怎么走吗？","Can you tell me how to get there?","Can you tell me how to get there?","您能告诉我怎么走吗？",["get there|去那里","find this place|找这个地方","get to the station|到车站","go downtown|去市中心","arrive on time|准时到达","take the bus|坐公交","find the exit|找出口","get to the airport|到机场","reach the hotel|到酒店","navigate the city|城市导航"]],
+// 工作补充（扩充）
+["工作","您方便接电话吗？","Are you available to take a call?","Are you available to take a call?","您方便接电话吗？",["take a call|接电话","have a meeting|开会","talk later|晚点聊","answer emails|回邮件","review the report|审报告","join the call|加入通话","give a presentation|做展示","discuss the project|讨论项目","sign the document|签文件","start the webinar|开始研讨会"]],
+["工作","我们什么时候再聊？","When can we talk again?","When can we talk again?","我们什么时候再聊？",["talk again|再聊","meet again|再见","continue this|继续","follow up|跟进","schedule a call|安排通话","touch base|联系","catch up|聊聊","chat later|稍后聊","connect again|再次联系","resume|继续"]],
+["工作","您能发给我吗？","Could you send it to me?","Could you send it to me?","您能发给我吗？",["send it to me|发给我","forward it|转发","email it|邮件发","upload it|上传","share it|分享","mail it|寄给我","deliver it|送达","hand it to me|递给我","print it|打印","transfer it|传输"]],
+["工作","我需要您的反馈","I need your feedback.","I need your feedback.","我需要您的反馈。",["feedback|反馈","opinion|意见","suggestion|建议","approval|批准","input|意见","advice|建议","guidance|指导","evaluation|评估","review|评审","critique|批评"]],
+// 厨房场景（扩充）
+["厨房","我需要……","I need...","I need some ginger.","我需要一些姜。",["ginger|姜","spring onion|葱","carrot|胡萝卜","chili pepper|辣椒","garlic|蒜","tomato|番茄","onion|洋葱","potato|土豆","cucumber|黄瓜","lemon|柠檬","lime|青柠","mushroom|蘑菇"]],
+["厨房","把……切成片","Cut...into slices","Cut the ginger into slices.","把姜切成片。",["ginger|姜","carrot|胡萝卜","potato|土豆","onion|洋葱","cucumber|黄瓜","bread|面包","cheese|奶酪","apple|苹果","banana|香蕉","tomato|番茄"]],
+["厨房","把……切成丁","Dice...","Dice the onion.","把洋葱切成丁。",["onion|洋葱","carrot|胡萝卜","garlic|蒜","tomato|番茄","pepper|彩椒","celery|芹菜","potato|土豆","bell pepper|甜椒","mango|芒果","pineapple|菠萝"]],
+["厨房","把……切成丝","Julienne...","Julienne the carrot.","把胡萝卜切成丝。",["carrot|胡萝卜","potato|土豆","ginger|姜","cucumber|黄瓜","bell pepper|彩椒","zucchini|西葫芦","cabbage|卷心菜","daikon|白萝卜","apple|苹果","pear|梨"]],
+["厨房","把……剁碎","Mince...","Mince the garlic.","把蒜剁碎。",["garlic|蒜","ginger|姜","onion|洋葱","chili|辣椒","herbs|香草","parsley|欧芹","coriander|香菜","mint|薄荷","rosemary|迷迭香","thyme|百里香"]],
+["厨房","把……剥皮","Peel...","Peel the potato.","把土豆剥皮。",["potato|土豆","carrot|胡萝卜","onion|洋葱","ginger|姜","tomato|番茄","apple|苹果","pear|梨","mango|芒果","kiwi|猕猴桃","cucumber|黄瓜"]],
+["厨房","把……洗净","Wash...","Wash the vegetables.","把蔬菜洗净。",["vegetables|蔬菜","lettuce|生菜","spinach|菠菜","cabbage|卷心菜","leek|韭葱","carrots|胡萝卜","potatoes|土豆","fruits|水果","rice|米","beans|豆子"]],
+["厨房","把……沥干","Drain...","Drain the noodles.","把面条沥干。",["noodles|面条","rice|米饭","pasta|意面","vegetables|蔬菜","seafood|海鲜","meat|肉","beans|豆子","canned food|罐头","salad|沙拉","potatoes|土豆"]],
+["厨房","切好的……","Chopped...","Chopped spring onions.","切好的葱花。",["spring onions|葱花","garlic|蒜末","ginger|姜末","chili|辣椒圈","herbs|香草碎","onions|洋葱末","peppers|彩椒丁","tomatoes|番茄碎","mushrooms|蘑菇片","nuts|坚果碎"]],
+["厨房","一把……","A bunch of...","A bunch of spring onions.","一把葱。",["spring onions|葱","parsley|欧芹","coriander|香菜","celery|芹菜","asparagus|芦笋","basil|罗勒","mint|薄荷","watercress|西洋菜","bok choy|小白菜","spinach|菠菜"]],
+["厨房","炒……","Stir-fry...","Stir-fry the vegetables.","炒蔬菜。",["vegetables|蔬菜","meat|肉类","rice|米饭","noodles|面条","shrimp|虾","chicken|鸡肉","beef|牛肉","pork|猪肉","tofu|豆腐","egg|鸡蛋"]],
+["厨房","煮……","Boil...","Boil the pasta.","煮意面。",["pasta|意面","rice|米饭","eggs|鸡蛋","potatoes|土豆","noodles|面条","vegetables|蔬菜","seafood|海鲜","corn|玉米","beans|豆子","dumplings|饺子"]],
+["厨房","蒸……","Steam...","Steam the fish.","蒸鱼。",["fish|鱼","dumplings|饺子","vegetables|蔬菜","rice|米饭","buns|包子","chicken|鸡肉","tofu|豆腐","shrimp|虾","crab|螃蟹","dim sum|点心"]],
+["厨房","炸……","Deep-fry...","Deep-fry the chicken.","炸鸡。",["chicken|鸡肉","shrimp|虾","potatoes|土豆","spring rolls|春卷","fish|鱼","onion rings|洋葱圈","calamari|鱿鱼","tempura|天妇罗","dumplings|饺子","batter|面糊"]],
+["厨房","烤……","Roast...","Roast the chicken.","烤鸡。",["chicken|鸡肉","beef|牛肉","pork|猪肉","vegetables|蔬菜","potatoes|土豆","turkey|火鸡","lamb|羊肉","fish|鱼","nuts|坚果","pumpkin|南瓜"]],
+["厨房","炖……","Stew...","Stew the beef.","炖牛肉。",["beef|牛肉","lamb|羊肉","pork|猪肉","chicken|鸡肉","vegetables|蔬菜","fish|鱼","beans|豆子","lentils|扁豆","tofu|豆腐","fruit|水果"]],
+["厨房","调味……","Season with...","Season with salt.","用盐调味。",["salt|盐","pepper|胡椒","soy sauce|酱油","sugar|糖","vinegar|醋","oyster sauce|蚝油","fish sauce|鱼露","sesame oil|香油","chili oil|辣椒油","herbs|香草"]],
+["厨房","加入……","Add...","Add some soy sauce.","加入一些酱油。",["soy sauce|酱油","salt|盐","oil|油","water|水","stock|高汤","wine|料酒","sugar|糖","vinegar|醋","butter|黄油","cream|奶油"]],
+["厨房","撒上……","Sprinkle...","Sprinkle some salt.","撒上一些盐。",["salt|盐","pepper|胡椒","sesame seeds|芝麻","herbs|香草","chili flakes|辣椒粉","sugar|糖","cinnamon|肉桂","powdered sugar|糖粉","parmesan|帕玛森","breadcrumbs|面包糠"]],
+["厨房","用……腌制","Marinate with...","Marinate with soy sauce.","用酱油腌制。",["soy sauce|酱油","wine|料酒","garlic|蒜","ginger|姜","spices|香料","olive oil|橄榄油","buttermilk|酪乳","yogurt|酸奶","lemon juice|柠檬汁","herbs|香草"]],
+["厨房","一个锅","A pot.","A pot.","一个锅。",["pot|锅","wok|炒锅","pan|平底锅","saucepan|汤锅","pressure cooker|高压锅","slow cooker|慢炖锅","steamer|蒸锅","deep fryer|炸锅","griddle|铁板","stockpot|高汤锅"]],
+["厨房","一个平底锅","A frying pan.","A frying pan.","一个平底锅。",["frying pan|平底锅","skillet|煎锅","grill pan|烤盘","non-stick pan|不粘锅","cast iron pan|铸铁锅","saute pan|炒锅","crepe pan|可丽饼锅","roasting pan|烤盘","paella pan|海鲜饭锅","tawa|塔瓦锅"]],
+// 旅行补充（扩充）
+["旅行","我想预订一个房间","I'd like to book a room.","I'd like to book a room.","我想预订一个房间。",["book a room|订房","make a reservation|预订","check in|入住","check out|退房","extend my stay|延住","find a room|找房","share a room|合住","upgrade|升级","cancel|取消","prepay|预付"]],
+["旅行","有免费WiFi吗？","Is there free WiFi?","Is there free WiFi?","有免费WiFi吗？",["WiFi|无线网","breakfast|早餐","parking|停车","pool|游泳池","gym|健身房","shuttle|班车","airport transfer|接送","spa|水疗","restaurant|餐厅","bar|酒吧"]],
+["旅行","我要去海滩","I want to go to the beach.","I want to go to the beach.","我要去海滩。",["beach|海滩","mountain|山","museum|博物馆","market|市场","restaurant|餐厅","temple|寺庙","waterfall|瀑布","lake|湖","river|河","forest|森林"]],
+["旅行","我需要签证","I need a visa.","I need a visa.","我需要签证。",["visa|签证","passport|护照","ticket|票","insurance|保险","permit|许可证","itinerary|行程","hotel booking|酒店预订","flight confirmation|航班确认","invitation letter|邀请函","bank statement|银行账单"]],
+["旅行","我的行李不见了","I can't find my luggage.","I can't find my luggage.","我的行李不见了。",["luggage|行李","bag|包","suitcase|行李箱","backpack|背包","wallet|钱包","phone|手机","passport|护照","keys|钥匙","coat|外套","umbrella|伞"]],
+["旅行","我该在哪里转机？","Where should I transfer?","Where should I transfer?","我该在哪里转机？",["transfer|转机","stop|停留","wait|等待","change|换乘","connect|转乘","layover|中转","transit|过境","depart|出发","arrive|到达","board|登机"]],
+["旅行","我想租车","I'd like to rent a car.","I'd like to rent a car.","我想租车。",["car|汽车","bicycle|自行车","scooter|踏板车","motorcycle|摩托车","van|面包车","SUV|越野车","convertible|敞篷车","minivan|小型货车","truck|卡车","camper|露营车"]],
+["旅行","加油站在哪里？","Where is the gas station?","Where is the gas station?","加油站在哪里？",["gas station|加油站","supermarket|超市","pharmacy|药店","restaurant|餐厅","bank|银行","hospital|医院","police station|警局","repair shop|修理厂","parking lot|停车场","hotel|酒店"]],
+["旅行","有导游服务吗？","Is there a tour guide?","Is there a tour guide?","有导游服务吗？",["guide|导游","interpreter|翻译","driver|司机","helper|助手","assistant|助理","local expert|当地专家","translator|翻译员","escort|陪同","concierge|礼宾","planner|规划师"]],
+["旅行","您能推荐一家餐厅吗？","Can you recommend a restaurant?","Can you recommend a restaurant?","您能推荐一家餐厅吗？",["recommend|推荐","suggest|建议","advise|提议","propose|推荐","offer|提供","a nice place|好地方","a local spot|本地店","a cheap place|便宜店","a luxury place|高档店","a family place|家庭店"]],
+["旅行","当地有什么特色菜？","What is the local specialty?","What is the local specialty?","当地有什么特色菜？",["specialty|特色菜","dish|菜","food|食物","seafood|海鲜","dessert|甜点","appetizer|开胃菜","beverage|饮品","snack|小吃","street food|街头小吃","regional dish|地区菜"]],
+// 商务（扩充）
+["商务","我们能安排会议吗？","Can we schedule a meeting?","Can we schedule a meeting?","我们能安排会议吗？",["meeting|会议","call|通话","discussion|讨论","chat|聊天","briefing|简报","workshop|研讨会","conference|会议","presentation|展示","training|培训","interview|面试"]],
+["商务","预算是多少？","What's the budget?","What's the budget?","预算是多少？",["budget|预算","cost|成本","expense|费用","investment|投资","spend|支出","total|总额","estimate|估算","price|价格","rate|费率","quote|报价"]],
+["商务","我会尽快回复你","I'll get back to you soon.","I'll get back to you soon.","我会尽快回复你。",["soon|尽快","asap|尽快","today|今天","tomorrow|明天","within an hour|一小时内","by noon|中午前","by Friday|周五前","after the meeting|会后","later|稍后","immediately|立即"]],
+["商务","我们进展如何？","How's our progress?","How's our progress?","我们进展如何？",["progress|进展","work|工作","plan|计划","project|项目","task|任务","timeline|时间线","delivery|交付","quality|质量","team|团队","budget|预算"]],
+["商务","这是个好主意","That's a good idea.","That's a good idea.","这是个好主意。",["idea|主意","plan|计划","suggestion|建议","proposal|提议","approach|方法","concept|概念","strategy|策略","solution|解决方案","option|选择","alternative|替代"]],
+["商务","我们来做决定","Let's make a decision.","Let's make a decision.","我们来做决定。",["decision|决定","choice|选择","plan|计划","call|决策","move|行动","vote|投票","confirm|确认","approve|批准","finalize|敲定","execute|执行"]],
+["商务","您能发给我吗？","Could you send it to me?","Could you send it to me?","您能发给我吗？",["send it|发送","forward it|转发","email it|邮件发","upload it|上传","share it|分享","fax it|传真","post it|邮寄","deliver it|递送","transfer it|传输","copy it|复制"]],
+["商务","我需要您的反馈","I need your feedback.","I need your feedback.","我需要您的反馈。",["feedback|反馈","opinion|意见","suggestion|建议","approval|批准","input|意见","review|评审","comment|评论","recommendation|推荐","evaluation|评估","advice|建议"]],
+["商务","感谢您的合作","Thank you for your cooperation.","Thank you for your cooperation.","感谢您的合作。",["cooperation|合作","support|支持","help|帮助","understanding|理解","time|时间","patience|耐心","effort|努力","trust|信任","hard work|辛苦工作","dedication|奉献"]],
+["商务","我们合作愉快","We work well together.","We work well together.","我们合作愉快。",["together|一起","as a team|团队","effectively|有效","harmoniously|和谐","productively|高效","successfully|成功","smoothly|顺利","collaboratively|协作","creatively|有创意","efficiently|高效"]],
+// 日常问句补充（扩充）
+["日常问句","您今天过得怎么样？","How was your day?","How was your day?","您今天过得怎么样？",["day|一天","weekend|周末","trip|旅行","meeting|会议","work|工作","evening|晚上","morning|早上","class|课堂","exam|考试","performance|表现"]],
+["日常问句","您有什么推荐的吗？","What do you recommend?","What do you recommend?","您有什么推荐的吗？",["recommend|推荐","suggest|建议","advise|提议","offer|提供","propose|推荐","choose|选择","pick|挑选","select|选择","prefer|更喜欢","like|喜欢"]],
+["日常问句","您介意我开窗吗？","Do you mind if I open the window?","Do you mind if I open the window?","您介意我开窗吗？",["open the window|开窗","close the door|关门","turn on the light|开灯","turn off the TV|关电视","use the phone|用电话","open the door|开门","close the window|关窗","turn on the fan|开风扇","turn off the light|关灯","adjust the AC|调空调"]],
+["日常问句","您能告诉我去车站怎么走吗？","Can you tell me how to get to the station?","Can you tell me how to get to the station?","您能告诉我去车站怎么走吗？",["get to the station|去车站","find this place|找这个地方","go downtown|去市中心","arrive on time|准时到达","take the bus|坐公交","get to the airport|去机场","find the exit|找出口","reach the hotel|到酒店","navigate the city|城市导航","walk to the park|走去公园"]],
+["日常问句","您经常出差吗？","Do you travel often?","Do you travel often?","您经常出差吗？",["often|经常","sometimes|有时候","rarely|很少","once a month|一月一次","twice a year|一年两次","every week|每周","occasionally|偶尔","frequently|频繁","never|从不","regularly|定期"]],
+["日常问句","您喜欢运动吗？","Do you like sports?","Do you like sports?","您喜欢运动吗？",["sports|运动","music|音乐","reading|阅读","traveling|旅行","cooking|烹饪","movies|电影","art|艺术","dancing|跳舞","swimming|游泳","fishing|钓鱼"]],
+// 健康补充（扩充）
+["健康","我嗓子疼","I have a sore throat.","I have a sore throat.","我嗓子疼。",["sore throat|嗓子疼","stomachache|胃疼","backache|背疼","headache|头疼","toothache|牙疼","earache|耳朵疼","muscle pain|肌肉疼","joint pain|关节疼","chest pain|胸痛","allergy|过敏"]],
+["健康","您能推荐一位好医生吗？","Can you recommend a good doctor?","Can you recommend a good doctor?","您能推荐一位好医生吗？",["doctor|医生","dentist|牙医","pharmacist|药剂师","nurse|护士","specialist|专科医生","surgeon|外科医生","therapist|治疗师","pediatrician|儿科医生","gynecologist|妇科医生","ophthalmologist|眼科医生"]],
+["健康","我需要预约","I need to make an appointment.","I need to make an appointment.","我需要预约。",["appointment|预约","check-up|体检","consultation|咨询","examination|检查","treatment|治疗","follow-up|复诊","surgery|手术","vaccination|疫苗","prescription|处方","therapy|治疗"]],
+["健康","我过敏了","I'm having an allergic reaction.","I'm having an allergic reaction.","我过敏了。",["allergic reaction|过敏反应","rash|皮疹","hives|荨麻疹","itching|瘙痒","swelling|肿胀","redness|发红","shortness of breath|呼吸困难","sneezing|打喷嚏","watery eyes|流眼泪","anaphylaxis|过敏性休克"]],
+["健康","请叫救护车","Please call an ambulance.","Please call an ambulance.","请叫救护车。",["ambulance|救护车","doctor|医生","police|警察","firefighters|消防员","rescue|救援","hospital|医院","paramedics|急救人员","emergency service|紧急服务","family|家人","friend|朋友"]],
+["健康","我感觉好多了","I feel much better.","I feel much better.","我感觉好多了。",["better|好多了","great|很棒","wonderful|好极了","relieved|宽慰","recovered|康复","healthy|健康","strong|强壮","energized|精力充沛","rested|休息好了","happy|开心"]],
 ];
 
 // ========== 2. 生成 lessons ==========
 let lessons = coreChunks.map((item, i) => ({
     id: i+1, scene: item[0], chunk: item[1], pattern: item[2], en: item[3], cn: item[4], replace: item[5]||[], isPremium: false
 }));
-console.log('✅ 总语块数:', lessons.length);
+console.log('✅ 总语块数:', lessons.length, ' | 每块平均替换词:', lessons.reduce((acc,item)=>acc+item.replace.length,0)/lessons.length);
 
-// ========== 3. 功能代码（播放、搜索、分类、解锁、对话等）==========
-// 以下代码与之前稳定版本完全相同，直接复制过来
+// ========== 3. 功能代码 ==========
 let currentIndex=0, isSpeaking=false, isPaused=false, currentUtterance=null, currentAudio=null, isRepeating=false, repeatCount=0, repeatTimer=null, hdMode=false, playQueue=[], isProcessingQueue=false, retryCount=0;
 const MAX_RETRY=2, REPEAT_TIMES=5, TIMEOUT_SEC=8;
 const dom = {
@@ -561,7 +562,7 @@ document.addEventListener("keydown", function(e){ if(document.activeElement===do
 // ========== Initialize ==========
 if(window.speechSynthesis){ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){ window.speechSynthesis.getVoices(); }; }
 updateOfflineUI(); showSentence(); updateCnStatus(); populateSceneSelect();
-console.log('✅ 完整版加载完成，语块数:', lessons.length);
+console.log('✅ 豪华完整版加载完成，总语块数:', lessons.length);
 </script>
 </body>
 </html>
