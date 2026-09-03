@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listen & Speak · 基础版</title>
+<title>Listen & Speak · 基础稳定版</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#1e293b;min-height:100vh;}
@@ -81,43 +81,31 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 </style>
 </head>
 <body>
-
 <div id="toast" class="toast"></div>
-
 <div class="container">
-<div class="header">
-<h1>🎧 Listen & Speak</h1>
-<p>Learn English · Unlock Chinese Audio · Speak with Confidence</p>
-</div>
-
+<div class="header"><h1>🎧 Listen & Speak</h1><p>Learn English · Unlock Chinese Audio</p></div>
 <div class="search">
 <input id="searchInput" type="search" placeholder="Search English or Chinese" autocomplete="off">
-<select id="sceneSelect" style="flex-shrink:0; padding:12px 10px; border:1.5px solid #e2e8f0; border-radius:14px; font-size:15px; background:#fff; color:#1e293b; outline:none; cursor:pointer;">
-    <option value="">📂 全部场景</option>
-</select>
+<select id="sceneSelect"><option value="">📂 全部场景</option></select>
 <button onclick="searchSentence()">Search</button>
 </div>
 <div id="results" class="results"></div>
-
-<div class="card" id="mainCard">
+<div class="card">
 <div id="scene" class="scene">Basic Needs</div>
-<div id="progress" class="progress">Chunk 1 / 1300</div>
+<div id="progress" class="progress">Chunk 1 / 112</div>
 <div class="chunk-label">Core Chunk</div>
 <div id="chunk" class="chunk">I want to...</div>
 <div class="english"><span id="english">I want to eat.</span></div>
 <div id="chinese" class="chinese">我想吃东西。</div>
 <div class="replace-title">Replace & Practice</div>
 <div id="replaceList" class="replace-list"></div>
-
 <div class="player-controls">
 <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
 <button id="playPauseBtn" class="ctrl-btn play-btn" onclick="togglePlayPause()">▶</button>
-<button class="ctrl-btn cn-btn" onclick="playChinese()" id="cnPlayBtn">🔊中</button>
+<button class="ctrl-btn cn-btn" onclick="playChinese()">🔊中</button>
 <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
 </div>
-
 <div id="cnStatus" class="cn-status">Chinese audio available: first 50 sentences</div>
-
 <div class="extra-buttons">
 <button id="repeatBtn" onclick="toggleRepeat()">🔁 Repeat</button>
 <button onclick="playPattern()">🧩 Pattern</button>
@@ -129,47 +117,30 @@ body{margin:0;padding:20px 14px 40px;background:#f5f7fa;font-family:-apple-syste
 <button class="get-code-btn" onclick="getUnlockCode()">🔑 Get Code</button>
 <button class="reset-audio-btn" onclick="resetAudio()">🔊 修复音频</button>
 </div>
-
 <div id="chatBox" class="chat-box"></div>
 <div id="chatInputArea" class="chat-input-area">
 <input id="chatInput" type="text" placeholder="Type English or Chinese, press Enter" autocomplete="off">
 <button onclick="sendTextMessage()">Send</button>
 </div>
-
 <div id="status" class="status">Ready</div>
-
 <div id="adminPanel" class="admin-panel">
-<h4 style="margin-top:0;">🔐 Admin Panel</h4>
+<h4>🔐 Admin Panel</h4>
 <input type="password" id="adminPwd" placeholder="Enter admin password">
 <button onclick="adminLogin()">Login</button>
 <div id="adminContent" style="display:none; margin-top:12px;">
-    <div style="display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
-        <select id="levelSelect">
-            <option value="20">Unlock 20 sentences</option>
-            <option value="50">Unlock 50 sentences</option>
-            <option value="100">Unlock 100 sentences</option>
-        </select>
-        <button onclick="generateCnCode()">Generate Unlock Code</button>
-    </div>
+    <select id="levelSelect"><option value="20">Unlock 20</option><option value="50">Unlock 50</option><option value="100">Unlock 100</option></select>
+    <button onclick="generateCnCode()">Generate Unlock Code</button>
     <div class="code-box" id="generatedCode">Click generate</div>
-    <div style="font-size:14px; color:#64748b; margin-top:8px;">
-        💡 Copy the code and send it to the paid user.
-    </div>
-    <button onclick="hideAdmin()" style="margin-top:10px; background:#ef4444;">Close Panel</button>
+    <button onclick="hideAdmin()" style="background:#ef4444;">Close Panel</button>
 </div>
 </div>
 </div>
-<div style="text-align:center;margin-top:16px;font-size:13px;color:#b9c2d0;">
-Listen to Pattern → Full Sentence → Replace → Speak
-</div>
+<div style="text-align:center;margin-top:16px;font-size:13px;color:#b9c2d0;">Listen to Pattern → Full Sentence → Replace → Speak</div>
 </div>
 
 <script>
-// ============================================================
-// 1. 核心语块库（基础版，约 112 句，涵盖主要场景）
-// ============================================================
+// ========== 1. 核心语块库（112条，基础稳定版）==========
 const coreChunks = [
-// 基础需求 (10)
 ["基础需求","我想……","I want to...","I want to eat.","我想吃东西。",["eat|吃","go|去","sleep|睡觉","work|工作","learn English|学英语"]],
 ["基础需求","我需要……","I need...","I need some water.","我需要一些水。",["water|水","help|帮助","money|钱","time|时间","food|食物"]],
 ["基础需求","我要……","I want...","I want some food.","我要一些食物。",["food|食物","water|水","coffee|咖啡","money|钱","help|帮助"]],
@@ -180,7 +151,6 @@ const coreChunks = [
 ["基础需求","你可以……吗？","Can you... ?","Can you help me?","你可以帮我吗？",["help me|帮我","wait|等待","come here|过来","show me|给我看","tell me|告诉我"]],
 ["基础需求","请给我……","Please give me...","Please give me some water.","请给我一些水。",["water|水","food|食物","time|时间","money|钱","help|帮助"]],
 ["基础需求","请帮我……","Please help me...","Please help me.","请帮帮我。",["please help me|请帮我","carry this|拿这个","find it|找到它","understand|理解","call him|打给他"]],
-// 行动 (10)
 ["行动","我去……","I go...","I go home.","我回家。",["home|家","work|工作","school|学校","there|那里","outside|外面"]],
 ["行动","我要去……","I want to go...","I want to go home.","我想回家。",["home|家","work|工作","school|学校","there|那里","outside|外面"]],
 ["行动","我正在……","I'm...","I'm working.","我正在工作。",["working|工作","eating|吃","sleeping|睡觉","learning|学习","waiting|等待"]],
@@ -191,26 +161,22 @@ const coreChunks = [
 ["行动","我想听……","I want to hear...","I want to hear you.","我想听你说。",["you|你","the answer|答案","the music|音乐","the story|故事","more|更多"]],
 ["行动","我想说……","I want to say...","I want to say something.","我想说点什么。",["something|什么","hello|你好","thank you|谢谢","sorry|抱歉","goodbye|再见"]],
 ["行动","我想问……","I want to ask...","I want to ask you something.","我想问你一件事。",["you something|你一件事","a question|一个问题","the price|价格","the time|时间","the way|路"]],
-// 能力 (5)
 ["能力","我能……","I can...","I can do it.","我能做到。",["do it|做到","help you|帮你","come|来","go|去","try|试试"]],
 ["能力","我不能……","I can't...","I can't do it.","我做不到。",["do it|做到","come|来","go|去","wait|等","understand|理解"]],
 ["能力","我会……","I know how to...","I know how to cook.","我会做饭。",["cook|做饭","drive|开车","swim|游泳","use it|用它","do it|做"]],
 ["能力","我不会……","I don't know how to...","I don't know how to use it.","我不会用它。",["use it|用它","do it|做","cook|做饭","drive|开车","fix it|修它"]],
 ["能力","你能……吗？","Can you... ?","Can you hear me?","你能听见我吗？",["hear me|听我","see me|看我","help me|帮我","wait|等","come|来"]],
-// 状态 (5)
 ["状态","我很……","I'm very...","I'm very tired.","我很累。",["tired|累","busy|忙","happy|高兴","hungry|饿","thirsty|渴"]],
 ["状态","我有点……","I'm a little...","I'm a little tired.","我有点累。",["tired|累","busy|忙","hungry|饿","cold|冷","nervous|紧张"]],
 ["状态","我正在……","I'm feeling...","I'm feeling tired.","我感觉很累。",["tired|累","better|好点","sick|生病","good|好","happy|高兴"]],
 ["状态","我准备好了","I'm ready.","I'm ready.","我准备好了。",["ready|准备好了","not ready|没准备好","almost ready|快好了","ready now|现在好了","ready to go|准备走"]],
 ["状态","我累了","I'm tired.","I'm tired.","我累了。",["tired|累","hungry|饿","thirsty|渴","busy|忙","sleepy|困"]],
-// 理解 (6)
 ["理解","我知道……","I know...","I know that.","我知道。",["that|那","him|他","her|她","the answer|答案","the place|地方"]],
 ["理解","我不知道……","I don't know...","I don't know.","我不知道。",["I don't know|我不知道","I'm not sure|不确定","I don't understand|不明白","I can't remember|记不住","I don't think so|我不这么认为"]],
 ["理解","我明白……","I understand...","I understand you.","我明白你的意思。",["you|你","the question|问题","the problem|问题","the idea|想法","the answer|答案"]],
 ["理解","我不明白……","I don't understand...","I don't understand you.","我不明白你的意思。",["you|你","this|这个","that|那个","the question|问题","the answer|答案"]],
 ["理解","我记得……","I remember...","I remember that.","我记得。",["that|那","him|他","her|她","the place|地方","the name|名字"]],
 ["理解","我忘了……","I forgot...","I forgot the name.","我忘了名字。",["the name|名字","the number|号码","the time|时间","the place|地方","the address|地址"]],
-// 交流 (8)
 ["交流","你好吗？","How are you?","How are you?","你好吗？",["today|今天","now|现在","this morning|今早","these days|这几天","really|真的"]],
 ["交流","你在做什么？","What are you doing?","What are you doing?","你在做什么？",["now|现在","today|今天","there|那里","here|这里","at work|在工作"]],
 ["交流","你要去哪里？","Where are you going?","Where are you going?","你要去哪里？",["home|家","work|工作","school|学校","there|那里","now|现在"]],
@@ -219,87 +185,71 @@ const coreChunks = [
 ["交流","你是什么意思？","What do you mean?","What do you mean?","你是什么意思？",["by that|指那个","by this|指这个","by it|指它","exactly|确切","really|真的"]],
 ["交流","你能再说一遍吗？","Can you say that again?","Can you say that again?","你能再说一遍吗？",["again|再说一次","slowly|慢一点","more clearly|更清楚","please|请","one more time|再来一次"]],
 ["交流","请说慢一点","Please speak slowly.","Please speak slowly.","请说慢一点。",["slowly|慢一点","more clearly|更清楚","again|再说一次","a little louder|大声一点","please|请"]],
-// 时间 (4)
 ["时间","现在几点？","What time is it?","What time is it?","现在几点？",["now|现在","there|那里","exactly|确切","please|请","right now|马上"]],
 ["时间","现在……","It's...","It's three o'clock.","现在三点。",["three o'clock|三点","late|晚了","early|早了","time|时间","almost noon|快到中午"]],
 ["时间","我没有时间……","I don't have time to...","I don't have time to wait.","我没有时间等。",["wait|等","eat|吃","talk|说话","go|去","stay|待"]],
 ["时间","给我一点时间","Give me some time.","Give me some time.","给我一点时间。",["some time|一些时间","a minute|一分钟","a moment|一会儿","one day|一天","another day|改天"]],
-// 地点 (4)
 ["地点","这里有……","There is...","There is a problem.","这里有一个问题。",["a problem|问题","a restaurant|餐厅","a hotel|酒店","a shop|商店","a bus|公交"]],
 ["地点","那里有……","There is...","There is a shop there.","那里有一家商店。",["a shop|商店","a restaurant|餐厅","a hotel|酒店","a bus|公交","a hospital|医院"]],
 ["地点","我在这里","I'm here.","I'm here.","我在这里。",["here|这里","now|现在","outside|外面","at work|在工作","at home|在家"]],
 ["地点","我在那里","I'm there.","I'm there.","我在那里。",["there|那里","now|现在","at work|在工作","at home|在家","outside|外面"]],
-// 礼貌 (5)
 ["礼貌","谢谢你","Thank you.","Thank you.","谢谢你。",["very much|非常","so much|很多","for your help|谢谢你的帮助","for coming|谢谢光临","for everything|感谢一切"]],
 ["礼貌","不用谢","You're welcome.","You're welcome.","不用谢。",["you're welcome|不客气","no problem|没问题","not at all|不用谢","anytime|随时","sure|当然"]],
 ["礼貌","对不起","I'm sorry.","I'm sorry.","对不起。",["I'm sorry|我很抱歉","I'm really sorry|真的很抱歉","I'm so sorry|非常抱歉","sorry about that|对此抱歉","sorry for being late|抱歉迟到"]],
 ["礼貌","没关系","It's okay.","It's okay.","没关系。",["it's okay|没事","no problem|没问题","that's okay|没关系","don't worry|别担心","it's fine|没事"]],
 ["礼貌","请……","Please...","Please wait.","请等一下。",["wait|等","come in|进来","sit down|坐下","listen|听","help me|帮我"]],
-// 生活 (5)
 ["生活","我想吃……","I want to eat...","I want to eat something.","我想吃点东西。",["something|点什么","rice|米饭","meat|肉","fish|鱼","noodles|面条"]],
 ["生活","我想喝……","I want to drink...","I want to drink some water.","我想喝点水。",["water|水","coffee|咖啡","tea|茶","juice|果汁","milk|牛奶"]],
 ["生活","我想睡觉","I want to sleep.","I want to sleep.","我想睡觉。",["sleep|睡觉","rest|休息","go home|回家","sit down|坐下","lie down|躺下"]],
 ["生活","我饿了","I'm hungry.","I'm hungry.","我饿了。",["hungry|饿","thirsty|渴","tired|累","sleepy|困","cold|冷"]],
 ["生活","我渴了","I'm thirsty.","I'm thirsty.","我渴了。",["thirsty|渴","hungry|饿","tired|累","sleepy|困","hot|热"]],
-// 工作 (4)
 ["工作","我在工作","I'm working.","I'm working.","我在工作。",["working|工作","cooking|做饭","cleaning|打扫","learning|学习","waiting|等待"]],
 ["工作","我需要工作","I need to work.","I need to work.","我需要工作。",["work|工作","rest|休息","learn|学习","practice|练习","finish this|完成这个"]],
 ["工作","我完成了","I'm done.","I'm done.","我完成了。",["I'm done|我完成了","I'm ready|我准备好了","it's finished|完成了","it's ready|准备好了","that's all|就这样"]],
 ["工作","还没完成","I'm not done yet.","I'm not done yet.","还没完成。",["not done yet|还没完成","not ready yet|还没准备好","not finished yet|还没完成","almost done|快好了","still working|还在工作"]],
-// 情感 (6)
 ["情感","我很高兴","I'm very happy.","I'm very happy.","我很高兴。",["happy|高兴","excited|兴奋","pleased|满意","delighted|欣喜","glad|开心"]],
 ["情感","我很伤心","I'm very sad.","I'm very sad.","我很伤心。",["sad|伤心","upset|难过","disappointed|失望","depressed|沮丧","blue|忧郁"]],
 ["情感","我生气了","I'm angry.","I'm angry.","我生气了。",["angry|生气","mad|愤怒","frustrated|沮丧","annoyed|恼怒","irritated|烦躁"]],
 ["情感","我害怕","I'm scared.","I'm scared.","我害怕。",["scared|害怕","afraid|恐惧","frightened|害怕","terrified|惊恐","nervous|紧张"]],
 ["情感","我累了","I'm tired.","I'm tired.","我累了。",["tired|累","exhausted|筋疲力尽","worn out|累坏了","sleepy|困","drained|精力耗尽"]],
 ["情感","我紧张","I'm nervous.","I'm nervous.","我紧张。",["nervous|紧张","anxious|焦虑","worried|担心","stressed|压力","uneasy|不安"]],
-// 社交 (6)
 ["社交","请坐","Please sit down.","Please sit down.","请坐。",["sit down|坐下","have a seat|请坐","take a seat|请坐","please|请","relax|放松"]],
 ["社交","请喝茶","Would you like some tea?","Would you like some tea?","你想喝杯茶吗？",["tea|茶","coffee|咖啡","water|水","juice|果汁","something|点东西"]],
 ["社交","欢迎","You're welcome.","You're welcome.","欢迎。",["welcome|欢迎","you're welcome|不客气","my pleasure|我的荣幸","anytime|随时","not at all|没事"]],
 ["社交","请稍等","Please wait a moment.","Please wait a moment.","请稍等。",["wait|等","hold on|稍等","just a second|等一下","one moment|一会儿","please|请"]],
 ["社交","我叫……","My name is...","My name is John.","我叫约翰。",["John|约翰","Mary|玛丽","Peter|彼得","Lisa|丽莎","David|大卫"]],
 ["社交","很高兴认识你","Nice to meet you.","Nice to meet you.","很高兴认识你。",["meet you|认识你","know you|认识你","see you|见到你","talk to you|和你说话","work with you|和你工作"]],
-// 旅行 (5)
 ["旅行","我想去……","I want to go to...","I want to go to the airport.","我想去机场。",["the airport|机场","the station|车站","the hotel|酒店","the museum|博物馆","the beach|海滩"]],
 ["旅行","我迷路了","I'm lost.","I'm lost.","我迷路了。",["lost|迷路","confused|困惑","not sure|不确定","turned around|转向","can't find|找不到"]],
 ["旅行","我可以用地图吗？","Can I use the map?","Can I use the map?","我可以用地图吗？",["use the map|用地图","look at the map|看地图","see the map|看地图","use GPS|用GPS","get directions|获取路线"]],
 ["旅行","这附近有……吗？","Is there... near here?","Is there a hotel near here?","这附近有酒店吗？",["a hotel|酒店","a restaurant|餐厅","a shop|商店","a toilet|厕所","a bank|银行"]],
 ["旅行","票价多少？","How much is the ticket?","How much is the ticket?","票价多少？",["ticket|票","fare|车费","price|价格","cost|费用","fee|费"]],
-// 购物 (4)
 ["购物","我在找……","I'm looking for...","I'm looking for a dress.","我在找一件连衣裙。",["a dress|连衣裙","a shirt|衬衫","shoes|鞋","a bag|包","a gift|礼物"]],
 ["购物","这件多少钱？","How much is this?","How much is this?","这件多少钱？",["this|这个","that|那个","it|它","the red one|红色的","the blue one|蓝色的"]],
 ["购物","你能便宜点吗？","Can you give me a discount?","Can you give me a discount?","你能给我打折吗？",["discount|折扣","a better price|更好的价格","a deal|优惠","reduce the price|降价","lower the price|降低价格"]],
 ["购物","我要买这个","I'll take this.","I'll take this.","我要买这个。",["take this|拿这个","buy this|买这个","get this|买这个","choose this|选这个","pick this|挑这个"]],
-// 餐饮 (4)
 ["餐饮","我想点……","I'd like to order...","I'd like to order a salad.","我想点一份沙拉。",["a salad|沙拉","a steak|牛排","fish|鱼","chicken|鸡肉","pasta|意面"]],
 ["餐饮","有菜单吗？","Do you have a menu?","Do you have a menu?","有菜单吗？",["a menu|菜单","the menu|菜单","a drink list|酒水单","a wine list|酒单","a food menu|食物菜单"]],
 ["餐饮","推荐什么？","What do you recommend?","What do you recommend?","你推荐什么？",["recommend|推荐","suggest|建议","advise|建议","propose|提议","offer|提供"]],
 ["餐饮","买单","Can I have the bill?","Can I have the bill?","可以买单吗？",["the bill|账单","the check|账单","the receipt|收据","the invoice|发票","the total|总额"]],
-// 健康 (5)
 ["健康","我头疼","I have a headache.","I have a headache.","我头疼。",["headache|头疼","stomachache|胃疼","backache|背疼","toothache|牙疼","sore throat|喉咙痛"]],
 ["健康","我感冒了","I have a cold.","I have a cold.","我感冒了。",["a cold|感冒","a cough|咳嗽","a fever|发烧","flu|流感","sore throat|喉咙痛"]],
 ["健康","我需要医生","I need a doctor.","I need a doctor.","我需要看医生。",["a doctor|医生","a nurse|护士","a hospital|医院","a clinic|诊所","medical help|医疗帮助"]],
 ["健康","我发烧了","I have a fever.","I have a fever.","我发烧了。",["fever|发烧","temperature|体温","high temperature|高烧","hot|热","sick|生病"]],
 ["健康","我受伤了","I'm injured.","I'm injured.","我受伤了。",["injured|受伤","hurt|受伤","wounded|受伤","bleeding|流血","in pain|在痛"]],
-// 家庭 (4)
 ["家庭","我有一个哥哥","I have a brother.","I have a brother.","我有一个哥哥。",["brother|哥哥","sister|姐姐","father|父亲","mother|母亲","child|孩子"]],
 ["家庭","我的家人……","My family is...","My family is big.","我的家庭很大。",["big|大","small|小","close|亲密","loving|充满爱","happy|幸福"]],
 ["家庭","我结婚了","I'm married.","I'm married.","我结婚了。",["married|已婚","single|单身","divorced|离婚","engaged|订婚","in a relationship|恋爱"]],
 ["家庭","我住……","I live...","I live in Nairobi.","我住内罗毕。",["in Nairobi|在内罗毕","with my family|和家人","near here|附近","alone|独自","in the city|在市区"]],
-// 天气 (3)
 ["天气","天气怎么样？","What's the weather like?","What's the weather like?","天气怎么样？",["today|今天","tomorrow|明天","this week|这周","outside|外面","now|现在"]],
 ["天气","很热","It's hot.","It's hot.","很热。",["hot|热","warm|暖和","cold|冷","cool|凉爽","sunny|晴朗"]],
 ["天气","下雨了","It's raining.","It's raining.","下雨了。",["raining|下雨","snowing|下雪","windy|刮风","cloudy|多云","foggy|有雾"]],
-// 学习 (3)
 ["学习","我在学习","I'm studying.","I'm studying.","我在学习。",["studying|学习","learning|学","reading|阅读","writing|写作","practicing|练习"]],
 ["学习","我想学……","I want to learn...","I want to learn Chinese.","我想学中文。",["Chinese|中文","English|英语","French|法语","Spanish|西班牙语","Japanese|日语"]],
 ["学习","我会说一点","I can speak a little.","I can speak a little.","我会说一点。",["a little|一点","some|一些","basic|基础","conversational|会话","fluent|流利"]],
-// 紧急 (3)
 ["紧急","救命！","Help!","Help!","救命！",["help|救命","police|警察","fire|火","ambulance|救护车","emergency|紧急"]],
 ["紧急","请报警","Call the police.","Call the police.","请报警。",["police|警察","ambulance|救护车","fire department|消防","emergency services|紧急服务","doctor|医生"]],
 ["紧急","我丢了钱包","I lost my wallet.","I lost my wallet.","我丢了钱包。",["wallet|钱包","phone|手机","passport|护照","keys|钥匙","bag|包"]],
-// 机场 (8)
 ["机场","您的航班号是多少？","What's your flight number?","What's your flight number?","您的航班号是多少？",["flight number|航班号","booking reference|预订号","passport number|护照号","ID|身份证","ticket|票"]],
 ["机场","您有行李要托运吗？","Do you have any luggage to check?","Do you have any luggage to check?","您有行李要托运吗？",["luggage|行李","bags|包","suitcase|行李箱","carry-on|手提行李","backpack|背包"]],
 ["机场","登机口在几号？","Which gate is the flight?","Which gate is the flight?","登机口在几号？",["gate|登机口","terminal|航站楼","departure|出发","arrival|到达","boarding|登机"]],
@@ -308,52 +258,222 @@ const coreChunks = [
 ["机场","安检在哪里？","Where is security?","Where is security?","安检在哪里？",["security|安检","check-in|值机","gate|登机口","customs|海关","baggage claim|行李提取"]],
 ["机场","我有转机航班","I have a connecting flight.","I have a connecting flight.","我有转机航班。",["connecting flight|转机航班","layover|中转","stopover|经停","transfer|转机","direct flight|直飞"]],
 ["机场","我需要一个靠窗的座位","I'd like a window seat.","I'd like a window seat.","我想要一个靠窗的座位。",["window seat|靠窗座","aisle seat|过道座","middle seat|中间座","exit row|紧急出口排","bulkhead|隔板座"]],
-// 酒店 (6)
 ["酒店","您需要叫醒服务吗？","Would you like a wake-up call?","Would you like a wake-up call?","您需要叫醒服务吗？",["wake-up call|叫醒服务","room service|客房服务","laundry service|洗衣服务","housekeeping|保洁","dry cleaning|干洗"]],
 ["酒店","我可以办理入住吗？","Can I check in?","Can I check in?","我可以办理入住吗？",["check in|入住","check out|退房","book a room|订房","extend my stay|延住","change rooms|换房"]],
 ["酒店","房间里有WiFi吗？","Does the room have WiFi?","Does the room have WiFi?","房间里有WiFi吗？",["WiFi|无线网络","TV|电视","air conditioning|空调","heating|暖气","mini bar|迷你吧"]],
 ["酒店","早餐几点开始？","What time is breakfast?","What time is breakfast?","早餐几点开始？",["breakfast|早餐","dinner|晚餐","lunch|午餐","room service|客房服务","happy hour|欢乐时光"]],
 ["酒店","我想多住一晚","I'd like to stay one more night.","I'd like to stay one more night.","我想多住一晚。",["one more night|多一晚","two more nights|多两晚","another day|多一天","extend my stay|延住","change rooms|换房"]],
 ["酒店","退房时间是几点？","What time is checkout?","What time is checkout?","退房时间是几点？",["checkout|退房","check-in|入住","late checkout|晚退房","early check-in|早入住","express checkout|快速退房"]],
-// 餐厅 (4)
 ["餐厅","您想坐室内还是室外？","Would you prefer indoor or outdoor seating?","Would you prefer indoor or outdoor seating?","您想坐室内还是室外？",["indoor|室内","outdoor|室外","by the window|靠窗","in the corner|角落","on the patio|露台"]],
 ["餐厅","您要喝点什么？","What would you like to drink?","What would you like to drink?","您要喝点什么？",["drink|饮料","starters|前菜","main course|主菜","dessert|甜点","side dish|配菜"]],
 ["餐厅","这个菜放辣椒吗？","Does this dish have chili?","Does this dish have chili?","这个菜放辣椒吗？",["chili|辣椒","spicy|辣的","pepper|胡椒","garlic|大蒜","onion|洋葱"]],
 ["餐厅","我预订了一个位子","I have a reservation.","I have a reservation.","我预订了一个位子。",["reservation|预订","booking|预订","table|桌子","party of two|两人位","window seat|靠窗座"]],
-// 日常问句 (6)
 ["日常问句","您能帮我拿一下吗？","Can you help me with this?","Can you help me with this?","您能帮我拿一下吗？",["this|这个","that|那个","my bag|我的包","my coat|我的外套","the door|门"]],
 ["日常问句","您介意我坐这里吗？","Do you mind if I sit here?","Do you mind if I sit here?","您介意我坐这里吗？",["sit here|坐这里","open the window|开窗","close the door|关门","turn on the light|开灯","use the phone|用电话"]],
 ["日常问句","您喜欢这个吗？","Do you like this?","Do you like this?","您喜欢这个吗？",["this|这个","that|那个","it|它","the color|颜色","the design|设计"]],
 ["日常问句","我可以借一下……吗？","Can I borrow...?","Can I borrow your pen?","我可以借一下您的笔吗？",["your pen|你的笔","your phone|你的手机","your charger|你的充电器","your book|你的书","your umbrella|你的伞"]],
 ["日常问句","您周末有什么计划？","What are your plans for the weekend?","What are your plans for the weekend?","您周末有什么计划？",["weekend|周末","today|今天","tomorrow|明天","next week|下周","this evening|今晚"]],
 ["日常问句","您能告诉我怎么走吗？","Can you tell me how to get there?","Can you tell me how to get there?","您能告诉我怎么走吗？",["get there|去那里","find this place|找这个地方","get to the station|到车站","go downtown|去市中心","arrive on time|准时到达"]],
-// 工作补充 (4)
 ["工作","您方便接电话吗？","Are you available to take a call?","Are you available to take a call?","您方便接电话吗？",["take a call|接电话","have a meeting|开会","talk later|晚点聊","answer emails|回邮件","review the report|审报告"]],
 ["工作","我们什么时候再聊？","When can we talk again?","When can we talk again?","我们什么时候再聊？",["talk again|再聊","meet again|再见","continue this|继续","follow up|跟进","schedule a call|安排通话"]],
 ["工作","您能发给我吗？","Could you send it to me?","Could you send it to me?","您能发给我吗？",["send it to me|发给我","forward it|转发","email it|邮件发","upload it|上传","share it|分享"]],
 ["工作","我需要您的反馈","I need your feedback.","I need your feedback.","我需要您的反馈。",["feedback|反馈","opinion|意见","suggestion|建议","approval|批准","input|意见"]],
 ];
-// ============================================================
-// 2. 生成 lessons（直接用 coreChunks）
-// ============================================================
-let lessons = coreChunks.map((item, index) => ({
-    id: index + 1,
-    scene: item[0],
-    chunk: item[1],
-    pattern: item[2],
-    en: item[3],
-    cn: item[4],
-    replace: item[5] || [],
-    isPremium: false
+// ========== 2. 生成 lessons ==========
+let lessons = coreChunks.map((item, i) => ({
+    id: i+1, scene: item[0], chunk: item[1], pattern: item[2], en: item[3], cn: item[4], replace: item[5]||[], isPremium: false
 }));
-console.log('✅ 基础语块数:', lessons.length);
-
-// ============================================================
-// 3. 核心功能（播放、解锁、对话等）—— 与之前完整版完全相同
-// ============================================================
-// 由于功能代码很长，这里简化为函数声明，但实际需要包含所有函数。
-// 此处我提供完整功能代码（与之前完整版一致），但为了缩短篇幅，我仅保留关键函数。
-// 您可以直接使用我之前提供的稳定版本中的完整功能代码。
-// 为确保基础版可用，我在此嵌入完整的功能代码（因篇幅限制，此处省略，但实际我会提供完整）。
-// 注意：这里必须包含所有函数（stopSpeech, speakNative, speakText, playCurrent, togglePlayPause, prevTrack, nextTrack, randomSentence, toggleRepeat, toggleHD, playReplaceWord, showSentence, searchSentence, populateSceneSelect, 解锁、对话等）。
-// 由于这部分代码之前已多次提供，且用户已有基础，我将在实际回复中提供完整代码。
+console.log('语块数:', lessons.length);
+// ========== 3. DOM 引用 ==========
+const dom = {
+    scene: document.getElementById("scene"),
+    progress: document.getElementById("progress"),
+    chunk: document.getElementById("chunk"),
+    english: document.getElementById("english"),
+    chinese: document.getElementById("chinese"),
+    replaceList: document.getElementById("replaceList"),
+    status: document.getElementById("status"),
+    playPauseBtn: document.getElementById("playPauseBtn"),
+    repeatBtn: document.getElementById("repeatBtn"),
+    searchInput: document.getElementById("searchInput"),
+    results: document.getElementById("results"),
+    toast: document.getElementById("toast"),
+    hdToggle: document.getElementById("hdToggle"),
+    micBtn: document.getElementById("micBtn"),
+    chatBox: document.getElementById("chatBox"),
+    chatInput: document.getElementById("chatInput"),
+    aiToggle: document.getElementById("aiToggle")
+};
+// ========== 4. Toast ==========
+let toastTimer;
+function showToast(t) { dom.toast.textContent=t; dom.toast.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>dom.toast.classList.remove("show"), 1800); }
+// ========== 5. 语音引擎 ==========
+let currentIndex=0, isSpeaking=false, isPaused=false, currentUtterance=null, currentAudio=null, isRepeating=false, repeatCount=0, repeatTimer=null, hdMode=false, playQueue=[], isProcessingQueue=false, retryCount=0;
+const MAX_RETRY=2, REPEAT_TIMES=5, TIMEOUT_SEC=8;
+function getAvailableLessons(){ return lessons; }
+function getCurrentItem(){ const a=getAvailableLessons(); if(currentIndex>=a.length)currentIndex=0; return a[currentIndex]||null; }
+function stopSpeech(){ if(currentUtterance){ try{ window.speechSynthesis.cancel(); }catch(e){} currentUtterance=null; } if(currentAudio){ try{ currentAudio.pause(); currentAudio.src=''; }catch(e){} currentAudio=null; } isSpeaking=false; isPaused=false; dom.playPauseBtn.textContent="▶"; dom.playPauseBtn.classList.remove("paused"); playQueue=[]; isProcessingQueue=false; retryCount=0; }
+function isSpeechSupported(){ return !!(window.speechSynthesis && window.SpeechSynthesisUtterance); }
+function speakNative(text, cb){
+    if(window.speechSynthesis) window.speechSynthesis.getVoices();
+    if(!isSpeechSupported()){ cb(false, "Browser doesn't support TTS"); return; }
+    const voices=window.speechSynthesis.getVoices();
+    const preferred=voices.find(v=>/Google UK|David|Zira|Samantha/i.test(v.name))||voices.find(v=>v.lang.startsWith('en'))||null;
+    const utterance=new SpeechSynthesisUtterance(text);
+    currentUtterance=utterance; utterance.lang='en-US'; utterance.rate=0.6; utterance.pitch=1.1; utterance.volume=1; if(preferred) utterance.voice=preferred;
+    let ended=false; let timeoutId=setTimeout(()=>{ if(!ended){ ended=true; try{ window.speechSynthesis.cancel(); }catch(e){} currentUtterance=null; cb(false, "Playback timeout"); } }, TIMEOUT_SEC*1000);
+    utterance.onstart=function(){ if(currentUtterance!==utterance)return; isSpeaking=true; dom.playPauseBtn.textContent="⏸"; dom.playPauseBtn.classList.add("paused"); dom.status.textContent="🎧 Playing (native)"; dom.status.className="status speaking"; };
+    utterance.onend=function(){ if(ended)return; ended=true; clearTimeout(timeoutId); isSpeaking=false; currentUtterance=null; dom.playPauseBtn.textContent="▶"; dom.playPauseBtn.classList.remove("paused"); dom.status.textContent="✅ Playback done"; dom.status.className="status done"; cb(true); };
+    utterance.onerror=function(ev){ if(ended)return; ended=true; clearTimeout(timeoutId); isSpeaking=false; currentUtterance=null; if(ev.error==='canceled'||ev.error==='interrupted'){ cb(false, "Canceled"); }else{ cb(false, "Native TTS error: "+ev.error); } };
+    try{ setTimeout(()=>{ window.speechSynthesis.speak(utterance); }, 100); }catch(e){ clearTimeout(timeoutId); ended=true; isSpeaking=false; currentUtterance=null; cb(false, "Native TTS exception: "+e.message); }
+}
+function speakGoogle(text, cb){
+    const url=`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en&client=tw-ob`;
+    const audio=new Audio(url); currentAudio=audio; let ended=false; let timeoutId=setTimeout(()=>{ if(!ended){ ended=true; try{ audio.pause(); audio.src=''; }catch(e){} currentAudio=null; cb(false, "Network timeout"); } }, TIMEOUT_SEC*1000);
+    audio.oncanplaythrough=function(){ audio.play().catch(err=>{ if(ended)return; clearTimeout(timeoutId); ended=true; currentAudio=null; cb(false, "Google TTS error: "+err.message); }); };
+    audio.onplay=function(){ isSpeaking=true; dom.playPauseBtn.textContent="⏸"; dom.playPauseBtn.classList.add("paused"); dom.status.textContent="🎧 Playing (HD)"; dom.status.className="status speaking"; };
+    audio.onended=function(){ if(ended)return; clearTimeout(timeoutId); ended=true; isSpeaking=false; currentAudio=null; dom.playPauseBtn.textContent="▶"; dom.playPauseBtn.classList.remove("paused"); dom.status.textContent="✅ Playback done"; dom.status.className="status done"; cb(true); };
+    audio.onerror=function(){ if(ended)return; clearTimeout(timeoutId); ended=true; isSpeaking=false; currentAudio=null; cb(false, "Google TTS failed (network restriction)"); };
+    audio.load();
+}
+function speakText(text, cb){ if(!text){ if(cb)cb(false); return; } playQueue.push({text, cb, retries:0}); processQueue(); }
+function processQueue(){
+    if(isProcessingQueue||playQueue.length===0)return; isProcessingQueue=true; const task=playQueue.shift(); const {text, cb, retries}=task; const useGoogle=hdMode&&navigator.onLine;
+    function onResult(success, msg){
+        if(success){ isProcessingQueue=false; if(cb)cb(true); if(playQueue.length>0)processQueue(); }
+        else{
+            if(retries<MAX_RETRY){
+                if(useGoogle&&msg.includes('network')){ task.retries=retries+1; task.engine='native'; playQueue.unshift(task); isProcessingQueue=false; setTimeout(processQueue, 500); return; }
+                else{ task.retries=retries+1; playQueue.unshift(task); isProcessingQueue=false; setTimeout(processQueue, 800); return; }
+            }else{ isProcessingQueue=false; if(cb)cb(false); dom.status.textContent="⚠️ Playback failed."; dom.status.className="status error"; if(playQueue.length>0)processQueue(); }
+        }
+    }
+    if(useGoogle) speakGoogle(text, onResult); else speakNative(text, onResult);
+}
+function playCurrent(){ if(isSpeaking){ stopSpeech(); setTimeout(playCurrent,200); return; } const item=getCurrentItem(); if(!item)return; dom.status.textContent="⏳ Loading..."; dom.status.className="status"; speakText(item.en); }
+function playPattern(){ const item=getCurrentItem(); if(!item)return; const text=item.pattern.replace(/\.{3}|…/g,"").trim(); if(!text)return; stopSpeech(); setTimeout(()=>{ dom.status.textContent="🧩 Pattern..."; speakText(text); },100); }
+function togglePlayPause(){ if(isSpeaking){ stopSpeech(); dom.status.textContent="⏸ Paused"; dom.status.className="status paused"; }else{ playCurrent(); } }
+function prevTrack(){ stopSpeech(); const available=getAvailableLessons(); if(available.length===0)return; currentIndex=(currentIndex-1+available.length)%available.length; showSentence(); setTimeout(playCurrent,150); }
+function nextTrack(){ stopSpeech(); const available=getAvailableLessons(); if(available.length===0)return; currentIndex=(currentIndex+1)%available.length; showSentence(); setTimeout(playCurrent,150); }
+function randomSentence(){ stopSpeech(); const available=getAvailableLessons(); if(available.length===0)return; currentIndex=Math.floor(Math.random()*available.length); showSentence(); setTimeout(playCurrent,150); }
+function toggleRepeat(){
+    if(isRepeating){ isRepeating=false; clearTimeout(repeatTimer); stopSpeech(); dom.repeatBtn.textContent="🔁 Repeat"; dom.repeatBtn.classList.remove("active"); dom.status.textContent="⏸ Repeat stopped"; dom.status.className="status paused"; return; }
+    isRepeating=true; repeatCount=0; dom.repeatBtn.textContent="⏹ Stop Repeat"; dom.repeatBtn.classList.add("active"); doRepeat();
+}
+function doRepeat(){
+    if(!isRepeating)return; repeatCount++; dom.status.textContent=`🔁 Repeat ${repeatCount}/${REPEAT_TIMES}`; dom.status.className="status";
+    const item=getCurrentItem(); if(!item){ stopSpeech(); return; }
+    speakText(item.en, function(success){
+        if(!isRepeating)return; if(!success){ isRepeating=false; dom.repeatBtn.textContent="🔁 Repeat"; dom.repeatBtn.classList.remove("active"); dom.status.textContent="⚠️ Repeat interrupted"; dom.status.className="status error"; return; }
+        if(repeatCount>=REPEAT_TIMES){ isRepeating=false; dom.repeatBtn.textContent="🔁 Repeat"; dom.repeatBtn.classList.remove("active"); dom.status.textContent="✅ Repeat done"; dom.status.className="status done"; return; }
+        repeatTimer=setTimeout(doRepeat,600);
+    });
+}
+function toggleHD(){ if(isOffline){ showToast('HD mode unavailable offline'); return; } hdMode=!hdMode; dom.hdToggle.textContent=hdMode?"✨ HD(ON)":"✨ HD"; dom.hdToggle.style.background=hdMode?"#22c55e":"#8b5cf6"; showToast(hdMode?"HD voice enabled":"Switched to native voice"); if(isSpeaking){ stopSpeech(); setTimeout(playCurrent,200); } }
+function playReplaceWord(word){ if(!word)return; speakText(word); showToast("🔊 "+word); }
+function showSentence(){
+    const item=getCurrentItem(); if(!item)return; const available=getAvailableLessons();
+    dom.scene.textContent=item.scene+(item.isPremium?' ⭐':''); dom.progress.textContent=`Chunk ${currentIndex+1} / ${available.length}`;
+    dom.chunk.textContent=item.chunk; dom.english.textContent=item.en; dom.chinese.textContent=item.cn;
+    dom.replaceList.innerHTML=""; (item.replace||[]).forEach(function(word){
+        const span=document.createElement("span"); span.className="replace-item"; span.textContent=word; span.style.cursor="pointer"; span.title="Click to hear pronunciation";
+        span.onclick=function(e){ e.stopPropagation(); playReplaceWord(word); };
+        dom.replaceList.appendChild(span);
+    });
+    dom.status.textContent="Ready"; dom.status.className="status"; updateCnStatus();
+}
+function searchSentence(){
+    const keyword=dom.searchInput.value.trim().toLowerCase(); dom.results.innerHTML="";
+    if(!keyword){ showToast("Enter a keyword"); return; }
+    const available=getAvailableLessons();
+    const matches=available.filter(item=> item.chunk.toLowerCase().includes(keyword)||item.pattern.toLowerCase().includes(keyword)||item.en.toLowerCase().includes(keyword)||item.cn.includes(keyword)||item.scene.toLowerCase().includes(keyword) );
+    if(matches.length===0){ dom.results.innerHTML=`<div class="no-result">🔍 No matching chunks found</div>`; return; }
+    matches.slice(0,30).forEach(function(item){
+        const box=document.createElement("div"); box.className="result";
+        box.innerHTML=`<div class="result-en">${item.chunk} · ${item.pattern}${item.isPremium?' ⭐':''}</div><div class="result-cn">${item.cn}</div>`;
+        box.onclick=function(){ stopSpeech(); const idx=available.indexOf(item); if(idx!==-1)currentIndex=idx; showSentence(); dom.results.innerHTML=""; dom.searchInput.value=""; setTimeout(playCurrent,150); showToast("Jumped to chunk"); };
+        dom.results.appendChild(box);
+    });
+}
+function populateSceneSelect(){
+    const select=document.getElementById('sceneSelect'); if(!select)return;
+    const scenes=new Set(); lessons.forEach(item=>{ let scene=item.scene.replace(/^⭐\s*/,'').trim(); if(scene)scenes.add(scene); });
+    select.innerHTML='<option value="">📂 全部场景</option>';
+    Array.from(scenes).sort().forEach(scene=>{ const opt=document.createElement('option'); opt.value=scene; opt.textContent=scene; select.appendChild(opt); });
+    select.removeEventListener('change', select._changeHandler);
+    select._changeHandler=function(){ const input=document.getElementById('searchInput'); input.value=this.value; searchSentence(); };
+    select.addEventListener('change', select._changeHandler);
+}
+// ========== 6. 中文解锁 ==========
+const BASE_FREE_CN=50; let cnUnlockedCount=parseInt(localStorage.getItem('cnUnlockedCount'))||0;
+function getCnMaxIndex(){ return BASE_FREE_CN+cnUnlockedCount; }
+function updateCnStatus(){
+    const total=lessons.length; const max=Math.min(getCnMaxIndex(), total); const statusEl=document.getElementById('cnStatus');
+    if(max>=total){ statusEl.textContent='🎉 Chinese audio: ALL UNLOCKED ('+total+' sentences)'; statusEl.style.color='#22c55e'; }
+    else{ statusEl.textContent='🔊 Chinese audio available: first '+max+' sentences (total '+total+')'; statusEl.style.color='#8b5cf6'; }
+    const unlockBtn=document.getElementById('unlockCnBtn');
+    if(max>=total){ unlockBtn.textContent='✅ All Unlocked'; unlockBtn.disabled=true; unlockBtn.style.opacity='0.6'; }
+    else{ unlockBtn.textContent='🔓 Unlock Chinese ('+(total-max)+' left)'; unlockBtn.disabled=false; unlockBtn.style.opacity='1'; }
+}
+function playChinese(){
+    const item=getCurrentItem(); if(!item)return; const idx=currentIndex; const max=Math.min(getCnMaxIndex(), lessons.length);
+    if(idx>=max){ showToast('⚠️ Chinese audio locked. Unlock more!'); setTimeout(showUnlockDialog,300); return; }
+    if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){ dom.status.textContent="⚠️ Browser doesn't support TTS"; dom.status.className="status error"; return; }
+    const text=item.cn; const utterance=new SpeechSynthesisUtterance(text); utterance.lang='zh-CN'; utterance.rate=0.8; utterance.pitch=1; utterance.volume=1;
+    try{ window.speechSynthesis.speak(utterance); dom.status.textContent="🔊 Playing Chinese audio..."; dom.status.className="status speaking";
+        utterance.onend=function(){ dom.status.textContent="✅ Chinese audio done"; dom.status.className="status done"; };
+        utterance.onerror=function(){ dom.status.textContent="⚠️ Chinese audio error"; dom.status.className="status error"; };
+    }catch(e){ dom.status.textContent="⚠️ Playback error"; dom.status.className="status error"; }
+}
+function showUnlockDialog(){
+    const remaining=lessons.length-getCnMaxIndex(); if(remaining<=0){ showToast('All unlocked!'); return; }
+    const code=prompt('💳 UNLOCK CHINESE AUDIO\n\n📱 M-PESA Paybill: 0768033524\n💰 $1 USD unlocks 20 sentences\n\nAfter payment, click "Get Code" button.\n\nIf you have an unlock code, enter it:');
+    if(code&&code.trim()!==''){ const unlockAmount=verifyCnCode(code.trim()); if(unlockAmount>0){ cnUnlockedCount+=unlockAmount; localStorage.setItem('cnUnlockedCount', String(cnUnlockedCount)); updateCnStatus(); showToast('🎉 Unlocked! +'+unlockAmount+' sentences'); if(currentIndex>=getCnMaxIndex()){ currentIndex=getCnMaxIndex()-1; if(currentIndex<0)currentIndex=0; showSentence(); } } else { showToast('❌ Invalid unlock code.'); } }
+}
+function verifyCnCode(code){ const validCodes={"CN-20-2025":20,"CN-50-2025":50,"CN-100-2025":100}; const dynamicCodes=JSON.parse(localStorage.getItem('cn_valid_codes'))||{}; const allCodes={...validCodes,...dynamicCodes}; return code in allCodes?allCodes[code]:0; }
+function getUnlockCode(){
+    const chatId=prompt('📱 Enter your Telegram User ID\n\nHow to find it:\n1. Search @userinfobot on Telegram\n2. Click Start\n3. Copy your ID number');
+    if(!chatId)return; const code='CN-20-'+Math.random().toString(36).substring(2,6).toUpperCase();
+    fetch('https://api.telegram.org/bot8806999050:AAHovISMWtd-XyEZvMMVNchrXWj9dF-PZWM/sendMessage', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ chat_id:chatId, text:'✅ Your unlock code: '+code+'\n\nEnter it in the app to activate Chinese audio.\n\n💳 M-PESA Paybill: 0768033524\n💰 $1 = 20 sentences' })
+    }).then(res=>res.json()).then(data=>{ if(data.ok){ showToast('✅ Unlock code sent to your Telegram!'); showToast('🔑 Your code: '+code); }else{ showToast('❌ Failed to send. Check your Telegram ID.'); } }).catch(()=>showToast('❌ Network error, please try again'));
+}
+// ========== 7. Admin Panel ==========
+const ADMIN_PASSWORD="admin123"; let clickCount=0;
+document.querySelector('.header h1').addEventListener('click', function(){ clickCount++; if(clickCount>=5){ toggleAdmin(); clickCount=0; } setTimeout(()=>clickCount=0,2000); });
+function toggleAdmin(){ const panel=document.getElementById('adminPanel'); panel.style.display=panel.style.display==='block'?'none':'block'; }
+function adminLogin(){ const pwd=document.getElementById('adminPwd').value; if(pwd===ADMIN_PASSWORD){ document.getElementById('adminContent').style.display='block'; document.getElementById('adminPwd').style.display='none'; document.querySelector('#adminPanel button[onclick="adminLogin()"]').style.display='none'; showToast('✅ Admin logged in'); }else{ showToast('❌ Wrong password'); } }
+function generateCnCode(){ const amount=parseInt(document.getElementById('levelSelect').value); const random=Math.random().toString(36).substring(2,6).toUpperCase(); const code=`CN-${amount}-${random}`; document.getElementById('generatedCode').textContent=code; const codes=JSON.parse(localStorage.getItem('cn_valid_codes'))||{}; codes[code]=amount; localStorage.setItem('cn_valid_codes', JSON.stringify(codes)); showToast('✅ Unlock code generated ('+amount+' sentences)'); }
+function hideAdmin(){ document.getElementById('adminPanel').style.display='none'; }
+// ========== 8. Chat (简版) ==========
+let chatMode=false, isListening=false;
+const recognition=new (window.SpeechRecognition||window.webkitSpeechRecognition)(); recognition.lang='zh-CN'; recognition.continuous=false; recognition.interimResults=true;
+function containsChinese(t){ return /[\u4e00-\u9fa5]/.test(t); }
+const chineseRules=[{keywords:['你好','嗨','hi','hello'], reply:'你好！很高兴见到你。😊 (Hello! Nice to meet you.)'}];
+const englishRules=[{keywords:['hello','hi','hey'], reply:"Hello! How are you today? I'm your English practice partner."}];
+function getReply(text, isChinese){ const lower=text.toLowerCase(); if(isChinese){ for(let rule of chineseRules){ if(rule.keywords.some(kw=>lower.includes(kw))) return rule.reply; } return "有意思！你能再多说一点吗？ (That's interesting! Could you tell me more?)"; }else{ for(let rule of englishRules){ if(rule.keywords.some(kw=>lower.includes(kw))) return rule.reply; } return "That's interesting! Could you tell me more?"; } }
+function appendMessage(role, content, correction){ const div=document.createElement('div'); div.className=`chat-msg ${role}`; div.textContent=content; if(correction){ const corrDiv=document.createElement('div'); corrDiv.className='correction'; corrDiv.textContent='💡 '+correction; div.appendChild(corrDiv); } const time=document.createElement('div'); time.className='time'; time.textContent=new Date().toLocaleTimeString(); div.appendChild(time); dom.chatBox.appendChild(div); dom.chatBox.scrollTop=dom.chatBox.scrollHeight; }
+function processUserInput(text){ if(!text.trim())return; const isChinese=containsChinese(text); appendMessage('user', text); const reply=getReply(text, isChinese); setTimeout(()=>{ appendMessage('ai', reply); dom.status.textContent='✅ Replied'; dom.status.className='status done'; },300); }
+function toggleChat(){ chatMode=!chatMode; const btn=dom.aiToggle; if(chatMode){ dom.chatBox.style.display='block'; document.getElementById('chatInputArea').style.display='flex'; btn.textContent='❌ Close Chat'; btn.style.background='#ef4444'; if(dom.chatBox.children.length===0){ appendMessage('ai', "👋 Hello! I'm your English practice partner. You can type or speak. Let's get started!"); } }else{ dom.chatBox.style.display='none'; document.getElementById('chatInputArea').style.display='none'; btn.textContent='💬 Chat'; btn.style.background='#10b981'; if(isListening){ try{ recognition.stop(); }catch(e){} dom.micBtn.textContent='🎤 Voice'; dom.micBtn.classList.remove('listening'); isListening=false; } } }
+function sendTextMessage(){ const text=dom.chatInput.value.trim(); if(!text)return; dom.chatInput.value=''; processUserInput(text); }
+dom.chatInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); sendTextMessage(); } });
+function toggleMic(){ if(isOffline){ showToast('Voice recognition unavailable offline'); return; } if(isListening){ recognition.stop(); dom.micBtn.textContent='🎤 Voice'; dom.micBtn.classList.remove('listening'); isListening=false; return; } if(!chatMode) toggleChat(); try{ recognition.start(); dom.micBtn.textContent='⏺ Recording...'; dom.micBtn.classList.add('listening'); dom.status.textContent='🎤 Speak in English or Chinese...'; dom.status.className='status speaking'; isListening=true; }catch(e){ showToast('❌ Mic access denied.'); dom.micBtn.textContent='🎤 Voice'; dom.micBtn.classList.remove('listening'); isListening=false; } }
+recognition.onresult=function(event){ let finalText=''; for(let i=event.resultIndex; i<event.results.length; i++){ if(event.results[i].isFinal){ finalText=event.results[i][0].transcript; break; } } if(finalText){ dom.status.textContent='✅ Recognized: '+finalText; dom.status.className='status done'; processUserInput(finalText); recognition.stop(); dom.micBtn.textContent='🎤 Voice'; dom.micBtn.classList.remove('listening'); isListening=false; } };
+recognition.onerror=function(event){ dom.status.textContent='⚠️ Recognition error: '+event.error; dom.status.className='status error'; dom.micBtn.textContent='🎤 Voice'; dom.micBtn.classList.remove('listening'); isListening=false; showToast('Voice recognition failed. Try typing.'); };
+recognition.onend=function(){ if(isListening){ dom.micBtn.textContent='🎤 Voice'; dom.micBtn.classList.remove('listening'); isListening=false; } };
+// ========== 9. Offline mode ==========
+let isOffline=!navigator.onLine;
+function updateOfflineUI(){ const micBtn=dom.micBtn; const hdBtn=dom.hdToggle; if(isOffline){ if(hdMode){ hdMode=false; hdBtn.textContent='✨ HD'; hdBtn.style.background='#8b5cf6'; } hdBtn.disabled=true; hdBtn.style.opacity='0.5'; micBtn.disabled=true; micBtn.style.opacity='0.5'; micBtn.textContent='🎤 Offline'; dom.status.textContent='📶 Offline mode · Native voice + text chat available'; dom.status.className='status'; if(isListening){ try{ recognition.stop(); }catch(e){} micBtn.classList.remove('listening'); isListening=false; } }else{ hdBtn.disabled=false; hdBtn.style.opacity='1'; micBtn.disabled=false; micBtn.style.opacity='1'; micBtn.textContent='🎤 Voice'; dom.status.textContent='🌐 Online mode · All features available'; dom.status.className='status done'; } }
+window.addEventListener('online', function(){ isOffline=false; updateOfflineUI(); showToast('Network restored'); });
+window.addEventListener('offline', function(){ isOffline=true; updateOfflineUI(); showToast('Offline mode activated'); });
+function resetAudio(){ try{ window.speechSynthesis.cancel(); window.speechSynthesis.getVoices(); showToast('🔄 音频引擎已重置，请重新点击播放'); showSentence(); }catch(e){ showToast('⚠️ 重置失败，请刷新页面'); } }
+// ========== 10. Keyboard shortcuts ==========
+document.addEventListener("keydown", function(e){ if(document.activeElement===dom.searchInput||document.activeElement===dom.chatInput)return; if(e.key==="ArrowLeft"){ e.preventDefault(); prevTrack(); } if(e.key==="ArrowRight"){ e.preventDefault(); nextTrack(); } if(e.key===" "){ e.preventDefault(); togglePlayPause(); } if(e.key==="r"||e.key==="R"){ e.preventDefault(); toggleRepeat(); } });
+// ========== 11. Initialize ==========
+if(window.speechSynthesis){ window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){ window.speechSynthesis.getVoices(); }; }
+updateOfflineUI(); showSentence(); updateCnStatus(); populateSceneSelect();
+console.log('✅ 基础版加载完成，语块数:', lessons.length);
+</script>
+</body>
+</html>
