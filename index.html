@@ -630,35 +630,38 @@ let baseImageData = ctx.getImageData(0, 0, w, h);
 const mouthX = w/2, mouthY = h/2 + 30;
 const mouthW = 32, mouthHBase = 10;
 
+// ★★★ 修复后的嘴型：颜色浅半透明，左移 3 像素 ★★★
 function drawMouth(open) {
     ctx.putImageData(baseImageData, 0, 0);
     const h = mouthHBase + open * 28;
+    const x = mouthX - 3;  // 左移 3 像素
     ctx.beginPath();
-    ctx.ellipse(mouthX, mouthY, mouthW, h, 0, 0, Math.PI*2);
-    ctx.fillStyle = '#b34a5a';
+    ctx.ellipse(x, mouthY, mouthW, h, 0, 0, Math.PI*2);
+    // 半透明浅粉色
+    ctx.fillStyle = 'rgba(200, 130, 140, 0.55)';
     ctx.fill();
-    ctx.strokeStyle = '#8a3a48';
+    ctx.strokeStyle = 'rgba(160, 90, 100, 0.45)';
     ctx.lineWidth = 1.5;
     ctx.stroke();
     if (open > 0.3) {
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(mouthX-14, mouthY-5, 28, 8);
-        ctx.strokeStyle = '#ddd';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.fillRect(x - 14, mouthY - 5, 28, 8);
+        ctx.strokeStyle = 'rgba(200, 200, 200, 0.4)';
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(mouthX, mouthY-5);
-        ctx.lineTo(mouthX, mouthY+3);
+        ctx.moveTo(x, mouthY - 5);
+        ctx.lineTo(x, mouthY + 3);
         ctx.stroke();
-        for (let i = -1; i <= 1; i+=2) {
+        for (let i = -1; i <= 1; i += 2) {
             ctx.beginPath();
-            ctx.moveTo(mouthX + i*7, mouthY-5);
-            ctx.lineTo(mouthX + i*7, mouthY+3);
+            ctx.moveTo(x + i * 7, mouthY - 5);
+            ctx.lineTo(x + i * 7, mouthY + 3);
             ctx.stroke();
         }
         if (open > 0.6) {
             ctx.beginPath();
-            ctx.ellipse(mouthX, mouthY+8, 10, 6, 0, 0, Math.PI*2);
-            ctx.fillStyle = '#e8707a';
+            ctx.ellipse(x, mouthY + 8, 10, 6, 0, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(232, 112, 122, 0.4)';
             ctx.fill();
         }
     }
@@ -990,7 +993,7 @@ function populateSceneSelect() {
 }
 
 // ========================================================================
-// 8. 中文解锁、Admin、AI对话等（完整保留，此处略，与之前相同）
+// 8. 中文解锁、Admin、AI对话等（完整保留）
 // ========================================================================
 const BASE_FREE_CN = 50;
 let cnUnlockedCount = parseInt(localStorage.getItem('cnUnlockedCount')) || 0;
@@ -1376,7 +1379,7 @@ if (window.speechSynthesis) {
 }
 
 console.log('✅ 完整版加载完成，短句数:', lessons.length);
-console.log('💡 点击播放，精细人像将随语音开口说话！');
+console.log('💡 点击播放，人像将随语音开口说话！');
 </script>
 </body>
 </html>
