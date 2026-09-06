@@ -630,7 +630,7 @@ let baseImageData = ctx.getImageData(0, 0, w, h);
 const mouthX = w/2, mouthY = h/2 + 30;
 const mouthW = 32, mouthHBase = 10;
 
-// ★★★ 修复后的嘴型：颜色浅半透明，左移 3 像素 ★★★
+// ★★★ 修复后的嘴型：颜色浅半透明，左移 3 像素，去掉牙齿竖线 ★★★
 function drawMouth(open) {
     ctx.putImageData(baseImageData, 0, 0);
     const h = mouthHBase + open * 28;
@@ -644,20 +644,10 @@ function drawMouth(open) {
     ctx.lineWidth = 1.5;
     ctx.stroke();
     if (open > 0.3) {
+        // 牙齿白色块（保留）
         ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
         ctx.fillRect(x - 14, mouthY - 5, 28, 8);
-        ctx.strokeStyle = 'rgba(200, 200, 200, 0.4)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(x, mouthY - 5);
-        ctx.lineTo(x, mouthY + 3);
-        ctx.stroke();
-        for (let i = -1; i <= 1; i += 2) {
-            ctx.beginPath();
-            ctx.moveTo(x + i * 7, mouthY - 5);
-            ctx.lineTo(x + i * 7, mouthY + 3);
-            ctx.stroke();
-        }
+        // ★★★ 已移除牙齿分割竖线 ★★★
         if (open > 0.6) {
             ctx.beginPath();
             ctx.ellipse(x, mouthY + 8, 10, 6, 0, 0, Math.PI*2);
