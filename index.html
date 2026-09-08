@@ -47,7 +47,8 @@ h2{text-align:center;margin:16px 0;font-size:20px;}
 
 <div class="card">
   <h3>造句练习 I want to …</h3>
-  <div id="makeSentenceBox" style="margin:12px 0;font-size:17px;min-height:44px;"></div>
+  <div id="makeSentenceBox" style="margin:12px 0;font-size:17px;min-height:60px;">
+  </div>
   <div class="btn-group">
     <button class="btn" onclick="genRandomSentence()">随机造句</button>
     <button class="btn" onclick="playMakeSentence()">朗读句子</button>
@@ -224,18 +225,88 @@ const sceneData = [
   }
 ];
 
-// 造句词库
+// 造句词块：英文 + 中文翻译，一共72组
 const verbList = [
-  "eat","drink","go home","learn English","sleep","walk","read books",
-  "watch TV","play football","take a rest","buy food","take a shower",
-  "travel","cook food","call friends","listen to music","go shopping"
+  {en:"eat",zh:"吃东西"},
+  {en:"drink",zh:"喝点东西"},
+  {en:"go home",zh:"回家"},
+  {en:"learn English",zh:"学习英语"},
+  {en:"sleep",zh:"睡觉"},
+  {en:"walk",zh:"散步"},
+  {en:"read books",zh:"看书"},
+  {en:"watch TV",zh:"看电视"},
+  {en:"play football",zh:"踢足球"},
+  {en:"take a rest",zh:"休息一下"},
+  {en:"buy food",zh:"买食物"},
+  {en:"take a shower",zh:"洗澡"},
+  {en:"travel",zh:"去旅行"},
+  {en:"cook food",zh:"做饭"},
+  {en:"call friends",zh:"给朋友打电话"},
+  {en:"listen to music",zh:"听音乐"},
+  {en:"go shopping",zh:"去购物"},
+  {en:"open the window",zh:"打开窗户"},
+  {en:"close the door",zh:"关门"},
+  {en:"wash hands",zh:"洗手"},
+  {en:"brush teeth",zh:"刷牙"},
+  {en:"take photos",zh:"拍照"},
+  {en:"write a letter",zh:"写一封信"},
+  {en:"send an email",zh:"发送邮件"},
+  {en:"see a movie",zh:"看电影"},
+  {en:"visit my friend",zh:"拜访我的朋友"},
+  {en:"visit the park",zh:"逛公园"},
+  {en:"buy a cup of coffee",zh:"买一杯咖啡"},
+  {en:"try new food",zh:"尝试新食物"},
+  {en:"change clothes",zh:"换衣服"},
+  {en:"clean my room",zh:"打扫我的房间"},
+  {en:"fix my phone",zh:"修理我的手机"},
+  {en:"find a hotel",zh:"找一家酒店"},
+  {en:"take a bus",zh:"坐公交车"},
+  {en:"take a taxi",zh:"坐出租车"},
+  {en:"rent a car",zh:"租一辆车"},
+  {en:"ask for help",zh:"寻求帮助"},
+  {en:"practice speaking",zh:"练习口语"},
+  {en:"remember new words",zh:"记新单词"},
+  {en:"finish my work",zh:"完成我的工作"},
+  {en:"stop for a break",zh:"停下来休息"},
+  {en:"enjoy the view",zh:"欣赏风景"},
+  {en:"buy some gifts",zh:"买一些礼物"},
+  {en:"order dinner",zh:"点晚餐"},
+  {en:"pay the bill",zh:"付账单"},
+  {en:"get up early",zh:"早起"},
+  {en:"go to bed late",zh:"晚睡"},
+  {en:"do some exercise",zh:"做运动"},
+  {en:"run in the park",zh:"在公园跑步"},
+  {en:"swim in the sea",zh:"海里游泳"},
+  {en:"buy some water",zh:"买一些水"},
+  {en:"get more information",zh:"获取更多信息"},
+  {en:"check the time",zh:"看时间"},
+  {en:"save some money",zh:"存一点钱"},
+  {en:"change my seat",zh:"更换座位"},
+  {en:"book a ticket",zh:"预定一张票"},
+  {en:"leave early",zh:"早点离开"},
+  {en:"arrive on time",zh:"准时到达"},
+  {en:"take my medicine",zh:"吃我的药"},
+  {en:"see a doctor",zh:"看医生"},
+  {en:"drink more tea",zh:"多喝点茶"},
+  {en:"talk with strangers",zh:"和陌生人交谈"},
+  {en:"learn new skills",zh:"学习新技能"},
+  {en:"write some notes",zh:"写一些笔记"},
+  {en:"look for my bag",zh:"找我的包"},
+  {en:"call a taxi",zh:"叫一辆出租车"},
+  {en:"visit the market",zh:"逛市场"},
+  {en:"taste local food",zh:"品尝当地美食"},
+  {en:"take off my shoes",zh:"脱掉鞋子"},
+  {en:"put on my coat",zh:"穿上外套"},
+  {en:"turn on the light",zh:"打开灯"},
+  {en:"turn off the light",zh:"关掉灯"}
 ];
 
 // 全局状态
 let currentSceneIndex = 0;
 let groupIndex = 0;
 let playRate = 1.0;
-let currentMakeSentence = "";
+let currentSentenceEn = "";
+let currentSentenceCn = "";
 const synth = window.speechSynthesis;
 
 // 渲染标签
@@ -262,10 +333,10 @@ function renderQA(){
   const item = scene.list[groupIndex];
   const block = document.getElementById("qaBlock");
   block.innerHTML = `
-    <p>Q：${item.q}</p >
-    <p class="cn">${item.qzh}</p >
-    <p>A：${item.a}</p >
-    <p class="cn">${item.azh}</p >
+    <p>Q：${item.q}</p>
+    <p class="cn">${item.qzh}</p>
+    <p>A：${item.a}</p>
+    <p class="cn">${item.azh}</p>
   `
 }
 
@@ -306,15 +377,19 @@ document.querySelectorAll(".speed-btn").forEach(b=>{
   }
 })
 
-//造句模块
+//造句模块，带中文翻译
 function genRandomSentence(){
-  const v = verbList[Math.floor(Math.random()*verbList.length)];
-  currentMakeSentence = `I want to ${v}.`;
-  document.getElementById("makeSentenceBox").innerText = currentMakeSentence;
+  const obj = verbList[Math.floor(Math.random()*verbList.length)];
+  currentSentenceEn = `I want to ${obj.en}.`;
+  currentSentenceCn = `我想要${obj.zh}。`;
+  document.getElementById("makeSentenceBox").innerHTML = `
+    <p>${currentSentenceEn}</p>
+    <p class="cn">${currentSentenceCn}</p>
+  `;
 }
 function playMakeSentence(){
-  if(!currentMakeSentence) return;
-  speakText(currentMakeSentence);
+  if(!currentSentenceEn) return;
+  speakText(currentSentenceEn);
 }
 
 //初始化
