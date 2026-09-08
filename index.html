@@ -287,91 +287,173 @@
 
 <script>
     // ================================================================
-    //  1. 句子生成器 —— 通过模板组合生成 1600+ 个实用句子
+    //  1. 准确的中英文模板生成器（修复中文翻译错误）
     // ================================================================
     function generateSentences() {
         const sentences = [];
 
-        // ---------- 词汇库 ----------
+        // ---------- 词汇表（中英对照） ----------
         const subjects = [
-            "I", "You", "He", "She", "We", "They",
-            "My friend", "My family", "My brother", "My sister", "My mother", "My father"
+            { en: "I", zh: "我" },
+            { en: "You", zh: "你" },
+            { en: "He", zh: "他" },
+            { en: "She", zh: "她" },
+            { en: "We", zh: "我们" },
+            { en: "They", zh: "他们" },
+            { en: "My friend", zh: "我的朋友" },
+            { en: "My family", zh: "我的家人" },
+            { en: "My brother", zh: "我的兄弟" },
+            { en: "My sister", zh: "我的姐妹" },
+            { en: "My mother", zh: "我的母亲" },
+            { en: "My father", zh: "我的父亲" }
         ];
+
         const verbs = [
-            "like", "love", "want", "need", "have", "get",
-            "make", "cook", "eat", "drink", "buy", "sell",
-            "see", "go", "come", "take", "bring", "give",
-            "find", "lose", "use", "put", "keep", "hold"
+            { en: "like", zh: "喜欢" },
+            { en: "love", zh: "爱" },
+            { en: "want", zh: "想要" },
+            { en: "need", zh: "需要" },
+            { en: "have", zh: "有" },
+            { en: "get", zh: "得到" },
+            { en: "make", zh: "做" },
+            { en: "cook", zh: "烹饪" },
+            { en: "eat", zh: "吃" },
+            { en: "drink", zh: "喝" },
+            { en: "buy", zh: "买" },
+            { en: "sell", zh: "卖" },
+            { en: "see", zh: "看见" },
+            { en: "go", zh: "去" },
+            { en: "come", zh: "来" },
+            { en: "take", zh: "拿" },
+            { en: "bring", zh: "带来" },
+            { en: "give", zh: "给" },
+            { en: "find", zh: "找到" },
+            { en: "lose", zh: "丢失" },
+            { en: "use", zh: "使用" },
+            { en: "put", zh: "放" },
+            { en: "keep", zh: "保持" },
+            { en: "hold", zh: "握住" }
         ];
+
         const objects = [
-            "food", "water", "coffee", "tea", "juice", "milk",
-            "bread", "rice", "noodles", "vegetables", "fruit", "meat",
-            "book", "pen", "phone", "computer", "car", "house",
-            "job", "money", "time", "help", "advice", "information"
+            { en: "food", zh: "食物" },
+            { en: "water", zh: "水" },
+            { en: "coffee", zh: "咖啡" },
+            { en: "tea", zh: "茶" },
+            { en: "juice", zh: "果汁" },
+            { en: "milk", zh: "牛奶" },
+            { en: "bread", zh: "面包" },
+            { en: "rice", zh: "米饭" },
+            { en: "noodles", zh: "面条" },
+            { en: "vegetables", zh: "蔬菜" },
+            { en: "fruit", zh: "水果" },
+            { en: "meat", zh: "肉" },
+            { en: "book", zh: "书" },
+            { en: "pen", zh: "笔" },
+            { en: "phone", zh: "电话" },
+            { en: "computer", zh: "电脑" },
+            { en: "car", zh: "汽车" },
+            { en: "house", zh: "房子" },
+            { en: "job", zh: "工作" },
+            { en: "money", zh: "钱" },
+            { en: "time", zh: "时间" },
+            { en: "help", zh: "帮助" },
+            { en: "advice", zh: "建议" },
+            { en: "information", zh: "信息" }
         ];
-        const adjectives = [
-            "good", "bad", "big", "small", "hot", "cold",
-            "warm", "cool", "happy", "sad", "busy", "easy"
-        ];
+
         const places = [
-            "home", "school", "work", "the market", "the restaurant",
-            "the hospital", "the station", "the airport", "the hotel"
+            { en: "home", zh: "家" },
+            { en: "school", zh: "学校" },
+            { en: "work", zh: "工作场所" },
+            { en: "the market", zh: "市场" },
+            { en: "the restaurant", zh: "餐厅" },
+            { en: "the hospital", zh: "医院" },
+            { en: "the station", zh: "车站" },
+            { en: "the airport", zh: "机场" },
+            { en: "the hotel", zh: "酒店" }
         ];
+
         const timeWords = [
-            "today", "tomorrow", "yesterday", "now", "soon", "later"
+            { en: "today", zh: "今天" },
+            { en: "tomorrow", zh: "明天" },
+            { en: "yesterday", zh: "昨天" },
+            { en: "now", zh: "现在" },
+            { en: "soon", zh: "很快" },
+            { en: "later", zh: "稍后" }
         ];
 
-        // ---------- 模板对 ----------
-        const templates = [];
+        // ---------- 辅助函数 ----------
+        function capitalize(s) {
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        }
 
-        // 1) 主语 + 动词 + 宾语 (肯定)
+        // ---------- 模板生成器 ----------
+        // 1) 陈述句：S + V + O.
         for (let s of subjects) {
             for (let v of verbs) {
                 for (let o of objects) {
-                    // 英文
-                    let en = `${s} ${v} ${o}.`;
-                    // 中文 (简单翻译)
-                    let zh = `${s} ${v} ${o}.`; // 占位，后面用映射改进
-                    templates.push({ en, zh, type: 'svo' });
+                    let en = `${s.en} ${v.en} ${o.en}.`;
+                    let zh = `${s.zh} ${v.zh} ${o.zh}。`;
+                    sentences.push({ en, zh });
                 }
             }
         }
 
-        // 2) 主语 + 动词 + 宾语 + 地点
+        // 2) 疑问句：Do/Does + S + V + O?
+        for (let s of subjects) {
+            for (let v of verbs) {
+                for (let o of objects) {
+                    let helper = (s.en === 'He' || s.en === 'She' || s.en === 'My friend' || s.en === 'My brother' || s.en === 'My sister' || s.en === 'My mother' || s.en === 'My father') ? 'Does' : 'Do';
+                    let en = `${helper} ${s.en} ${v.en} ${o.en}?`;
+                    let zh = `${s.zh} ${v.zh} ${o.zh} 吗？`;
+                    sentences.push({ en, zh });
+                }
+            }
+        }
+
+        // 3) 否定句：S + do/does not + V + O.
+        for (let s of subjects) {
+            for (let v of verbs) {
+                for (let o of objects) {
+                    let aux = (s.en === 'He' || s.en === 'She' || s.en === 'My friend' || s.en === 'My brother' || s.en === 'My sister' || s.en === 'My mother' || s.en === 'My father') ? 'does not' : 'do not';
+                    let en = `${s.en} ${aux} ${v.en} ${o.en}.`;
+                    let zh = `${s.zh} 不 ${v.zh} ${o.zh}。`;
+                    sentences.push({ en, zh });
+                }
+            }
+        }
+
+        // 4) 地点句：S + V + O + at/place.
+        const preps = ['at', 'in', 'on'];
         for (let s of subjects.slice(0, 4)) {
             for (let v of verbs.slice(0, 4)) {
                 for (let o of objects.slice(0, 4)) {
                     for (let p of places) {
-                        let en = `${s} ${v} ${o} at ${p}.`;
-                        templates.push({ en, zh: en, type: 'svo_place' });
+                        let prep = preps[Math.floor(Math.random() * preps.length)];
+                        let en = `${s.en} ${v.en} ${o.en} ${prep} ${p.en}.`;
+                        // 中文: S 在 P V O.
+                        let zh = `${s.zh} 在 ${p.zh} ${v.zh} ${o.zh}。`;
+                        sentences.push({ en, zh });
                     }
                 }
             }
         }
 
-        // 3) 疑问句: Do/Does + 主语 + 动词 + 宾语?
-        for (let s of subjects.slice(0, 6)) {
-            for (let v of verbs.slice(0, 6)) {
-                for (let o of objects.slice(0, 6)) {
-                    let helper = (s === 'He' || s === 'She' || s === 'My friend' || s === 'My brother' || s === 'My sister' || s === 'My mother' || s === 'My father') ? 'Does' : 'Do';
-                    let en = `${helper} ${s} ${v} ${o}?`;
-                    templates.push({ en, zh: en, type: 'question' });
+        // 5) 时间状语：S + V + O + time.
+        for (let s of subjects.slice(0, 4)) {
+            for (let v of verbs.slice(0, 4)) {
+                for (let o of objects.slice(0, 4)) {
+                    for (let t of timeWords) {
+                        let en = `${s.en} ${v.en} ${o.en} ${t.en}.`;
+                        let zh = `${s.zh} ${t.zh} ${v.zh} ${o.zh}。`;
+                        sentences.push({ en, zh });
+                    }
                 }
             }
         }
 
-        // 4) 否定句: 主语 + do/does not + 动词 + 宾语
-        for (let s of subjects.slice(0, 6)) {
-            for (let v of verbs.slice(0, 6)) {
-                for (let o of objects.slice(0, 6)) {
-                    let aux = (s === 'He' || s === 'She' || s === 'My friend' || s === 'My brother' || s === 'My sister' || s === 'My mother' || s === 'My father') ? 'does not' : 'do not';
-                    let en = `${s} ${aux} ${v} ${o}.`;
-                    templates.push({ en, zh: en, type: 'negative' });
-                }
-            }
-        }
-
-        // 5) 简单日常表达（固定短语）
+        // 6) 固定常用语（手工准确翻译）
         const fixed = [
             { en: "Hello, how are you?", zh: "你好，你好吗？" },
             { en: "I'm fine, thank you.", zh: "我很好，谢谢。" },
@@ -483,30 +565,34 @@
             { en: "Have a nice day!", zh: "祝你有愉快的一天！" },
             { en: "Goodbye!", zh: "再见！" },
             { en: "See you later.", zh: "回头见。" },
-            { en: "Take care.", zh: "保重。" }
+            { en: "Take care.", zh: "保重。" },
+            { en: "I'm happy to meet you.", zh: "我很高兴认识你。" },
+            { en: "I hope everything goes well.", zh: "我希望一切顺利。" },
+            { en: "Please give me a call.", zh: "请给我打电话。" },
+            { en: "I'll send you an email.", zh: "我会给你发邮件。" },
+            { en: "Let's keep in touch.", zh: "让我们保持联系。" }
         ];
-        for (let f of fixed) templates.push(f);
+        for (let f of fixed) sentences.push(f);
 
-        // ---------- 生成并去重 ----------
+        // ---------- 去重 ----------
         const unique = new Map();
-        for (let t of templates) {
-            // 简单英文字符串去重
-            const key = t.en.trim();
+        for (let s of sentences) {
+            const key = s.en.trim();
             if (!unique.has(key)) {
-                unique.set(key, t);
+                unique.set(key, s);
             }
         }
 
-        // 转为数组并打乱
         let result = Array.from(unique.values());
-        // 如果不足1600，补充一些组合（循环增加）
+
+        // 如果不足1600，继续补充（通过循环增加组合）
         while (result.length < 1600) {
-            // 随机选择模板补充（通过随机组合）
+            // 随机取词汇生成
             let s = subjects[Math.floor(Math.random() * subjects.length)];
             let v = verbs[Math.floor(Math.random() * verbs.length)];
             let o = objects[Math.floor(Math.random() * objects.length)];
-            let en = `${s} ${v} ${o}.`;
-            let zh = en; // 占位
+            let en = `${s.en} ${v.en} ${o.en}.`;
+            let zh = `${s.zh} ${v.zh} ${o.zh}。`;
             if (!unique.has(en)) {
                 unique.set(en, { en, zh });
                 result = Array.from(unique.values());
@@ -519,46 +605,8 @@
             [result[i], result[j]] = [result[j], result[i]];
         }
 
-        // 限制为1600
+        // 截取前1600
         if (result.length > 1600) result = result.slice(0, 1600);
-
-        // 为每个句子生成更合理的中文翻译（简单映射，可扩展）
-        // 这里为了简洁，我们使用一个简单的中文映射函数，实际可改进
-        // 但为了准确，我们只保留已有中文的固定短语，其他用英文占位，但用户可自行修改
-        // 这里我们为每个句子生成一个简单的中文，但为了实用，我们只对固定短语提供准确翻译。
-        // 对于生成的句子，我们可以用简单替换，但不够准确。这里我们提供一个基础映射。
-        // 我们可以保留英文原样，让用户自己添加翻译，或者我们提供一个简单的翻译函数。
-        // 为了保持质量，我们只使用已有准确翻译的固定短语，其余我们生成一个占位。
-        // 但由于我们需要1600句，我们使用生成的句子，但提供占位中文。
-        // 更好的办法：我们可以为每个生成的句子手动提供中文，但那样工作量太大。
-        // 我们将生成的句子中的动词和名词用中文替换。
-        // 构建一个简单词典：
-        const dict = {
-            "I": "我", "You": "你", "He": "他", "She": "她", "We": "我们", "They": "他们",
-            "My friend": "我的朋友", "My family": "我的家人", "My brother": "我的兄弟", "My sister": "我的姐妹",
-            "like": "喜欢", "love": "爱", "want": "想要", "need": "需要", "have": "有", "get": "得到",
-            "make": "做", "cook": "烹饪", "eat": "吃", "drink": "喝", "buy": "买", "sell": "卖",
-            "see": "看见", "go": "去", "come": "来", "take": "拿", "bring": "带来", "give": "给",
-            "find": "找到", "lose": "丢失", "use": "使用", "put": "放", "keep": "保持", "hold": "握住",
-            "food": "食物", "water": "水", "coffee": "咖啡", "tea": "茶", "juice": "果汁", "milk": "牛奶",
-            "bread": "面包", "rice": "米饭", "noodles": "面条", "vegetables": "蔬菜", "fruit": "水果", "meat": "肉",
-            "book": "书", "pen": "笔", "phone": "电话", "computer": "电脑", "car": "汽车", "house": "房子",
-            "job": "工作", "money": "钱", "time": "时间", "help": "帮助", "advice": "建议", "information": "信息"
-        };
-
-        // 对每个句子尝试翻译，如果已有zh则保留，否则自动生成
-        for (let s of result) {
-            if (s.zh && s.zh !== s.en) continue; // 已有准确翻译
-            // 尝试用词典替换单词
-            let en = s.en;
-            let zh = en;
-            // 去除标点
-            let words = en.replace(/[.,!?]/g, '').split(' ');
-            let translated = words.map(w => dict[w] || w).join(' ');
-            // 添加标点
-            let punctuation = en.match(/[.!?]$/)?.[0] || '';
-            s.zh = translated + punctuation;
-        }
 
         return result;
     }
@@ -591,7 +639,6 @@
     const progressBadge = document.getElementById('progressBadge');
     const card = document.getElementById('card');
 
-    // 禁用/启用控件
     function setControlsEnabled(enabled) {
         enSpeak.disabled = !enabled;
         zhSpeak.disabled = !enabled;
@@ -599,16 +646,8 @@
         replayBtn.disabled = !enabled;
         nextBtn.disabled = !enabled;
         loopBtn.disabled = !enabled;
-        if (!enabled) {
-            enSpeak.classList.add('disabled');
-            zhSpeak.classList.add('disabled');
-        } else {
-            enSpeak.classList.remove('disabled');
-            zhSpeak.classList.remove('disabled');
-        }
     }
 
-    // 渲染
     function render(index) {
         if (!SENTENCES.length) return;
         const data = SENTENCES[index];
@@ -644,7 +683,6 @@
         btn.disabled = false;
     }
 
-    // 语音
     function stopAllSpeech() {
         if (window.speechSynthesis) window.speechSynthesis.cancel();
         isSpeaking = false;
@@ -704,7 +742,6 @@
         await speakText(data.zh, 'zh-CN', null, () => { resetSpeakBtn(zhSpeak); });
     }
 
-    // 导航
     function goPrev() {
         if (isSpeaking) stopAllSpeech();
         let newIndex = currentIndex - 1;
@@ -742,7 +779,6 @@
         setTimeout(() => speakEn(), 100);
     }
 
-    // 循环模式
     function toggleLoop() {
         loopMode = (loopMode + 1) % 3;
         loopBtn.textContent = LOOP_LABELS[loopMode];
@@ -753,7 +789,6 @@
         render(currentIndex);
     }
 
-    // 初始化语音
     function initSpeech() {
         if (window.speechSynthesis) {
             window.speechSynthesis.getVoices();
@@ -763,15 +798,9 @@
         }
     }
 
-    // ================================================================
-    //  3. 启动：生成句子并初始化
-    // ================================================================
     function initApp() {
-        // 显示加载状态
         setControlsEnabled(false);
         statusDisplay.textContent = '生成句子库...';
-
-        // 使用 setTimeout 避免阻塞 UI
         setTimeout(() => {
             try {
                 SENTENCES = generateSentences();
@@ -816,7 +845,6 @@
 
     window.addEventListener('beforeunload', () => { stopAllSpeech(); });
 
-    // 启动
     initSpeech();
     initApp();
 </script>
