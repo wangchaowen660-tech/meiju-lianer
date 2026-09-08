@@ -1,35 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <title>美句连读｜口语练习工具</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif;}
-body{max-width:760px;margin:16px auto;padding:0 14px;background:#f4f6fa;color:#222;}
-h2{text-align:center;margin:16px 0;font-size:20px;}
-.tab-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
-.tab{padding:6px 10px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;font-size:13px;cursor:pointer;}
-.tab.active{background:#2563eb;color:#fff;border-color:#2563eb;}
-.card{background:#ffffff;padding:20px;border-radius:12px;margin-bottom:14px;box-shadow:0 1px 3px #00000015;}
-.qa-block p{margin:8px 0;font-size:16px;line-height:1.6;}
-.cn{color:#555;font-size:14px;}
-.btn-group{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;}
-.btn{padding:8px 12px;border:none;border-radius:8px;font-size:14px;cursor:pointer;background:#2563eb;color:#fff;}
-.btn:active{opacity:0.82;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;}
+body{max-width:780px;margin:20px auto;padding:0 16px;background:#f0f4f9;color:#1f2937;}
+h2{text-align:center;margin:20px 0 8px;font-size:22px;color:#1e40af;font-weight:600;}
+.desc{text-align:center;font-size:14px;color:#64748b;margin-bottom:16px;}
+.info-tip{font-size:13px;color:#475569;margin:6px 0 14px 0;background:#e8f0fe;padding:6px 10px;border-radius:8px;}
+.tab-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.tab{padding:8px 12px;border-radius:10px;border:none;background:#e2e8f0;font-size:14px;cursor:pointer;transition:0.2s;}
+.tab.active{background:#2563eb;color:#fff;box-shadow:0 2px 6px #2563eb40;}
+.card{background:#ffffff;padding:22px;border-radius:16px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,0.08);}
+.card h3{font-size:17px;margin-bottom:10px;color:#1e293b;}
+.qa-block p{margin:10px 0;font-size:17px;line-height:1.7;}
+.cn{color:#57534e;font-size:15px;}
+.btn-group{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-size:15px;cursor:pointer;background:#2563eb;color:#fff;transition:0.15s;min-width:86px;}
+.btn:active{transform:scale(0.97);opacity:0.88;}
 .btn-gray{background:#64748b;}
-.speed-group{margin:10px 0;display:flex;gap:6px;flex-wrap:wrap;}
-.speed-btn{padding:5px 10px;border-radius:6px;border:1px solid #94a3b8;background:#fff;font-size:13px;cursor:pointer;}
+.speed-group{margin:14px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.speed-btn{padding:7px 12px;border-radius:8px;border:1px solid #94a3b8;background:#f8fafc;font-size:14px;cursor:pointer;}
 .speed-btn.active{background:#2563eb;color:#fff;border-color:#2563eb;}
-.hide{display:none;}
+#makeSentenceBox{margin:14px 0;font-size:18px;min-height:70px;line-height:1.8;}
 </style>
 </head>
 <body>
-<h2>美句连读｜口语练习</h2>
+<h2>美句连读｜口语练习工具</h2>
+<div class="desc">场景对话 + I want to 句型跟读练习｜总题库1000+</div>
 
 <div class="tab-wrap" id="tabWrap"></div>
 
 <div class="card">
+  <div class="info-tip" id="sceneCountInfo"></div>
   <div class="qa-block" id="qaBlock"></div>
   <div class="speed-group">
     <span>播放速度：</span>
@@ -46,9 +51,9 @@ h2{text-align:center;margin:16px 0;font-size:20px;}
 </div>
 
 <div class="card">
-  <h3>造句练习 I want to …</h3>
-  <div id="makeSentenceBox" style="margin:12px 0;font-size:17px;min-height:60px;">
-  </div>
+  <h3>造句练习｜I want to …</h3>
+  <div class="info-tip" id="makeWordCountInfo"></div>
+  <div id="makeSentenceBox"></div>
   <div class="btn-group">
     <button class="btn" onclick="genRandomSentence()">随机造句</button>
     <button class="btn" onclick="playMakeSentence()">朗读句子</button>
@@ -56,249 +61,417 @@ h2{text-align:center;margin:16px 0;font-size:20px;}
 </div>
 
 <script>
-// ============ 全部场景题库 ============
-const sceneData = [
-  {
-    name:"问候",
-    list:[
-      {q:"Hello, how are you?",qzh:"你好吗？",a:"I'm fine, thank you. And you?",azh:"我很好，谢谢。你呢？"},
-      {q:"Good morning.",qzh:"早上好。",a:"Good morning.",azh:"早上好。"},
-      {q:"Nice to meet you.",qzh:"很高兴认识你。",a:"Nice to meet you too.",azh:"我也很高兴认识你。"},
-      {q:"How is your day?",qzh:"你今天过得怎么样？",a:"Pretty good.",azh:"还不错。"},
-      {q:"What’s up?",qzh:"最近咋样？",a:"Not much.",azh:"没什么特别的。"},
-      {q:"How are you doing?",qzh:"你还好吗？",a:"I’m doing okay.",azh:"我过得还行。"},
-      {q:"Long time no see.",qzh:"好久不见。",a:"Yes, it’s been a while.",azh:"是啊，好久没见。"},
-      {q:"See you tomorrow.",qzh:"明天见。",a:"See you.",azh:"再见。"}
-    ]
-  },
-  {
-    name:"餐厅",
-    list:[
-      {q:"May I have a menu?",qzh:"可以给我菜单吗？",a:"Sure, here you are.",azh:"好的，给您。"},
-      {q:"What do you recommend?",qzh:"你有什么推荐？",a:"This steak is very good.",azh:"这款牛排很不错。"},
-      {q:"I would like some water.",qzh:"我想要一点水。",a:"OK, one moment please.",azh:"好的，请稍等。"},
-      {q:"Is this dish spicy?",qzh:"这个菜辣吗？",a:"Yes, it is a little spicy.",azh:"是的，会有点辣。"},
-      {q:"Can I have chopsticks?",qzh:"可以给我筷子吗？",a:"Certainly.",azh:"没问题。"},
-      {q:"How much is this?",qzh:"这个多少钱？",a:"It’s twelve dollars.",azh:"12美元。"},
-      {q:"Check please.",qzh:"麻烦结账。",a:"OK, coming right up.",azh:"好的马上来。"},
-      {q:"The food tastes great.",qzh:"食物味道很棒。",a:"Thank you very much.",azh:"非常感谢。"},
-      {q:"No ice, please.",qzh:"请不要加冰。",a:"Understood.",azh:"明白了。"},
-      {q:"Can I take away?",qzh:"可以打包吗？",a:"Yes of course.",azh:"当然可以。"}
-    ]
-  },
-  {
-    name:"购物",
-    list:[
-      {q:"How much is this?",qzh:"这个多少钱？",a:"It’s twenty five dollars.",azh:"25美元。"},
-      {q:"Do you have a bigger size?",qzh:"有大一号的吗？",a:"Yes, we do.",azh:"有的。"},
-      {q:"Can I try it on?",qzh:"我可以试一下吗？",a:"Sure, fitting room over there.",azh:"可以，试衣间在那边。"},
-      {q:"Any discount?",qzh:"有折扣吗？",a:"We have 10 percent off today.",azh:"今天打9折。"},
-      {q:"I will take this one.",qzh:"我买这个。",a:"Okay, cash or card?",azh:"好，现金还是刷卡？"},
-      {q:"Where is the restroom?",qzh:"洗手间在哪里？",a:"Go straight ahead.",azh:"一直往前走。"},
-      {q:"Too expensive.",qzh:"太贵了。",a:"Sorry, price is fixed.",azh:"抱歉，价格固定。"},
-      {q:"Do you accept mobile pay?",qzh:"支持手机支付吗？",a:"Yes we accept it.",azh:"支持。"}
-    ]
-  },
-  {
-    name:"旅行",
-    list:[
-      {q:"Where is the bus station?",qzh:"公交车站在哪？",a:"Walk for two minutes.",azh:"走两分钟。"},
-      {q:"How long will it take?",qzh:"需要多久？",a:"About thirty minutes.",azh:"大约三十分钟。"},
-      {q:"One ticket please.",qzh:"请给一张票。",a:"Here is your ticket.",azh:"这是你的票。"},
-      {q:"Which way to downtown?",qzh:"去市中心往哪走？",a:"Turn left at the corner.",azh:"拐角左转。"},
-      {q:"Can you speak slowly?",qzh:"你可以说慢一点吗？",a:"No problem.",azh:"没问题。"},
-      {q:"I am lost.",qzh:"我迷路了。",a:"Let me show you the map.",azh:"我给你看地图。"},
-      {q:"Is it far from here?",qzh:"离这里远吗？",a:"Not very far.",azh:"不是很远。"},
-      {q:"Thank you for your help.",qzh:"谢谢你帮忙。",a:"You are welcome.",azh:"不客气。"}
-    ]
-  },
-  {
-    name:"机场",
-    list:[
-      {q:"Where is check‑in counter?",qzh:"值机柜台在哪里？",a:"It is on the second floor.",azh:"在二楼。"},
-      {q:"May I see your passport?",qzh:"可以出示你的护照吗？",a:"Here you are.",azh:"给你。"},
-      {q:"One carry‑on bag.",qzh:"一件随身行李。",a:"That’s okay.",azh:"没问题。"},
-      {q:"What is the gate number?",qzh:"登机口是几号？",a:"Gate number eight.",azh:"8号登机口。"},
-      {q:"When will boarding start?",qzh:"什么时候开始登机？",a:"In twenty minutes.",azh:"20分钟后。"},
-      {q:"Where is baggage claim?",qzh:"行李提取处在哪？",a:"Follow that sign.",azh:"跟着那个指示牌走。"},
-      {q:"My luggage is missing.",qzh:"我的行李不见了。",a:"Please fill this form.",azh:"请填写这份表格。"},
-      {q:"Could I get a window seat?",qzh:"可以给我靠窗座位吗？",a:"Let me check.",azh:"我帮你查一下。"}
-    ]
-  },
-  {
-    name:"酒店",
-    list:[
-      {q:"I have a reservation.",qzh:"我有预订。",a:"Your name please.",azh:"请报你的名字。"},
-      {q:"One single room please.",qzh:"一间单人房。",a:"How many nights?",azh:"住几晚？"},
-      {q:"What time is check‑out?",qzh:"退房时间是几点？",a:"Before twelve noon.",azh:"中午12点前。"},
-      {q:"Please give me more towels.",qzh:"请多给几条毛巾。",a:"OK, will send soon.",azh:"好，马上送来。"},
-      {q:"The air‑conditioner does not work.",qzh:"空调坏了。",a:"We will send staff.",azh:"我们派工作人员过来。"},
-      {q:"Can I store my luggage?",qzh:"可以寄存行李吗？",a:"Yes at front desk.",azh:"可以放在前台。"}
-    ]
-  },
-  {
-    name:"学习",
-    list:[
-      {q:"Can you help me?",qzh:"你可以帮我吗？",a:"Sure, what is it?",azh:"当然，什么事？"},
-      {q:"I don’t understand.",qzh:"我没听懂。",a:"I will say it again.",azh:"我再说一遍。"},
-      {q:"Please speak slowly.",qzh:"请说慢一点。",a:"All right.",azh:"好的。"},
-      {q:"What does this word mean?",qzh:"这个单词什么意思？",a:"It means happy.",azh:"意思是开心。"},
-      {q:"Repeat please.",qzh:"请重复一遍。",a:"Okay.",azh:"好。"}
-    ]
-  },
-  {
-    name:"家庭",
-    list:[
-      {q:"Where are you from?",qzh:"你来自哪里？",a:"I come from China.",azh:"我来自中国。"},
-      {q:"Do you have children?",qzh:"你有小孩吗？",a:"No, I don’t.",azh:"我没有。"},
-      {q:"How many people in your family?",qzh:"你家几口人？",a:"There are three people.",azh:"三口人。"},
-      {q:"My mother likes cooking.",qzh:"我妈妈喜欢做饭。",a:"That is nice.",azh:"真好。"},
-      {q:"We live in a small town.",qzh:"我们住在一个小镇。",a:"Sounds comfortable.",azh:"听起来很舒服。"}
-    ]
-  },
-  {
-    name:"天气",
-    list:[
-      {q:"What is the weather today?",qzh:"今天天气怎么样？",a:"It is sunny.",azh:"晴天。"},
-      {q:"Is it going to rain?",qzh:"会下雨吗？",a:"I think so.",azh:"我觉得会。"},
-      {q:"It is very hot today.",qzh:"今天很热。",a:"Yes, quite hot.",azh:"是的，相当热。"},
-      {q:"The wind is strong.",qzh:"风很大。",a:"Better stay inside.",azh:"最好待室内。"},
-      {q:"It gets cold at night.",qzh:"晚上会变冷。",a:"Take your coat.",azh:"带上外套。"}
-    ]
-  },
-  {
-    name:"健康",
-    list:[
-      {q:"I feel a little sick.",qzh:"我感觉有点不舒服。",a:"You should rest.",azh:"你应该休息。"},
-      {q:"My head hurts.",qzh:"我头疼。",a:"Drink more water.",azh:"多喝点水。"},
-      {q:"Where is the hospital?",qzh:"医院在哪里？",a:"Not far from here.",azh:"离这里不远。"},
-      {q:"Do you have medicine?",qzh:"你有药吗？",a:"Sorry I don’t.",azh:"抱歉我没有。"},
-      {q:"I hope you get well soon.",qzh:"希望你早日康复。",a:"Thank you.",azh:"谢谢你。"}
-    ]
-  },
-  {
-    name:"社交",
-    list:[
-      {q:"What is your hobby?",qzh:"你的爱好是什么？",a:"I like listening to music.",azh:"我喜欢听音乐。"},
-      {q:"Do you like movies?",qzh:"你喜欢电影吗？",a:"Yes I like it very much.",azh:"是的我很喜欢。"},
-      {q:"What time is it?",qzh:"现在几点？",a:"It’s ten thirty.",azh:"十点半。"},
-      {q:"Would you like some tea?",qzh:"要来点茶吗？",a:"Yes thank you.",azh:"好谢谢。"},
-      {q:"Have a good time.",qzh:"祝你玩得开心。",a:"Thanks a lot.",azh:"非常感谢。"}
-    ]
-  },
-  {
-    name:"交通",
-    list:[
-      {q:"How can I get there?",qzh:"我怎么到那里？",a:"Take taxi.",azh:"坐出租车。"},
-      {q:"How much to the station?",qzh:"到车站多少钱？",a:"Fifteen dollars.",azh:"15美元。"},
-      {q:"Please drive slowly.",qzh:"请开慢一点。",a:"OK.",azh:"好。"},
-      {q:"Stop here please.",qzh:"请在这里停下。",a:"No problem.",azh:"没问题。"},
-      {q:"I want to go back.",qzh:"我想要回去。",a:"Let’s go.",azh:"出发。"}
-    ]
-  },
-  {
-    name:"银行",
-    list:[
-      {q:"I want to exchange money.",qzh:"我想换钱。",a:"Which currency?",azh:"换哪种货币？"},
-      {q:"What is today’s rate?",qzh:"今天汇率多少？",a:"Please look at screen.",azh:"请看屏幕。"},
-      {q:"I want to withdraw cash.",qzh:"我要取现金。",a:"Please enter password.",azh:"请输入密码。"},
-      {q:"My card does not work.",qzh:"我的卡用不了。",a:"Please go to counter.",azh:"请到柜台。"}
-    ]
-  },
-  {
-    name:"通信",
-    list:[
-      {q:"Can I use your wifi?",qzh:"我可以用你的wifi吗？",a:"Password is on paper.",azh:"密码写在纸上。"},
-      {q:"My phone has no signal.",qzh:"我手机没有信号。",a:"Try outside the room.",azh:"试试房间外面。"},
-      {q:"Please call me later.",qzh:"稍后打给我。",a:"All right.",azh:"好的。"},
-      {q:"Could you send message?",qzh:"可以发消息吗？",a:"Yes I will.",azh:"好我会发。"}
-    ]
-  },
-  {
-    name:"紧急",
-    list:[
-      {q:"Help me please!",qzh:"请帮帮我！",a:"What is wrong?",azh:"发生什么？"},
-      {q:"I need a doctor.",qzh:"我需要医生。",a:"I will call ambulance.",azh:"我叫救护车。"},
-      {q:"Call the police.",qzh:"报警。",a:"OK, wait a moment.",azh:"好，请等一下。"},
-      {q:"I lost my wallet.",qzh:"我钱包丢了。",a:"Let’s report it.",azh:"我们去报案。"}
-    ]
-  }
+// ===================== 【替换区域1】 =====================
+// 将后续给到的完整sceneData数组整体复制，覆盖下面[]占位
+const sceneData = [// ============================================================
+//  Telegram Bot on Cloudflare Workers（自动回复解锁码）
+// ============================================================
+
+// 从环境变量读取 Bot Token
+const BOT_TOKEN = ENV_BOT_TOKEN;
+
+// 生成解锁码
+function generateUnlockCode(amount) {
+    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `CN-${amount}-${random}`;
+}
+
+// 处理收到的消息
+async function handleMessage(message) {
+    const chatId = message.chat.id;
+    const text = message.text || '';
+
+    const amount = 20;
+    const code = generateUnlockCode(amount);
+
+    const reply = 
+`✅ Your unlock code: ${code}
+
+Enter it in the app to activate Chinese audio.
+Thank you for your payment! 🎉
+
+💳 M-PESA Paybill: 0768033524
+💰 $1 = 20 Chinese audio sentences`;
+
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: reply
+        })
+    });
+}
+
+export default {
+    async fetch(request, env) {
+        const url = new URL(request.url);
+
+        if (request.method === 'POST' && url.pathname === '/webhook') {
+            const update = await request.json();
+            if (update.message) {
+                await handleMessage(update.message);
+            }
+            return new Response('OK', { status: 200 });
+        }
+
+        if (url.pathname === '/register') {
+            const webhookUrl = `${url.origin}/webhook`;
+            const resp = await fetch(
+                `https://api.telegram.org/bot${BOT_TOKEN}/setWebhook?url=${webhookUrl}`
+            );
+            const result = await resp.json();
+            return new Response(JSON.stringify(result, null, 2), {
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
+        return new Response('Telegram Bot Worker is running', { status: 200 });
+    }
+};
 ];
 
-// 造句词块：英文 + 中文翻译，一共72组
-const verbList = [
-  {en:"eat",zh:"吃东西"},
-  {en:"drink",zh:"喝点东西"},
-  {en:"go home",zh:"回家"},
-  {en:"learn English",zh:"学习英语"},
-  {en:"sleep",zh:"睡觉"},
-  {en:"walk",zh:"散步"},
-  {en:"read books",zh:"看书"},
-  {en:"watch TV",zh:"看电视"},
-  {en:"play football",zh:"踢足球"},
-  {en:"take a rest",zh:"休息一下"},
-  {en:"buy food",zh:"买食物"},
-  {en:"take a shower",zh:"洗澡"},
-  {en:"travel",zh:"去旅行"},
-  {en:"cook food",zh:"做饭"},
-  {en:"call friends",zh:"给朋友打电话"},
-  {en:"listen to music",zh:"听音乐"},
-  {en:"go shopping",zh:"去购物"},
-  {en:"open the window",zh:"打开窗户"},
-  {en:"close the door",zh:"关门"},
-  {en:"wash hands",zh:"洗手"},
-  {en:"brush teeth",zh:"刷牙"},
-  {en:"take photos",zh:"拍照"},
-  {en:"write a letter",zh:"写一封信"},
-  {en:"send an email",zh:"发送邮件"},
-  {en:"see a movie",zh:"看电影"},
-  {en:"visit my friend",zh:"拜访我的朋友"},
-  {en:"visit the park",zh:"逛公园"},
-  {en:"buy a cup of coffee",zh:"买一杯咖啡"},
-  {en:"try new food",zh:"尝试新食物"},
-  {en:"change clothes",zh:"换衣服"},
-  {en:"clean my room",zh:"打扫我的房间"},
-  {en:"fix my phone",zh:"修理我的手机"},
-  {en:"find a hotel",zh:"找一家酒店"},
-  {en:"take a bus",zh:"坐公交车"},
-  {en:"take a taxi",zh:"坐出租车"},
-  {en:"rent a car",zh:"租一辆车"},
-  {en:"ask for help",zh:"寻求帮助"},
-  {en:"practice speaking",zh:"练习口语"},
-  {en:"remember new words",zh:"记新单词"},
-  {en:"finish my work",zh:"完成我的工作"},
-  {en:"stop for a break",zh:"停下来休息"},
-  {en:"enjoy the view",zh:"欣赏风景"},
-  {en:"buy some gifts",zh:"买一些礼物"},
-  {en:"order dinner",zh:"点晚餐"},
-  {en:"pay the bill",zh:"付账单"},
-  {en:"get up early",zh:"早起"},
-  {en:"go to bed late",zh:"晚睡"},
-  {en:"do some exercise",zh:"做运动"},
-  {en:"run in the park",zh:"在公园跑步"},
-  {en:"swim in the sea",zh:"海里游泳"},
-  {en:"buy some water",zh:"买一些水"},
-  {en:"get more information",zh:"获取更多信息"},
-  {en:"check the time",zh:"看时间"},
-  {en:"save some money",zh:"存一点钱"},
-  {en:"change my seat",zh:"更换座位"},
-  {en:"book a ticket",zh:"预定一张票"},
-  {en:"leave early",zh:"早点离开"},
-  {en:"arrive on time",zh:"准时到达"},
-  {en:"take my medicine",zh:"吃我的药"},
-  {en:"see a doctor",zh:"看医生"},
-  {en:"drink more tea",zh:"多喝点茶"},
-  {en:"talk with strangers",zh:"和陌生人交谈"},
-  {en:"learn new skills",zh:"学习新技能"},
-  {en:"write some notes",zh:"写一些笔记"},
-  {en:"look for my bag",zh:"找我的包"},
-  {en:"call a taxi",zh:"叫一辆出租车"},
-  {en:"visit the market",zh:"逛市场"},
-  {en:"taste local food",zh:"品尝当地美食"},
-  {en:"take off my shoes",zh:"脱掉鞋子"},
-  {en:"put on my coat",zh:"穿上外套"},
-  {en:"turn on the light",zh:"打开灯"},
-  {en:"turn off the light",zh:"关掉灯"}
+// ===================== 【替换区域2：I want to词块 verbList】 =====================
+// 将后续给到的完整verbList数组整体复制，覆盖下面[]占位
+const verbList = [const verbList = [
+{"en":"open the door","zh":"打开门"},
+{"en":"close the window","zh":"关上窗户"},
+{"en":"turn on the light","zh":"打开灯"},
+{"en":"turn off the light","zh":"关掉灯"},
+{"en":"wash my hands","zh":"洗手"},
+{"en":"wash my face","zh":"洗脸"},
+{"en":"take a shower","zh":"洗淋浴"},
+{"en":"take a bath","zh":"泡澡"},
+{"en":"brush my teeth","zh":"刷牙"},
+{"en":"comb my hair","zh":"梳头发"},
+{"en":"get up early","zh":"早起"},
+{"en":"go to bed early","zh":"早点睡觉"},
+{"en":"have breakfast","zh":"吃早餐"},
+{"en":"have lunch","zh":"吃午饭"},
+{"en":"have dinner","zh":"吃晚饭"},
+{"en":"drink some water","zh":"喝点水"},
+{"en":"drink tea","zh":"喝茶"},
+{"en":"drink coffee","zh":"喝咖啡"},
+{"en":"eat some fruit","zh":"吃点水果"},
+{"en":"eat vegetables","zh":"吃蔬菜"},
+{"en":"cook rice","zh":"煮米饭"},
+{"en":"cook soup","zh":"煮汤"},
+{"en":"cook noodles","zh":"煮面条"},
+{"en":"buy some bread","zh":"买一些面包"},
+{"en":"buy milk","zh":"买牛奶"},
+{"en":"buy some meat","zh":"买一些肉"},
+{"en":"buy fresh fish","zh":"买新鲜的鱼"},
+{"en":"go shopping","zh":"去购物"},
+{"en":"go to market","zh":"去市场"},
+{"en":"go to supermarket","zh":"去超市"},
+{"en":"take a bus","zh":"坐公交车"},
+{"en":"take a taxi","zh":"坐出租车"},
+{"en":"ride a bike","zh":"骑自行车"},
+{"en":"walk slowly","zh":"慢慢走路"},
+{"en":"travel abroad","zh":"出国旅行"},
+{"en":"visit friends","zh":"拜访朋友"},
+{"en":"meet new people","zh":"认识新朋友"},
+{"en":"call my friend","zh":"给朋友打电话"},
+{"en":"send a message","zh":"发送一条消息"},
+{"en":"check my phone","zh":"查看手机"},
+{"en":"charge my phone","zh":"给手机充电"},
+{"en":"use wifi","zh":"使用无线网络"},
+{"en":"read a book","zh":"看书"},
+{"en":"read newspaper","zh":"看报纸"},
+{"en":"learn English","zh":"学习英语"},
+{"en":"practice speaking","zh":"练习口语"},
+{"en":"remember new words","zh":"记新单词"},
+{"en":"write sentences","zh":"写句子"},
+{"en":"listen to music","zh":"听音乐"},
+{"en":"listen to songs","zh":"听歌"},
+{"en":"watch videos","zh":"看视频"},
+{"en":"watch movies","zh":"看电影"},
+{"en":"take photos","zh":"拍照"},
+{"en":"take a picture","zh":"拍一张照片"},
+{"en":"play music","zh":"播放音乐"},
+{"en":"play football","zh":"踢足球"},
+{"en":"play basketball","zh":"打篮球"},
+{"en":"run fast","zh":"快跑"},
+{"en":"do exercise","zh":"做运动"},
+{"en":"do some sports","zh":"做一些体育运动"},
+{"en":"keep healthy","zh":"保持身体健康"},
+{"en":"lose some weight","zh":"减一点体重"},
+{"en":"rest for a while","zh":"休息一会儿"},
+{"en":"have a good rest","zh":"好好休息"},
+{"en":"sleep well","zh":"睡个好觉"},
+{"en":"feel relaxed","zh":"感觉放松"},
+{"en":"clean my room","zh":"打扫我的房间"},
+{"en":"clean the table","zh":"擦桌子"},
+{"en":"sweep the floor","zh":"扫地"},
+{"en":"wash clothes","zh":"洗衣服"},
+{"en":"dry the clothes","zh":"把衣服晾干"},
+{"en":"repair my bag","zh":"修理我的包"},
+{"en":"fix my watch","zh":"修理手表"},
+{"en":"buy new shoes","zh":"买新鞋子"},
+{"en":"buy new clothes","zh":"买新衣服"},
+{"en":"change my shirt","zh":"换衬衫"},
+{"en":"try this coat","zh":"试这件外套"},
+{"en":"ask for help","zh":"寻求帮助"},
+{"en":"say sorry","zh":"说对不起"},
+{"en":"say thank you","zh":"说谢谢你"},
+{"en":"speak slowly","zh":"说慢一点"},
+{"en":"speak simple English","zh":"说简单的英语"},
+{"en":"understand others","zh":"理解别人"},
+{"en":"make more friends","zh":"交更多朋友"},
+{"en":"help other people","zh":"帮助其他人"},
+{"en":"share my food","zh":"分享我的食物"},
+{"en":"keep quiet","zh":"保持安静"},
+{"en":"wait for a moment","zh":"等一会儿"},
+{"en":"leave early","zh":"早点离开"},
+{"en":"come back soon","zh":"很快回来"},
+{"en":"go outside","zh":"出去外面"},
+{"en":"stay inside","zh":"待在室内"},
+{"en":"enjoy sunshine","zh":"享受阳光"},
+{"en":"enjoy fresh air","zh":"呼吸新鲜空气"},
+{"en":"see the sea","zh":"看大海"},
+{"en":"see mountains","zh":"看大山"},
+{"en":"take a boat","zh":"坐船"},
+{"en":"take a plane","zh":"坐飞机"},
+{"en":"book a hotel","zh":"预订酒店"},
+{"en":"book a ticket","zh":"订一张票"},
+{"en":"check in hotel","zh":"酒店办理入住"},
+{"en":"check out hotel","zh":"酒店办理退房"},
+{"en":"order some food","zh":"点一些食物"},
+{"en":"taste local food","zh":"品尝当地美食"},
+{"en":"drink hot water","zh":"喝热水"},
+{"en":"avoid cold drinks","zh":"少喝冷饮"},
+{"en":"keep warm","zh":"注意保暖"},
+{"en":"stay safe","zh":"注意安全"},
+{"en":"save some money","zh":"存一点钱"},
+{"en":"spend less money","zh":"少花点钱"},
+{"en":"change some cash","zh":"换一些现金"},
+{"en":"pay by cash","zh":"用现金付款"},
+{"en":"pay with mobile phone","zh":"手机支付"},
+{"en":"look for my key","zh":"找我的钥匙"},
+{"en":"find my wallet","zh":"找到我的钱包"},
+{"en":"hold my passport","zh":"保管好我的护照"},
+{"en":"remember my address","zh":"记住我的地址"},
+{"en":"write down notes","zh":"写下笔记"},
+{"en":"repeat this sentence","zh":"重复这个句子"},
+{"en":"follow your advice","zh":"听从你的建议"},
+{"en":"try new things","zh":"尝试新事物"},
+{"en":"change my plan","zh":"改变我的计划"},
+{"en":"start my work","zh":"开始我的工作"},
+{"en":"finish my work","zh":"完成我的工作"},
+{"en":"work hard","zh":"努力工作"},
+{"en":"stop working","zh":"停止工作"},
+{"en":"take a short break","zh":"短暂休息"},
+{"en":"visit the museum","zh":"参观博物馆"},
+{"en":"visit the park","zh":"逛公园"},
+{"en":"walk along the street","zh":"沿着街道散步"},
+{"en":"take many pictures","zh":"拍很多照片"},
+{"en":"keep this memory","zh":"保留这份回忆"},
+{"en":"learn new skills","zh":"学习新技能"},
+{"en":"improve my English","zh":"提高我的英语水平"},
+{"en":"practice every day","zh":"每天练习"},
+{"en":"listen carefully","zh":"仔细听"},
+{"en":"think carefully","zh":"仔细思考"},
+{"en":"be patient","zh":"要有耐心"},
+{"en":"be polite","zh":"有礼貌"},
+{"en":"be honest","zh":"诚实做人"},
+{"en":"be brave","zh":"勇敢一点"},
+{"en":"be careful","zh":"小心一点"},
+{"en":"be happy every day","zh":"每天开开心心"},
+{"en":"forget bad things","zh":"忘掉不好的事情"},
+{"en":"keep a good mood","zh":"保持好心情"},
+{"en":"cook simple meal","zh":"做简单的饭菜"},
+{"en":"cut the vegetables","zh":"切蔬菜"},
+{"en":"boil the water","zh":"把水烧开"},
+{"en":"pour the water","zh":"倒水"},
+{"en":"put away my things","zh":"把我的东西收好"},
+{"en":"move this box","zh":"移动这个箱子"},
+{"en":"carry this bag","zh":"拎这个包"},
+{"en":"lock the door","zh":"锁上门"},
+{"en":"unlock the door","zh":"打开门锁"},
+{"en":"open the window","zh":"打开窗户"},
+{"en":"close the door","zh":"关上门"},
+{"en":"turn down the volume","zh":"把音量调小"},
+{"en":"turn up the volume","zh":"把音量调大"},
+{"en":"download new files","zh":"下载新文件"},
+{"en":"save my document","zh":"保存我的文档"},
+{"en":"delete useless files","zh":"删除无用文件"},
+{"en":"copy this text","zh":"复制这段文字"},
+{"en":"paste the content","zh":"粘贴内容"},
+{"en":"search useful information","zh":"查找有用的信息"},
+{"en":"send an email","zh":"发送一封邮件"},
+{"en":"check my email","zh":"查看我的邮件"},
+{"en":"buy a new cup","zh":"买一个新杯子"},
+{"en":"buy a new bag","zh":"买一个新包"},
+{"en":"buy a new hat","zh":"买一顶新帽子"},
+{"en":"buy a pair of socks","zh":"买一双袜子"},
+{"en":"buy a pair of glasses","zh":"买一副眼镜"},
+{"en":"try on these shoes","zh":"试穿这双鞋子"},
+{"en":"wash the cup","zh":"清洗杯子"},
+{"en":"wash the plate","zh":"洗盘子"},
+{"en":"throw rubbish away","zh":"扔掉垃圾"},
+{"en":"take out trash","zh":"倒垃圾"},
+{"en":"plant some flowers","zh":"种一些花"},
+{"en":"water the plants","zh":"给植物浇水"},
+{"en":"cut the grass","zh":"修剪草地"},
+{"en":"feed the cat","zh":"喂猫"},
+{"en":"feed the dog","zh":"喂狗"},
+{"en":"walk with my dog","zh":"遛狗"},
+{"en":"go for a picnic","zh":"去野餐"},
+{"en":"go for a trip","zh":"去旅行"},
+{"en":"go swimming","zh":"去游泳"},
+{"en":"go fishing","zh":"去钓鱼"},
+{"en":"go hiking","zh":"去徒步爬山"},
+{"en":"go running","zh":"去跑步"},
+{"en":"go dancing","zh":"去跳舞"},
+{"en":"go singing","zh":"去唱歌"},
+{"en":"buy some gifts","zh":"买一些礼物"},
+{"en":"give you a gift","zh":"送你一份礼物"},
+{"en":"celebrate my birthday","zh":"庆祝我的生日"},
+{"en":"have a party","zh":"举办一场聚会"},
+{"en":"invite my friends","zh":"邀请我的朋友们"},
+{"en":"prepare enough food","zh":"准备足够的食物"},
+{"en":"prepare some drinks","zh":"准备一些饮品"},
+{"en":"arrive on time","zh":"准时到达"},
+{"en":"leave on time","zh":"准时离开"},
+{"en":"avoid being late","zh":"避免迟到"},
+{"en":"know local customs","zh":"了解当地风俗"},
+{"en":"respect local people","zh":"尊重当地人"},
+{"en":"learn local culture","zh":"学习当地文化"},
+{"en":"take local transport","zh":"乘坐当地交通工具"},
+{"en":"ask the way politely","zh":"礼貌地问路"},
+{"en":"find a good restaurant","zh":"找一家不错的餐厅"},
+{"en":"order local dishes","zh":"点本地特色菜"},
+{"en":"try different tastes","zh":"尝试不同口味"},
+{"en":"avoid spicy food","zh":"避开辛辣食物"},
+{"en":"eat more fruits","zh":"多吃水果"},
+{"en":"eat less sugar","zh":"少吃糖"},
+{"en":"eat less oil","zh":"少吃油"},
+{"en":"drink enough water","zh":"喝足够的水"},
+{"en":"get enough sleep","zh":"拥有充足睡眠"},
+{"en":"reduce pressure","zh":"减轻压力"},
+{"en":"calm myself down","zh":"让自己冷静下来"},
+{"en":"control my temper","zh":"控制自己的脾气"},
+{"en":"think twice before acting","zh":"三思而后行"},
+{"en":"make a simple plan","zh":"做一个简单计划"},
+{"en":"set small goals","zh":"设定小目标"},
+{"en":"finish my daily task","zh":"完成每日任务"},
+{"en":"improve my habits","zh":"改善我的习惯"},
+{"en":"break bad habits","zh":"改掉坏习惯"},
+{"en":"keep good habits","zh":"保持好习惯"},
+{"en":"organize my desk","zh":"整理我的书桌"},
+{"en":"organize my luggage","zh":"整理我的行李"},
+{"en":"pack my suitcase","zh":"收拾行李箱"},
+{"en":"unpack my luggage","zh":"打开行李取出物品"},
+{"en":"take my medicine on time","zh":"按时吃药"},
+{"en":"see a doctor","zh":"看医生"},
+{"en":"follow doctor’s advice","zh":"遵从医生建议"},
+{"en":"protect my skin","zh":"保护我的皮肤"},
+{"en":"protect my eyes","zh":"保护我的眼睛"},
+{"en":"protect my ears","zh":"保护我的耳朵"},
+{"en":"protect my hands","zh":"保护我的双手"},
+{"en":"stay away from danger","zh":"远离危险"},
+{"en":"check the weather report","zh":"查看天气预报"},
+{"en":"take an umbrella with me","zh":"随身带上雨伞"},
+{"en":"wear more clothes","zh":"多穿点衣服"},
+{"en":"wear light clothes","zh":"穿轻薄的衣服"},
+{"en":"wear comfortable shoes","zh":"穿舒适的鞋子"},
+{"en":"put on my hat","zh":"戴上我的帽子"},
+{"en":"put on my sunglasses","zh":"戴上太阳镜"},
+{"en":"take off my coat","zh":"脱掉外套"},
+{"en":"buy travel souvenirs","zh":"买旅游纪念品"},
+{"en":"send photos to family","zh":"给家人发送照片"},
+{"en":"talk with my family","zh":"和家人聊天"},
+{"en":"write a short diary","zh":"写简短日记"},
+{"en":"record my daily life","zh":"记录我的日常生活"},
+{"en":"collect beautiful stones","zh":"收集好看的石头"},
+{"en":"collect nice pictures","zh":"收藏好看的图片"},
+{"en":"listen to short stories","zh":"听简短小故事"},
+{"en":"tell simple stories","zh":"讲简单的小故事"},
+{"en":"sing simple songs","zh":"唱简单的歌"},
+{"en":"draw simple pictures","zh":"画简单的图画"},
+{"en":"relax my body","zh":"放松身体"},
+{"en":"relax my mind","zh":"放松大脑"},
+{"en":"forget my worries","zh":"忘掉我的烦恼"},
+{"en":"face small difficulties","zh":"面对小小的困难"},
+{"en":"solve small problems","zh":"解决小问题"},
+{"en":"learn from mistakes","zh":"从错误当中学习"},
+{"en":"praise other people","zh":"赞美别人"},
+{"en":"respect old people","zh":"尊重老人"},
+{"en":"care about children","zh":"关心小孩子"},
+{"en":"keep our environment clean","zh":"保持环境干净"},
+{"en":"save water","zh":"节约用水"},
+{"en":"save electricity","zh":"节约用电"},
+{"en":"reduce waste","zh":"减少浪费"},
+{"en":"buy second‑hand goods","zh":"购买二手物品"},
+{"en":"reuse old things","zh":"重复利用旧物品"},
+{"en":"take part in activities","zh":"参加活动"},
+{"en":"meet local residents","zh":"接触本地居民"},
+{"en":"practice oral communication","zh":"练习口头交流"},
+{"en":"expand my vocabulary","zh":"扩大我的词汇量"},
+{"en":"review old sentences","zh":"复习旧句子"},
+{"en":"create new sentences","zh":"创造新句子"},
+{"en":"imitate native pronunciation","zh":"模仿母语者发音"},
+{"en":"record my own voice","zh":"录下自己的声音"},
+{"en":"compare my pronunciation","zh":"对比自己的发音"},
+{"en":"make slow progress","zh":"取得缓慢的进步"},
+{"en":"keep practicing day after day","zh":"日复一日坚持练习"},
+{"en":"travel to new places","zh":"去陌生的地方旅行"},
+{"en":"taste different local snacks","zh":"品尝各地小吃"},
+{"en":"take morning walk","zh":"早上散散步"},
+{"en":"take evening walk","zh":"傍晚散散步"},
+{"en":"breathe fresh morning air","zh":"呼吸清晨新鲜空气"},
+{"en":"watch sunrise","zh":"看日出"},
+{"en":"watch sunset","zh":"看日落"},
+{"en":"enjoy quiet night time","zh":"享受安静的夜晚"},
+{"en":"light a small candle","zh":"点一根小蜡烛"},
+{"en":"make simple coffee","zh":"做简易咖啡"},
+{"en":"make fresh fruit juice","zh":"做新鲜果汁"},
+{"en":"buy fresh vegetables","zh":"购买新鲜蔬菜"},
+{"en":"keep my food fresh","zh":"保持食物新鲜"},
+{"en":"throw away bad food","zh":"丢掉变质食物"},
+{"en":"check expiry date","zh":"查看保质期"},
+{"en":"carry enough water bottle","zh":"随身带足够的水瓶"},
+{"en":"avoid drinking dirty water","zh":"避免喝不干净的水"},
+{"en":"wash hands before eating","zh":"饭前洗手"},
+{"en":"wash hands after going out","zh":"外出回来洗手"},
+{"en":"keep my nails clean","zh":"保持指甲干净"},
+{"en":"get rid of mosquitoes","zh":"驱赶蚊子"},
+{"en":"prevent insect bites","zh":"预防蚊虫叮咬"},
+{"en":"put on skin cream","zh":"涂抹护肤霜"},
+{"en":"put on sun cream","zh":"涂抹防晒霜"},
+{"en":"stay away from hot sun","zh":"避开烈日暴晒"},
+{"en":"sit under the tree shadow","zh":"坐在树荫底下"},
+{"en":"have cool drinks in hot days","zh":"热天喝点凉饮"},
+{"en":"wear breathable clothes","zh":"穿透气的衣服"},
+{"en":"prepare small first‑aid kit","zh":"准备简易急救包"},
+{"en":"remember important phone numbers","zh":"记住重要电话号码"},
+{"en":"save emergency contacts","zh":"保存紧急联系人"},
+{"en":"make copies of my passport","zh":"复印我的护照"},
+{"en":"keep photos of my documents","zh":"保存证件照片"},
+{"en":"not carry too much cash","zh":"不要携带过多现金"},
+{"en":"put money in different places","zh":"钱财分开放置"},
+{"en":"choose safe accommodation","zh":"选择安全的住宿"},
+{"en":"lock room door every night","zh":"每晚锁好房间门"},
+{"en":"do not open door for strangers","zh":"不要给陌生人开门"},
+{"en":"pay attention to surrounding people","zh":"留意周围的人"},
+{"en":"walk on bright streets at night","zh":"夜晚走明亮街道"},
+{"en":"avoid lonely dark roads","zh":"避开偏僻黑暗小路"},
+{"en":"write simple travel journal","zh":"写简短旅行随笔"},
+{"en":"share travel experience","zh":"分享旅行经历"},
+{"en":"learn useful daily expressions","zh":"学习实用日常短句"},
+{"en":"repeat aloud every morning","zh":"每天早上大声复述"},
+{"en":"read sentences out loud","zh":"大声读出句子"},
+{"en":"think in simple English","zh":"用简单英语思考"},
+{"en":"not fear making mistakes","zh":"不要害怕犯错"},
+{"en":"correct my own mistakes","zh":"纠正自己的错误"},
+{"en":"keep my notebook handy","zh":"手边常备笔记本"},
+{"en":"mark difficult sentences","zh":"标记难的句子"},
+{"en":"review marked content often","zh":"经常复习标记内容"},
+{"en":"listen to short English audio","zh":"听简短英语音频"},
+{"en":"imitate sentence rhythm","zh":"模仿句子节奏语调"},
+{"en":"focus on practical daily English","zh":"专注实用日常英语"},
+{"en":"speak even with simple words","zh":"哪怕单词简单也要开口说"}
+];
 ];
 
 // 全局状态
@@ -307,6 +480,7 @@ let groupIndex = 0;
 let playRate = 1.0;
 let currentSentenceEn = "";
 let currentSentenceCn = "";
+let isSpeaking = false;
 const synth = window.speechSynthesis;
 
 // 渲染标签
@@ -329,6 +503,7 @@ function renderTabs(){
 
 //渲染问答
 function renderQA(){
+  if(!sceneData[currentSceneIndex]) return;
   const scene = sceneData[currentSceneIndex];
   const item = scene.list[groupIndex];
   const block = document.getElementById("qaBlock");
@@ -337,7 +512,8 @@ function renderQA(){
     <p class="cn">${item.qzh}</p>
     <p>A：${item.a}</p>
     <p class="cn">${item.azh}</p>
-  `
+  `;
+  document.getElementById("sceneCountInfo").innerText = `当前场景：${scene.name}｜第 ${groupIndex+1} / ${scene.list.length} 组`;
 }
 
 function prevGroup(){
@@ -352,13 +528,18 @@ function nextGroup(){
   }
 }
 
+//iOS语音防卡顿核心
 function speakText(text){
-  synth.cancel();
+  if(isSpeaking) return;
   const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = "en‑US";
+  utt.lang = "en-US";
   utt.rate = playRate;
+  isSpeaking = true;
+  utt.onend = ()=>{ isSpeaking = false; };
+  utt.onerror = ()=>{ isSpeaking = false; };
   synth.speak(utt);
 }
+
 function playQuestion(){
   const item = sceneData[currentSceneIndex].list[groupIndex];
   speakText(item.q);
@@ -377,8 +558,9 @@ document.querySelectorAll(".speed-btn").forEach(b=>{
   }
 })
 
-//造句模块，带中文翻译
+//造句模块
 function genRandomSentence(){
+  if(verbList.length===0)return;
   const obj = verbList[Math.floor(Math.random()*verbList.length)];
   currentSentenceEn = `I want to ${obj.en}.`;
   currentSentenceCn = `我想要${obj.zh}。`;
@@ -393,9 +575,12 @@ function playMakeSentence(){
 }
 
 //初始化
-renderTabs();
-renderQA();
+if(sceneData.length>0){
+  renderTabs();
+  renderQA();
+}
 genRandomSentence();
+document.getElementById("makeWordCountInfo").innerText = `词块总数量：${verbList.length} 条`;
 </script>
 </body>
 </html>
