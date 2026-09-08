@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listen & Speak · 升级版 · 收藏/自定义/调速/主题</title>
+<title>Listen & Speak · 最终版</title>
 <style>
 /* 全局变量 */
 :root {
@@ -132,6 +132,8 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
 .chat-input-area{display:flex;gap:4px;margin-top:4px;display:none;}
 .chat-input-area input{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--input-bg);color:var(--text);outline:none;}
 .chat-input-area button{padding:4px 12px;background:#10b981;color:#fff;border:0;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;}
+.chat-input-area .example-btn{background:var(--secondary);color:#fff;border:0;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;padding:4px 10px;}
+.chat-input-area .example-btn:hover{background:#7c3aed;}
 .admin-panel{display:none;margin-top:12px;padding:10px;background:var(--card-bg);border-radius:12px;border:1px solid var(--border);text-align:left;}
 .admin-panel input{width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:13px;background:var(--input-bg);color:var(--text);}
 .admin-panel .code-box{background:var(--bg);padding:6px;border-radius:6px;font-family:monospace;font-size:14px;margin:6px 0;word-break:break-all;color:var(--text);}
@@ -142,7 +144,6 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
 <body>
 <div id="toast" class="toast"></div>
 <div class="container">
-<!-- 头部：标题 + 主题切换 + 收藏 -->
 <div class="header">
   <div class="header-left">
     <h1>🧩 Listen & Speak</h1>
@@ -154,7 +155,6 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
   </div>
 </div>
 
-<!-- API 设置 -->
 <div class="api-settings">
   <input id="apiKeyInput" type="password" placeholder="API Key" style="flex:2;">
   <input id="apiBaseInput" type="url" placeholder="API Base URL" value="https://api.deepseek.com/v1" style="flex:1.5;">
@@ -162,7 +162,6 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
   <span class="api-status" id="apiStatus">未设置</span>
 </div>
 
-<!-- 母句选择器 + 自定义词块 -->
 <div class="pattern-selector">
   <label>📌 母句</label>
   <select id="patternSelect"></select>
@@ -174,7 +173,6 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
   <button onclick="addCustomChunk()">➕</button>
 </div>
 
-<!-- 搜索 -->
 <div class="search-wrapper">
   <div class="input-group">
     <input id="searchInput" type="search" placeholder="搜索句子" autocomplete="off">
@@ -183,20 +181,15 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
 </div>
 <div id="results" class="results"></div>
 
-<!-- 主卡片 -->
 <div class="card">
   <div class="avatar-wrap"><canvas id="avatarCanvas" width="220" height="220"></canvas></div>
-
   <div class="scene" id="scene">日常表达</div>
   <div class="progress" id="progress">总句数: 2500+</div>
-
   <div class="pattern-display">
     <div class="label">母句</div>
     <div class="text" id="patternDisplay">I want to...</div>
   </div>
-
   <div class="flow-arrow">▼ 当前整句</div>
-
   <div class="english" id="englishContainer">
     <span id="english">I want to eat.</span>
     <button class="fav-btn" id="favBtn" onclick="toggleFav()">☆</button>
@@ -226,7 +219,6 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
     <button class="chunk-toggle-btn" id="chunkToggleBtn" onclick="toggleChunkList()">📋 词块</button>
   </div>
 
-  <!-- 可折叠词块列表 -->
   <div class="chunk-area-wrap" id="chunkAreaWrap">
     <div class="chunk-area" id="chunkArea"></div>
   </div>
@@ -235,6 +227,7 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
   <div id="chatInputArea" class="chat-input-area">
     <input id="chatInput" type="text" placeholder="输入消息" autocomplete="off">
     <button onclick="sendTextMessage()">Send</button>
+    <button class="example-btn" onclick="fillExample()">💡 示例</button>
   </div>
   <div id="status" class="status">Ready</div>
 </div>
@@ -364,7 +357,7 @@ const patternList = [
 ];
 
 // 自定义词块存储
-let customChunks = JSON.parse(localStorage.getItem('customChunks')) || {}; // { patternId: [ {en, cn}, ... ] }
+let customChunks = JSON.parse(localStorage.getItem('customChunks')) || {};
 
 function getChunksForPattern(patternId) {
   const p = patternList[patternId];
@@ -397,7 +390,6 @@ function buildAllLessons() {
         custom: false
       });
     }
-    // 自定义词块也加入 lessons
     const customs = customChunks[p.id] || [];
     customs.forEach((c) => {
       const fullEn = p.pattern.replace(/\.{3}/g, c.en);
@@ -505,7 +497,6 @@ function getCurrentChunkEn() {
   const active = dom.chunkArea.querySelector('.chunk-item.active');
   return active ? active.dataset.en : '';
 }
-// 查看收藏列表
 dom.favCountBtn.addEventListener('click', function() {
   if (favorites.length === 0) { showToast('暂无收藏'); return; }
   dom.results.innerHTML = '<div style="text-align:center;font-weight:600;margin:4px 0;">⭐ 收藏列表</div>';
@@ -514,11 +505,9 @@ dom.favCountBtn.addEventListener('click', function() {
     box.className = 'result';
     box.innerHTML = `<div class="result-en">${f.en}</div><div class="result-cn">${f.cn}</div>`;
     box.onclick = function() {
-      // 切换到对应母句并播放
       const pid = f.patternId || 0;
       dom.patternSelect.value = pid;
       loadPattern(pid);
-      // 找到对应的词块
       setTimeout(() => {
         const items = dom.chunkArea.querySelectorAll('.chunk-item');
         let target = null;
@@ -545,7 +534,6 @@ function setSpeed(rate) {
   });
   localStorage.setItem('speechRate', rate);
 }
-// 加载保存的速度
 const savedRate = parseFloat(localStorage.getItem('speechRate')) || 1.0;
 setSpeed(savedRate);
 
@@ -560,13 +548,11 @@ function addCustomChunk() {
   if (!en || !cn) { showToast('请输入英文和中文'); return; }
   const pid = currentPatternId;
   if (!customChunks[pid]) customChunks[pid] = [];
-  // 检查是否已存在
   if (customChunks[pid].some(c => c.en === en)) { showToast('该词块已存在'); return; }
   customChunks[pid].push({ en, cn });
   localStorage.setItem('customChunks', JSON.stringify(customChunks));
   enInput.value = '';
   cnInput.value = '';
-  // 重新加载
   lessons = buildAllLessons();
   loadPattern(pid);
   showToast('✅ 已添加自定义词块');
@@ -685,7 +671,7 @@ function speakNative(text,cb){
   function doSpeak(){
     const utterance=new SpeechSynthesisUtterance(text);
     utterance.lang='en-US';
-    utterance.rate=speechRate; // 使用当前速度
+    utterance.rate=speechRate;
     utterance.pitch=1.0;
     utterance.volume=1.0;
     const preferred=voices.find(v=>/Google UK|David|Zira|Samantha|Alex|Veena/i.test(v.name))||
@@ -964,18 +950,20 @@ function resetAudio(){
   }catch(e){showToast('⚠️ 重置失败');}
 }
 
-// 折叠词块列表
-let chunkListOpen = false;
 function toggleChunkList(){
-  chunkListOpen=!chunkListOpen;
   const wrap=dom.chunkAreaWrap;
   const btn=dom.chunkToggleBtn;
-  if(chunkListOpen){wrap.classList.add('open');btn.textContent='📋 隐藏词块';}
-  else{wrap.classList.remove('open');btn.textContent='📋 词块';}
+  if(wrap.classList.contains('open')){
+    wrap.classList.remove('open');
+    btn.textContent='📋 词块';
+  }else{
+    wrap.classList.add('open');
+    btn.textContent='📋 隐藏词块';
+  }
 }
 
 // ========================================================================
-// 10. 母句选择器、搜索等
+// 10. 母句选择器、搜索
 // ========================================================================
 function populatePatternSelect(){
   const select=dom.patternSelect;
@@ -1039,7 +1027,7 @@ function searchSentence(){
 }
 
 // ========================================================================
-// 11. AI 对话（保留）
+// 11. 升级版 AI 对话
 // ========================================================================
 let chatMode=false, isListening=false;
 let apiKey=localStorage.getItem('ai_api_key')||'';
@@ -1063,15 +1051,29 @@ function saveApiConfig(){
   if(base){apiBase=base;localStorage.setItem('ai_api_base',base);}
   updateApiStatus();showToast('✅ API 设置已保存');
 }
-const recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-recognition.lang='zh-CN';recognition.continuous=false;recognition.interimResults=true;
-function buildMessages(userInput){
-  const systemMsg={role:'system',content:'You are a helpful English teacher and conversation partner. Speak naturally. If user speaks Chinese, reply in Chinese; if English, reply in English. Keep replies concise.'};
-  const history=chatHistory.slice(-MAX_HISTORY);
-  const messages=[systemMsg,...history];
-  if(userInput)messages.push({role:'user',content:userInput});
+
+// 增强的 system prompt，专门处理随想输入
+function buildMessages(userInput) {
+  const systemMsg = {
+    role: 'system',
+    content: `You are an expert English teacher and conversation partner. Follow these rules strictly:
+
+1. **If user writes in Chinese**: Translate their thought into natural, fluent English. Then explain the translation briefly (why that word/phrase works). If the input is vague, ask a clarifying question (e.g., "Do you mean...?").
+
+2. **If user writes in English**: Check for grammar, word choice, and naturalness. Provide corrections and suggest more natural alternatives. If the sentence is already perfect, praise and offer a related follow-up question.
+
+3. **If user's input is unclear or incomplete**: Ask one or two simple questions to understand their intention before replying.
+
+4. **Keep responses concise (1-3 sentences for explanation, plus the translation/correction). Use the same language as the user's input (Chinese reply to Chinese, English reply to English).**
+
+5. **Be encouraging and patient. The user is learning.`
+  };
+  const history = chatHistory.slice(-MAX_HISTORY);
+  const messages = [systemMsg, ...history];
+  if (userInput) messages.push({ role: 'user', content: userInput });
   return messages;
 }
+
 async function callAI(userInput){
   if(!apiKey){showToast('⚠️ 请先设置 API Key');return null;}
   const messages=buildMessages(userInput);
@@ -1088,34 +1090,64 @@ async function callAI(userInput){
     return reply;
   }catch(e){showToast('❌ AI 请求失败: '+e.message);return null;}
 }
+
 function appendMessage(role,content){
   const div=document.createElement('div');div.className='chat-msg '+role;div.textContent=content;
   const time=document.createElement('div');time.className='time';time.textContent=new Date().toLocaleTimeString();div.appendChild(time);
   dom.chatBox.appendChild(div);dom.chatBox.scrollTop=dom.chatBox.scrollHeight;
 }
+
 async function processUserInput(text){
   if(!text.trim())return;
   appendMessage('user',text);
-  dom.status.textContent='🤖 AI 思考中...';dom.status.className='status speaking';
+  dom.status.textContent='🤔 AI 正在理解...';
+  dom.status.className='status speaking';
   const reply=await callAI(text);
   if(reply){
+    const isChinese = /[\u4e00-\u9fa5]/.test(reply);
     appendMessage('ai',reply);
-    dom.status.textContent='✅ 已回复';dom.status.className='status done';
+    dom.status.textContent='✅ 已回复';
+    dom.status.className='status done';
     if(window.speechSynthesis){
       const utter=new SpeechSynthesisUtterance(reply);
-      utter.lang=/[\u4e00-\u9fa5]/.test(reply)?'zh-CN':'en-US';utter.rate=0.8;
+      utter.lang=isChinese?'zh-CN':'en-US';
+      utter.rate=0.8;
       window.speechSynthesis.speak(utter);
     }
-  }else{dom.status.textContent='⚠️ 回复失败';dom.status.className='status error';}
+  }else{
+    dom.status.textContent='⚠️ 回复失败，请检查网络或 API 设置';
+    dom.status.className='status error';
+  }
 }
+
 function toggleChat(){
   chatMode=!chatMode;const btn=dom.aiToggle;
-  if(chatMode){dom.chatBox.style.display='block';document.getElementById('chatInputArea').style.display='flex';btn.textContent='❌ 关闭';btn.style.background='#ef4444';if(dom.chatBox.children.length===0){appendMessage('ai',"👋 你好！我是你的 AI 英语学习助手。");}}else{dom.chatBox.style.display='none';document.getElementById('chatInputArea').style.display='none';btn.textContent='💬 AI';btn.style.background='#10b981';if(isListening){try{recognition.stop();}catch(e){}dom.micBtn.textContent='🎤 Voice';dom.micBtn.classList.remove('listening');isListening=false;}}
+  if(chatMode){dom.chatBox.style.display='block';document.getElementById('chatInputArea').style.display='flex';btn.textContent='❌ 关闭';btn.style.background='#ef4444';if(dom.chatBox.children.length===0){appendMessage('ai',"👋 你好！我是你的 AI 英语学习助手。你可以用中文或英文随意输入，我会帮你翻译、纠错或引导。");}}else{dom.chatBox.style.display='none';document.getElementById('chatInputArea').style.display='none';btn.textContent='💬 AI';btn.style.background='#10b981';if(isListening){try{recognition.stop();}catch(e){}dom.micBtn.textContent='🎤 Voice';dom.micBtn.classList.remove('listening');isListening=false;}}
 }
+
 function sendTextMessage(){
   const text=dom.chatInput.value.trim();if(!text)return;dom.chatInput.value='';processUserInput(text);
 }
 dom.chatInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendTextMessage();}});
+
+// 示例填充
+function fillExample(){
+  const examples = [
+    "我今天很累，但是还要工作。",
+    "How to say '我饿了' naturally?",
+    "I want to improve my listening. Any tips?",
+    "What's the difference between 'listen' and 'hear'?",
+    "Can you correct this sentence: 'I am go to school yesterday'?",
+    "Tell me a joke in English."
+  ];
+  const randomExample = examples[Math.floor(Math.random() * examples.length)];
+  dom.chatInput.value = randomExample;
+  dom.chatInput.focus();
+}
+
+// 语音识别
+const recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+recognition.lang='zh-CN';recognition.continuous=false;recognition.interimResults=true;
 function toggleMic(){
   if(isListening){recognition.stop();dom.micBtn.textContent='🎤 Voice';dom.micBtn.classList.remove('listening');isListening=false;return;}
   if(!chatMode)toggleChat();
@@ -1129,7 +1161,9 @@ recognition.onresult=function(event){
 recognition.onerror=function(event){dom.status.textContent='⚠️ 识别错误: '+event.error;dom.status.className='status error';dom.micBtn.textContent='🎤 Voice';dom.micBtn.classList.remove('listening');isListening=false;showToast('语音识别失败，请尝试输入。');};
 recognition.onend=function(){if(isListening){dom.micBtn.textContent='🎤 Voice';dom.micBtn.classList.remove('listening');isListening=false;}};
 
-// Admin 面板（保留）
+// ========================================================================
+// 12. Admin 面板（保留）
+// ========================================================================
 const ADMIN_PASSWORD="admin123";
 let clickCount=0;
 document.querySelector('.header h1').addEventListener('click',function(){
@@ -1140,7 +1174,9 @@ function adminLogin(){const pwd=document.getElementById('adminPwd').value;if(pwd
 function generateCnCode(){const amount=parseInt(document.getElementById('levelSelect').value);const random=Math.random().toString(36).substring(2,6).toUpperCase();const code='CN-'+amount+'-'+random;document.getElementById('generatedCode').textContent=code;const codes=JSON.parse(localStorage.getItem('cn_valid_codes'))||{};codes[code]=amount;localStorage.setItem('cn_valid_codes',JSON.stringify(codes));showToast('✅ 解锁码已生成 ('+amount+' 句)');}
 function hideAdmin(){document.getElementById('adminPanel').style.display='none';}
 
-// 键盘快捷键
+// ========================================================================
+// 13. 键盘快捷键
+// ========================================================================
 document.addEventListener("keydown",function(e){
   if(document.activeElement===dom.searchInput||document.activeElement===dom.chatInput)return;
   if(e.key==="ArrowLeft"){e.preventDefault();prevChunk();}
@@ -1149,7 +1185,9 @@ document.addEventListener("keydown",function(e){
   if(e.key==="r"||e.key==="R"){e.preventDefault();toggleRepeat();}
 });
 
-// 初始化
+// ========================================================================
+// 14. 初始化
+// ========================================================================
 loadApiConfig();
 populatePatternSelect();
 if(window.speechSynthesis){
@@ -1158,7 +1196,7 @@ if(window.speechSynthesis){
   document.addEventListener('click',function(){if(window.speechSynthesis&&window.speechSynthesis.getVoices().length===0){window.speechSynthesis.getVoices();}},{once:true});
 }
 updateFavUI();
-console.log('✅ 升级版加载完成，总句数:',lessons.length);
+console.log('✅ 最终版加载完成，总句数:',lessons.length);
 </script>
 </body>
 </html>
