@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listen & Speak · 最终版</title>
+<title>Listen & Speak · 高清语音版</title>
 <style>
-/* 全局变量 */
+/* ===== 全局变量与主题 ===== */
 :root {
   --bg: #f8fafc;
   --card-bg: #ffffff;
@@ -20,6 +20,7 @@
   --primary: #e94560;
   --primary-hover: #c73a54;
   --secondary: #8b5cf6;
+  --hd-color: #22c55e;
 }
 [data-theme="dark"] {
   --bg: #0f172a;
@@ -35,6 +36,7 @@
   --primary: #f87171;
   --primary-hover: #ef4444;
   --secondary: #a78bfa;
+  --hd-color: #34d399;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text);min-height:100vh;transition:background .2s;}
@@ -76,8 +78,11 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
 .pattern-display .text{font-size:18px;font-weight:700;color:var(--text);}
 .flow-arrow{color:var(--text-muted);font-size:14px;margin:2px 0;}
 .english{min-height:40px;display:flex;align-items:center;justify-content:center;padding:6px 4px;font-size:22px;font-weight:700;line-height:1.3;color:var(--text);background:var(--bg);border-radius:8px;margin:4px 0;position:relative;}
-.english .fav-btn{position:absolute;right:8px;top:6px;background:transparent;border:0;font-size:20px;cursor:pointer;color:var(--text-muted);transition:color .2s;}
+.english .fav-btn{background:transparent;border:0;font-size:20px;cursor:pointer;color:var(--text-muted);padding:0 4px;transition:color .2s;}
 .english .fav-btn.active{color:#f59e0b;}
+.english .copy-btn{background:transparent;border:0;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 4px;transition:color .2s;}
+.english .copy-btn:hover{color:var(--text);}
+.english .action-buttons{display:flex;gap:2px;margin-left:4px;}
 .chinese{min-height:28px;font-size:16px;color:var(--text-light);padding:4px 8px;background:var(--bg);border-radius:8px;}
 .sentence-hint{font-size:11px;color:var(--text-muted);margin-top:2px;}
 .sentence-hint .highlight{color:var(--primary);font-weight:600;}
@@ -103,6 +108,8 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
 .extra-buttons .reset-audio-btn:hover{background:#dc2626;}
 .extra-buttons .chunk-toggle-btn{background:var(--secondary);color:#fff;}
 .extra-buttons .chunk-toggle-btn:hover{background:#7c3aed;}
+.extra-buttons .hd-toggle{background:#8b5cf6;color:#fff;}
+.extra-buttons .hd-toggle:hover{background:#7c3aed;}
 .status{min-height:20px;margin-top:4px;color:var(--text-muted);font-size:12px;}
 .status.speaking{color:#3b82f6;}
 .status.done{color:#22c55e;}
@@ -138,7 +145,7 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
 .admin-panel input{width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:13px;background:var(--input-bg);color:var(--text);}
 .admin-panel .code-box{background:var(--bg);padding:6px;border-radius:6px;font-family:monospace;font-size:14px;margin:6px 0;word-break:break-all;color:var(--text);}
 .admin-panel button{background:var(--text);color:var(--bg);border:0;padding:6px;border-radius:6px;cursor:pointer;font-size:13px;}
-@media(max-width:480px){.english{font-size:18px;}.chunk-item{font-size:12px;padding:2px 8px;}.ctrl-btn{width:34px;height:34px;font-size:18px;}.ctrl-btn.play-btn{width:46px;height:46px;font-size:24px;}.ctrl-btn.cn-btn{width:34px;height:34px;font-size:16px;}.pattern-display .text{font-size:16px;}.avatar-wrap{width:52px;height:52px;top:4px;right:4px;}.pattern-selector select{font-size:12px;padding:2px 6px;min-width:70px;}.extra-buttons button{font-size:11px;padding:3px 8px;}.header-left h1{font-size:20px;}.header-left p{font-size:11px;}.speed-btn{font-size:10px;padding:1px 5px;}}
+@media(max-width:480px){.english{font-size:18px;}.chunk-item{font-size:12px;padding:2px 8px;}.ctrl-btn{width:34px;height:34px;font-size:18px;}.ctrl-btn.play-btn{width:46px;height:46px;font-size:24px;}.ctrl-btn.cn-btn{width:34px;height:34px;font-size:16px;}.pattern-display .text{font-size:16px;}.avatar-wrap{width:52px;height:52px;top:4px;right:4px;}.pattern-selector select{font-size:12px;padding:2px 6px;min-width:70px;}.extra-buttons button{font-size:11px;padding:3px 8px;}.header-left h1{font-size:20px;}.header-left p{font-size:11px;}.speed-btn{font-size:10px;padding:1px 5px;}.english .copy-btn{font-size:16px;}}
 </style>
 </head>
 <body>
@@ -147,7 +154,7 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
 <div class="header">
   <div class="header-left">
     <h1>🧩 Listen & Speak</h1>
-    <p>极简</p>
+    <p>高清语音</p>
   </div>
   <div class="header-right">
     <button class="theme-btn" id="themeToggle" title="切换主题">🌙</button>
@@ -192,7 +199,10 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
   <div class="flow-arrow">▼ 当前整句</div>
   <div class="english" id="englishContainer">
     <span id="english">I want to eat.</span>
-    <button class="fav-btn" id="favBtn" onclick="toggleFav()">☆</button>
+    <span class="action-buttons">
+      <button class="copy-btn" id="copyBtn" onclick="copySentence()" title="复制句子">📋</button>
+      <button class="fav-btn" id="favBtn" onclick="toggleFav()">☆</button>
+    </span>
   </div>
   <div class="chinese" id="chinese">我想吃饭。</div>
   <div class="sentence-hint" id="sentenceHint">💡 点击 ⬅️ ➡️ 切换词块</div>
@@ -217,6 +227,7 @@ body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-sys
     <button id="aiToggle" class="ai-toggle" onclick="toggleChat()">💬 AI</button>
     <button class="reset-audio-btn" onclick="resetAudio()">🔊 修复</button>
     <button class="chunk-toggle-btn" id="chunkToggleBtn" onclick="toggleChunkList()">📋 词块</button>
+    <button class="hd-toggle" id="hdToggleBtn" onclick="toggleHD()">✨ HD</button>
   </div>
 
   <div class="chunk-area-wrap" id="chunkAreaWrap">
@@ -440,6 +451,7 @@ const dom = {
   favBtn: document.getElementById("favBtn"),
   favCountBtn: document.getElementById("favCountBtn"),
   themeToggle: document.getElementById("themeToggle"),
+  hdToggle: document.getElementById("hdToggleBtn"),
 };
 let toastTimer;
 function showToast(t) {
@@ -632,7 +644,7 @@ function stopSpeakingMouth(){
 }
 
 // ========================================================================
-// 8. 语音引擎
+// 8. 语音引擎（支持 HD 高清语音）
 // ========================================================================
 let currentPatternId=0, currentChunkIndex=0;
 let isSpeaking=false, currentUtterance=null, playQueue=[], isProcessingQueue=false;
@@ -640,6 +652,15 @@ let isRepeating=false, repeatCount=0, repeatTimer=null;
 const REPEAT_TIMES=5;
 let playTimeout=null;
 let isPlayingLock=false;
+let hdMode = true; // 默认开启 HD
+
+function toggleHD() {
+  hdMode = !hdMode;
+  dom.hdToggle.textContent = hdMode ? '✨ HD(ON)' : '✨ HD';
+  dom.hdToggle.style.background = hdMode ? 'var(--hd-color)' : 'var(--secondary)';
+  showToast(hdMode ? '高清语音已开启' : '切换到系统语音');
+  if (isSpeaking) { stopSpeech(); setTimeout(playCurrent, 200); }
+}
 
 function stopSpeech(){
   if(playTimeout){clearTimeout(playTimeout);playTimeout=null;}
@@ -649,7 +670,44 @@ function stopSpeech(){
   stopSpeakingMouth();
 }
 
-function speakNative(text,cb){
+// HD 语音（使用 Google TTS）
+function speakGoogle(text, cb) {
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en&client=tw-ob`;
+  const audio = new Audio(url);
+  currentAudio = audio;
+  let ended = false;
+  const timeoutId = setTimeout(() => {
+    if (!ended) { ended = true; audio.pause(); audio.src = ''; currentAudio = null; cb(false, 'Network timeout'); }
+  }, 8000);
+
+  audio.oncanplaythrough = function() {
+    audio.play().catch(err => { if (!ended) { clearTimeout(timeoutId); ended = true; currentAudio = null; cb(false, 'Play error: ' + err.message); } });
+  };
+  audio.onplay = function() {
+    isSpeaking = true; isPlayingLock = true;
+    dom.playPauseBtn.textContent = "⏸"; dom.playPauseBtn.classList.add("paused");
+    dom.status.textContent = "🎧 HD 语音..."; dom.status.className = "status speaking";
+    startSpeakingMouth();
+  };
+  audio.onended = function() {
+    if (ended) return;
+    clearTimeout(timeoutId); ended = true; isSpeaking = false; isPlayingLock = false;
+    currentAudio = null;
+    dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused");
+    dom.status.textContent = "✅ 播放完成"; dom.status.className = "status done";
+    stopSpeakingMouth(); cb(true);
+  };
+  audio.onerror = function() {
+    if (ended) return;
+    clearTimeout(timeoutId); ended = true; isSpeaking = false; isPlayingLock = false;
+    currentAudio = null;
+    cb(false, 'Google TTS 失败');
+  };
+  audio.load();
+}
+
+// 原生语音（回退）
+function speakNative(text, cb) {
   if(!text||text.trim()===''){cb(false,'Empty');return;}
   if(!window.speechSynthesis){cb(false,'No speechSynthesis');return;}
   try{window.speechSynthesis.cancel();}catch(e){}
@@ -692,7 +750,7 @@ function speakNative(text,cb){
       if(currentUtterance!==utterance)return;
       isSpeaking=true;isPlayingLock=true;
       dom.playPauseBtn.textContent="⏸";dom.playPauseBtn.classList.add("paused");
-      dom.status.textContent="🎧 Speaking...";dom.status.className="status speaking";
+      dom.status.textContent="🎧 系统语音...";dom.status.className="status speaking";
       startSpeakingMouth();
     };
     utterance.onend=function(){
@@ -700,7 +758,7 @@ function speakNative(text,cb){
       ended=true;clearTimeout(timeoutId);
       isSpeaking=false;currentUtterance=null;
       dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
-      dom.status.textContent="✅ Done";dom.status.className="status done";
+      dom.status.textContent="✅ 播放完成";dom.status.className="status done";
       isPlayingLock=false;stopSpeakingMouth();cb(true);
     };
     utterance.onerror=function(e){
@@ -720,7 +778,7 @@ function speakNative(text,cb){
   }
 }
 
-function speakText(text,cb){
+function speakText(text, cb){
   const clean=text.replace(/\.{3,}/g,'').replace(/…/g,'').replace(/\s+/g,' ').trim();
   if(!clean){if(cb)cb(false);return;}
   if(isPlayingLock||isSpeaking){
@@ -728,13 +786,20 @@ function speakText(text,cb){
     isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
     playQueue=[];isProcessingQueue=false;isPlayingLock=false;stopSpeakingMouth();
   }
+  // 使用 HD 或原生
+  const useHD = hdMode && navigator.onLine;
   setTimeout(()=>{
-    speakNative(clean,function(success){
-      if(cb)cb(success);
-      if(!success){
-        setTimeout(()=>{speakNative(clean,function(s2){if(cb)cb(s2);});},300);
-      }
-    });
+    if (useHD) {
+      speakGoogle(clean, function(success) {
+        if (cb) cb(success);
+        if (!success) {
+          // HD 失败，回退到原生
+          setTimeout(()=>{ speakNative(clean, cb); }, 300);
+        }
+      });
+    } else {
+      speakNative(clean, cb);
+    }
   },50);
 }
 
@@ -771,11 +836,13 @@ function loadPattern(patternId){
 }
 
 let playDebounceTimer=null;
+let currentAudio = null; // 用于 HD 模式
 
 function playChunk(el){
   if(playDebounceTimer){clearTimeout(playDebounceTimer);playDebounceTimer=null;}
   if(isSpeaking||isPlayingLock){
     try{window.speechSynthesis.cancel();}catch(e){}
+    if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
     isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
     playQueue=[];isProcessingQueue=false;isPlayingLock=false;stopSpeakingMouth();
   }
@@ -816,6 +883,7 @@ function playPatternOnly(){
   if(!text)return;
   if(isSpeaking||isPlayingLock){
     try{window.speechSynthesis.cancel();}catch(e){}
+    if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
     isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
     stopSpeakingMouth();
   }
@@ -850,6 +918,7 @@ function nextChunk(){
 function togglePlayPause(){
   if(isSpeaking||isPlayingLock){
     try{window.speechSynthesis.cancel();}catch(e){}
+    if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
     isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
     playQueue=[];isProcessingQueue=false;isPlayingLock=false;stopSpeakingMouth();
     dom.status.textContent="⏸ Paused";dom.status.className="status paused";
@@ -872,6 +941,7 @@ function toggleRepeat(){
     isRepeating=false;clearTimeout(repeatTimer);
     if(isSpeaking||isPlayingLock){
       try{window.speechSynthesis.cancel();}catch(e){}
+      if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
       isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
       stopSpeakingMouth();
     }
@@ -893,6 +963,7 @@ function doRepeat(){
   if(!text||text==='I want to eat.'){stopSpeech();return;}
   if(isSpeaking||isPlayingLock){
     try{window.speechSynthesis.cancel();}catch(e){}
+    if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
     isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
     stopSpeakingMouth();
   }
@@ -923,6 +994,7 @@ function playChinese(){
   }
   if(isSpeaking||isPlayingLock){
     try{window.speechSynthesis.cancel();}catch(e){}
+    if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
     isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
     stopSpeakingMouth();
   }
@@ -940,6 +1012,7 @@ function resetAudio(){
   try{
     if(isSpeaking||isPlayingLock){
       window.speechSynthesis.cancel();
+      if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
       isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
       stopSpeakingMouth();
     }
@@ -963,7 +1036,41 @@ function toggleChunkList(){
 }
 
 // ========================================================================
-// 10. 母句选择器、搜索
+// 10. 复制句子
+// ========================================================================
+function copySentence() {
+  const en = dom.english.textContent;
+  const cn = dom.chinese.textContent;
+  const text = `${en}\n${cn}`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('📋 已复制句子');
+    }).catch(() => {
+      // 降级方案
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    showToast('📋 已复制句子');
+  } catch (e) {
+    showToast('❌ 复制失败，请手动复制');
+  }
+  document.body.removeChild(textarea);
+}
+
+// ========================================================================
+// 11. 母句选择器、搜索
 // ========================================================================
 function populatePatternSelect(){
   const select=dom.patternSelect;
@@ -979,6 +1086,7 @@ function populatePatternSelect(){
     const id=parseInt(this.value);
     if(isSpeaking||isPlayingLock){
       try{window.speechSynthesis.cancel();}catch(e){}
+      if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
       isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
       stopSpeakingMouth();
     }
@@ -1027,7 +1135,7 @@ function searchSentence(){
 }
 
 // ========================================================================
-// 11. 升级版 AI 对话
+// 12. 升级版 AI 对话
 // ========================================================================
 let chatMode=false, isListening=false;
 let apiKey=localStorage.getItem('ai_api_key')||'';
@@ -1052,7 +1160,6 @@ function saveApiConfig(){
   updateApiStatus();showToast('✅ API 设置已保存');
 }
 
-// 增强的 system prompt，专门处理随想输入
 function buildMessages(userInput) {
   const systemMsg = {
     role: 'system',
@@ -1130,7 +1237,6 @@ function sendTextMessage(){
 }
 dom.chatInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendTextMessage();}});
 
-// 示例填充
 function fillExample(){
   const examples = [
     "我今天很累，但是还要工作。",
@@ -1145,7 +1251,6 @@ function fillExample(){
   dom.chatInput.focus();
 }
 
-// 语音识别
 const recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
 recognition.lang='zh-CN';recognition.continuous=false;recognition.interimResults=true;
 function toggleMic(){
@@ -1162,7 +1267,7 @@ recognition.onerror=function(event){dom.status.textContent='⚠️ 识别错误:
 recognition.onend=function(){if(isListening){dom.micBtn.textContent='🎤 Voice';dom.micBtn.classList.remove('listening');isListening=false;}};
 
 // ========================================================================
-// 12. Admin 面板（保留）
+// 13. Admin 面板
 // ========================================================================
 const ADMIN_PASSWORD="admin123";
 let clickCount=0;
@@ -1175,7 +1280,7 @@ function generateCnCode(){const amount=parseInt(document.getElementById('levelSe
 function hideAdmin(){document.getElementById('adminPanel').style.display='none';}
 
 // ========================================================================
-// 13. 键盘快捷键
+// 14. 键盘快捷键
 // ========================================================================
 document.addEventListener("keydown",function(e){
   if(document.activeElement===dom.searchInput||document.activeElement===dom.chatInput)return;
@@ -1186,17 +1291,20 @@ document.addEventListener("keydown",function(e){
 });
 
 // ========================================================================
-// 14. 初始化
+// 15. 初始化
 // ========================================================================
 loadApiConfig();
 populatePatternSelect();
+// HD 按钮初始状态
+dom.hdToggle.textContent = '✨ HD(ON)';
+dom.hdToggle.style.background = 'var(--hd-color)';
 if(window.speechSynthesis){
   window.speechSynthesis.getVoices();
   window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
   document.addEventListener('click',function(){if(window.speechSynthesis&&window.speechSynthesis.getVoices().length===0){window.speechSynthesis.getVoices();}},{once:true});
 }
 updateFavUI();
-console.log('✅ 最终版加载完成，总句数:',lessons.length);
+console.log('✅ 高清语音版加载完成，总句数:',lessons.length);
 </script>
 </body>
 </html>
