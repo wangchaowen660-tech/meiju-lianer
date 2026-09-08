@@ -3,49 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listen & Speak · 极简版 · 词块可隐藏</title>
+<title>Listen & Speak · 升级版 · 收藏/自定义/调速/主题</title>
 <style>
+/* 全局变量 */
+:root {
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --text-light: #475569;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --input-bg: #ffffff;
+  --shadow: 0 2px 8px rgba(0,0,0,0.04);
+  --chunk-bg: #eef2f6;
+  --chunk-hover: #dce2ea;
+  --primary: #e94560;
+  --primary-hover: #c73a54;
+  --secondary: #8b5cf6;
+}
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --card-bg: #1e293b;
+  --text: #e2e8f0;
+  --text-light: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border: #334155;
+  --input-bg: #1e293b;
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  --chunk-bg: #2d3748;
+  --chunk-hover: #4a5568;
+  --primary: #f87171;
+  --primary-hover: #ef4444;
+  --secondary: #a78bfa;
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{margin:0;padding:12px 10px 28px;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#1e293b;min-height:100vh;}
+body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text);min-height:100vh;transition:background .2s;}
 .container{max-width:500px;width:100%;margin:0 auto;}
-.header{text-align:center;padding:4px 0 8px;}
-.header h1{margin:0;font-size:24px;font-weight:700;}
-.header p{margin:2px 0 0;color:#94a3b8;font-size:13px;background:#f1f5f9;padding:2px 12px;border-radius:30px;display:inline-block;}
-.pattern-selector{background:#fff;border-radius:12px;padding:6px 10px;margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-.pattern-selector label{font-weight:600;font-size:13px;color:#1e293b;white-space:nowrap;}
-.pattern-selector select{flex:1;min-width:100px;padding:4px 8px;border:1px solid #e2e8f0;border-radius:6px;font-size:13px;background:#fff;color:#1e293b;outline:none;cursor:pointer;}
-.pattern-selector .badge{background:#e94560;color:#fff;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:4px 0 8px;}
+.header-left{display:flex;align-items:center;gap:8px;}
+.header-left h1{margin:0;font-size:24px;font-weight:700;color:var(--text);}
+.header-left p{margin:0;color:var(--text-muted);font-size:13px;background:var(--chunk-bg);padding:2px 12px;border-radius:30px;}
+.header-right{display:flex;align-items:center;gap:6px;}
+.theme-btn{background:transparent;border:0;font-size:22px;cursor:pointer;padding:0 4px;color:var(--text);}
+.fav-count{cursor:pointer;background:var(--primary);color:#fff;padding:0 10px;border-radius:20px;font-size:13px;font-weight:600;line-height:24px;display:flex;align-items:center;gap:4px;border:0;transition:background .2s;}
+.fav-count:hover{background:var(--primary-hover);}
+.pattern-selector{background:var(--card-bg);border-radius:12px;padding:6px 10px;margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;box-shadow:var(--shadow);border:1px solid var(--border);}
+.pattern-selector label{font-weight:600;font-size:13px;color:var(--text);white-space:nowrap;}
+.pattern-selector select{flex:1;min-width:100px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);outline:none;cursor:pointer;}
+.pattern-selector .badge{background:var(--primary);color:#fff;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.custom-chunk{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+.custom-chunk input{flex:1;min-width:60px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text);}
+.custom-chunk button{padding:3px 10px;background:var(--secondary);color:#fff;border:0;border-radius:6px;font-size:12px;cursor:pointer;font-weight:500;}
+.custom-chunk button:hover{opacity:.85;}
 .search-wrapper{display:flex;gap:4px;margin-bottom:8px;}
-.search-wrapper .input-group{flex:1;display:flex;align-items:center;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:0 4px;height:34px;}
-.search-wrapper .input-group:focus-within{border-color:#1e293b;}
-.search-wrapper .input-group input{flex:1;border:0;outline:none;font-size:13px;padding:0 4px;background:transparent;height:100%;}
-.search-wrapper .input-group button{background:transparent;border:0;font-size:16px;cursor:pointer;padding:0 6px;color:#94a3b8;display:flex;align-items:center;height:100%;}
-.search-wrapper .input-group button:hover{color:#1e293b;}
+.search-wrapper .input-group{flex:1;display:flex;align-items:center;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:0 4px;height:34px;}
+.search-wrapper .input-group:focus-within{border-color:var(--primary);}
+.search-wrapper .input-group input{flex:1;border:0;outline:none;font-size:13px;padding:0 4px;background:transparent;color:var(--text);height:100%;}
+.search-wrapper .input-group button{background:transparent;border:0;font-size:16px;cursor:pointer;padding:0 6px;color:var(--text-muted);display:flex;align-items:center;height:100%;}
+.search-wrapper .input-group button:hover{color:var(--text);}
 .results{margin-bottom:8px;}
-.result{background:#fff;padding:8px 12px;margin-bottom:4px;border-radius:10px;cursor:pointer;border:1px solid #e2e8f0;}
+.result{background:var(--card-bg);padding:8px 12px;margin-bottom:4px;border-radius:10px;cursor:pointer;border:1px solid var(--border);color:var(--text);}
 .result-en{font-weight:600;font-size:15px;}
-.result-cn{margin-top:2px;color:#64748b;font-size:13px;}
-.no-result{padding:12px;text-align:center;color:#94a3b8;background:#fff;border-radius:10px;font-size:14px;}
-.card{background:#fff;border-radius:16px;padding:16px 12px 12px;box-shadow:0 2px 8px rgba(0,0,0,.04);text-align:center;position:relative;}
-.avatar-wrap{position:absolute;top:8px;right:8px;width:64px;height:64px;border-radius:50%;border:2px solid #e2e8f0;overflow:hidden;background:#e2e8f0;}
+.result-cn{margin-top:2px;color:var(--text-light);font-size:13px;}
+.no-result{padding:12px;text-align:center;color:var(--text-muted);background:var(--card-bg);border-radius:10px;font-size:14px;}
+.card{background:var(--card-bg);border-radius:16px;padding:16px 12px 12px;box-shadow:var(--shadow);text-align:center;position:relative;border:1px solid var(--border);}
+.avatar-wrap{position:absolute;top:8px;right:8px;width:64px;height:64px;border-radius:50%;border:2px solid var(--border);overflow:hidden;background:var(--chunk-bg);}
 #avatarCanvas{width:100%;height:100%;display:block;}
-.scene{color:#94a3b8;font-size:12px;font-weight:500;padding-right:64px;text-align:left;}
-.progress{color:#b9c2d0;font-size:11px;margin-top:1px;text-align:left;}
-.pattern-display{background:#f1f5f9;padding:4px 12px;border-radius:8px;margin:8px 0 2px;display:inline-block;}
-.pattern-display .label{font-size:10px;color:#94a3b8;}
-.pattern-display .text{font-size:18px;font-weight:700;color:#0f172a;}
-.flow-arrow{color:#94a3b8;font-size:14px;margin:2px 0;}
-.english{min-height:40px;display:flex;align-items:center;justify-content:center;padding:6px 4px;font-size:22px;font-weight:700;line-height:1.3;color:#0f172a;background:#f8fafc;border-radius:8px;margin:4px 0;}
-.chinese{min-height:28px;font-size:16px;color:#475569;padding:4px 8px;background:#f8fafc;border-radius:8px;}
-.sentence-hint{font-size:11px;color:#94a3b8;margin-top:2px;}
-.sentence-hint .highlight{color:#e94560;font-weight:600;}
-.player-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px 0 4px;}
-.ctrl-btn{background:#f1f4f9;border:0;padding:0;cursor:pointer;font-size:24px;color:#1e293b;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;touch-action:manipulation;transition:background 0.15s;}
+.scene{color:var(--text-muted);font-size:12px;font-weight:500;padding-right:64px;text-align:left;}
+.progress{color:var(--text-muted);font-size:11px;margin-top:1px;text-align:left;}
+.pattern-display{background:var(--chunk-bg);padding:4px 12px;border-radius:8px;margin:8px 0 2px;display:inline-block;}
+.pattern-display .label{font-size:10px;color:var(--text-muted);}
+.pattern-display .text{font-size:18px;font-weight:700;color:var(--text);}
+.flow-arrow{color:var(--text-muted);font-size:14px;margin:2px 0;}
+.english{min-height:40px;display:flex;align-items:center;justify-content:center;padding:6px 4px;font-size:22px;font-weight:700;line-height:1.3;color:var(--text);background:var(--bg);border-radius:8px;margin:4px 0;position:relative;}
+.english .fav-btn{position:absolute;right:8px;top:6px;background:transparent;border:0;font-size:20px;cursor:pointer;color:var(--text-muted);transition:color .2s;}
+.english .fav-btn.active{color:#f59e0b;}
+.chinese{min-height:28px;font-size:16px;color:var(--text-light);padding:4px 8px;background:var(--bg);border-radius:8px;}
+.sentence-hint{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.sentence-hint .highlight{color:var(--primary);font-weight:600;}
+.player-controls{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 4px;flex-wrap:wrap;}
+.ctrl-btn{background:var(--chunk-bg);border:0;padding:0;cursor:pointer;font-size:22px;color:var(--text);width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;touch-action:manipulation;transition:background .15s;}
 .ctrl-btn:active{transform:scale(.90);}
-.ctrl-btn.play-btn{width:56px;height:56px;font-size:30px;background:#1e293b;color:#fff;}
-.ctrl-btn.cn-btn{background:#f59e0b;color:#fff;width:40px;height:40px;font-size:20px;}
+.ctrl-btn.play-btn{width:52px;height:52px;font-size:28px;background:var(--primary);color:#fff;}
+.ctrl-btn.play-btn:hover{background:var(--primary-hover);}
+.ctrl-btn.cn-btn{background:#f59e0b;color:#fff;width:38px;height:38px;font-size:18px;}
+.speed-control{display:flex;align-items:center;gap:4px;}
+.speed-btn{background:var(--chunk-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:11px;font-weight:600;color:var(--text);cursor:pointer;transition:all .15s;}
+.speed-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
 .extra-buttons{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;justify-content:center;}
-.extra-buttons button{flex:0 1 auto;padding:4px 10px;border:0;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;background:#f1f4f9;color:#1e293b;transition:background 0.15s;}
+.extra-buttons button{flex:0 1 auto;padding:4px 10px;border:0;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;background:var(--chunk-bg);color:var(--text);transition:background .15s;}
 .extra-buttons button.active{background:#ef4444;color:#fff;}
 .extra-buttons .ai-toggle{background:#10b981;color:#fff;}
 .extra-buttons .ai-toggle:hover{background:#059669;}
@@ -55,46 +101,58 @@ body{margin:0;padding:12px 10px 28px;background:#f8fafc;font-family:-apple-syste
 .extra-buttons .mic-toggle:disabled{opacity:0.5;cursor:not-allowed;}
 .extra-buttons .reset-audio-btn{background:#ef4444;color:#fff;}
 .extra-buttons .reset-audio-btn:hover{background:#dc2626;}
-.extra-buttons .chunk-toggle-btn{background:#8b5cf6;color:#fff;}
+.extra-buttons .chunk-toggle-btn{background:var(--secondary);color:#fff;}
 .extra-buttons .chunk-toggle-btn:hover{background:#7c3aed;}
-.status{min-height:20px;margin-top:4px;color:#94a3b8;font-size:12px;}
+.status{min-height:20px;margin-top:4px;color:var(--text-muted);font-size:12px;}
 .status.speaking{color:#3b82f6;}
 .status.done{color:#22c55e;}
 .status.error{color:#ef4444;}
 .status.paused{color:#f59e0b;}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e293b;color:#fff;padding:6px 16px;border-radius:40px;opacity:0;pointer-events:none;transition:.3s;z-index:999;font-size:13px;}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:6px 16px;border-radius:40px;opacity:0;pointer-events:none;transition:.3s;z-index:999;font-size:13px;font-weight:500;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.api-settings{background:#f1f5f9;border-radius:10px;padding:4px 10px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
-.api-settings input{flex:2;min-width:60px;padding:3px 6px;border:1px solid #d1d9e6;border-radius:6px;font-size:12px;background:#fff;}
+.api-settings{background:var(--card-bg);border-radius:10px;padding:4px 10px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;border:1px solid var(--border);}
+.api-settings input{flex:2;min-width:60px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text);}
 .api-settings input#apiBaseInput{flex:1.5;}
-.api-settings button{padding:3px 10px;background:#1e293b;color:#fff;border:0;border-radius:6px;font-weight:500;cursor:pointer;font-size:12px;}
-.api-settings button.save-btn{background:#22c55e;}
-.api-status{font-size:11px;color:#64748b;margin-left:2px;}
+.api-settings button{padding:3px 10px;background:var(--text);color:var(--bg);border:0;border-radius:6px;font-weight:500;cursor:pointer;font-size:12px;}
+.api-settings button.save-btn{background:#22c55e;color:#fff;}
+.api-status{font-size:11px;color:var(--text-muted);margin-left:2px;}
 .chunk-area-wrap{overflow:hidden;max-height:0;opacity:0;transition:max-height 0.3s ease, opacity 0.2s ease;margin:0;}
 .chunk-area-wrap.open{max-height:400px;opacity:1;margin-top:8px;}
-.chunk-area{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:4px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;max-height:200px;overflow-y:auto;}
-.chunk-item{cursor:pointer;padding:3px 10px;background:#eef2f6;border-radius:14px;font-size:13px;color:#1e293b;border:1px solid transparent;transition:all 0.15s;user-select:none;}
-.chunk-item:hover{background:#dce2ea;}
-.chunk-item.active{background:#e94560;color:#fff;border-color:#e94560;}
-.chat-box{background:#f8fafc;border-radius:12px;padding:10px;margin-top:8px;max-height:280px;overflow-y:auto;text-align:left;border:1px solid #e2e8f0;display:none;}
-.chat-msg{margin:4px 0;padding:5px 10px;border-radius:10px;max-width:90%;word-break:break-word;font-size:14px;}
+.chunk-area{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:4px;background:var(--bg);border-radius:10px;border:1px solid var(--border);max-height:200px;overflow-y:auto;}
+.chunk-item{cursor:pointer;padding:3px 10px;background:var(--chunk-bg);border-radius:14px;font-size:13px;color:var(--text);border:1px solid transparent;transition:all 0.15s;user-select:none;}
+.chunk-item:hover{background:var(--chunk-hover);}
+.chunk-item.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.chunk-item.custom{background:var(--secondary);color:#fff;}
+.chunk-item.custom:hover{background:#7c3aed;}
+.chat-box{background:var(--bg);border-radius:12px;padding:10px;margin-top:8px;max-height:280px;overflow-y:auto;text-align:left;border:1px solid var(--border);display:none;}
+.chat-msg{margin:4px 0;padding:5px 10px;border-radius:10px;max-width:90%;word-break:break-word;font-size:14px;color:var(--text);}
 .chat-msg.user{background:#dbeafe;margin-left:auto;}
-.chat-msg.ai{background:#e5e7eb;margin-right:auto;}
-.chat-msg .time{font-size:10px;color:#94a3b8;margin-top:2px;}
+.chat-msg.ai{background:var(--chunk-bg);margin-right:auto;}
+.chat-msg .time{font-size:10px;color:var(--text-muted);margin-top:2px;}
 .chat-input-area{display:flex;gap:4px;margin-top:4px;display:none;}
-.chat-input-area input{flex:1;padding:6px;border:1px solid #d1d9e6;border-radius:8px;font-size:13px;outline:none;}
+.chat-input-area input{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--input-bg);color:var(--text);outline:none;}
 .chat-input-area button{padding:4px 12px;background:#10b981;color:#fff;border:0;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;}
-.admin-panel{display:none;margin-top:12px;padding:10px;background:#f1f5f9;border-radius:12px;text-align:left;}
-.admin-panel input{width:100%;padding:6px;border:1px solid #d1d9e6;border-radius:6px;margin-bottom:6px;font-size:13px;}
-.admin-panel .code-box{background:#fff;padding:6px;border-radius:6px;font-family:monospace;font-size:14px;margin:6px 0;word-break:break-all;}
-.admin-panel button{background:#1e293b;color:#fff;border:0;padding:6px;border-radius:6px;cursor:pointer;font-size:13px;}
-@media(max-width:480px){.english{font-size:18px;}.chunk-item{font-size:12px;padding:2px 8px;}.ctrl-btn{width:34px;height:34px;font-size:20px;}.ctrl-btn.play-btn{width:48px;height:48px;font-size:26px;}.ctrl-btn.cn-btn{width:34px;height:34px;font-size:18px;}.pattern-display .text{font-size:16px;}.avatar-wrap{width:52px;height:52px;top:4px;right:4px;}.pattern-selector select{font-size:12px;padding:2px 6px;min-width:70px;}.extra-buttons button{font-size:11px;padding:3px 8px;}}
+.admin-panel{display:none;margin-top:12px;padding:10px;background:var(--card-bg);border-radius:12px;border:1px solid var(--border);text-align:left;}
+.admin-panel input{width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:13px;background:var(--input-bg);color:var(--text);}
+.admin-panel .code-box{background:var(--bg);padding:6px;border-radius:6px;font-family:monospace;font-size:14px;margin:6px 0;word-break:break-all;color:var(--text);}
+.admin-panel button{background:var(--text);color:var(--bg);border:0;padding:6px;border-radius:6px;cursor:pointer;font-size:13px;}
+@media(max-width:480px){.english{font-size:18px;}.chunk-item{font-size:12px;padding:2px 8px;}.ctrl-btn{width:34px;height:34px;font-size:18px;}.ctrl-btn.play-btn{width:46px;height:46px;font-size:24px;}.ctrl-btn.cn-btn{width:34px;height:34px;font-size:16px;}.pattern-display .text{font-size:16px;}.avatar-wrap{width:52px;height:52px;top:4px;right:4px;}.pattern-selector select{font-size:12px;padding:2px 6px;min-width:70px;}.extra-buttons button{font-size:11px;padding:3px 8px;}.header-left h1{font-size:20px;}.header-left p{font-size:11px;}.speed-btn{font-size:10px;padding:1px 5px;}}
 </style>
 </head>
 <body>
 <div id="toast" class="toast"></div>
 <div class="container">
-<div class="header"><h1>🧩 Listen & Speak</h1><p>极简 · 词块可隐藏</p></div>
+<!-- 头部：标题 + 主题切换 + 收藏 -->
+<div class="header">
+  <div class="header-left">
+    <h1>🧩 Listen & Speak</h1>
+    <p>极简</p>
+  </div>
+  <div class="header-right">
+    <button class="theme-btn" id="themeToggle" title="切换主题">🌙</button>
+    <button class="fav-count" id="favCountBtn" title="查看收藏">⭐ 0</button>
+  </div>
+</div>
 
 <!-- API 设置 -->
 <div class="api-settings">
@@ -104,11 +162,16 @@ body{margin:0;padding:12px 10px 28px;background:#f8fafc;font-family:-apple-syste
   <span class="api-status" id="apiStatus">未设置</span>
 </div>
 
-<!-- 母句选择器 -->
+<!-- 母句选择器 + 自定义词块 -->
 <div class="pattern-selector">
   <label>📌 母句</label>
   <select id="patternSelect"></select>
   <span class="badge" id="chunkCount">0</span>
+</div>
+<div class="custom-chunk">
+  <input id="customChunkEn" placeholder="英文词块 (e.g. run fast)" style="flex:1;">
+  <input id="customChunkCn" placeholder="中文释义 (e.g. 快跑)" style="flex:0.8;">
+  <button onclick="addCustomChunk()">➕</button>
 </div>
 
 <!-- 搜索 -->
@@ -134,15 +197,23 @@ body{margin:0;padding:12px 10px 28px;background:#f8fafc;font-family:-apple-syste
 
   <div class="flow-arrow">▼ 当前整句</div>
 
-  <div class="english"><span id="english">I want to eat.</span></div>
+  <div class="english" id="englishContainer">
+    <span id="english">I want to eat.</span>
+    <button class="fav-btn" id="favBtn" onclick="toggleFav()">☆</button>
+  </div>
   <div class="chinese" id="chinese">我想吃饭。</div>
-  <div class="sentence-hint" id="sentenceHint">💡 点击 ➡️ ⬅️ 切换词块</div>
+  <div class="sentence-hint" id="sentenceHint">💡 点击 ⬅️ ➡️ 切换词块</div>
 
   <div class="player-controls">
     <button class="ctrl-btn" onclick="prevChunk()">⏮</button>
     <button id="playPauseBtn" class="ctrl-btn play-btn" onclick="togglePlayPause()">▶</button>
     <button class="ctrl-btn cn-btn" onclick="playChinese()">🔊中</button>
     <button class="ctrl-btn" onclick="nextChunk()">⏭</button>
+    <div class="speed-control">
+      <button class="speed-btn" data-speed="0.7" onclick="setSpeed(0.7)">0.7×</button>
+      <button class="speed-btn active" data-speed="1.0" onclick="setSpeed(1.0)">1.0×</button>
+      <button class="speed-btn" data-speed="1.3" onclick="setSpeed(1.3)">1.3×</button>
+    </div>
   </div>
 
   <div class="extra-buttons">
@@ -167,12 +238,12 @@ body{margin:0;padding:12px 10px 28px;background:#f8fafc;font-family:-apple-syste
   </div>
   <div id="status" class="status">Ready</div>
 </div>
-<div style="text-align:center;margin-top:6px;font-size:11px;color:#b9c2d0;">← 上一词块 · 下一词块 →</div>
+<div style="text-align:center;margin-top:6px;font-size:11px;color:var(--text-muted);">← 上一词块 · 下一词块 →</div>
 </div>
 
 <script>
 // ========================================================================
-// 1. 核心数据（与之前相同，保证 2500+ 组合）
+// 1. 核心数据（母句 + 词块池）
 // ========================================================================
 const chunkPool = [
   { en: "eat", cn: "吃饭" }, { en: "drink", cn: "喝" }, { en: "sleep", cn: "睡觉" },
@@ -218,7 +289,7 @@ const chunkPool = [
   { en: "take a plane", cn: "坐飞机" }, { en: "buy a ticket", cn: "买票" }, { en: "pack a bag", cn: "收拾行李" },
   { en: "check in", cn: "办理入住" }, { en: "check out", cn: "退房" }, { en: "ask for directions", cn: "问路" },
   { en: "take photos", cn: "拍照" }, { en: "enjoy the view", cn: "欣赏风景" },
-  // 机场、海关、厨房等新增词块
+  // 机场、海关、厨房等
   { en: "go to the airport", cn: "去机场" }, { en: "check in at the airport", cn: "机场值机" },
   { en: "show my passport", cn: "出示护照" }, { en: "show my boarding pass", cn: "出示登机牌" },
   { en: "go through security", cn: "过安检" }, { en: "go through customs", cn: "过海关" },
@@ -292,6 +363,20 @@ const patternList = [
   { id: 29, pattern: "Do you want me to...?", cnPrefix: "你想让我", start: 0, count: 50 },
 ];
 
+// 自定义词块存储
+let customChunks = JSON.parse(localStorage.getItem('customChunks')) || {}; // { patternId: [ {en, cn}, ... ] }
+
+function getChunksForPattern(patternId) {
+  const p = patternList[patternId];
+  const end = Math.min(p.start + p.count, chunkPool.length);
+  const base = [];
+  for (let i = p.start; i < end; i++) {
+    base.push({ index: i, ...chunkPool[i], custom: false });
+  }
+  const custom = (customChunks[patternId] || []).map((c, idx) => ({ ...c, custom: true, index: 1000 + idx }));
+  return [...base, ...custom];
+}
+
 function buildAllLessons() {
   const result = [];
   patternList.forEach((p) => {
@@ -308,9 +393,27 @@ function buildAllLessons() {
         chunkEn: chunk.en,
         chunkCn: chunk.cn,
         patternId: p.id,
-        chunkIndex: i
+        chunkIndex: i,
+        custom: false
       });
     }
+    // 自定义词块也加入 lessons
+    const customs = customChunks[p.id] || [];
+    customs.forEach((c) => {
+      const fullEn = p.pattern.replace(/\.{3}/g, c.en);
+      const fullCn = p.cnPrefix + c.cn;
+      result.push({
+        id: result.length + 1,
+        pattern: p.pattern,
+        en: fullEn,
+        cn: fullCn,
+        chunkEn: c.en,
+        chunkCn: c.cn,
+        patternId: p.id,
+        chunkIndex: 1000 + result.length,
+        custom: true
+      });
+    });
   });
   return result;
 }
@@ -327,6 +430,7 @@ const dom = {
   chunkAreaWrap: document.getElementById("chunkAreaWrap"),
   chunkToggleBtn: document.getElementById("chunkToggleBtn"),
   english: document.getElementById("english"),
+  englishContainer: document.getElementById("englishContainer"),
   chinese: document.getElementById("chinese"),
   sentenceHint: document.getElementById("sentenceHint"),
   status: document.getElementById("status"),
@@ -340,7 +444,10 @@ const dom = {
   chatInput: document.getElementById("chatInput"),
   aiToggle: document.getElementById("aiToggle"),
   patternSelect: document.getElementById("patternSelect"),
-  chunkCount: document.getElementById("chunkCount")
+  chunkCount: document.getElementById("chunkCount"),
+  favBtn: document.getElementById("favBtn"),
+  favCountBtn: document.getElementById("favCountBtn"),
+  themeToggle: document.getElementById("themeToggle"),
 };
 let toastTimer;
 function showToast(t) {
@@ -351,7 +458,122 @@ function showToast(t) {
 }
 
 // ========================================================================
-// 3. 人像绘制（精简）
+// 3. 主题切换
+// ========================================================================
+let currentTheme = localStorage.getItem('theme') || 'light';
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  dom.themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+  localStorage.setItem('theme', theme);
+}
+function toggleTheme() {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  applyTheme(currentTheme);
+}
+dom.themeToggle.addEventListener('click', toggleTheme);
+applyTheme(currentTheme);
+
+// ========================================================================
+// 4. 收藏功能
+// ========================================================================
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+function updateFavUI() {
+  dom.favCountBtn.textContent = '⭐ ' + favorites.length;
+  const currentText = dom.english.textContent;
+  const isFav = favorites.some(f => f.en === currentText);
+  dom.favBtn.textContent = isFav ? '★' : '☆';
+  dom.favBtn.classList.toggle('active', isFav);
+}
+function toggleFav() {
+  const en = dom.english.textContent;
+  const cn = dom.chinese.textContent;
+  const chunkEn = getCurrentChunkEn();
+  const pattern = patternList[currentPatternId].pattern;
+  const idx = favorites.findIndex(f => f.en === en);
+  if (idx >= 0) {
+    favorites.splice(idx, 1);
+    showToast('已取消收藏');
+  } else {
+    favorites.push({ en, cn, chunkEn, pattern, patternId: currentPatternId });
+    showToast('⭐ 已收藏');
+  }
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+  updateFavUI();
+}
+function getCurrentChunkEn() {
+  const active = dom.chunkArea.querySelector('.chunk-item.active');
+  return active ? active.dataset.en : '';
+}
+// 查看收藏列表
+dom.favCountBtn.addEventListener('click', function() {
+  if (favorites.length === 0) { showToast('暂无收藏'); return; }
+  dom.results.innerHTML = '<div style="text-align:center;font-weight:600;margin:4px 0;">⭐ 收藏列表</div>';
+  favorites.slice().reverse().forEach((f, idx) => {
+    const box = document.createElement('div');
+    box.className = 'result';
+    box.innerHTML = `<div class="result-en">${f.en}</div><div class="result-cn">${f.cn}</div>`;
+    box.onclick = function() {
+      // 切换到对应母句并播放
+      const pid = f.patternId || 0;
+      dom.patternSelect.value = pid;
+      loadPattern(pid);
+      // 找到对应的词块
+      setTimeout(() => {
+        const items = dom.chunkArea.querySelectorAll('.chunk-item');
+        let target = null;
+        items.forEach(el => {
+          if (el.dataset.en === f.chunkEn) target = el;
+        });
+        if (target) playChunk(target);
+        else showToast('词块已不存在');
+      }, 200);
+      dom.results.innerHTML = '';
+    };
+    dom.results.appendChild(box);
+  });
+});
+
+// ========================================================================
+// 5. 播放速度
+// ========================================================================
+let speechRate = 1.0;
+function setSpeed(rate) {
+  speechRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.classList.toggle('active', parseFloat(btn.dataset.speed) === rate);
+  });
+  localStorage.setItem('speechRate', rate);
+}
+// 加载保存的速度
+const savedRate = parseFloat(localStorage.getItem('speechRate')) || 1.0;
+setSpeed(savedRate);
+
+// ========================================================================
+// 6. 自定义词块
+// ========================================================================
+function addCustomChunk() {
+  const enInput = document.getElementById('customChunkEn');
+  const cnInput = document.getElementById('customChunkCn');
+  const en = enInput.value.trim();
+  const cn = cnInput.value.trim();
+  if (!en || !cn) { showToast('请输入英文和中文'); return; }
+  const pid = currentPatternId;
+  if (!customChunks[pid]) customChunks[pid] = [];
+  // 检查是否已存在
+  if (customChunks[pid].some(c => c.en === en)) { showToast('该词块已存在'); return; }
+  customChunks[pid].push({ en, cn });
+  localStorage.setItem('customChunks', JSON.stringify(customChunks));
+  enInput.value = '';
+  cnInput.value = '';
+  // 重新加载
+  lessons = buildAllLessons();
+  loadPattern(pid);
+  showToast('✅ 已添加自定义词块');
+}
+
+// ========================================================================
+// 7. 人像绘制（精简）
 // ========================================================================
 const canvas = document.getElementById('avatarCanvas');
 const ctx = canvas.getContext('2d');
@@ -424,7 +646,7 @@ function stopSpeakingMouth(){
 }
 
 // ========================================================================
-// 4. 语音引擎（彻底修复卡顿）
+// 8. 语音引擎
 // ========================================================================
 let currentPatternId=0, currentChunkIndex=0;
 let isSpeaking=false, currentUtterance=null, playQueue=[], isProcessingQueue=false;
@@ -462,7 +684,10 @@ function speakNative(text,cb){
 
   function doSpeak(){
     const utterance=new SpeechSynthesisUtterance(text);
-    utterance.lang='en-US';utterance.rate=0.7;utterance.pitch=1.0;utterance.volume=1.0;
+    utterance.lang='en-US';
+    utterance.rate=speechRate; // 使用当前速度
+    utterance.pitch=1.0;
+    utterance.volume=1.0;
     const preferred=voices.find(v=>/Google UK|David|Zira|Samantha|Alex|Veena/i.test(v.name))||
       voices.find(v=>v.lang&&v.lang.startsWith('en'));
     if(preferred)utterance.voice=preferred;
@@ -528,16 +753,8 @@ function speakText(text,cb){
 }
 
 // ========================================================================
-// 5. 核心交互
+// 9. 核心交互
 // ========================================================================
-function getChunksForPattern(patternId){
-  const p=patternList[patternId];
-  const end=Math.min(p.start+p.count, chunkPool.length);
-  const chunks=[];
-  for(let i=p.start;i<end;i++){chunks.push({index:i,...chunkPool[i]});}
-  return chunks;
-}
-
 function loadPattern(patternId){
   currentPatternId=patternId;
   currentChunkIndex=0;
@@ -548,15 +765,15 @@ function loadPattern(patternId){
   dom.chunkCount.textContent=chunks.length;
   dom.scene.textContent='日常表达 · '+p.cnPrefix;
 
-  // 渲染词块列表（即使隐藏也更新）
   dom.chunkArea.innerHTML='';
   chunks.forEach((chunk,idx)=>{
     const span=document.createElement('span');
-    span.className='chunk-item';
+    span.className='chunk-item' + (chunk.custom ? ' custom' : '');
     span.textContent=chunk.en;
     span.dataset.index=idx;
     span.dataset.en=chunk.en;
     span.dataset.cn=chunk.cn;
+    span.dataset.custom=chunk.custom ? 'true' : 'false';
     span.onclick=function(e){e.stopPropagation();playChunk(this);};
     dom.chunkArea.appendChild(span);
   });
@@ -564,6 +781,7 @@ function loadPattern(patternId){
   const first=dom.chunkArea.querySelector('.chunk-item');
   if(first){setTimeout(()=>playChunk(first),50);}
   dom.progress.textContent='总句数: '+lessons.length+' · 当前母句: '+chunks.length+' 词块';
+  updateFavUI();
 }
 
 let playDebounceTimer=null;
@@ -595,6 +813,7 @@ function playChunk(el){
 
     dom.status.textContent='🔊 整句朗读: '+fullEn;
     dom.status.className='status speaking';
+    updateFavUI();
     speakText(fullEn,function(success){
       if(!success){
         dom.status.textContent="⚠️ 播放失败，重试...";
@@ -662,30 +881,101 @@ function togglePlayPause(){
   }
 }
 
-function toggleRepeat(){ /* 与之前相同，略 */ }
-function doRepeat(){ /* 与之前相同，略 */ }
-function playChinese(){ /* 与之前相同，略 */ }
-function resetAudio(){ /* 与之前相同，略 */ }
-
-// ========================================================================
-// 6. 折叠词块列表
-// ========================================================================
-let chunkListOpen = false;
-function toggleChunkList() {
-  chunkListOpen = !chunkListOpen;
-  const wrap = dom.chunkAreaWrap;
-  const btn = dom.chunkToggleBtn;
-  if (chunkListOpen) {
-    wrap.classList.add('open');
-    btn.textContent = '📋 隐藏词块';
-  } else {
-    wrap.classList.remove('open');
-    btn.textContent = '📋 词块';
+function toggleRepeat(){
+  if(isRepeating){
+    isRepeating=false;clearTimeout(repeatTimer);
+    if(isSpeaking||isPlayingLock){
+      try{window.speechSynthesis.cancel();}catch(e){}
+      isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
+      stopSpeakingMouth();
+    }
+    dom.repeatBtn.textContent="🔁 Repeat";dom.repeatBtn.classList.remove("active");
+    dom.status.textContent="⏸ Repeat stopped";dom.status.className="status paused";
+    return;
   }
+  isRepeating=true;repeatCount=0;
+  dom.repeatBtn.textContent="⏹ Stop Repeat";dom.repeatBtn.classList.add("active");
+  doRepeat();
+}
+
+function doRepeat(){
+  if(!isRepeating)return;
+  repeatCount++;
+  dom.status.textContent='🔁 Repeat '+repeatCount+'/'+REPEAT_TIMES;
+  dom.status.className="status";
+  const text=dom.english.textContent;
+  if(!text||text==='I want to eat.'){stopSpeech();return;}
+  if(isSpeaking||isPlayingLock){
+    try{window.speechSynthesis.cancel();}catch(e){}
+    isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
+    stopSpeakingMouth();
+  }
+  setTimeout(()=>{
+    speakText(text,function(success){
+      if(!isRepeating)return;
+      if(!success){
+        isRepeating=false;dom.repeatBtn.textContent="🔁 Repeat";dom.repeatBtn.classList.remove("active");
+        dom.status.textContent="⚠️ Repeat interrupted";dom.status.className="status error";
+        return;
+      }
+      if(repeatCount>=REPEAT_TIMES){
+        isRepeating=false;dom.repeatBtn.textContent="🔁 Repeat";dom.repeatBtn.classList.remove("active");
+        dom.status.textContent="✅ Repeat done";dom.status.className="status done";
+        return;
+      }
+      repeatTimer=setTimeout(doRepeat,400);
+    });
+  },200);
+}
+
+function playChinese(){
+  const text=dom.chinese.textContent;
+  if(!text)return;
+  if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){
+    dom.status.textContent="⚠️ 浏览器不支持 TTS";dom.status.className="status error";
+    return;
+  }
+  if(isSpeaking||isPlayingLock){
+    try{window.speechSynthesis.cancel();}catch(e){}
+    isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
+    stopSpeakingMouth();
+  }
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang='zh-CN';utterance.rate=0.8;utterance.pitch=1;utterance.volume=1;
+  try{
+    window.speechSynthesis.speak(utterance);
+    dom.status.textContent="🔊 中文朗读...";dom.status.className="status speaking";
+    utterance.onend=function(){dom.status.textContent="✅ 中文朗读完成";dom.status.className="status done";};
+    utterance.onerror=function(){dom.status.textContent="⚠️ 中文朗读失败";dom.status.className="status error";};
+  }catch(e){dom.status.textContent="⚠️ 播放错误";dom.status.className="status error";}
+}
+
+function resetAudio(){
+  try{
+    if(isSpeaking||isPlayingLock){
+      window.speechSynthesis.cancel();
+      isSpeaking=false;currentUtterance=null;dom.playPauseBtn.textContent="▶";dom.playPauseBtn.classList.remove("paused");
+      stopSpeakingMouth();
+    }
+    window.speechSynthesis.getVoices();
+    showToast('🔄 音频已重置');
+    dom.status.textContent="✅ 音频已重置";
+    dom.status.className="status done";
+  }catch(e){showToast('⚠️ 重置失败');}
+}
+
+// 折叠词块列表
+let chunkListOpen = false;
+function toggleChunkList(){
+  chunkListOpen=!chunkListOpen;
+  const wrap=dom.chunkAreaWrap;
+  const btn=dom.chunkToggleBtn;
+  if(chunkListOpen){wrap.classList.add('open');btn.textContent='📋 隐藏词块';}
+  else{wrap.classList.remove('open');btn.textContent='📋 词块';}
 }
 
 // ========================================================================
-// 7. 母句选择器、搜索、AI对话等（精简）
+// 10. 母句选择器、搜索等
 // ========================================================================
 function populatePatternSelect(){
   const select=dom.patternSelect;
@@ -709,10 +999,48 @@ function populatePatternSelect(){
   loadPattern(0);
 }
 
-function searchSentence(){ /* 与之前相同，略 */ }
-function populateSceneSelect(){ /* 无场景选择，简化 */ }
+function searchSentence(){
+  const keyword=dom.searchInput.value.trim().toLowerCase();
+  dom.results.innerHTML="";
+  if(!keyword){showToast("输入关键词搜索");return;}
+  const matches=lessons.filter(item=>
+    (item.en&&item.en.toLowerCase().includes(keyword))||
+    (item.cn&&item.cn.includes(keyword))
+  );
+  if(matches.length===0){
+    dom.results.innerHTML='<div class="no-result">🔍 未找到匹配句子</div>';
+    return;
+  }
+  matches.slice(0,30).forEach(function(item){
+    const box=document.createElement("div");
+    box.className="result";
+    box.innerHTML='<div class="result-en">'+item.en+'</div><div class="result-cn">'+item.cn+'</div>';
+    box.onclick=function(){
+      const pid=item.patternId;
+      const p=patternList[pid];
+      const chunks=getChunksForPattern(pid);
+      let targetIdx=0;
+      chunks.forEach((ch,idx)=>{
+        const full=p.pattern.replace(/\.{3}/g,ch.en);
+        if(full===item.en)targetIdx=idx;
+      });
+      dom.patternSelect.value=pid;
+      loadPattern(pid);
+      setTimeout(()=>{
+        const items=dom.chunkArea.querySelectorAll('.chunk-item');
+        if(items[targetIdx])playChunk(items[targetIdx]);
+      },200);
+      dom.results.innerHTML="";
+      dom.searchInput.value="";
+      showToast("跳转到句子");
+    };
+    dom.results.appendChild(box);
+  });
+}
 
-// AI对话（保留）
+// ========================================================================
+// 11. AI 对话（保留）
+// ========================================================================
 let chatMode=false, isListening=false;
 let apiKey=localStorage.getItem('ai_api_key')||'';
 let apiBase=localStorage.getItem('ai_api_base')||'https://api.deepseek.com/v1';
@@ -829,7 +1157,8 @@ if(window.speechSynthesis){
   window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
   document.addEventListener('click',function(){if(window.speechSynthesis&&window.speechSynthesis.getVoices().length===0){window.speechSynthesis.getVoices();}},{once:true});
 }
-console.log('✅ 极简版加载完成，总句数:',lessons.length);
+updateFavUI();
+console.log('✅ 升级版加载完成，总句数:',lessons.length);
 </script>
 </body>
 </html>
