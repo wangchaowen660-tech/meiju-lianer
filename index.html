@@ -1,1355 +1,1543 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中英双语 · 母句语块组合 1600句</title>
-    <style>
-        /* ===== 全局 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', 'PingFang SC', Roboto, system-ui, sans-serif;
-            background: #f2f6fa;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .app {
-            max-width: 820px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(6px);
-            border-radius: 40px;
-            padding: 28px 30px 34px;
-            box-shadow: 0 20px 50px -8px rgba(0, 20, 40, 0.20), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #0b1e2e;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .header h1 small {
-            font-size: 15px;
-            font-weight: 400;
-            color: #4f6b84;
-        }
-        .badge {
-            background: rgba(45, 75, 101, 0.10);
-            padding: 4px 16px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a2e3f;
-            border: 1px solid rgba(45, 75, 101, 0.08);
-        }
-
-        .category-select {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 18px;
-        }
-        .cat-btn {
-            padding: 6px 16px;
-            border: none;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.6);
-            color: #2d4b65;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid rgba(45, 75, 101, 0.08);
-        }
-        .cat-btn:hover {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: rgba(45, 75, 101, 0.2);
-        }
-        .cat-btn.active {
-            background: #1a2e3f;
-            color: #fff;
-            border-color: #1a2e3f;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.70);
-            border-radius: 28px;
-            padding: 24px 26px 22px;
-            margin: 6px 0 12px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
-        }
-        .sentence-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 6px 0;
-        }
-        .sentence-row .label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #6a7f94;
-            min-width: 38px;
-            padding-top: 2px;
-        }
-        .sentence-row .text {
-            flex: 1;
-            font-size: 22px;
-            font-weight: 500;
-            color: #0b1e2e;
-            line-height: 1.5;
-            word-break: break-word;
-        }
-        .sentence-row .text.zh {
-            font-size: 20px;
-            font-weight: 450;
-            color: #1f3a4e;
-        }
-        .sentence-row .speak-btn {
-            flex-shrink: 0;
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(59, 130, 246, 0.08);
-            color: #1a2e3f;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .sentence-row .speak-btn.zh-btn {
-            background: rgba(234, 88, 12, 0.08);
-        }
-        .sentence-row .speak-btn:hover {
-            background: rgba(59, 130, 246, 0.18);
-            transform: scale(1.05);
-        }
-        .sentence-row .speak-btn.zh-btn:hover {
-            background: rgba(234, 88, 12, 0.18);
-        }
-        .sentence-row .speak-btn.speaking {
-            background: #3b82f6;
-            color: #fff;
-            box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.12);
-            animation: pulse 1s infinite;
-        }
-        .sentence-row .speak-btn.zh-btn.speaking {
-            background: #ea580c;
-            box-shadow: 0 0 0 6px rgba(234, 88, 12, 0.12);
-            animation-name: pulse-orange;
-        }
-        @keyframes pulse {
-            0%,
-            100% {
-                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.10);
-            }
-            50% {
-                box-shadow: 0 0 0 12px rgba(59, 130, 246, 0.02);
-            }
-        }
-        @keyframes pulse-orange {
-            0%,
-            100% {
-                box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.10);
-            }
-            50% {
-                box-shadow: 0 0 0 12px rgba(234, 88, 12, 0.02);
-            }
-        }
-        .divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(45, 75, 101, 0.08), transparent);
-            margin: 8px 0;
-        }
-
-        .structure {
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px dashed rgba(45, 75, 101, 0.10);
-        }
-        .structure .row-item {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin: 4px 0;
-            font-size: 15px;
-            color: #1f3a4e;
-            flex-wrap: wrap;
-        }
-        .structure .row-item .tag {
-            font-weight: 600;
-            color: #4f6b84;
-            min-width: 60px;
-            font-size: 13px;
-        }
-        .structure .row-item .pattern {
-            background: rgba(59, 130, 246, 0.06);
-            padding: 2px 12px;
-            border-radius: 16px;
-            font-weight: 500;
-            color: #1a2e3f;
-        }
-        .structure .chunk-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 4px;
-        }
-        .structure .chunk-list .chunk {
-            background: rgba(45, 75, 101, 0.06);
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-size: 15px;
-            font-weight: 500;
-            color: #1a2e3f;
-            border: 1px solid rgba(45, 75, 101, 0.06);
-        }
-        .structure .replacements {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px 14px;
-            margin-top: 4px;
-        }
-        .structure .replacements .rep-item {
-            background: rgba(34, 197, 94, 0.06);
-            padding: 2px 12px;
-            border-radius: 16px;
-            font-size: 15px;
-            color: #0b1e2e;
-        }
-        .structure .dialogue-box {
-            background: rgba(255, 255, 255, 0.5);
-            padding: 10px 16px;
-            border-radius: 16px;
-            margin-top: 6px;
-            border-left: 4px solid #3b82f6;
-            font-size: 16px;
-            color: #1a2e3f;
-            line-height: 1.6;
-        }
-
-        .controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 14px;
-        }
-        .ctrl-btn {
-            width: 50px;
-            height: 50px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.7);
-            color: #1a2e3f;
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid rgba(45, 75, 101, 0.06);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .ctrl-btn:hover {
-            background: rgba(255, 255, 255, 0.95);
-            border-color: rgba(45, 75, 101, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 20, 40, 0.06);
-        }
-        .ctrl-btn:active {
-            transform: scale(0.94);
-        }
-        .ctrl-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-        .ctrl-btn.loop {
-            font-size: 16px;
-            width: 46px;
-            height: 46px;
-        }
-        .ctrl-btn.loop.active {
-            background: rgba(59, 130, 246, 0.12);
-            border-color: #3b82f6;
-            color: #3b82f6;
-        }
-        .ctrl-btn.loop.active-single {
-            background: rgba(234, 88, 12, 0.12);
-            border-color: #ea580c;
-            color: #ea580c;
-        }
-
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 14px;
-            font-size: 14px;
-            color: #4f6b84;
-            padding: 0 4px;
-        }
-        .footer .counter {
-            font-weight: 500;
-        }
-        .footer .status {
-            opacity: 0.7;
-        }
-
-        @media (max-width: 600px) {
-            .app {
-                padding: 20px 16px 24px;
-            }
-            .header h1 {
-                font-size: 20px;
-            }
-            .header h1 small {
-                font-size: 13px;
-            }
-            .sentence-row .text {
-                font-size: 19px;
-            }
-            .sentence-row .text.zh {
-                font-size: 18px;
-            }
-            .sentence-row .speak-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
-            }
-            .ctrl-btn {
-                width: 44px;
-                height: 44px;
-                font-size: 18px;
-            }
-            .ctrl-btn.loop {
-                width: 40px;
-                height: 40px;
-                font-size: 14px;
-            }
-        }
-        @media (max-width: 420px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .sentence-row .text {
-                font-size: 17px;
-            }
-            .sentence-row .text.zh {
-                font-size: 16px;
-            }
-        }
-        .fade-in {
-            animation: fadeIn 0.2s ease-out;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧩 对讲机 · 母句词块 1600+</title>
+<style>
+:root {
+  --bg: #f8fafc; --card-bg: #ffffff; --text: #1e293b; --text-light: #475569; --text-muted: #94a3b8;
+  --border: #e2e8f0; --input-bg: #ffffff; --shadow: 0 2px 8px rgba(0,0,0,0.04);
+  --chunk-bg: #eef2f6; --chunk-hover: #dce2ea; --primary: #e94560; --primary-hover: #c73a54;
+  --secondary: #8b5cf6; --hd-color: #22c55e; --mode-bg: #e2e8f0; --q-bg: #dbeafe; --a-bg: #e5e7eb;
+}
+[data-theme="dark"] {
+  --bg: #0f172a; --card-bg: #1e293b; --text: #e2e8f0; --text-light: #cbd5e1; --text-muted: #94a3b8;
+  --border: #334155; --input-bg: #1e293b; --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  --chunk-bg: #2d3748; --chunk-hover: #4a5568; --primary: #f87171; --primary-hover: #ef4444;
+  --secondary: #a78bfa; --hd-color: #34d399; --mode-bg: #334155; --q-bg: #1e3a5f; --a-bg: #2d3748;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{margin:0;padding:12px 10px 28px;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text);min-height:100vh;transition:background .2s;}
+.container{max-width:500px;width:100%;margin:0 auto;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:4px 0 8px;}
+.header-left{display:flex;align-items:center;gap:8px;}
+.header-left h1{margin:0;font-size:24px;font-weight:700;color:var(--text);}
+.header-left p{margin:0;color:var(--text-muted);font-size:13px;background:var(--chunk-bg);padding:2px 12px;border-radius:30px;}
+.header-right{display:flex;align-items:center;gap:6px;}
+.theme-btn{background:transparent;border:0;font-size:22px;cursor:pointer;padding:0 4px;color:var(--text);}
+.fav-count{cursor:pointer;background:var(--primary);color:#fff;padding:0 10px;border-radius:20px;font-size:13px;font-weight:600;line-height:24px;display:flex;align-items:center;gap:4px;border:0;transition:background .2s;}
+.fav-count:hover{background:var(--primary-hover);}
+.mode-selector{background:var(--card-bg);border-radius:12px;padding:4px 8px;margin-bottom:8px;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.mode-selector label{font-weight:600;font-size:13px;color:var(--text);}
+.mode-selector .mode-btn{flex:1;padding:4px 0;border:0;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:var(--mode-bg);color:var(--text);transition:all .2s;}
+.mode-selector .mode-btn.active{background:var(--primary);color:#fff;}
+.pattern-selector{background:var(--card-bg);border-radius:12px;padding:6px 10px;margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;box-shadow:var(--shadow);border:1px solid var(--border);}
+.pattern-selector label{font-weight:600;font-size:13px;color:var(--text);white-space:nowrap;}
+.pattern-selector select{flex:1;min-width:100px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--input-bg);color:var(--text);outline:none;cursor:pointer;}
+.pattern-selector .badge{background:var(--primary);color:#fff;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.custom-chunk{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+.custom-chunk input{flex:1;min-width:60px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text);}
+.custom-chunk button{padding:3px 10px;background:var(--secondary);color:#fff;border:0;border-radius:6px;font-size:12px;cursor:pointer;font-weight:500;}
+.custom-chunk button:hover{opacity:.85;}
+.search-wrapper{display:flex;gap:4px;margin-bottom:8px;}
+.search-wrapper .input-group{flex:1;display:flex;align-items:center;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:0 4px;height:34px;}
+.search-wrapper .input-group:focus-within{border-color:var(--primary);}
+.search-wrapper .input-group input{flex:1;border:0;outline:none;font-size:13px;padding:0 4px;background:transparent;color:var(--text);height:100%;}
+.search-wrapper .input-group button{background:transparent;border:0;font-size:16px;cursor:pointer;padding:0 6px;color:var(--text-muted);display:flex;align-items:center;height:100%;}
+.search-wrapper .input-group button:hover{color:var(--text);}
+.results{margin-bottom:8px;}
+.result{background:var(--card-bg);padding:8px 12px;margin-bottom:4px;border-radius:10px;cursor:pointer;border:1px solid var(--border);color:var(--text);}
+.result-en{font-weight:600;font-size:15px;}
+.result-cn{margin-top:2px;color:var(--text-light);font-size:13px;}
+.no-result{padding:12px;text-align:center;color:var(--text-muted);background:var(--card-bg);border-radius:10px;font-size:14px;}
+.card{background:var(--card-bg);border-radius:16px;padding:16px 12px 12px;box-shadow:var(--shadow);text-align:center;position:relative;border:1px solid var(--border);}
+.avatar-wrap{position:absolute;top:8px;right:8px;width:64px;height:64px;border-radius:50%;border:2px solid var(--border);overflow:hidden;background:var(--chunk-bg);}
+#avatarCanvas{width:100%;height:100%;display:block;}
+.scene{color:var(--text-muted);font-size:12px;font-weight:500;padding-right:64px;text-align:left;}
+.progress{color:var(--text-muted);font-size:11px;margin-top:1px;text-align:left;}
+.pattern-display{background:var(--chunk-bg);padding:4px 12px;border-radius:8px;margin:8px 0 2px;display:inline-block;}
+.pattern-display .label{font-size:10px;color:var(--text-muted);}
+.pattern-display .text{font-size:18px;font-weight:700;color:var(--text);}
+.dialog-area{margin:8px 0;max-height:320px;overflow-y:auto;}
+.dialog-item{display:flex;flex-direction:column;margin-bottom:8px;border-radius:12px;padding:8px 12px;background:var(--bg);border-left:3px solid var(--primary);}
+.dialog-item .q-row{display:flex;align-items:center;gap:6px;margin-bottom:3px;}
+.dialog-item .q-label{font-weight:700;font-size:13px;color:var(--primary);}
+.dialog-item .q-text{font-weight:600;font-size:15px;color:var(--text);flex:1;}
+.dialog-item .a-row{display:flex;align-items:center;gap:6px;margin-top:2px;padding-left:16px;border-left:2px solid var(--border);}
+.dialog-item .a-label{font-weight:700;font-size:13px;color:var(--secondary);}
+.dialog-item .a-text{font-size:15px;color:var(--text-light);flex:1;}
+.dialog-item .cn-text{font-size:13px;color:var(--text-muted);margin-top:4px;padding-left:16px;}
+.dialog-item .play-btns{display:flex;gap:4px;flex-shrink:0;}
+.dialog-item .play-btns button{background:transparent;border:0;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 2px;}
+.dialog-item .play-btns button:hover{color:var(--text);}
+.dialog-controls{display:flex;gap:6px;justify-content:center;margin-top:4px;flex-wrap:wrap;}
+.dialog-controls button{background:var(--chunk-bg);border:0;border-radius:8px;padding:4px 12px;font-size:12px;cursor:pointer;color:var(--text);}
+.dialog-controls button:hover{background:var(--chunk-hover);}
+.dialog-controls .play-all{background:var(--primary);color:#fff;}
+.dialog-controls .play-all:hover{background:var(--primary-hover);}
+.dialog-controls .ai-gen{background:var(--secondary);color:#fff;}
+.dialog-controls .ai-gen:hover{background:#7c3aed;}
+.dialog-controls .auto-play{background:var(--hd-color);color:#fff;}
+.dialog-controls .auto-play.active{background:#ef4444;}
+.flow-arrow{color:var(--text-muted);font-size:14px;margin:2px 0;}
+.english{min-height:40px;display:flex;align-items:center;justify-content:center;padding:6px 4px;font-size:22px;font-weight:700;line-height:1.3;color:var(--text);background:var(--bg);border-radius:8px;margin:4px 0;position:relative;}
+.english .fav-btn{background:transparent;border:0;font-size:20px;cursor:pointer;color:var(--text-muted);padding:0 4px;transition:color .2s;}
+.english .fav-btn.active{color:#f59e0b;}
+.english .copy-btn{background:transparent;border:0;font-size:18px;cursor:pointer;color:var(--text-muted);padding:0 4px;transition:color .2s;}
+.english .copy-btn:hover{color:var(--text);}
+.english .action-buttons{display:flex;gap:2px;margin-left:4px;}
+.chinese{min-height:28px;font-size:16px;color:var(--text-light);padding:4px 8px;background:var(--bg);border-radius:8px;}
+.sentence-hint{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.sentence-hint .highlight{color:var(--primary);font-weight:600;}
+.player-controls{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 4px;flex-wrap:wrap;}
+.ctrl-btn{background:var(--chunk-bg);border:0;padding:0;cursor:pointer;font-size:22px;color:var(--text);width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;touch-action:manipulation;transition:background .15s;}
+.ctrl-btn:active{transform:scale(.90);}
+.ctrl-btn.play-btn{width:52px;height:52px;font-size:28px;background:var(--primary);color:#fff;}
+.ctrl-btn.play-btn:hover{background:var(--primary-hover);}
+.ctrl-btn.cn-btn{background:#f59e0b;color:#fff;width:38px;height:38px;font-size:18px;}
+.speed-control{display:flex;align-items:center;gap:4px;}
+.speed-btn{background:var(--chunk-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:11px;font-weight:600;color:var(--text);cursor:pointer;transition:all .15s;}
+.speed-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.extra-buttons{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;justify-content:center;}
+.extra-buttons button{flex:0 1 auto;padding:4px 10px;border:0;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;background:var(--chunk-bg);color:var(--text);transition:background .15s;}
+.extra-buttons button.active{background:#ef4444;color:#fff;}
+.extra-buttons .ai-toggle{background:#10b981;color:#fff;}
+.extra-buttons .ai-toggle:hover{background:#059669;}
+.extra-buttons .mic-toggle{background:#f59e0b;color:#fff;}
+.extra-buttons .mic-toggle:hover{background:#d97706;}
+.extra-buttons .mic-toggle.listening{background:#ef4444;}
+.extra-buttons .mic-toggle:disabled{opacity:0.5;cursor:not-allowed;}
+.extra-buttons .reset-audio-btn{background:#ef4444;color:#fff;}
+.extra-buttons .reset-audio-btn:hover{background:#dc2626;}
+.extra-buttons .chunk-toggle-btn{background:var(--secondary);color:#fff;}
+.extra-buttons .chunk-toggle-btn:hover{background:#7c3aed;}
+.extra-buttons .hd-toggle{background:#8b5cf6;color:#fff;}
+.extra-buttons .hd-toggle:hover{background:#7c3aed;}
+.status{min-height:20px;margin-top:4px;color:var(--text-muted);font-size:12px;}
+.status.speaking{color:#3b82f6;}
+.status.done{color:#22c55e;}
+.status.error{color:#ef4444;}
+.status.paused{color:#f59e0b;}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:6px 16px;border-radius:40px;opacity:0;pointer-events:none;transition:.3s;z-index:999;font-size:13px;font-weight:500;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.api-settings{background:var(--card-bg);border-radius:10px;padding:4px 10px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;border:1px solid var(--border);}
+.api-settings input{flex:2;min-width:60px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text);}
+.api-settings input#apiBaseInput{flex:1.5;}
+.api-settings button{padding:3px 10px;background:var(--text);color:var(--bg);border:0;border-radius:6px;font-weight:500;cursor:pointer;font-size:12px;}
+.api-settings button.save-btn{background:#22c55e;color:#fff;}
+.api-status{font-size:11px;color:var(--text-muted);margin-left:2px;}
+.chunk-area-wrap{overflow:hidden;max-height:0;opacity:0;transition:max-height 0.3s ease, opacity 0.2s ease;margin:0;}
+.chunk-area-wrap.open{max-height:400px;opacity:1;margin-top:8px;}
+.chunk-area{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:4px;background:var(--bg);border-radius:10px;border:1px solid var(--border);max-height:200px;overflow-y:auto;}
+.chunk-item{cursor:pointer;padding:3px 10px;background:var(--chunk-bg);border-radius:14px;font-size:13px;color:var(--text);border:1px solid transparent;transition:all 0.15s;user-select:none;}
+.chunk-item:hover{background:var(--chunk-hover);}
+.chunk-item.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.chunk-item.custom{background:var(--secondary);color:#fff;}
+.chunk-item.custom:hover{background:#7c3aed;}
+.chat-box{background:var(--bg);border-radius:12px;padding:10px;margin-top:8px;max-height:280px;overflow-y:auto;text-align:left;border:1px solid var(--border);display:none;}
+.chat-msg{margin:4px 0;padding:5px 10px;border-radius:10px;max-width:90%;word-break:break-word;font-size:14px;color:var(--text);}
+.chat-msg.user{background:#dbeafe;margin-left:auto;}
+.chat-msg.ai{background:var(--chunk-bg);margin-right:auto;}
+.chat-msg .time{font-size:10px;color:var(--text-muted);margin-top:2px;}
+.chat-input-area{display:flex;gap:4px;margin-top:4px;display:none;}
+.chat-input-area input{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--input-bg);color:var(--text);outline:none;}
+.chat-input-area button{padding:4px 12px;background:#10b981;color:#fff;border:0;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;}
+.chat-input-area .example-btn{background:var(--secondary);color:#fff;border:0;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;padding:4px 10px;}
+.chat-input-area .example-btn:hover{background:#7c3aed;}
+@media(max-width:480px){.english{font-size:18px;}.chunk-item{font-size:12px;padding:2px 8px;}.ctrl-btn{width:34px;height:34px;font-size:18px;}.ctrl-btn.play-btn{width:46px;height:46px;font-size:24px;}.ctrl-btn.cn-btn{width:34px;height:34px;font-size:16px;}.pattern-display .text{font-size:16px;}.avatar-wrap{width:52px;height:52px;top:4px;right:4px;}.pattern-selector select{font-size:12px;padding:2px 6px;min-width:70px;}.extra-buttons button{font-size:11px;padding:3px 8px;}.header-left h1{font-size:20px;}.header-left p{font-size:11px;}.speed-btn{font-size:10px;padding:1px 5px;}.english .copy-btn{font-size:16px;}.dialog-item .q-text,.dialog-item .a-text{font-size:14px;}}
+</style>
 </head>
 <body>
+<div id="toast" class="toast"></div>
+<div class="container">
+<div class="header">
+  <div class="header-left"><h1>🧩 对讲机</h1><p>母句词块</p></div>
+  <div class="header-right">
+    <button class="theme-btn" id="themeToggle">🌙</button>
+    <button class="fav-count" id="favCountBtn">⭐ 0</button>
+  </div>
+</div>
 
-    <div class="app" id="app">
-        <div class="header">
-            <h1>
-                🧩 母句语块
-                <small>1600句 · 中英双语</small>
-            </h1>
-            <div class="badge" id="progressBadge">生成中...</div>
-        </div>
+<div class="mode-selector">
+  <label>📌 模式</label>
+  <button class="mode-btn active" data-mode="single" onclick="setMode('single')">单句</button>
+  <button class="mode-btn" data-mode="dialog" onclick="setMode('dialog')">对讲机</button>
+</div>
 
-        <div class="category-select" id="categorySelect"></div>
+<div id="singleModeArea">
+  <div class="pattern-selector">
+    <label>📌 母句</label>
+    <select id="patternSelect"></select>
+    <span class="badge" id="chunkCount">0</span>
+  </div>
+  <div class="custom-chunk">
+    <input id="customChunkEn" placeholder="英文词块">
+    <input id="customChunkCn" placeholder="中文释义">
+    <button onclick="addCustomChunk()">➕</button>
+  </div>
+</div>
 
-        <div class="card fade-in" id="card">
-            <div class="sentence-row">
-                <span class="label">🇬🇧</span>
-                <span class="text" id="enText">Loading...</span>
-                <button class="speak-btn" id="enSpeak" title="朗读英文">🔊</button>
-            </div>
-            <div class="divider"></div>
-            <div class="sentence-row">
-                <span class="label">🇨🇳</span>
-                <span class="text zh" id="zhText">加载中...</span>
-                <button class="speak-btn zh-btn" id="zhSpeak" title="朗读中文">🔊</button>
-            </div>
+<div id="dialogModeArea" style="display:none;">
+  <div class="pattern-selector">
+    <label>📌 场景</label>
+    <select id="dialogSceneSelect"></select>
+    <span class="badge" id="dialogCount">0 组</span>
+    <button class="ai-gen" onclick="aiGenerateCurrentDialog()" style="background:var(--secondary);color:#fff;border:0;border-radius:8px;padding:2px 10px;font-size:12px;cursor:pointer;">🤖 AI</button>
+  </div>
+</div>
 
-            <div class="structure" id="structureInfo">
-                <div class="row-item">
-                    <span class="tag">📐 母句型</span>
-                    <span class="pattern" id="patternDisplay">—</span>
-                </div>
-                <div class="row-item">
-                    <span class="tag">🧱 词块</span>
-                    <div class="chunk-list" id="chunkList"></div>
-                </div>
-                <div class="row-item">
-                    <span class="tag">🔄 替换</span>
-                    <div class="replacements" id="replacementsList"></div>
-                </div>
-                <div class="row-item" style="align-items: stretch;">
-                    <span class="tag">💬 对话</span>
-                    <div class="dialogue-box" id="dialogueDisplay"></div>
-                </div>
-            </div>
-        </div>
+<div class="search-wrapper">
+  <div class="input-group">
+    <input id="searchInput" type="search" placeholder="搜索句子">
+    <button onclick="searchSentence()">🔍</button>
+  </div>
+</div>
+<div id="results" class="results"></div>
 
-        <div class="controls">
-            <button class="ctrl-btn" id="prevBtn" title="上一句">⏮️</button>
-            <button class="ctrl-btn" id="replayBtn" title="重听英文">🔁</button>
-            <button class="ctrl-btn" id="nextBtn" title="下一句">⏭️</button>
-            <button class="ctrl-btn loop" id="loopBtn" title="循环模式">🔂 <span class="badge" id="loopBadge">1</span></button>
-        </div>
+<div class="card">
+  <div class="avatar-wrap"><canvas id="avatarCanvas" width="220" height="220"></canvas></div>
+  <div class="scene" id="scene">日常表达</div>
+  <div class="progress" id="progress">总句数: 1600+</div>
 
-        <div class="footer">
-            <span class="counter" id="counterDisplay">—</span>
-            <span class="status" id="statusDisplay">就绪</span>
-        </div>
+  <div id="singleDisplay">
+    <div class="pattern-display"><div class="label">母句</div><div class="text" id="patternDisplay">I want to...</div></div>
+    <div class="flow-arrow">▼ 当前整句</div>
+    <div class="english" id="englishContainer">
+      <span id="english">I want to eat.</span>
+      <span class="action-buttons">
+        <button class="copy-btn" onclick="copySentence()">📋</button>
+        <button class="fav-btn" id="favBtn" onclick="toggleFav()">☆</button>
+      </span>
     </div>
+    <div class="chinese" id="chinese">我想吃饭。</div>
+    <div class="sentence-hint" id="sentenceHint">💡 点击词块切换</div>
+  </div>
 
-    <script>
-        // ================================================================
-        //  1. 扩展模板库 —— 确保生成 1600+ 个句子
-        // ================================================================
-        // 每个模板包含：类别、英文模板、中文模板、词块列表、插槽列表（每个插槽有 en/zh）
-        // 生成时会将插槽值替换到模板中，同时记录母句型、词块、替换范例和对话
-        const TEMPLATES = [];
+  <div id="dialogDisplay" style="display:none;">
+    <div class="dialog-area" id="dialogArea"></div>
+    <div class="dialog-controls">
+      <button class="play-all" onclick="playDialogAll()">▶ 整组</button>
+      <button onclick="playDialogQ()">🔊 问</button>
+      <button onclick="playDialogA()">🔊 答</button>
+      <button onclick="prevDialog()">⏮ 上一</button>
+      <button onclick="nextDialog()">⏭ 下一</button>
+      <button class="auto-play" id="autoPlayBtn" onclick="toggleAutoPlay()">🔁 连续</button>
+    </div>
+  </div>
 
-        // -------- 类别0: 基础需求 (目标 ~200句) --------
-        const subjI = [
-            { en: "I", zh: "我" },
-            { en: "You", zh: "你" }
-        ];
-        const verbsBasic = [
-            { en: "eat", zh: "吃" },
-            { en: "drink", zh: "喝" },
-            { en: "sleep", zh: "睡觉" },
-            { en: "go home", zh: "回家" },
-            { en: "go to work", zh: "去上班" },
-            { en: "learn English", zh: "学英语" },
-            { en: "know the truth", zh: "知道真相" },
-            { en: "see you", zh: "见到你" },
-            { en: "try it", zh: "试一试" },
-            { en: "buy some food", zh: "买些食物" },
-            { en: "take a break", zh: "休息一下" },
-            { en: "get some water", zh: "取些水" },
-            { en: "have a rest", zh: "休息一下" },
-            { en: "make dinner", zh: "做晚饭" },
-            { en: "cook rice", zh: "煮饭" }
-        ];
-        const nounsBasic = [
-            { en: "help", zh: "帮助" },
-            { en: "water", zh: "水" },
-            { en: "time", zh: "时间" },
-            { en: "money", zh: "钱" },
-            { en: "rest", zh: "休息" },
-            { en: "food", zh: "食物" },
-            { en: "advice", zh: "建议" },
-            { en: "a doctor", zh: "医生" },
-            { en: "a map", zh: "地图" },
-            { en: "a key", zh: "钥匙" }
-        ];
-        const verbsNeg = [
-            { en: "know", zh: "知道" },
-            { en: "understand", zh: "明白" },
-            { en: "remember", zh: "记得" },
-            { en: "like it", zh: "喜欢它" },
-            { en: "want it", zh: "想要它" },
-            { en: "have it", zh: "有它" }
-        ];
-        const nounsLike = [
-            { en: "this", zh: "这个" },
-            { en: "that", zh: "那个" },
-            { en: "it", zh: "它" },
-            { en: "coffee", zh: "咖啡" },
-            { en: "tea", zh: "茶" },
-            { en: "music", zh: "音乐" },
-            { en: "reading", zh: "阅读" },
-            { en: "cooking", zh: "烹饪" }
-        ];
+  <div class="player-controls">
+    <button class="ctrl-btn" id="prevBtn" onclick="prevChunk()">⏮</button>
+    <button id="playPauseBtn" class="ctrl-btn play-btn" onclick="togglePlayPause()">▶</button>
+    <button class="ctrl-btn cn-btn" onclick="playChinese()">🔊中</button>
+    <button class="ctrl-btn" id="nextBtn" onclick="nextChunk()">⏭</button>
+    <div class="speed-control">
+      <button class="speed-btn" data-speed="0.7" onclick="setSpeed(0.7)">0.7×</button>
+      <button class="speed-btn active" data-speed="1.0" onclick="setSpeed(1.0)">1.0×</button>
+      <button class="speed-btn" data-speed="1.3" onclick="setSpeed(1.3)">1.3×</button>
+    </div>
+  </div>
 
-        // 1) I want to + verb
-        TEMPLATES.push({
-            category: 0,
-            pattern_en: "I want to {verb}",
-            pattern_zh: "我想 {动词}",
-            chunks: [{ en: "I want to", zh: "我想" }, { en: "{verb}", zh: "{动词}" }],
-            slots: verbsBasic
-        });
-        // 2) I need + noun
-        TEMPLATES.push({
-            category: 0,
-            pattern_en: "I need {noun}",
-            pattern_zh: "我需要 {名词}",
-            chunks: [{ en: "I need", zh: "我需要" }, { en: "{noun}", zh: "{名词}" }],
-            slots: nounsBasic
-        });
-        // 3) I don't + verb
-        TEMPLATES.push({
-            category: 0,
-            pattern_en: "I don't {verb}",
-            pattern_zh: "我不 {动词}",
-            chunks: [{ en: "I don't", zh: "我不" }, { en: "{verb}", zh: "{动词}" }],
-            slots: verbsNeg
-        });
-        // 4) I like + noun
-        TEMPLATES.push({
-            category: 0,
-            pattern_en: "I like {noun}",
-            pattern_zh: "我喜欢 {名词}",
-            chunks: [{ en: "I like", zh: "我喜欢" }, { en: "{noun}", zh: "{名词}" }],
-            slots: nounsLike
-        });
-        // 5) You want to + verb (增加)
-        TEMPLATES.push({
-            category: 0,
-            pattern_en: "You want to {verb}",
-            pattern_zh: "你想 {动词}",
-            chunks: [{ en: "You want to", zh: "你想" }, { en: "{verb}", zh: "{动词}" }],
-            slots: verbsBasic.slice(0, 10)
-        });
+  <div class="extra-buttons">
+    <button id="repeatBtn" onclick="toggleRepeat()">🔁 Repeat</button>
+    <button onclick="playPatternOnly()">🧩 母句</button>
+    <button onclick="randomChunk()">🎲 随机</button>
+    <button id="micBtn" class="mic-toggle" onclick="toggleMic()">🎤 Voice</button>
+    <button id="aiToggle" class="ai-toggle" onclick="toggleChat()">💬 AI</button>
+    <button class="reset-audio-btn" onclick="resetAudio()">🔊 修复</button>
+    <button class="chunk-toggle-btn" id="chunkToggleBtn" onclick="toggleChunkList()">📋 词块</button>
+    <button class="hd-toggle" id="hdToggleBtn" onclick="toggleHD()">✨ HD</button>
+  </div>
 
-        // -------- 类别1: 问答交流 (目标 ~200句) --------
-        const verbsIng = [
-            { en: "doing", zh: "做" },
-            { en: "working", zh: "工作" },
-            { en: "eating", zh: "吃" },
-            { en: "cooking", zh: "烹饪" },
-            { en: "reading", zh: "阅读" },
-            { en: "looking for", zh: "寻找" },
-            { en: "watching", zh: "看" },
-            { en: "listening", zh: "听" }
-        ];
-        const verbsGo = [
-            { en: "going", zh: "去" },
-            { en: "heading", zh: "前往" },
-            { en: "running", zh: "跑" }
-        ];
-        const verbsWant = [
-            { en: "eat", zh: "吃" },
-            { en: "drink", zh: "喝" },
-            { en: "buy", zh: "买" },
-            { en: "see", zh: "看" },
-            { en: "do", zh: "做" },
-            { en: "have", zh: "有" }
-        ];
-        TEMPLATES.push({
-            category: 1,
-            pattern_en: "What are you {verb}ing?",
-            pattern_zh: "你在 {动词} 什么？",
-            chunks: [{ en: "What are you", zh: "你在" }, { en: "{verb}ing?", zh: "{动词} 什么？" }],
-            slots: verbsIng
-        });
-        TEMPLATES.push({
-            category: 1,
-            pattern_en: "Where are you {verb}ing?",
-            pattern_zh: "你在哪里 {动词}？",
-            chunks: [{ en: "Where are you", zh: "你在哪里" }, { en: "{verb}ing?", zh: "{动词}？" }],
-            slots: verbsGo
-        });
-        TEMPLATES.push({
-            category: 1,
-            pattern_en: "What do you want to {verb}?",
-            pattern_zh: "你想 {动词} 什么？",
-            chunks: [{ en: "What do you want to", zh: "你想" }, { en: "{verb}?", zh: "{动词} 什么？" }],
-            slots: verbsWant
-        });
-        TEMPLATES.push({
-            category: 1,
-            pattern_en: "Why do you {verb}?",
-            pattern_zh: "你为什么 {动词}？",
-            chunks: [{ en: "Why do you", zh: "你为什么" }, { en: "{verb}?", zh: "{动词}？" }],
-            slots: [
-                { en: "say that", zh: "那样说" },
-                { en: "ask me", zh: "问我" },
-                { en: "go there", zh: "去那里" }
-            ]
-        });
+  <div class="chunk-area-wrap" id="chunkAreaWrap">
+    <div class="chunk-area" id="chunkArea"></div>
+  </div>
 
-        // -------- 类别2: 日常行动 (目标 ~200句) --------
-        const verbsLet = [
-            { en: "see", zh: "看看" },
-            { en: "check", zh: "检查" },
-            { en: "think", zh: "想想" },
-            { en: "try", zh: "试试" },
-            { en: "help you", zh: "帮你" },
-            { en: "know", zh: "知道" }
-        ];
-        const prepCome = [
-            { en: "with me", zh: "跟我" },
-            { en: "here", zh: "这里" },
-            { en: "back", zh: "回来" },
-            { en: "in", zh: "进来" },
-            { en: "on", zh: "来吧" }
-        ];
-        const persons = [
-            { en: "me", zh: "我" },
-            { en: "him", zh: "他" },
-            { en: "her", zh: "她" },
-            { en: "us", zh: "我们" },
-            { en: "them", zh: "他们" }
-        ];
-        const verbPhrases = [
-            { en: "be right there", zh: "马上到" },
-            { en: "be back", zh: "回来" },
-            { en: "call you", zh: "打电话给你" },
-            { en: "get it", zh: "拿到它" },
-            { en: "come soon", zh: "很快就来" }
-        ];
-        TEMPLATES.push({
-            category: 2,
-            pattern_en: "Let me {verb}",
-            pattern_zh: "让我 {动词}",
-            chunks: [{ en: "Let me", zh: "让我" }, { en: "{verb}", zh: "{动词}" }],
-            slots: verbsLet
-        });
-        TEMPLATES.push({
-            category: 2,
-            pattern_en: "Come {prep}",
-            pattern_zh: "来 {介词短语}",
-            chunks: [{ en: "Come", zh: "来" }, { en: "{prep}", zh: "{介词短语}" }],
-            slots: prepCome
-        });
-        TEMPLATES.push({
-            category: 2,
-            pattern_en: "Wait for {person}",
-            pattern_zh: "等 {人}",
-            chunks: [{ en: "Wait for", zh: "等" }, { en: "{person}", zh: "{人}" }],
-            slots: persons
-        });
-        TEMPLATES.push({
-            category: 2,
-            pattern_en: "I'll {verb_phrase}",
-            pattern_zh: "我会 {动词短语}",
-            chunks: [{ en: "I'll", zh: "我会" }, { en: "{verb_phrase}", zh: "{动词短语}" }],
-            slots: verbPhrases
-        });
+  <div id="chatBox" class="chat-box"></div>
+  <div id="chatInputArea" class="chat-input-area">
+    <input id="chatInput" type="text" placeholder="输入消息">
+    <button onclick="sendTextMessage()">Send</button>
+    <button class="example-btn" onclick="fillExample()">💡 示例</button>
+  </div>
+  <div id="status" class="status">Ready</div>
+</div>
+<div style="text-align:center;margin-top:6px;font-size:11px;color:var(--text-muted);">← 上一 · 下一 →</div>
+</div>
 
-        // -------- 类别3: 工作交流 (目标 ~200句) --------
-        const verbsHaveTo = [
-            { en: "go", zh: "去" },
-            { en: "work", zh: "工作" },
-            { en: "finish this", zh: "完成这个" },
-            { en: "meet her", zh: "见她" },
-            { en: "call him", zh: "打给他" },
-            { en: "send an email", zh: "发邮件" }
-        ];
-        const verbsCan = [
-            { en: "help me", zh: "帮我" },
-            { en: "call me", zh: "打电话给我" },
-            { en: "send this", zh: "发送这个" },
-            { en: "wait for me", zh: "等我" },
-            { en: "check it", zh: "检查一下" }
-        ];
-        const verbsCould = [
-            { en: "repeat that", zh: "重复一遍" },
-            { en: "speak slowly", zh: "说慢点" },
-            { en: "show me", zh: "给我看" },
-            { en: "explain it", zh: "解释一下" }
-        ];
-        TEMPLATES.push({
-            category: 3,
-            pattern_en: "I have to {verb}",
-            pattern_zh: "我必须 {动词}",
-            chunks: [{ en: "I have to", zh: "我必须" }, { en: "{verb}", zh: "{动词}" }],
-            slots: verbsHaveTo
-        });
-        TEMPLATES.push({
-            category: 3,
-            pattern_en: "Can you {verb}?",
-            pattern_zh: "你能 {动词} 吗？",
-            chunks: [{ en: "Can you", zh: "你能" }, { en: "{verb}?", zh: "{动词} 吗？" }],
-            slots: verbsCan
-        });
-        TEMPLATES.push({
-            category: 3,
-            pattern_en: "Could you {verb}?",
-            pattern_zh: "你能 {动词} 吗？（委婉）",
-            chunks: [{ en: "Could you", zh: "你能" }, { en: "{verb}?", zh: "{动词} 吗？" }],
-            slots: verbsCould
-        });
+<script>
+// ========================================================================
+// 1. 词块池（300+ 词块，可组合出 1600+ 句子）
+// ========================================================================
+const chunkPool = [
+  { en: "eat", cn: "吃饭" }, { en: "drink", cn: "喝" }, { en: "sleep", cn: "睡觉" },
+  { en: "work", cn: "工作" }, { en: "rest", cn: "休息" }, { en: "cook", cn: "做饭" },
+  { en: "clean", cn: "打扫" }, { en: "study", cn: "学习" }, { en: "read", cn: "阅读" },
+  { en: "write", cn: "写作" }, { en: "listen", cn: "听" }, { en: "speak", cn: "说话" },
+  { en: "walk", cn: "走路" }, { en: "run", cn: "跑步" }, { en: "swim", cn: "游泳" },
+  { en: "drive", cn: "开车" }, { en: "fly", cn: "飞行" }, { en: "sing", cn: "唱歌" },
+  { en: "dance", cn: "跳舞" }, { en: "travel", cn: "旅行" }, { en: "shop", cn: "购物" },
+  { en: "exercise", cn: "锻炼" }, { en: "relax", cn: "放松" }, { en: "laugh", cn: "笑" },
+  { en: "smile", cn: "微笑" }, { en: "cry", cn: "哭" }, { en: "shout", cn: "喊叫" },
+  { en: "whisper", cn: "低语" }, { en: "dream", cn: "做梦" }, { en: "think", cn: "思考" },
+  { en: "go home", cn: "回家" }, { en: "go to work", cn: "去上班" }, { en: "go to school", cn: "去上学" },
+  { en: "go to the gym", cn: "去健身房" }, { en: "go to the park", cn: "去公园" }, { en: "go shopping", cn: "去购物" },
+  { en: "go for a walk", cn: "去散步" }, { en: "go for a run", cn: "去跑步" }, { en: "take a shower", cn: "洗澡" },
+  { en: "brush teeth", cn: "刷牙" }, { en: "get dressed", cn: "穿衣服" }, { en: "have breakfast", cn: "吃早餐" },
+  { en: "have lunch", cn: "吃午餐" }, { en: "have dinner", cn: "吃晚餐" }, { en: "drink coffee", cn: "喝咖啡" },
+  { en: "drink tea", cn: "喝茶" }, { en: "drink water", cn: "喝水" }, { en: "take a break", cn: "休息一下" },
+  { en: "take a nap", cn: "小睡" }, { en: "take a bath", cn: "泡澡" }, { en: "learn English", cn: "学英语" },
+  { en: "learn Chinese", cn: "学中文" }, { en: "learn new things", cn: "学新东西" }, { en: "practice speaking", cn: "练习口语" },
+  { en: "practice writing", cn: "练习写作" }, { en: "do homework", cn: "做作业" }, { en: "take a test", cn: "考试" },
+  { en: "take a class", cn: "上课" }, { en: "take notes", cn: "记笔记" }, { en: "ask a question", cn: "提问" },
+  { en: "answer questions", cn: "回答问题" }, { en: "do research", cn: "做研究" }, { en: "write a report", cn: "写报告" },
+  { en: "write an email", cn: "写邮件" }, { en: "make a plan", cn: "做计划" }, { en: "make a decision", cn: "做决定" },
+  { en: "make progress", cn: "取得进步" }, { en: "solve a problem", cn: "解决问题" }, { en: "help others", cn: "帮助他人" },
+  { en: "teach someone", cn: "教别人" }, { en: "call me", cn: "给我打电话" }, { en: "follow me", cn: "跟着我" },
+  { en: "wait for me", cn: "等我" }, { en: "listen to me", cn: "听我说" }, { en: "look at me", cn: "看着我" },
+  { en: "talk to me", cn: "和我说话" }, { en: "help me", cn: "帮我" }, { en: "tell me", cn: "告诉我" },
+  { en: "show me", cn: "给我看" }, { en: "teach me", cn: "教我" }, { en: "work with me", cn: "和我一起工作" },
+  { en: "come here", cn: "过来" }, { en: "come with me", cn: "跟我来" }, { en: "stay with me", cn: "和我待在一起" },
+  { en: "talk to him", cn: "和他说话" }, { en: "talk to her", cn: "和她说话" }, { en: "ask him", cn: "问他" },
+  { en: "ask her", cn: "问她" }, { en: "be happy", cn: "开心" }, { en: "be sad", cn: "伤心" },
+  { en: "be angry", cn: "生气" }, { en: "be tired", cn: "累" }, { en: "be hungry", cn: "饿" },
+  { en: "be thirsty", cn: "渴" }, { en: "be excited", cn: "兴奋" }, { en: "be nervous", cn: "紧张" },
+  { en: "be worried", cn: "担心" }, { en: "be proud", cn: "骄傲" }, { en: "be kind", cn: "善良" },
+  { en: "be patient", cn: "耐心" }, { en: "be careful", cn: "小心" }, { en: "be quiet", cn: "安静" },
+  { en: "be safe", cn: "安全" }, { en: "be strong", cn: "强壮" }, { en: "be brave", cn: "勇敢" },
+  { en: "be honest", cn: "诚实" }, { en: "be polite", cn: "礼貌" }, { en: "be helpful", cn: "乐于助人" },
+  { en: "travel abroad", cn: "出国旅行" }, { en: "visit a museum", cn: "参观博物馆" }, { en: "visit friends", cn: "拜访朋友" },
+  { en: "go to the beach", cn: "去海滩" }, { en: "go to the mountains", cn: "去山里" }, { en: "go to the cinema", cn: "去电影院" },
+  { en: "go to a restaurant", cn: "去餐厅" }, { en: "book a room", cn: "订房间" }, { en: "rent a car", cn: "租车" },
+  { en: "take a taxi", cn: "打车" }, { en: "take a bus", cn: "坐公交" }, { en: "take a train", cn: "坐火车" },
+  { en: "take a plane", cn: "坐飞机" }, { en: "buy a ticket", cn: "买票" }, { en: "pack a bag", cn: "收拾行李" },
+  { en: "check in", cn: "办理入住" }, { en: "check out", cn: "退房" }, { en: "ask for directions", cn: "问路" },
+  { en: "take photos", cn: "拍照" }, { en: "enjoy the view", cn: "欣赏风景" },
+  { en: "go to the airport", cn: "去机场" }, { en: "check in at the airport", cn: "机场值机" },
+  { en: "show my passport", cn: "出示护照" }, { en: "show my boarding pass", cn: "出示登机牌" },
+  { en: "go through security", cn: "过安检" }, { en: "go through customs", cn: "过海关" },
+  { en: "claim my luggage", cn: "取行李" }, { en: "board the plane", cn: "登机" },
+  { en: "find my seat", cn: "找座位" }, { en: "fasten my seatbelt", cn: "系安全带" },
+  { en: "order a meal on the plane", cn: "点飞机餐" }, { en: "ask for a blanket", cn: "要毯子" },
+  { en: "ask for a pillow", cn: "要枕头" }, { en: "use the bathroom", cn: "使用洗手间" },
+  { en: "fill out the landing card", cn: "填写入境卡" }, { en: "go to the baggage claim", cn: "去行李提取处" },
+  { en: "wait for my luggage", cn: "等行李" }, { en: "take a shuttle bus", cn: "坐摆渡车" },
+  { en: "go to the departure gate", cn: "去登机口" }, { en: "listen to the announcement", cn: "听广播" },
+  { en: "ask about the flight delay", cn: "询问航班延误" }, { en: "change my flight", cn: "改签航班" },
+  { en: "cancel my flight", cn: "取消航班" }, { en: "book a connecting flight", cn: "预订转机航班" },
+  { en: "go through transit", cn: "转机" }, { en: "declare goods at customs", cn: "海关申报" },
+  { en: "pay duty tax", cn: "缴税" }, { en: "get a visa on arrival", cn: "办落地签" },
+  { en: "fill in a declaration form", cn: "填写申报表" }, { en: "show my vaccination certificate", cn: "出示疫苗接种证明" },
+  { en: "chop vegetables", cn: "切菜" }, { en: "slice onions", cn: "切洋葱" }, { en: "dice carrots", cn: "胡萝卜切丁" },
+  { en: "peel potatoes", cn: "削土豆皮" }, { en: "mince garlic", cn: "剁蒜" }, { en: "grate cheese", cn: "磨碎奶酪" },
+  { en: "mix ingredients", cn: "搅拌食材" }, { en: "whisk eggs", cn: "打蛋" }, { en: "fry an egg", cn: "煎蛋" },
+  { en: "boil water", cn: "烧水" }, { en: "steam vegetables", cn: "蒸蔬菜" }, { en: "bake a cake", cn: "烤蛋糕" },
+  { en: "roast chicken", cn: "烤鸡" }, { en: "grill fish", cn: "烤鱼" }, { en: "simmer soup", cn: "炖汤" },
+  { en: "stir-fry beef", cn: "炒牛肉" }, { en: "season with salt", cn: "加盐调味" }, { en: "add pepper", cn: "加胡椒" },
+  { en: "pour oil", cn: "倒油" }, { en: "turn on the stove", cn: "打开炉灶" }, { en: "turn off the stove", cn: "关火" },
+  { en: "set the table", cn: "摆餐具" }, { en: "wash the dishes", cn: "洗碗" }, { en: "dry the dishes", cn: "擦干餐具" },
+  { en: "put away groceries", cn: "收拾杂物" }, { en: "make a salad", cn: "做沙拉" }, { en: "prepare a meal", cn: "准备饭菜" },
+  { en: "taste the soup", cn: "尝汤" }, { en: "add more salt", cn: "多加盐" }, { en: "use a spatula", cn: "用锅铲" },
+  { en: "know the answer", cn: "知道答案" }, { en: "understand the question", cn: "理解问题" },
+  { en: "find the way", cn: "找到路" }, { en: "tell the time", cn: "告知时间" }, { en: "explain the reason", cn: "解释原因" },
+  { en: "ask for help", cn: "寻求帮助" }, { en: "ask for permission", cn: "请求许可" }, { en: "ask about the price", cn: "询问价格" },
+  { en: "ask about the weather", cn: "问天气" }, { en: "ask about the menu", cn: "问菜单" }, { en: "ask about the schedule", cn: "问时间表" },
+  { en: "ask about the location", cn: "问位置" }, { en: "ask about the person", cn: "问人" }, { en: "say hello", cn: "打招呼" },
+  { en: "say goodbye", cn: "说再见" }, { en: "say thank you", cn: "道谢" }, { en: "say sorry", cn: "道歉" },
+  { en: "express my feelings", cn: "表达感受" }, { en: "share my opinion", cn: "分享意见" },
+  { en: "water the plants", cn: "浇花" }, { en: "feed the cat", cn: "喂猫" }, { en: "walk the dog", cn: "遛狗" },
+  { en: "do the laundry", cn: "洗衣服" }, { en: "fold clothes", cn: "叠衣服" }, { en: "sweep the floor", cn: "扫地" },
+  { en: "mop the floor", cn: "拖地" }, { en: "open the window", cn: "开窗" }, { en: "close the door", cn: "关门" },
+  { en: "turn on the light", cn: "开灯" }, { en: "turn off the TV", cn: "关电视" }, { en: "adjust the AC", cn: "调空调" },
+  { en: "charge my phone", cn: "给手机充电" }, { en: "send a message", cn: "发信息" }, { en: "check emails", cn: "查邮件" },
+  { en: "update my status", cn: "更新状态" }, { en: "post a photo", cn: "发照片" }, { en: "make a video call", cn: "打视频电话" },
+];
 
-        // -------- 类别4: 吃饭厨房 (目标 ~200句) --------
-        const foodNouns = [
-            { en: "some water", zh: "一些水" },
-            { en: "some food", zh: "一些食物" },
-            { en: "coffee", zh: "咖啡" },
-            { en: "tea", zh: "茶" },
-            { en: "more rice", zh: "更多米饭" },
-            { en: "juice", zh: "果汁" },
-            { en: "milk", zh: "牛奶" },
-            { en: "bread", zh: "面包" }
-        ];
-        const foodNounsPolite = [
-            { en: "some juice", zh: "一些果汁" },
-            { en: "a glass of milk", zh: "一杯牛奶" },
-            { en: "a salad", zh: "一份沙拉" },
-            { en: "some soup", zh: "一些汤" }
-        ];
-        const kitchenItems = [
-            { en: "the salt", zh: "盐" },
-            { en: "a spoon", zh: "勺子" },
-            { en: "some napkins", zh: "一些餐巾" },
-            { en: "a plate", zh: "一个盘子" },
-            { en: "a fork", zh: "一把叉子" }
-        ];
-        const placesKitchen = [
-            { en: "on the table", zh: "在桌上" },
-            { en: "in the fridge", zh: "在冰箱里" },
-            { en: "over there", zh: "在那边" },
-            { en: "in the cabinet", zh: "在橱柜里" }
-        ];
-        TEMPLATES.push({
-            category: 4,
-            pattern_en: "Do you want {noun}?",
-            pattern_zh: "你想要 {名词} 吗？",
-            chunks: [{ en: "Do you want", zh: "你想要" }, { en: "{noun}?", zh: "{名词} 吗？" }],
-            slots: foodNouns
-        });
-        TEMPLATES.push({
-            category: 4,
-            pattern_en: "Would you like {noun}?",
-            pattern_zh: "您想要 {名词} 吗？",
-            chunks: [{ en: "Would you like", zh: "您想要" }, { en: "{noun}?", zh: "{名词} 吗？" }],
-            slots: foodNounsPolite
-        });
-        TEMPLATES.push({
-            category: 4,
-            pattern_en: "Give me {noun}",
-            pattern_zh: "给我 {名词}",
-            chunks: [{ en: "Give me", zh: "给我" }, { en: "{noun}", zh: "{名词}" }],
-            slots: kitchenItems
-        });
-        TEMPLATES.push({
-            category: 4,
-            pattern_en: "Put it {place}",
-            pattern_zh: "把它放在 {地点}",
-            chunks: [{ en: "Put it", zh: "把它放" }, { en: "{place}", zh: "{地点}" }],
-            slots: placesKitchen
-        });
+// ========================================================================
+// 2. 母句模板（30 个，每个搭配词块生成完整句）
+// ========================================================================
+const patternList = [
+  { id: 0, pattern: "I want to...", cnPrefix: "我想", start: 0, count: 70 },
+  { id: 1, pattern: "I want you to...", cnPrefix: "我想让你", start: 30, count: 70 },
+  { id: 2, pattern: "I need to...", cnPrefix: "我需要", start: 10, count: 70 },
+  { id: 3, pattern: "I like to...", cnPrefix: "我喜欢", start: 0, count: 60 },
+  { id: 4, pattern: "I'm going to...", cnPrefix: "我打算", start: 5, count: 70 },
+  { id: 5, pattern: "I have to...", cnPrefix: "我必须", start: 0, count: 65 },
+  { id: 6, pattern: "I'd like to...", cnPrefix: "我想要", start: 0, count: 65 },
+  { id: 7, pattern: "Can I...?", cnPrefix: "我可以", start: 0, count: 70 },
+  { id: 8, pattern: "Could you...?", cnPrefix: "你能", start: 30, count: 70 },
+  { id: 9, pattern: "Would you like to...?", cnPrefix: "你想", start: 0, count: 65 },
+  { id: 10, pattern: "I'm trying to...", cnPrefix: "我试图", start: 0, count: 60 },
+  { id: 11, pattern: "I'm looking forward to...", cnPrefix: "我期待", start: 0, count: 55 },
+  { id: 12, pattern: "It's time to...", cnPrefix: "是时候", start: 0, count: 60 },
+  { id: 13, pattern: "I'm ready to...", cnPrefix: "我准备好", start: 0, count: 60 },
+  { id: 14, pattern: "I used to...", cnPrefix: "我以前", start: 0, count: 55 },
+  { id: 15, pattern: "I'm supposed to...", cnPrefix: "我应该", start: 0, count: 55 },
+  { id: 16, pattern: "I'm not going to...", cnPrefix: "我不打算", start: 0, count: 55 },
+  { id: 17, pattern: "I don't want to...", cnPrefix: "我不想", start: 0, count: 55 },
+  { id: 18, pattern: "I'm happy to...", cnPrefix: "我很高兴", start: 0, count: 50 },
+  { id: 19, pattern: "I'm sorry to...", cnPrefix: "我很抱歉", start: 0, count: 45 },
+  { id: 20, pattern: "I promise to...", cnPrefix: "我承诺", start: 0, count: 45 },
+  { id: 21, pattern: "I decide to...", cnPrefix: "我决定", start: 0, count: 50 },
+  { id: 22, pattern: "I hope to...", cnPrefix: "我希望", start: 0, count: 50 },
+  { id: 23, pattern: "I plan to...", cnPrefix: "我计划", start: 0, count: 50 },
+  { id: 24, pattern: "I'm willing to...", cnPrefix: "我愿意", start: 0, count: 45 },
+  { id: 25, pattern: "Do you know how to...?", cnPrefix: "你知道如何", start: 0, count: 55 },
+  { id: 26, pattern: "Can you tell me how to...?", cnPrefix: "你能告诉我怎样", start: 0, count: 50 },
+  { id: 27, pattern: "Would you mind...?", cnPrefix: "你介意", start: 0, count: 45 },
+  { id: 28, pattern: "Is it okay to...?", cnPrefix: "可以...吗", start: 0, count: 45 },
+  { id: 29, pattern: "Do you want me to...?", cnPrefix: "你想让我", start: 0, count: 50 },
+];
 
-        // -------- 类别5: 购物生活 (目标 ~200句) --------
-        const shopItems = [
-            { en: "this", zh: "这个" },
-            { en: "that", zh: "那个" },
-            { en: "the shirt", zh: "这件衬衫" },
-            { en: "the bag", zh: "这个包" },
-            { en: "the shoes", zh: "这双鞋" },
-            { en: "the dress", zh: "这条裙子" }
-        ];
-        const shopHas = [
-            { en: "a larger size", zh: "更大尺码" },
-            { en: "this in blue", zh: "蓝色的这个" },
-            { en: "a receipt", zh: "收据" },
-            { en: "a discount", zh: "折扣" }
-        ];
-        const shopTake = [
-            { en: "it", zh: "它" },
-            { en: "this one", zh: "这个" },
-            { en: "two of them", zh: "两个" },
-            { en: "the red one", zh: "红色的那个" }
-        ];
-        TEMPLATES.push({
-            category: 5,
-            pattern_en: "How much is {noun}?",
-            pattern_zh: "{名词} 多少钱？",
-            chunks: [{ en: "How much is", zh: "多少钱" }, { en: "{noun}?", zh: "{名词}？" }],
-            slots: shopItems
-        });
-        TEMPLATES.push({
-            category: 5,
-            pattern_en: "Do you have {noun}?",
-            pattern_zh: "你们有 {名词} 吗？",
-            chunks: [{ en: "Do you have", zh: "你们有" }, { en: "{noun}?", zh: "{名词} 吗？" }],
-            slots: shopHas
-        });
-        TEMPLATES.push({
-            category: 5,
-            pattern_en: "I'll take {noun}",
-            pattern_zh: "我要 {名词}",
-            chunks: [{ en: "I'll take", zh: "我要" }, { en: "{noun}", zh: "{名词}" }],
-            slots: shopTake
-        });
+// ========================================================================
+// 3. 对话池（280组，覆盖13个场景）
+// ========================================================================
+const dialogPool = [
+  // 问候
+  { scene: "问候", q: "Hello, how are you?", a: "I'm fine, thank you. And you?", cn: "你好吗？我很好，谢谢。你呢？" },
+  { scene: "问候", q: "Good morning!", a: "Good morning! Did you sleep well?", cn: "早上好！早上好！你睡得好吗？" },
+  { scene: "问候", q: "How's your day going?", a: "It's going well, thanks!", cn: "你今天过得怎么样？很好，谢谢！" },
+  { scene: "问候", q: "Nice to see you again.", a: "Nice to see you too!", cn: "很高兴再次见到你。我也是！" },
+  { scene: "问候", q: "What's new with you?", a: "Not much, just working.", cn: "你最近怎么样？没什么，就是工作。" },
+  { scene: "问候", q: "How are things at work?", a: "Busy as usual.", cn: "工作怎么样？和往常一样忙。" },
+  { scene: "问候", q: "Long time no see!", a: "Yes, it's been a while!", cn: "好久不见！是啊，有一阵子了！" },
+  { scene: "问候", q: "How's your family?", a: "Everyone is doing well.", cn: "你家人怎么样？大家都很好。" },
+  { scene: "问候", q: "What have you been up to?", a: "I've been traveling a lot.", cn: "你最近在忙什么？我一直在旅行。" },
+  { scene: "问候", q: "Are you feeling okay?", a: "I'm a bit tired, but fine.", cn: "你感觉还好吗？有点累，但还好。" },
+  { scene: "问候", q: "How was your weekend?", a: "It was great! I went hiking.", cn: "周末过得怎么样？很棒！我去徒步了。" },
+  { scene: "问候", q: "What do you do for a living?", a: "I'm a teacher.", cn: "你是做什么工作的？我是老师。" },
+  { scene: "问候", q: "Where are you from?", a: "I'm from London.", cn: "你来自哪里？我来自伦敦。" },
+  { scene: "问候", q: "Do you speak English?", a: "Yes, I do. A little.", cn: "你会说英语吗？是的，会说一点。" },
+  { scene: "问候", q: "Nice weather, isn't it?", a: "Yes, it's beautiful today.", cn: "天气真好，不是吗？是啊，今天天气很好。" },
+  // 餐厅
+  { scene: "餐厅", q: "Could we have a table for two?", a: "Sure, this way please.", cn: "我们可以要一张两人的桌子吗？好的，这边请。" },
+  { scene: "餐厅", q: "What do you recommend?", a: "The grilled fish is very popular.", cn: "你推荐什么？烤鱼很受欢迎。" },
+  { scene: "餐厅", q: "I'd like the steak, medium rare.", a: "Would you like a side salad?", cn: "我想要牛排，五分熟。您要一份配菜沙拉吗？" },
+  { scene: "餐厅", q: "Can I have the bill, please?", a: "Of course, I'll bring it right away.", cn: "请买单。好的，马上拿来。" },
+  { scene: "餐厅", q: "Is there a vegetarian dish?", a: "Yes, we have a vegetable pasta.", cn: "有素食菜吗？有的，我们有蔬菜意面。" },
+  { scene: "餐厅", q: "What's the soup of the day?", a: "It's tomato soup.", cn: "今天的例汤是什么？番茄汤。" },
+  { scene: "餐厅", q: "Can I get some water, please?", a: "Sure, I'll bring it right over.", cn: "能给我一些水吗？好的，马上送来。" },
+  { scene: "餐厅", q: "Is the food spicy?", a: "It's mild, not too spicy.", cn: "食物辣吗？味道温和，不太辣。" },
+  { scene: "餐厅", q: "Could I have a fork?", a: "Yes, here you are.", cn: "能给我一个叉子吗？好的，给您。" },
+  { scene: "餐厅", q: "What's your specialty?", a: "Our seafood pasta is excellent.", cn: "你们的特色菜是什么？我们的海鲜意面很棒。" },
+  { scene: "餐厅", q: "Can I order takeout?", a: "Yes, you can.", cn: "我可以点外卖吗？可以。" },
+  { scene: "餐厅", q: "Is there a kids' menu?", a: "Yes, we have one.", cn: "有儿童菜单吗？有的。" },
+  { scene: "餐厅", q: "Could you recommend a dessert?", a: "The chocolate cake is delicious.", cn: "你能推荐一款甜点吗？巧克力蛋糕很好吃。" },
+  { scene: "餐厅", q: "Can I pay by credit card?", a: "Yes, we accept all major cards.", cn: "可以用信用卡支付吗？可以，我们接受所有主要卡。" },
+  { scene: "餐厅", q: "How long is the wait?", a: "About 15 minutes.", cn: "要等多久？大约15分钟。" },
+  { scene: "餐厅", q: "Is there a dress code?", a: "No, casual is fine.", cn: "有着装要求吗？没有，休闲装就可以。" },
+  { scene: "餐厅", q: "Can I have a glass of wine?", a: "Sure, red or white?", cn: "能给我一杯葡萄酒吗？好的，红葡萄酒还是白葡萄酒？" },
+  { scene: "餐厅", q: "The food was amazing!", a: "I'm glad you enjoyed it!", cn: "食物太好吃了！很高兴您喜欢！" },
+  // 购物
+  { scene: "购物", q: "How much does this cost?", a: "It's fifty dollars.", cn: "这个多少钱？五十美元。" },
+  { scene: "购物", q: "Can I try this on?", a: "Sure, the fitting room is over there.", cn: "我可以试穿吗？可以，试衣间在那边。" },
+  { scene: "购物", q: "Do you have a larger size?", a: "Let me check in the back.", cn: "有大一点的吗？我去后面看看。" },
+  { scene: "购物", q: "I'll take this one.", a: "Would you like a bag?", cn: "我要这个。您要袋子吗？" },
+  { scene: "购物", q: "Can I pay by card?", a: "Yes, we accept all major cards.", cn: "可以刷卡吗？是的，我们接受所有主要卡。" },
+  { scene: "购物", q: "Does this come in other colors?", a: "Yes, we have blue and green.", cn: "这个有其他颜色吗？有的，我们有蓝色和绿色。" },
+  { scene: "购物", q: "Is there a discount?", a: "It's on sale for 20% off.", cn: "有折扣吗？正在打八折。" },
+  { scene: "购物", q: "Can I return it later?", a: "Yes, within 30 days.", cn: "我可以以后退货吗？可以，30天内。" },
+  { scene: "购物", q: "Do you have this in black?", a: "Sorry, we're out of stock.", cn: "这个有黑色的吗？抱歉，我们缺货了。" },
+  { scene: "购物", q: "Is this made of leather?", a: "Yes, it's genuine leather.", cn: "这是真皮的吗？是的，是真皮。" },
+  { scene: "购物", q: "Could you wrap it as a gift?", a: "Sure, we can do that.", cn: "能把它包装成礼物吗？当然可以。" },
+  { scene: "购物", q: "How much is the total?", a: "It's 78 dollars in total.", cn: "总共多少钱？一共78美元。" },
+  { scene: "购物", q: "Is there a warranty?", a: "Yes, one-year warranty.", cn: "有保修吗？有的，保修一年。" },
+  { scene: "购物", q: "Can I exchange it if it doesn't fit?", a: "Yes, we offer free exchanges.", cn: "如果不合适可以换吗？可以，我们提供免费换货。" },
+  { scene: "购物", q: "Do you have a smaller size?", a: "Let me check the stock.", cn: "有小一点的吗？让我查一下库存。" },
+  { scene: "购物", q: "I'm just looking, thanks.", a: "Take your time!", cn: "我只是看看，谢谢。您慢慢看！" },
+  // 旅行
+  { scene: "旅行", q: "Where is the nearest metro station?", a: "It's about five minutes' walk.", cn: "最近的地铁站在哪里？步行大约五分钟。" },
+  { scene: "旅行", q: "Can you take a photo of me?", a: "Sure, say cheese!", cn: "你能帮我拍张照吗？好的，说\"芝士\"！" },
+  { scene: "旅行", q: "What time does the museum open?", a: "It opens at 9 AM.", cn: "博物馆几点开门？早上9点。" },
+  { scene: "旅行", q: "Do you have a city map?", a: "Yes, you can get one at the information desk.", cn: "有城市地图吗？有的，您可以在问讯处拿到。" },
+  { scene: "旅行", q: "Is it far from here?", a: "No, it's just around the corner.", cn: "离这里远吗？不远，就在拐角。" },
+  { scene: "旅行", q: "How do I get to the train station?", a: "Take bus number 10.", cn: "我怎么去火车站？坐10路公交车。" },
+  { scene: "旅行", q: "Can I book a tour here?", a: "Yes, we have several options.", cn: "我可以在这里预订旅行团吗？可以，我们有几种选择。" },
+  { scene: "旅行", q: "What's the best way to explore the city?", a: "Walking is great, or you can rent a bike.", cn: "探索这座城市的最好方式是什么？步行很好，或者可以租自行车。" },
+  { scene: "旅行", q: "Is there a tourist information center?", a: "Yes, it's in the city center.", cn: "有游客信息中心吗？有的，在市中心。" },
+  { scene: "旅行", q: "How much is the entrance fee?", a: "It's 15 dollars per person.", cn: "门票多少钱？每人15美元。" },
+  { scene: "旅行", q: "Is it safe to walk at night?", a: "Yes, it's quite safe.", cn: "晚上走路安全吗？是的，很安全。" },
+  { scene: "旅行", q: "Could you recommend a good hotel?", a: "The Grand Hotel is very nice.", cn: "你能推荐一家好酒店吗？格兰德酒店很不错。" },
+  { scene: "旅行", q: "What should I see in this city?", a: "You should visit the old town.", cn: "在这个城市我应该看什么？你应该去老城区。" },
+  { scene: "旅行", q: "Can I get a taxi here?", a: "Yes, there's a taxi stand nearby.", cn: "我可以在这里打车吗？可以，附近有出租车停靠点。" },
+  { scene: "旅行", q: "How long does the tour take?", a: "About three hours.", cn: "游览大约需要多长时间？大约三个小时。" },
+  { scene: "旅行", q: "Is there a beach near here?", a: "Yes, about 20 minutes by bus.", cn: "这附近有海滩吗？有的，坐公交大约20分钟。" },
+  { scene: "旅行", q: "Do I need to book in advance?", a: "Yes, it's recommended.", cn: "我需要提前预订吗？是的，建议提前预订。" },
+  { scene: "旅行", q: "What's the local food like?", a: "It's delicious, especially the seafood.", cn: "当地食物怎么样？很好吃，特别是海鲜。" },
+  // 机场/海关
+  { scene: "机场", q: "Where is the check-in counter?", a: "It's on the second floor.", cn: "值机柜台在哪里？在二楼。" },
+  { scene: "机场", q: "What's the boarding time?", a: "Boarding starts at 10:30.", cn: "登机时间是什么时候？10:30开始登机。" },
+  { scene: "机场", q: "Can I have a window seat?", a: "Let me check... Yes, you can.", cn: "我可以要靠窗的座位吗？我看看……可以。" },
+  { scene: "机场", q: "Is my flight on time?", a: "Yes, it's on schedule.", cn: "我的航班准时吗？是的，准点。" },
+  { scene: "机场", q: "Do I need to declare anything?", a: "Only if you have goods over $500.", cn: "我需要申报什么吗？只有当您有超过500美元的物品时。" },
+  { scene: "机场", q: "Where is the departure gate?", a: "Gate 15, it's down this hallway.", cn: "登机口在哪里？15号登机口，在这条走廊尽头。" },
+  { scene: "机场", q: "How much is the excess baggage?", a: "It's 50 dollars per kilo.", cn: "超重行李多少钱？每公斤50美元。" },
+  { scene: "机场", q: "What's the flight duration?", a: "About six hours.", cn: "飞行时间多长？大约六个小时。" },
+  { scene: "机场", q: "Can I use my phone on the plane?", a: "Yes, in airplane mode.", cn: "我可以在飞机上使用手机吗？可以，开启飞行模式。" },
+  { scene: "机场", q: "Is there a lounge for business class?", a: "Yes, it's near gate 8.", cn: "有商务舱休息室吗？有的，在8号登机口附近。" },
+  { scene: "机场", q: "Where can I get a luggage cart?", a: "You can find them near the baggage claim.", cn: "哪里可以拿到行李推车？在行李提取处附近可以找到。" },
+  { scene: "机场", q: "What's the weight limit for carry-on?", a: "It's 7 kilograms.", cn: "手提行李的重量限制是多少？7公斤。" },
+  { scene: "机场", q: "Can I bring liquids on board?", a: "Only in small containers, under 100ml.", cn: "我可以带液体上飞机吗？只能带小容器，100毫升以下。" },
+  { scene: "机场", q: "Is there duty-free shopping?", a: "Yes, after security.", cn: "有免税店吗？有，在安检之后。" },
+  { scene: "机场", q: "Do I need a visa for this country?", a: "It depends on your nationality.", cn: "去这个国家需要签证吗？这取决于您的国籍。" },
+  { scene: "机场", q: "The flight is delayed.", a: "I'm sorry, please wait for further notice.", cn: "航班延误了。抱歉，请等待进一步通知。" },
+  // 酒店
+  { scene: "酒店", q: "I have a reservation under Smith.", a: "Welcome, Mr. Smith. Here's your key.", cn: "我用史密斯的名字预订了。欢迎，史密斯先生，这是您的钥匙。" },
+  { scene: "酒店", q: "What time is breakfast?", a: "Breakfast is from 7 to 10 AM.", cn: "早餐几点？早餐从早上7点到10点。" },
+  { scene: "酒店", q: "Is there Wi-Fi in the room?", a: "Yes, it's free and the password is on the desk.", cn: "房间有WiFi吗？有的，免费，密码在桌上。" },
+  { scene: "酒店", q: "Can I get a wake-up call?", a: "Certainly, what time?", cn: "可以叫醒服务吗？当然，几点？" },
+  { scene: "酒店", q: "I'd like to check out now.", a: "OK, let me print your receipt.", cn: "我想现在退房。好的，我打印您的收据。" },
+  { scene: "酒店", q: "Is there a gym in the hotel?", a: "Yes, it's on the ground floor.", cn: "酒店里有健身房吗？有的，在一楼。" },
+  { scene: "酒店", q: "Can I get extra towels?", a: "Sure, I'll send them to your room.", cn: "能给我额外的毛巾吗？好的，我会送到您房间。" },
+  { scene: "酒店", q: "Is there a mini bar?", a: "Yes, it's stocked with drinks and snacks.", cn: "有迷你吧吗？有的，里面有饮料和小吃。" },
+  { scene: "酒店", q: "Can I extend my stay?", a: "Yes, we can extend it for another night.", cn: "我可以延住吗？可以，我们可以再延长一晚。" },
+  { scene: "酒店", q: "What's the check-in time?", a: "Check-in is from 2 PM.", cn: "入住时间是什么时候？下午2点开始。" },
+  { scene: "酒店", q: "Is there a swimming pool?", a: "Yes, it's on the rooftop.", cn: "有游泳池吗？有的，在屋顶。" },
+  { scene: "酒店", q: "Can I get a room with a view?", a: "Let me check availability.", cn: "我可以要一间景观房吗？让我查一下空房情况。" },
+  { scene: "酒店", q: "Do you have parking?", a: "Yes, it's free for guests.", cn: "你们有停车场吗？有的，对客人免费。" },
+  { scene: "酒店", q: "Is there a restaurant nearby?", a: "Yes, there are many options.", cn: "附近有餐厅吗？有的，有很多选择。" },
+  { scene: "酒店", q: "Can I get a late checkout?", a: "Yes, until 1 PM at no extra charge.", cn: "我可以延迟退房吗？可以，到下午1点不加收费用。" },
+  { scene: "酒店", q: "The air conditioning isn't working.", a: "I'll send a technician right away.", cn: "空调不工作了。我马上派技术人员过去。" },
+  // 工作
+  { scene: "工作", q: "Could you send me the report?", a: "Sure, I'll email it to you.", cn: "你能把报告发给我吗？好的，我会发邮件给你。" },
+  { scene: "工作", q: "When is the deadline?", a: "The deadline is next Friday.", cn: "截止日期是什么时候？下周五。" },
+  { scene: "工作", q: "Can we have a meeting about this?", a: "Yes, let's meet at 3 PM.", cn: "我们能开个会讨论这个吗？好的，我们下午3点开。" },
+  { scene: "工作", q: "Do you need any help?", a: "No, I'm fine, thank you.", cn: "你需要帮忙吗？不用，我很好，谢谢。" },
+  { scene: "工作", q: "I'll finish this task today.", a: "Great, keep up the good work!", cn: "我今天会完成这个任务。太好了，继续加油！" },
+  { scene: "工作", q: "Can you check my work?", a: "Sure, I'll review it now.", cn: "你能检查一下我的工作吗？好的，我现在就看。" },
+  { scene: "工作", q: "What's the project status?", a: "We're almost done with phase one.", cn: "项目进展如何？我们第一阶段快完成了。" },
+  { scene: "工作", q: "Let's take a quick break.", a: "Good idea, I'm tired.", cn: "我们快速休息一下吧。好主意，我累了。" },
+  { scene: "工作", q: "Do you have the data?", a: "Yes, it's in the spreadsheet.", cn: "你有数据吗？有的，在电子表格里。" },
+  { scene: "工作", q: "Can you print this document?", a: "Sure, I'll do it now.", cn: "你能打印这份文件吗？好的，我现在就打印。" },
+  { scene: "工作", q: "We need to meet the deadline.", a: "I agree, let's focus.", cn: "我们需要赶上截止日期。我同意，让我们集中精力。" },
+  { scene: "工作", q: "Who is the team leader?", a: "It's Sarah, she's in charge.", cn: "谁是团队负责人？是Sarah，她负责。" },
+  { scene: "工作", q: "Could you explain this part?", a: "Sure, let me go through it again.", cn: "你能解释一下这部分吗？好的，让我再讲一遍。" },
+  { scene: "工作", q: "Great job on the presentation!", a: "Thank you! I appreciate it.", cn: "演示做得很好！谢谢！我很感激。" },
+  // 学习
+  { scene: "学习", q: "How do you spell 'necessary'?", a: "It's n-e-c-e-s-s-a-r-y.", cn: "你怎么拼写'necessary'？n-e-c-e-s-s-a-r-y。" },
+  { scene: "学习", q: "What does this word mean?", a: "Let me look it up in the dictionary.", cn: "这个词是什么意思？让我查一下字典。" },
+  { scene: "学习", q: "Could you explain this grammar rule?", a: "Sure, this is the present perfect tense.", cn: "你能解释一下这个语法规则吗？好的，这是现在完成时。" },
+  { scene: "学习", q: "I need to practice speaking.", a: "Why not join a language exchange group?", cn: "我需要练习口语。为什么不加入语言交换小组呢？" },
+  { scene: "学习", q: "Is this sentence correct?", a: "Almost, just change the verb form.", cn: "这个句子对吗？差不多，只要改一下动词形式。" },
+  { scene: "学习", q: "How can I improve my English?", a: "Read and listen every day.", cn: "我怎么才能提高英语？每天阅读和听。" },
+  { scene: "学习", q: "What's the difference between these two?", a: "The first one is more formal.", cn: "这两个有什么区别？第一个更正式。" },
+  { scene: "学习", q: "Can you write it down for me?", a: "Sure, here you are.", cn: "你能给我写下来吗？好的，给您。" },
+  { scene: "学习", q: "What's the pronunciation of this word?", a: "It's pronounced 'uh-lev-ee-ay-shun'.", cn: "这个词怎么发音？发音是'uh-lev-ee-ay-shun'。" },
+  { scene: "学习", q: "Is there a shortcut to learning vocabulary?", a: "Use flashcards and review daily.", cn: "学习词汇有捷径吗？使用闪卡，每天复习。" },
+  { scene: "学习", q: "Can you give me an example?", a: "Sure, let me think...", cn: "你能给我举个例子吗？好的，让我想想……" },
+  { scene: "学习", q: "What's the best way to learn grammar?", a: "Practice with exercises and real conversations.", cn: "学语法最好的方法是什么？通过练习和真实对话来练习。" },
+  { scene: "学习", q: "I'm struggling with listening.", a: "Try watching English movies with subtitles.", cn: "我在听力方面有困难。试试看带字幕的英语电影。" },
+  { scene: "学习", q: "How do you say this in English?", a: "You can say 'I'm looking forward to it'.", cn: "这个用英语怎么说？你可以说'I'm looking forward to it'。" },
+  // 家庭
+  { scene: "家庭", q: "How many people are in your family?", a: "There are four: my parents, my sister and me.", cn: "你家有几口人？有四口：父母、姐姐和我。" },
+  { scene: "家庭", q: "Do you have any siblings?", a: "Yes, I have a younger brother.", cn: "你有兄弟姐妹吗？有，我有一个弟弟。" },
+  { scene: "家庭", q: "What does your father do?", a: "He is a teacher.", cn: "你父亲做什么？他是老师。" },
+  { scene: "家庭", q: "Are you married?", a: "Yes, I've been married for five years.", cn: "你结婚了吗？是的，我结婚五年了。" },
+  { scene: "家庭", q: "Do you live with your family?", a: "No, I live alone in the city.", cn: "你和家人住一起吗？不，我一个人住在城里。" },
+  { scene: "家庭", q: "What does your mother do?", a: "She is a nurse.", cn: "你母亲做什么？她是护士。" },
+  { scene: "家庭", q: "Do you have children?", a: "Yes, I have two children.", cn: "你有孩子吗？有，我有两个孩子。" },
+  { scene: "家庭", q: "How old are they?", a: "They are 5 and 8 years old.", cn: "他们多大了？5岁和8岁。" },
+  { scene: "家庭", q: "Are you close to your family?", a: "Yes, we are very close.", cn: "你和家人亲近吗？是的，我们非常亲近。" },
+  { scene: "家庭", q: "What's your family like?", a: "They are very supportive.", cn: "你的家人怎么样？他们非常支持我。" },
+  { scene: "家庭", q: "Do you have any cousins?", a: "Yes, I have several cousins.", cn: "你有表兄弟姐妹吗？有，我有好几个。" },
+  { scene: "家庭", q: "Family is important to me.", a: "Me too, I love my family.", cn: "家庭对我很重要。我也是，我爱我的家人。" },
+  // 天气
+  { scene: "天气", q: "What's the weather like today?", a: "It's sunny and warm.", cn: "今天天气怎么样？晴朗温暖。" },
+  { scene: "天气", q: "Is it going to rain?", a: "The forecast says it might rain later.", cn: "会下雨吗？预报说稍后可能下雨。" },
+  { scene: "天气", q: "It's so hot outside!", a: "Yes, let's stay inside.", cn: "外面好热！是的，我们待在室内吧。" },
+  { scene: "天气", q: "Do you like cold weather?", a: "Not really, I prefer spring.", cn: "你喜欢冷天吗？不太喜欢，我更喜欢春天。" },
+  { scene: "天气", q: "What's the temperature?", a: "It's about 25 degrees Celsius.", cn: "温度多少？大约25摄氏度。" },
+  { scene: "天气", q: "Is it windy?", a: "Yes, it's quite windy today.", cn: "刮风吗？是的，今天风很大。" },
+  { scene: "天气", q: "Will it snow tomorrow?", a: "No, it's too warm for snow.", cn: "明天会下雪吗？不会，天气太暖了不会下雪。" },
+  { scene: "天气", q: "What's the weather like in your country?", a: "It's usually cold in winter.", cn: "你国家的天气怎么样？冬天通常很冷。" },
+  { scene: "天气", q: "Is it humid here?", a: "Yes, it's very humid in summer.", cn: "这里潮湿吗？是的，夏天很潮湿。" },
+  { scene: "天气", q: "It's a beautiful day!", a: "Yes, perfect for a walk.", cn: "今天天气真好！是的，非常适合散步。" },
+  { scene: "天气", q: "I love rainy days.", a: "I like them too, they're cozy.", cn: "我喜欢下雨天。我也喜欢，很舒适。" },
+  { scene: "天气", q: "The sun is shining.", a: "Yes, let's enjoy it!", cn: "阳光明媚。是啊，让我们享受吧！" },
+  // 健康
+  { scene: "健康", q: "I have a headache.", a: "You should take some rest.", cn: "我头疼。你应该休息一下。" },
+  { scene: "健康", q: "Do you feel better now?", a: "Yes, much better, thanks.", cn: "你现在感觉好点了吗？是的，好多了，谢谢。" },
+  { scene: "健康", q: "I need to see a doctor.", a: "There's a clinic nearby.", cn: "我需要看医生。附近有一个诊所。" },
+  { scene: "健康", q: "Have you taken any medicine?", a: "Not yet, I'll take it after breakfast.", cn: "你吃药了吗？还没，我早餐后吃。" },
+  { scene: "健康", q: "I feel tired all the time.", a: "You should get more sleep.", cn: "我一直觉得很累。你应该多睡觉。" },
+  { scene: "健康", q: "How is your health?", a: "I'm doing well, thanks.", cn: "你身体怎么样？我很好，谢谢。" },
+  { scene: "健康", q: "Do you exercise regularly?", a: "Yes, I go to the gym three times a week.", cn: "你经常锻炼吗？是的，我每周去三次健身房。" },
+  { scene: "健康", q: "I can't stop coughing.", a: "You should drink more warm water.", cn: "我咳个不停。你应该多喝温水。" },
+  { scene: "健康", q: "Are you feeling sick?", a: "A little, I think I'm coming down with something.", cn: "你感觉不舒服吗？有点，我想我可能生病了。" },
+  { scene: "健康", q: "You should eat more vegetables.", a: "I know, I'm trying to eat healthier.", cn: "你应该多吃蔬菜。我知道，我在努力吃得更健康。" },
+  { scene: "健康", q: "I think I have a fever.", a: "Let me feel your forehead...", cn: "我想我发烧了。让我摸摸你的额头……" },
+  { scene: "健康", q: "Take care of yourself!", a: "Thank you, I will.", cn: "照顾好自己！谢谢，我会的。" },
+  // 社交
+  { scene: "社交", q: "What do you like to do in your free time?", a: "I like reading and hiking.", cn: "你空闲时间喜欢做什么？我喜欢阅读和徒步。" },
+  { scene: "社交", q: "Do you like music?", a: "Yes, I love playing the guitar.", cn: "你喜欢音乐吗？喜欢，我喜欢弹吉他。" },
+  { scene: "社交", q: "What's your hobby?", a: "I enjoy photography.", cn: "你的爱好是什么？我喜欢摄影。" },
+  { scene: "社交", q: "Do you have any pets?", a: "Yes, I have a cute cat.", cn: "你有宠物吗？有，我有一只可爱的猫。" },
+  { scene: "社交", q: "What kind of movies do you like?", a: "I love action movies.", cn: "你喜欢什么类型的电影？我喜欢动作片。" },
+  { scene: "社交", q: "Have you read any good books lately?", a: "Yes, I just finished a great novel.", cn: "你最近读过什么好书吗？是的，我刚读完一本很棒的小说。" },
+  { scene: "社交", q: "Do you like traveling?", a: "Yes, I love exploring new places.", cn: "你喜欢旅行吗？喜欢，我喜欢探索新地方。" },
+  { scene: "社交", q: "What's your favorite food?", a: "I love sushi!", cn: "你最喜欢的食物是什么？我喜欢寿司！" },
+  { scene: "社交", q: "Do you play any sports?", a: "I play tennis and basketball.", cn: "你做什么运动吗？我打网球和篮球。" },
+  { scene: "社交", q: "What do you do on weekends?", a: "I usually go out with friends.", cn: "你周末做什么？我通常和朋友出去。" },
+  { scene: "社交", q: "Let's hang out sometime.", a: "That sounds great!", cn: "我们找时间一起出去玩吧。听起来很棒！" },
+  { scene: "社交", q: "Do you know any good restaurants?", a: "Yes, I can recommend one.", cn: "你知道有什么好餐厅吗？知道，我可以推荐一家。" },
+  // 交通
+  { scene: "交通", q: "How can I get to the airport?", a: "Take the express train.", cn: "我怎么去机场？坐快线火车。" },
+  { scene: "交通", q: "Is there a bus stop nearby?", a: "Yes, it's on the corner.", cn: "附近有公交站吗？有的，在拐角处。" },
+  { scene: "交通", q: "How much is a ticket?", a: "It's two dollars.", cn: "一张票多少钱？两美元。" },
+  { scene: "交通", q: "When does the bus arrive?", a: "It should be here in five minutes.", cn: "公交车什么时候到？应该五分钟后到。" },
+  { scene: "交通", q: "Can I take the subway?", a: "Yes, it's the fastest way.", cn: "我可以坐地铁吗？可以，这是最快的方式。" },
+  { scene: "交通", q: "Is it a long ride?", a: "About 20 minutes.", cn: "路程远吗？大约20分钟。" },
+  { scene: "交通", q: "Do I need to transfer?", a: "No, it's a direct route.", cn: "我需要转车吗？不用，是直达线路。" },
+  { scene: "交通", q: "Where is the taxi stand?", a: "Just outside the main entrance.", cn: "出租车停靠站在哪里？就在主入口外面。" },
+  { scene: "交通", q: "Can I get a ride with you?", a: "Sure, hop in!", cn: "我能搭你的车吗？当然，上车吧！" },
+  { scene: "交通", q: "The traffic is terrible today.", a: "Yes, it's rush hour.", cn: "今天交通太糟糕了。是的，现在是高峰期。" },
+  // 银行/换汇
+  { scene: "银行", q: "Where is the nearest bank?", a: "It's on the main street.", cn: "最近的银行在哪里？在主街上。" },
+  { scene: "银行", q: "What time does the bank open?", a: "It opens at 9 AM.", cn: "银行几点开门？早上9点。" },
+  { scene: "银行", q: "I'd like to exchange some money.", a: "Sure, how much would you like to exchange?", cn: "我想换一些钱。好的，您想换多少？" },
+  { scene: "银行", q: "What's the exchange rate?", a: "It's 1 dollar to 100 yen today.", cn: "汇率是多少？今天1美元兑100日元。" },
+  { scene: "银行", q: "Can I withdraw cash here?", a: "Yes, from the ATM.", cn: "我可以在这里取现金吗？可以，从ATM机取。" },
+  { scene: "银行", q: "Do I need to fill in a form?", a: "Yes, please fill out this form.", cn: "我需要填表格吗？是的，请填写这份表格。" },
+  { scene: "银行", q: "What's the minimum balance?", a: "It's 100 dollars.", cn: "最低余额是多少？100美元。" },
+  { scene: "银行", q: "Can I open a bank account?", a: "Yes, you need your passport.", cn: "我可以开银行账户吗？可以，您需要带护照。" },
+  { scene: "银行", q: "Is there a transaction fee?", a: "Yes, it's 1 dollar per transaction.", cn: "有交易费吗？有的，每笔1美元。" },
+  { scene: "银行", q: "I'd like to transfer money.", a: "Please fill in the recipient's details.", cn: "我想转账。请填写收款人的详细信息。" },
+  // 通信
+  { scene: "通信", q: "Can I use your phone?", a: "Sure, go ahead.", cn: "我可以用你的电话吗？好的，请用。" },
+  { scene: "通信", q: "What's your phone number?", a: "It's 555-1234.", cn: "你的电话号码是多少？555-1234。" },
+  { scene: "通信", q: "I'll call you later.", a: "OK, I'll be waiting.", cn: "我稍后给你打电话。好的，我会等你。" },
+  { scene: "通信", q: "Did you get my message?", a: "Yes, I got it.", cn: "你收到我的信息了吗？收到了。" },
+  { scene: "通信", q: "Can you send me the file?", a: "Sure, I'll email it to you.", cn: "你能把文件发给我吗？好的，我会发邮件给你。" },
+  { scene: "通信", q: "What's your email address?", a: "It's john@email.com.", cn: "你的邮箱地址是什么？john@email.com。" },
+  { scene: "通信", q: "I'll send you a text.", a: "Great, I'll reply ASAP.", cn: "我会给你发短信。好的，我会尽快回复。" },
+  { scene: "通信", q: "Is there a signal here?", a: "Yes, it's strong.", cn: "这里有信号吗？有的，信号很强。" },
+  // 紧急
+  { scene: "紧急", q: "Call an ambulance!", a: "I'm calling now!", cn: "叫救护车！我正在打电话！" },
+  { scene: "紧急", q: "I lost my wallet.", a: "Where did you last see it?", cn: "我丢了钱包。你最后一次看到它是在哪里？" },
+  { scene: "紧急", q: "Is there a police station nearby?", a: "Yes, it's two blocks away.", cn: "附近有警察局吗？有的，两个街区外。" },
+  { scene: "紧急", q: "I need help!", a: "What's the problem?", cn: "我需要帮助！出什么事了？" },
+  { scene: "紧急", q: "There's a fire!", a: "Call the fire department!", cn: "着火了！叫消防队！" },
+  { scene: "紧急", q: "My car broke down.", a: "Let me call a tow truck.", cn: "我的车坏了。我叫一辆拖车。" },
+  { scene: "紧急", q: "I've been robbed.", a: "Stay calm, I'll call the police.", cn: "我被抢劫了。保持冷静，我报警。" },
+  { scene: "紧急", q: "Is it serious?", a: "I think so, we need to go to the hospital.", cn: "严重吗？我觉得是，我们需要去医院。" },
+];
 
-        // -------- 类别6: 出行住宿 (目标 ~200句) --------
-        const placesTravel = [
-            { en: "the station", zh: "车站" },
-            { en: "the airport", zh: "机场" },
-            { en: "the hotel", zh: "酒店" },
-            { en: "the restroom", zh: "洗手间" },
-            { en: "the bank", zh: "银行" },
-            { en: "the hospital", zh: "医院" },
-            { en: "the city center", zh: "市中心" }
-        ];
-        const placesGet = [
-            { en: "the station", zh: "车站" },
-            { en: "the airport", zh: "机场" },
-            { en: "the city center", zh: "市中心" },
-            { en: "the museum", zh: "博物馆" }
-        ];
-        TEMPLATES.push({
-            category: 6,
-            pattern_en: "Where is {place}?",
-            pattern_zh: "{地点} 在哪里？",
-            chunks: [{ en: "Where is", zh: "在哪里" }, { en: "{place}?", zh: "{地点}？" }],
-            slots: placesTravel
-        });
-        TEMPLATES.push({
-            category: 6,
-            pattern_en: "How can I get to {place}?",
-            pattern_zh: "我怎么去 {地点}？",
-            chunks: [{ en: "How can I get to", zh: "我怎么去" }, { en: "{place}?", zh: "{地点}？" }],
-            slots: placesGet
-        });
-        TEMPLATES.push({
-            category: 6,
-            pattern_en: "I need to get to {place}",
-            pattern_zh: "我需要去 {地点}",
-            chunks: [{ en: "I need to get to", zh: "我需要去" }, { en: "{place}", zh: "{地点}" }],
-            slots: placesTravel
-        });
+// ========================================================================
+// 4. 核心状态与DOM
+// ========================================================================
+let currentPatternId = 0, currentChunkIndex = 0;
+let currentMode = 'single';
+let currentDialogIndex = 0;
+let currentDialogScene = '问候';
+let dialogList = [];
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+let customChunks = JSON.parse(localStorage.getItem('customChunks')) || {};
+let isSpeaking = false, isPlayingLock = false, isRepeating = false, repeatCount = 0, repeatTimer = null;
+let hdMode = true, speechRate = 1.0;
+let currentUtterance = null, currentAudio = null, playTimeout = null;
+let autoPlayInterval = null, isAutoPlaying = false;
+const REPEAT_TIMES = 5;
 
-        // -------- 类别7: 高频对话 (目标 ~200句) --------
-        // 我们手工准备一些对话模板，并也加入一些组合生成
-        const dialogueTemplates = [
-            { en: "A: What do you want? B: I want some water.", zh: "A: 你想要什么？B: 我想要一些水。" },
-            { en: "A: Where are you going? B: I'm going home.", zh: "A: 你去哪儿？B: 我回家。" },
-            { en: "A: Can you help me? B: Yes, of course.", zh: "A: 你能帮我吗？B: 当然可以。" },
-            { en: "A: How much is this? B: It's ten dollars.", zh: "A: 这个多少钱？B: 十美元。" },
-            { en: "A: What time is it? B: It's seven o'clock.", zh: "A: 现在几点了？B: 七点了。" },
-            { en: "A: Do you like coffee? B: Yes, I love it.", zh: "A: 你喜欢咖啡吗？B: 是的，我喜欢。" },
-            { en: "A: Could you speak slowly? B: Sure.", zh: "A: 你能说慢点吗？B: 当然。" },
-            { en: "A: Where is the station? B: Go straight ahead.", zh: "A: 车站在哪里？B: 一直往前走。" },
-            { en: "A: What do you do? B: I'm a chef.", zh: "A: 你做什么工作？B: 我是一名厨师。" },
-            { en: "A: Would you like some tea? B: Yes, please.", zh: "A: 您要些茶吗？B: 好的，谢谢。" },
-            { en: "A: How long does it take? B: About twenty minutes.", zh: "A: 需要多长时间？B: 大约二十分钟。" },
-            { en: "A: Can I try it on? B: Yes, the fitting room is there.", zh: "A: 我可以试穿吗？B: 可以，试衣间在那边。" },
-            { en: "A: What's the weather like? B: It's sunny.", zh: "A: 天气怎么样？B: 天气晴朗。" },
-            { en: "A: Do you need help? B: Yes, I need some advice.", zh: "A: 你需要帮助吗？B: 是的，我需要一些建议。" },
-            { en: "A: Where is the nearest bank? B: Turn left at the corner.", zh: "A: 最近的银行在哪里？B: 在拐角左转。" },
-            { en: "A: What would you like to eat? B: I'd like some noodles.", zh: "A: 你想吃什么？B: 我想要一些面条。" },
-            { en: "A: How are you feeling? B: I'm feeling better.", zh: "A: 你感觉怎么样？B: 我感觉好多了。" },
-            { en: "A: Can I borrow your pen? B: Sure, here you are.", zh: "A: 我能借你的笔吗？B: 当然，给你。" },
-            { en: "A: What's your favorite color? B: My favorite color is blue.", zh: "A: 你最喜欢的颜色是什么？B: 我最喜欢的颜色是蓝色。" },
-            { en: "A: How often do you exercise? B: I exercise every day.", zh: "A: 你多久锻炼一次？B: 我每天锻炼。" }
-        ];
-        // 将这些对话作为特殊模板，每个对话生成一个句子，但为了达到200句，我们可以重复组合一些变化
-        // 但对话模板本身数量有限，我们也可以从其他模板中抽取组合成对话，但为了简单，我们复制并稍微变化
-        // 这里我们直接使用这些对话，并额外生成一些由前面模板组合的对话（取两个不同模板的句子拼成对话）
-        // 我们将在生成函数中处理对话生成。
+const dom = {
+  scene: document.getElementById("scene"), progress: document.getElementById("progress"),
+  patternDisplay: document.getElementById("patternDisplay"), patternSelect: document.getElementById("patternSelect"),
+  chunkArea: document.getElementById("chunkArea"), chunkAreaWrap: document.getElementById("chunkAreaWrap"),
+  chunkToggleBtn: document.getElementById("chunkToggleBtn"), chunkCount: document.getElementById("chunkCount"),
+  english: document.getElementById("english"), chinese: document.getElementById("chinese"),
+  sentenceHint: document.getElementById("sentenceHint"), status: document.getElementById("status"),
+  playPauseBtn: document.getElementById("playPauseBtn"), favBtn: document.getElementById("favBtn"),
+  favCountBtn: document.getElementById("favCountBtn"), themeToggle: document.getElementById("themeToggle"),
+  searchInput: document.getElementById("searchInput"), results: document.getElementById("results"),
+  toast: document.getElementById("toast"), micBtn: document.getElementById("micBtn"),
+  chatBox: document.getElementById("chatBox"), chatInput: document.getElementById("chatInput"),
+  aiToggle: document.getElementById("aiToggle"), hdToggle: document.getElementById("hdToggleBtn"),
+  dialogArea: document.getElementById("dialogArea"), dialogSceneSelect: document.getElementById("dialogSceneSelect"),
+  dialogCount: document.getElementById("dialogCount"), autoPlayBtn: document.getElementById("autoPlayBtn"),
+};
 
-        // ================================================================
-        //  2. 生成器函数
-        // ================================================================
-        function generateAllSentences() {
-            const result = [];
-            let id = 0;
+let toastTimer;
+function showToast(t) { dom.toast.textContent = t; dom.toast.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => dom.toast.classList.remove("show"), 1800); }
 
-            // 处理普通模板
-            for (let t of TEMPLATES) {
-                for (let slot of t.slots) {
-                    // 替换占位符
-                    let en = t.pattern_en.replace(/\{verb\}/g, slot.en)
-                        .replace(/\{noun\}/g, slot.en)
-                        .replace(/\{verb_phrase\}/g, slot.en)
-                        .replace(/\{prep\}/g, slot.en)
-                        .replace(/\{person\}/g, slot.en)
-                        .replace(/\{place\}/g, slot.en)
-                        .replace(/\{verb\}ing/g, slot.en + 'ing'); // 简单处理
-                    let zh = t.pattern_zh.replace(/\{动词\}/g, slot.zh)
-                        .replace(/\{名词\}/g, slot.zh)
-                        .replace(/\{动词短语\}/g, slot.zh)
-                        .replace(/\{介词短语\}/g, slot.zh)
-                        .replace(/\{人\}/g, slot.zh)
-                        .replace(/\{地点\}/g, slot.zh);
+// ========================================================================
+// 5. 主题
+// ========================================================================
+let currentTheme = localStorage.getItem('theme') || 'light';
+function applyTheme(t) { document.documentElement.setAttribute('data-theme', t); dom.themeToggle.textContent = t === 'dark' ? '☀️' : '🌙'; localStorage.setItem('theme', t); }
+dom.themeToggle.addEventListener('click', () => { currentTheme = currentTheme === 'dark' ? 'light' : 'dark'; applyTheme(currentTheme); });
+applyTheme(currentTheme);
 
-                    // 特殊处理 What are you {verb}ing? 等
-                    if (t.pattern_en.includes('{verb}ing')) {
-                        let verbIng = slot.en;
-                        if (verbIng.endsWith('e')) verbIng = verbIng.slice(0, -1) + 'ing';
-                        else if (verbIng === 'go') verbIng = 'going';
-                        else if (verbIng === 'run') verbIng = 'running';
-                        else verbIng = verbIng + 'ing';
-                        en = t.pattern_en.replace(/\{verb\}ing/g, verbIng);
-                        // 中文动词不变
-                    }
+// ========================================================================
+// 6. 收藏
+// ========================================================================
+function updateFavUI() {
+  dom.favCountBtn.textContent = '⭐ ' + favorites.length;
+  const cur = dom.english.textContent;
+  const isFav = favorites.some(f => f.en === cur);
+  dom.favBtn.textContent = isFav ? '★' : '☆';
+  dom.favBtn.classList.toggle('active', isFav);
+}
+function toggleFav() {
+  const en = dom.english.textContent, cn = dom.chinese.textContent;
+  const chunkEn = dom.chunkArea.querySelector('.chunk-item.active')?.dataset.en || '';
+  const idx = favorites.findIndex(f => f.en === en);
+  if (idx >= 0) { favorites.splice(idx, 1); showToast('已取消收藏'); }
+  else { favorites.push({ en, cn, chunkEn, pattern: patternList[currentPatternId].pattern, patternId: currentPatternId }); showToast('⭐ 已收藏'); }
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+  updateFavUI();
+}
+dom.favCountBtn.addEventListener('click', function() {
+  if (!favorites.length) { showToast('暂无收藏'); return; }
+  dom.results.innerHTML = '<div style="text-align:center;font-weight:600;margin:4px 0;">⭐ 收藏列表</div>';
+  favorites.slice().reverse().forEach(f => {
+    const box = document.createElement('div'); box.className = 'result';
+    box.innerHTML = `<div class="result-en">${f.en}</div><div class="result-cn">${f.cn}</div>`;
+    box.onclick = function() {
+      dom.patternSelect.value = f.patternId || 0;
+      loadPattern(f.patternId || 0);
+      setTimeout(() => {
+        const items = dom.chunkArea.querySelectorAll('.chunk-item');
+        let target = null;
+        items.forEach(el => { if (el.dataset.en === f.chunkEn) target = el; });
+        if (target) playChunk(target);
+        else showToast('词块已不存在');
+      }, 200);
+      dom.results.innerHTML = '';
+    };
+    dom.results.appendChild(box);
+  });
+});
 
-                    // 收集同模板的其他插槽作为替换范例
-                    const otherSlots = t.slots.filter(s => s !== slot);
-                    const replacements = [];
-                    for (let i = 0; i < Math.min(3, otherSlots.length); i++) {
-                        let s = otherSlots[i];
-                        let repEn = t.pattern_en.replace(/\{verb\}/g, s.en)
-                            .replace(/\{noun\}/g, s.en)
-                            .replace(/\{verb_phrase\}/g, s.en)
-                            .replace(/\{prep\}/g, s.en)
-                            .replace(/\{person\}/g, s.en)
-                            .replace(/\{place\}/g, s.en);
-                        if (t.pattern_en.includes('{verb}ing')) {
-                            let v = s.en;
-                            if (v.endsWith('e')) v = v.slice(0, -1) + 'ing';
-                            else if (v === 'go') v = 'going';
-                            else if (v === 'run') v = 'running';
-                            else v = v + 'ing';
-                            repEn = t.pattern_en.replace(/\{verb\}ing/g, v);
-                        }
-                        replacements.push(repEn);
-                    }
+// ========================================================================
+// 7. 单句加载
+// ========================================================================
+function getChunksForPattern(pid) {
+  const p = patternList[pid];
+  const end = Math.min(p.start + p.count, chunkPool.length);
+  const base = [];
+  for (let i = p.start; i < end; i++) base.push({ index: i, ...chunkPool[i], custom: false });
+  const custom = (customChunks[pid] || []).map((c, idx) => ({ ...c, custom: true, index: 1000 + idx }));
+  return [...base, ...custom];
+}
 
-                    // 构造对话：用本句和另一个替换句组合
-                    let dialogue = `A: ${en}  B: ${replacements.length > 0 ? replacements[0] : 'OK.'}`;
+function buildAllLessons() {
+  const res = [];
+  patternList.forEach(p => {
+    const end = Math.min(p.start + p.count, chunkPool.length);
+    for (let i = p.start; i < end; i++) {
+      const c = chunkPool[i];
+      res.push({ id: res.length + 1, pattern: p.pattern, en: p.pattern.replace(/\.{3}/g, c.en), cn: p.cnPrefix + c.cn, chunkEn: c.en, chunkCn: c.cn, patternId: p.id, chunkIndex: i, custom: false });
+    }
+    (customChunks[p.id] || []).forEach(c => {
+      res.push({ id: res.length + 1, pattern: p.pattern, en: p.pattern.replace(/\.{3}/g, c.en), cn: p.cnPrefix + c.cn, chunkEn: c.en, chunkCn: c.cn, patternId: p.id, chunkIndex: 1000 + res.length, custom: true });
+    });
+  });
+  return res;
+}
+let lessons = buildAllLessons();
 
-                    // 组装词块列表
-                    const chunks = t.chunks.map(c => c.en.replace(/\{verb\}/g, slot.en)
-                        .replace(/\{noun\}/g, slot.en)
-                        .replace(/\{verb_phrase\}/g, slot.en)
-                        .replace(/\{prep\}/g, slot.en)
-                        .replace(/\{person\}/g, slot.en)
-                        .replace(/\{place\}/g, slot.en)
-                    );
+function loadPattern(pid) {
+  currentPatternId = pid;
+  currentChunkIndex = 0;
+  const p = patternList[pid];
+  const chunks = getChunksForPattern(pid);
+  dom.patternDisplay.textContent = p.pattern;
+  dom.chunkCount.textContent = chunks.length;
+  dom.scene.textContent = '日常表达 · ' + p.cnPrefix;
+  dom.chunkArea.innerHTML = '';
+  chunks.forEach((chunk, idx) => {
+    const span = document.createElement('span');
+    span.className = 'chunk-item' + (chunk.custom ? ' custom' : '');
+    span.textContent = chunk.en;
+    span.dataset.index = idx;
+    span.dataset.en = chunk.en;
+    span.dataset.cn = chunk.cn;
+    span.dataset.custom = chunk.custom ? 'true' : 'false';
+    span.onclick = function(e) { e.stopPropagation(); playChunk(this); };
+    dom.chunkArea.appendChild(span);
+  });
+  const first = dom.chunkArea.querySelector('.chunk-item');
+  if (first) setTimeout(() => playChunk(first), 50);
+  dom.progress.textContent = '总句数: ' + lessons.length + ' · 当前母句: ' + chunks.length + ' 词块';
+  updateFavUI();
+}
 
-                    result.push({
-                        id: id++,
-                        category: t.category,
-                        en: en,
-                        zh: zh,
-                        pattern: t.pattern_en,
-                        chunks: chunks,
-                        replacements: replacements,
-                        dialogue: dialogue
-                    });
-                }
-            }
+// ========================================================================
+// 8. 对话
+// ========================================================================
+function getDialogScenes() { const s = new Set(); dialogPool.forEach(d => s.add(d.scene)); return Array.from(s); }
+function getDialogByScene(scene) { return dialogPool.filter(d => d.scene === scene); }
 
-            // 添加对话模板（固定对话）
-            for (let d of dialogueTemplates) {
-                result.push({
-                    id: id++,
-                    category: 7,
-                    en: d.en.split(' B: ')[0] + ' | ' + d.en.split(' B: ')[1],
-                    zh: d.zh,
-                    pattern: '对话示例',
-                    chunks: ['对话片段'],
-                    replacements: [],
-                    dialogue: d.en + ' ( ' + d.zh + ' )'
-                });
-            }
+function populateDialogScenes() {
+  const select = dom.dialogSceneSelect;
+  const scenes = getDialogScenes();
+  select.innerHTML = '';
+  scenes.forEach(scene => {
+    const opt = document.createElement('option');
+    opt.value = scene;
+    opt.textContent = scene + ' (' + getDialogByScene(scene).length + '组)';
+    select.appendChild(opt);
+  });
+  select.value = '问候';
+  select.addEventListener('change', function() { currentDialogScene = this.value; currentDialogIndex = 0; loadDialogScene(currentDialogScene); });
+  loadDialogScene('问候');
+}
 
-            // 去重（基于英文完整句）
-            const uniqueMap = new Map();
-            for (let s of result) {
-                const key = s.en.trim();
-                if (!uniqueMap.has(key)) {
-                    uniqueMap.set(key, s);
-                }
-            }
-            let final = Array.from(uniqueMap.values());
+function loadDialogScene(scene) {
+  dialogList = getDialogByScene(scene);
+  dom.dialogCount.textContent = dialogList.length + ' 组';
+  if (!dialogList.length) { dom.dialogArea.innerHTML = '<div style="padding:12px;color:var(--text-muted);">暂无对话</div>'; return; }
+  if (currentDialogIndex >= dialogList.length) currentDialogIndex = 0;
+  showDialogItem(currentDialogIndex);
+}
 
-            // 如果不足1600，补充一些随机组合（从已有模板中再生成一些）
-            while (final.length < 1600) {
-                // 随机选一个模板和插槽
-                const t = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
-                const slot = t.slots[Math.floor(Math.random() * t.slots.length)];
-                let en = t.pattern_en.replace(/\{verb\}/g, slot.en)
-                    .replace(/\{noun\}/g, slot.en)
-                    .replace(/\{verb_phrase\}/g, slot.en)
-                    .replace(/\{prep\}/g, slot.en)
-                    .replace(/\{person\}/g, slot.en)
-                    .replace(/\{place\}/g, slot.en);
-                if (t.pattern_en.includes('{verb}ing')) {
-                    let v = slot.en;
-                    if (v.endsWith('e')) v = v.slice(0, -1) + 'ing';
-                    else if (v === 'go') v = 'going';
-                    else if (v === 'run') v = 'running';
-                    else v = v + 'ing';
-                    en = t.pattern_en.replace(/\{verb\}ing/g, v);
-                }
-                let zh = t.pattern_zh.replace(/\{动词\}/g, slot.zh)
-                    .replace(/\{名词\}/g, slot.zh)
-                    .replace(/\{动词短语\}/g, slot.zh)
-                    .replace(/\{介词短语\}/g, slot.zh)
-                    .replace(/\{人\}/g, slot.zh)
-                    .replace(/\{地点\}/g, slot.zh);
-                if (!uniqueMap.has(en)) {
-                    const chunks = t.chunks.map(c => c.en.replace(/\{verb\}/g, slot.en)
-                        .replace(/\{noun\}/g, slot.en)
-                        .replace(/\{verb_phrase\}/g, slot.en)
-                        .replace(/\{prep\}/g, slot.en)
-                        .replace(/\{person\}/g, slot.en)
-                        .replace(/\{place\}/g, slot.en)
-                    );
-                    final.push({
-                        id: id++,
-                        category: t.category,
-                        en: en,
-                        zh: zh,
-                        pattern: t.pattern_en,
-                        chunks: chunks,
-                        replacements: [],
-                        dialogue: `A: ${en}  B: OK.`
-                    });
-                    uniqueMap.set(en, final[final.length - 1]);
-                }
-            }
+function showDialogItem(index) {
+  if (!dialogList.length) return;
+  if (index >= dialogList.length) index = 0;
+  if (index < 0) index = dialogList.length - 1;
+  currentDialogIndex = index;
+  const d = dialogList[index];
+  dom.dialogArea.innerHTML = `
+    <div class="dialog-item">
+      <div class="q-row"><span class="q-label">问</span><span class="q-text">${d.q}</span>
+        <span class="play-btns"><button onclick="playSingleQ('${d.q}')">🔊</button></span></div>
+      <div class="a-row"><span class="a-label">答</span><span class="a-text">${d.a}</span>
+        <span class="play-btns"><button onclick="playSingleA('${d.a}')">🔊</button></span></div>
+      <div class="cn-text">${d.cn}</div>
+    </div>
+  `;
+  dom.scene.textContent = '对讲机 · ' + d.scene;
+  dom.progress.textContent = '第 ' + (index + 1) + '/' + dialogList.length + ' 组';
+  document.querySelectorAll('.dialog-item').forEach((el, i) => { el.style.borderLeftColor = i === index ? 'var(--primary)' : 'var(--border)'; });
+}
+function playSingleQ(t) { stopSpeech(); setTimeout(() => speakText(t), 100); }
+function playSingleA(t) { stopSpeech(); setTimeout(() => speakText(t), 100); }
+function prevDialog() { if (!dialogList.length) return; currentDialogIndex = (currentDialogIndex - 1 + dialogList.length) % dialogList.length; showDialogItem(currentDialogIndex); }
+function nextDialog() { if (!dialogList.length) return; currentDialogIndex = (currentDialogIndex + 1) % dialogList.length; showDialogItem(currentDialogIndex); }
+function playDialogQ() { if (!dialogList.length || currentDialogIndex >= dialogList.length) return; stopSpeech(); setTimeout(() => speakText(dialogList[currentDialogIndex].q), 100); }
+function playDialogA() { if (!dialogList.length || currentDialogIndex >= dialogList.length) return; stopSpeech(); setTimeout(() => speakText(dialogList[currentDialogIndex].a), 100); }
+function playDialogAll() { if (!dialogList.length || currentDialogIndex >= dialogList.length) return; const d = dialogList[currentDialogIndex]; stopSpeech(); setTimeout(() => { speakText(d.q, function() { setTimeout(() => speakText(d.a), 500); }); }, 100); }
 
-            // 打乱顺序（但保留类别相对集中）
-            final.sort((a, b) => a.category - b.category || a.id - b.id);
-            // 截取前1600
-            if (final.length > 1600) final = final.slice(0, 1600);
-            // 重新编号
-            final.forEach((s, i) => s.id = i);
-            return final;
-        }
+// ========================================================================
+// 9. AI 生成
+// ========================================================================
+let apiKey = '', apiBase = 'https://api.deepseek.com/v1';
+function saveApiConfig() {
+  apiKey = document.getElementById('apiKeyInput').value.trim();
+  apiBase = document.getElementById('apiBaseInput').value.trim();
+  localStorage.setItem('apiKey', apiKey);
+  localStorage.setItem('apiBase', apiBase);
+  document.getElementById('apiStatus').textContent = apiKey ? '✅ 已设置' : '❌ 未设置';
+  showToast('API 配置已保存');
+}
+document.getElementById('apiKeyInput').value = localStorage.getItem('apiKey') || '';
+document.getElementById('apiBaseInput').value = localStorage.getItem('apiBase') || 'https://api.deepseek.com/v1';
+apiKey = localStorage.getItem('apiKey') || '';
+apiBase = localStorage.getItem('apiBase') || 'https://api.deepseek.com/v1';
+document.getElementById('apiStatus').textContent = apiKey ? '✅ 已设置' : '❌ 未设置';
 
-        // ================================================================
-        //  3. 主程序
-        // ================================================================
-        let SENTENCES = [];
-        let currentIndex = 0;
-        let total = 0;
-        let currentCategory = -1;
-        let loopMode = 0;
-        const LOOP_LABELS = ['➡️', '🔁', '🔂'];
-        const LOOP_BADGES = ['1', '∞', '1'];
+async function aiGenerateCurrentDialog() {
+  if (!dialogList.length || currentDialogIndex >= dialogList.length) { showToast('请先选择一个对话'); return; }
+  const d = dialogList[currentDialogIndex];
+  if (!apiKey) { showToast('⚠️ 请设置 API Key'); return; }
+  dom.status.textContent = '🤖 AI 生成中...';
+  dom.status.className = 'status speaking';
+  try {
+    const resp = await fetch(apiBase + '/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: 'You are a helpful English assistant. Answer naturally and concisely.' },
+          { role: 'user', content: `Generate a natural, friendly short answer (1 sentence) to: "${d.q}"` }
+        ],
+        temperature: 0.7, max_tokens: 80
+      })
+    });
+    if (!resp.ok) throw new Error('API error');
+    const data = await resp.json();
+    d.a = data.choices[0].message.content.trim();
+    showDialogItem(currentDialogIndex);
+    showToast('✅ AI 已生成新回答');
+    setTimeout(() => speakText(d.a), 300);
+  } catch (e) { showToast('❌ AI 失败: ' + e.message); }
+  dom.status.textContent = 'Ready';
+  dom.status.className = 'status done';
+}
 
-        let isSpeaking = false;
-        let currentUtterance = null;
+// ========================================================================
+// 10. 语音引擎
+// ========================================================================
+function stopSpeech() {
+  if (playTimeout) clearTimeout(playTimeout);
+  try { window.speechSynthesis.cancel(); } catch(e) {}
+  if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  isSpeaking = false; isPlayingLock = false;
+  dom.playPauseBtn.textContent = "▶";
+  dom.playPauseBtn.classList.remove("paused");
+  stopSpeakingMouth();
+}
 
-        // DOM
-        const enText = document.getElementById('enText');
-        const zhText = document.getElementById('zhText');
-        const enSpeak = document.getElementById('enSpeak');
-        const zhSpeak = document.getElementById('zhSpeak');
-        const prevBtn = document.getElementById('prevBtn');
-        const replayBtn = document.getElementById('replayBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const loopBtn = document.getElementById('loopBtn');
-        const loopBadge = document.getElementById('loopBadge');
-        const counterDisplay = document.getElementById('counterDisplay');
-        const statusDisplay = document.getElementById('statusDisplay');
-        const progressBadge = document.getElementById('progressBadge');
-        const card = document.getElementById('card');
-        const categorySelect = document.getElementById('categorySelect');
-        const patternDisplay = document.getElementById('patternDisplay');
-        const chunkList = document.getElementById('chunkList');
-        const replacementsList = document.getElementById('replacementsList');
-        const dialogueDisplay = document.getElementById('dialogueDisplay');
+function speakGoogle(text, cb) {
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en&client=tw-ob`;
+  const audio = new Audio(url);
+  currentAudio = audio;
+  let ended = false;
+  const timeoutId = setTimeout(() => { if (!ended) { ended = true; audio.pause(); audio.src = ''; currentAudio = null; cb(false, 'Timeout'); } }, 8000);
+  audio.oncanplaythrough = function() { audio.play().catch(() => { if (!ended) { clearTimeout(timeoutId); ended = true; currentAudio = null; cb(false, 'Play error'); } }); };
+  audio.onplay = function() { isSpeaking = true; isPlayingLock = true; dom.playPauseBtn.textContent = "⏸"; dom.playPauseBtn.classList.add("paused"); dom.status.textContent = "🎧 HD 语音..."; dom.status.className = "status speaking"; startSpeakingMouth(); };
+  audio.onended = function() { if (ended) return; clearTimeout(timeoutId); ended = true; isSpeaking = false; isPlayingLock = false; currentAudio = null; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused"); dom.status.textContent = "✅ 播放完成"; dom.status.className = "status done"; stopSpeakingMouth(); cb(true); };
+  audio.onerror = function() { if (ended) return; clearTimeout(timeoutId); ended = true; isSpeaking = false; isPlayingLock = false; currentAudio = null; cb(false, 'Google TTS 失败'); };
+  audio.load();
+}
 
-        const CATEGORY_NAMES = [
-            '基础需求', '问答交流', '日常行动', '工作交流',
-            '吃饭厨房', '购物生活', '出行住宿', '高频对话'
-        ];
+function speakNative(text, cb) {
+  if (!text || !window.speechSynthesis) { cb(false); return; }
+  try { window.speechSynthesis.cancel(); } catch(e) {}
+  let voices = window.speechSynthesis.getVoices();
+  if (!voices || !voices.length) {
+    window.speechSynthesis.onvoiceschanged = function() { voices = window.speechSynthesis.getVoices(); doSpeak(); };
+    setTimeout(() => { voices = window.speechSynthesis.getVoices(); if (voices && voices.length) doSpeak(); }, 300);
+    return;
+  }
+  doSpeak();
+  function doSpeak() {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = speechRate;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    const preferred = voices.find(v => /Google UK|David|Samantha|Alex|Veena/i.test(v.name)) || voices.find(v => v.lang && v.lang.startsWith('en'));
+    if (preferred) utterance.voice = preferred;
+    let ended = false;
+    const timeoutId = setTimeout(() => { if (!ended) { ended = true; try { window.speechSynthesis.cancel(); } catch(e) {} isSpeaking = false; isPlayingLock = false; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused"); cb(false); stopSpeakingMouth(); } }, 6000);
+    utterance.onstart = function() { isSpeaking = true; isPlayingLock = true; dom.playPauseBtn.textContent = "⏸"; dom.playPauseBtn.classList.add("paused"); dom.status.textContent = "🎧 系统语音..."; dom.status.className = "status speaking"; startSpeakingMouth(); };
+    utterance.onend = function() { if (ended) return; ended = true; clearTimeout(timeoutId); isSpeaking = false; isPlayingLock = false; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused"); dom.status.textContent = "✅ 播放完成"; dom.status.className = "status done"; stopSpeakingMouth(); cb(true); };
+    utterance.onerror = function(e) { if (ended) return; ended = true; clearTimeout(timeoutId); isSpeaking = false; isPlayingLock = false; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused"); stopSpeakingMouth(); if (e.error !== 'canceled') cb(false); else cb(false); };
+    currentUtterance = utterance;
+    try { window.speechSynthesis.speak(utterance); } catch(err) { clearTimeout(timeoutId); ended = true; isSpeaking = false; isPlayingLock = false; cb(false); stopSpeakingMouth(); }
+  }
+}
 
-        function initCategories() {
-            categorySelect.innerHTML = '';
-            const allBtn = document.createElement('button');
-            allBtn.className = 'cat-btn active';
-            allBtn.textContent = '全部';
-            allBtn.dataset.cat = '-1';
-            allBtn.addEventListener('click', () => filterCategory(-1));
-            categorySelect.appendChild(allBtn);
+function speakText(text, cb) {
+  const clean = text.replace(/\.{3,}/g, '').replace(/…/g, '').replace(/\s+/g, ' ').trim();
+  if (!clean) { if (cb) cb(false); return; }
+  stopSpeech();
+  setTimeout(() => {
+    if (hdMode && navigator.onLine) {
+      speakGoogle(clean, function(success) {
+        if (!success) { speakNative(clean, cb); }
+        else if (cb) cb(true);
+      });
+    } else {
+      speakNative(clean, cb);
+    }
+  }, 50);
+}
 
-            CATEGORY_NAMES.forEach((name, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'cat-btn';
-                btn.textContent = name;
-                btn.dataset.cat = idx;
-                btn.addEventListener('click', () => filterCategory(idx));
-                categorySelect.appendChild(btn);
-            });
-        }
+// ========================================================================
+// 11. 播放控制
+// ========================================================================
+function playChunk(el) {
+  stopSpeech();
+  setTimeout(() => {
+    dom.chunkArea.querySelectorAll('.chunk-item').forEach(item => item.classList.remove('active'));
+    el.classList.add('active');
+    const p = patternList[currentPatternId];
+    const fullEn = p.pattern.replace(/\.{3}/g, el.dataset.en);
+    const fullCn = p.cnPrefix + el.dataset.cn;
+    dom.english.textContent = fullEn;
+    dom.chinese.textContent = fullCn;
+    dom.sentenceHint.innerHTML = '✅ 造句连读：<span class="highlight">' + el.dataset.en + '</span> (' + el.dataset.cn + ')';
+    dom.status.textContent = '🔊 ' + fullEn;
+    dom.status.className = 'status speaking';
+    updateFavUI();
+    speakText(fullEn);
+  }, 100);
+}
 
-        function filterCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.toggle('active', parseInt(btn.dataset.cat) === cat);
-            });
-            let idx = 0;
-            if (cat !== -1) {
-                idx = SENTENCES.findIndex(s => s.category === cat);
-                if (idx === -1) idx = 0;
-            }
-            currentIndex = idx;
-            render(currentIndex);
-        }
+function playCurrent() {
+  if (currentMode === 'dialog') { playDialogAll(); return; }
+  const items = dom.chunkArea.querySelectorAll('.chunk-item');
+  let active = dom.chunkArea.querySelector('.chunk-item.active');
+  if (!active && items.length) active = items[0];
+  if (active) playChunk(active);
+}
 
-        function getFilteredIndices() {
-            if (currentCategory === -1) {
-                return SENTENCES.map((_, i) => i);
-            } else {
-                return SENTENCES.map((s, i) => s.category === currentCategory ? i : -1).filter(i => i !== -1);
-            }
-        }
+function prevChunk() {
+  if (currentMode === 'dialog') { prevDialog(); return; }
+  const items = dom.chunkArea.querySelectorAll('.chunk-item');
+  if (!items.length) return;
+  let idx = 0;
+  items.forEach((el, i) => { if (el.classList.contains('active')) idx = i; });
+  const newIdx = (idx - 1 + items.length) % items.length;
+  playChunk(items[newIdx]);
+}
 
-        function render(index) {
-            if (!SENTENCES.length) return;
-            const data = SENTENCES[index];
-            enText.textContent = data.en;
-            zhText.textContent = data.zh;
-            progressBadge.textContent = `${index + 1} / ${total}`;
-            counterDisplay.textContent = `第 ${index + 1} 句`;
-            card.classList.remove('fade-in');
-            void card.offsetWidth;
-            card.classList.add('fade-in');
+function nextChunk() {
+  if (currentMode === 'dialog') { nextDialog(); return; }
+  const items = dom.chunkArea.querySelectorAll('.chunk-item');
+  if (!items.length) return;
+  let idx = 0;
+  items.forEach((el, i) => { if (el.classList.contains('active')) idx = i; });
+  const newIdx = (idx + 1) % items.length;
+  playChunk(items[newIdx]);
+}
 
-            patternDisplay.textContent = data.pattern || '—';
-            chunkList.innerHTML = '';
-            if (data.chunks && data.chunks.length) {
-                data.chunks.forEach(ch => {
-                    const span = document.createElement('span');
-                    span.className = 'chunk';
-                    span.textContent = ch;
-                    chunkList.appendChild(span);
-                });
-            } else {
-                chunkList.innerHTML = '<span class="chunk">无词块</span>';
-            }
+function togglePlayPause() {
+  if (isSpeaking || isPlayingLock) { stopSpeech(); dom.status.textContent = "⏸ 暂停"; dom.status.className = "status paused"; }
+  else { playCurrent(); }
+}
 
-            replacementsList.innerHTML = '';
-            if (data.replacements && data.replacements.length) {
-                data.replacements.forEach(rep => {
-                    const span = document.createElement('span');
-                    span.className = 'rep-item';
-                    span.textContent = rep;
-                    replacementsList.appendChild(span);
-                });
-            } else {
-                replacementsList.innerHTML = '<span class="rep-item">无替换</span>';
-            }
+function playPatternOnly() {
+  if (currentMode === 'dialog') return;
+  const p = patternList[currentPatternId];
+  const text = p.pattern.replace(/\.{3}/g, '').trim();
+  if (!text) return;
+  stopSpeech();
+  setTimeout(() => { dom.status.textContent = "🧩 母句: " + text; speakText(text); }, 100);
+}
 
-            dialogueDisplay.innerHTML = data.dialogue ? data.dialogue.replace(/\n/g, '<br>') : '无对话';
+function randomChunk() {
+  if (currentMode === 'dialog') {
+    if (!dialogList.length) return;
+    const randIdx = Math.floor(Math.random() * dialogList.length);
+    showDialogItem(randIdx); return;
+  }
+  const items = dom.chunkArea.querySelectorAll('.chunk-item');
+  if (!items.length) return;
+  const randIdx = Math.floor(Math.random() * items.length);
+  playChunk(items[randIdx]);
+}
 
-            resetSpeakBtn(enSpeak);
-            resetSpeakBtn(zhSpeak);
+function toggleRepeat() {
+  if (isRepeating) {
+    isRepeating = false; clearTimeout(repeatTimer);
+    stopSpeech();
+    dom.repeatBtn.textContent = "🔁 Repeat";
+    dom.repeatBtn.classList.remove("active");
+    dom.status.textContent = "⏸ Repeat stopped";
+    dom.status.className = "status paused";
+    return;
+  }
+  isRepeating = true; repeatCount = 0;
+  dom.repeatBtn.textContent = "⏹ Stop Repeat";
+  dom.repeatBtn.classList.add("active");
+  doRepeat();
+}
 
-            const filtered = getFilteredIndices();
-            const curIdx = filtered.indexOf(index);
-            const isLoopAll = (loopMode === 1);
-            const isLoopSingle = (loopMode === 2);
-            prevBtn.disabled = (!isLoopAll && !isLoopSingle && curIdx <= 0);
-            nextBtn.disabled = (!isLoopAll && !isLoopSingle && curIdx >= filtered.length - 1);
-            statusDisplay.textContent = '就绪';
-        }
+function doRepeat() {
+  if (!isRepeating) return;
+  repeatCount++;
+  dom.status.textContent = '🔁 Repeat ' + repeatCount + '/' + REPEAT_TIMES;
+  dom.status.className = "status";
+  const text = dom.english.textContent;
+  if (!text) { isRepeating = false; dom.repeatBtn.textContent = "🔁 Repeat"; dom.repeatBtn.classList.remove("active"); return; }
+  stopSpeech();
+  setTimeout(() => {
+    speakText(text, function(success) {
+      if (!isRepeating) return;
+      if (!success) { isRepeating = false; dom.repeatBtn.textContent = "🔁 Repeat"; dom.repeatBtn.classList.remove("active"); dom.status.textContent = "⚠️ Repeat interrupted"; dom.status.className = "status error"; return; }
+      if (repeatCount >= REPEAT_TIMES) { isRepeating = false; dom.repeatBtn.textContent = "🔁 Repeat"; dom.repeatBtn.classList.remove("active"); dom.status.textContent = "✅ Repeat done"; dom.status.className = "status done"; return; }
+      repeatTimer = setTimeout(doRepeat, 400);
+    });
+  }, 200);
+}
 
-        function resetSpeakBtn(btn) {
-            btn.classList.remove('speaking');
-            btn.textContent = '🔊';
-            btn.disabled = false;
-        }
+function playChinese() {
+  const text = dom.chinese.textContent;
+  if (!text) return;
+  if (!window.speechSynthesis) return;
+  stopSpeech();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'zh-CN';
+  utterance.rate = 0.8;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+  try {
+    window.speechSynthesis.speak(utterance);
+    dom.status.textContent = "🔊 中文朗读...";
+    dom.status.className = "status speaking";
+    utterance.onend = function() { dom.status.textContent = "✅ 中文朗读完成"; dom.status.className = "status done"; };
+    utterance.onerror = function() { dom.status.textContent = "⚠️ 中文朗读失败"; dom.status.className = "status error"; };
+  } catch(e) { dom.status.textContent = "⚠️ 播放错误"; dom.status.className = "status error"; }
+}
 
-        function setSpeakBtnActive(btn) {
-            btn.classList.add('speaking');
-            btn.textContent = '⏹';
-            btn.disabled = false;
-        }
+function setSpeed(rate) {
+  speechRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.toggle('active', parseFloat(b.dataset.speed) === rate));
+  localStorage.setItem('speechRate', rate);
+}
+const savedRate = parseFloat(localStorage.getItem('speechRate')) || 1.0;
+setSpeed(savedRate);
 
-        // 语音
-        function stopAllSpeech() {
-            if (window.speechSynthesis) window.speechSynthesis.cancel();
-            isSpeaking = false;
-            if (currentUtterance) currentUtterance = null;
-            resetSpeakBtn(enSpeak);
-            resetSpeakBtn(zhSpeak);
-        }
+function toggleHD() {
+  hdMode = !hdMode;
+  dom.hdToggle.textContent = hdMode ? '✨ HD' : '✨ HD(off)';
+  dom.hdToggle.style.background = hdMode ? 'var(--hd-color)' : 'var(--secondary)';
+  showToast(hdMode ? '高清语音已开启' : '切换到系统语音');
+  if (isSpeaking) { stopSpeech(); setTimeout(playCurrent, 200); }
+}
 
-        function speakText(text, lang, onStart, onEnd) {
-            return new Promise((resolve) => {
-                if (!window.speechSynthesis) { resolve(); return; }
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang;
-                utterance.rate = 0.95;
-                utterance.pitch = 1.0;
-                utterance.volume = 1;
-                const voices = window.speechSynthesis.getVoices();
-                let preferred = null;
-                if (lang.startsWith('zh')) {
-                    preferred = voices.find(v => v.lang.startsWith('zh') && (v.name.includes('Tingting') || v.name
-                        .includes('Microsoft')));
-                } else {
-                    preferred = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Google') || v.name
-                        .includes('Samantha') || v.name.includes('David')));
-                }
-                if (preferred) utterance.voice = preferred;
+function resetAudio() {
+  try {
+    if (isSpeaking || isPlayingLock) {
+      try { window.speechSynthesis.cancel(); } catch(e) {}
+      if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+      isSpeaking = false; isPlayingLock = false; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused");
+      stopSpeakingMouth();
+    }
+    window.speechSynthesis.getVoices();
+    showToast('🔄 音频已重置');
+    dom.status.textContent = "✅ 音频已重置";
+    dom.status.className = "status done";
+  } catch(e) { showToast('⚠️ 重置失败'); }
+}
 
-                currentUtterance = utterance;
-                isSpeaking = true;
-                if (onStart) onStart();
-                utterance.onend = () => {
-                    isSpeaking = false;
-                    currentUtterance = null;
-                    if (onEnd) onEnd();
-                    resolve();
-                };
-                utterance.onerror = () => {
-                    isSpeaking = false;
-                    currentUtterance = null;
-                    if (onEnd) onEnd();
-                    resolve();
-                };
-                window.speechSynthesis.speak(utterance);
-            });
-        }
+function toggleChunkList() {
+  const wrap = dom.chunkAreaWrap;
+  if (wrap.classList.contains('open')) { wrap.classList.remove('open'); dom.chunkToggleBtn.textContent = '📋 词块'; }
+  else { wrap.classList.add('open'); dom.chunkToggleBtn.textContent = '📋 隐藏词块'; }
+}
 
-        async function speakEn() {
-            if (isSpeaking) { stopAllSpeech(); return; }
-            const data = SENTENCES[currentIndex];
-            setSpeakBtnActive(enSpeak);
-            await speakText(data.en, 'en-US', null, () => { resetSpeakBtn(enSpeak); });
-        }
+function copySentence() {
+  const text = dom.english.textContent + '\n' + dom.chinese.textContent;
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(() => showToast('📋 已复制')); }
+  else { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('📋 已复制'); }
+}
 
-        async function speakZh() {
-            if (isSpeaking) { stopAllSpeech(); return; }
-            const data = SENTENCES[currentIndex];
-            setSpeakBtnActive(zhSpeak);
-            await speakText(data.zh, 'zh-CN', null, () => { resetSpeakBtn(zhSpeak); });
-        }
+// ========================================================================
+// 12. 搜索
+// ========================================================================
+function searchSentence() {
+  const kw = dom.searchInput.value.trim().toLowerCase();
+  dom.results.innerHTML = "";
+  if (!kw) { showToast("输入关键词搜索"); return; }
+  const matches = lessons.filter(item => (item.en && item.en.toLowerCase().includes(kw)) || (item.cn && item.cn.includes(kw)));
+  const dialogMatches = dialogPool.filter(d => d.q.toLowerCase().includes(kw) || d.a.toLowerCase().includes(kw) || d.cn.includes(kw));
+  if (!matches.length && !dialogMatches.length) { dom.results.innerHTML = '<div class="no-result">🔍 未找到匹配</div>'; return; }
+  matches.slice(0, 20).forEach(item => {
+    const box = document.createElement('div'); box.className = 'result';
+    box.innerHTML = `<div class="result-en">${item.en}</div><div class="result-cn">${item.cn}</div>`;
+    box.onclick = function() {
+      dom.patternSelect.value = item.patternId;
+      loadPattern(item.patternId);
+      setTimeout(() => {
+        const items = dom.chunkArea.querySelectorAll('.chunk-item');
+        let target = null;
+        items.forEach(el => { if (el.dataset.en === item.chunkEn) target = el; });
+        if (target) playChunk(target);
+      }, 200);
+      dom.results.innerHTML = '';
+      dom.searchInput.value = '';
+      showToast("跳转到句子");
+    };
+    dom.results.appendChild(box);
+  });
+  dialogMatches.slice(0, 10).forEach(d => {
+    const box = document.createElement('div'); box.className = 'result';
+    box.innerHTML = `<div class="result-en">💬 Q: ${d.q}<br>A: ${d.a}</div><div class="result-cn">${d.cn}</div>`;
+    box.onclick = function() {
+      setMode('dialog');
+      const scenes = getDialogScenes();
+      if (scenes.includes(d.scene)) {
+        dom.dialogSceneSelect.value = d.scene;
+        loadDialogScene(d.scene);
+        const idx = dialogList.findIndex(item => item.q === d.q && item.a === d.a);
+        if (idx >= 0) showDialogItem(idx);
+      }
+      dom.results.innerHTML = '';
+      dom.searchInput.value = '';
+      showToast("跳转到对话");
+    };
+    dom.results.appendChild(box);
+  });
+}
 
-        function goPrev() {
-            if (isSpeaking) stopAllSpeech();
-            const filtered = getFilteredIndices();
-            let curIdx = filtered.indexOf(currentIndex);
-            if (curIdx === -1) curIdx = 0;
-            let newIdx = curIdx - 1;
-            if (loopMode === 1) {
-                if (newIdx < 0) newIdx = filtered.length - 1;
-            } else if (loopMode === 2) {
-                newIdx = curIdx;
-            } else {
-                if (newIdx < 0) newIdx = 0;
-            }
-            if (newIdx !== curIdx) {
-                currentIndex = filtered[newIdx];
-                render(currentIndex);
-            }
-        }
+// ========================================================================
+// 13. 自定义词块
+// ========================================================================
+function addCustomChunk() {
+  const enInput = document.getElementById('customChunkEn');
+  const cnInput = document.getElementById('customChunkCn');
+  const en = enInput.value.trim(), cn = cnInput.value.trim();
+  if (!en || !cn) { showToast('请输入英文和中文'); return; }
+  const pid = currentPatternId;
+  if (!customChunks[pid]) customChunks[pid] = [];
+  if (customChunks[pid].some(c => c.en === en)) { showToast('该词块已存在'); return; }
+  customChunks[pid].push({ en, cn });
+  localStorage.setItem('customChunks', JSON.stringify(customChunks));
+  enInput.value = ''; cnInput.value = '';
+  lessons = buildAllLessons();
+  loadPattern(pid);
+  showToast('✅ 已添加自定义词块');
+}
 
-        function goNext() {
-            if (isSpeaking) stopAllSpeech();
-            const filtered = getFilteredIndices();
-            let curIdx = filtered.indexOf(currentIndex);
-            if (curIdx === -1) curIdx = 0;
-            let newIdx = curIdx + 1;
-            if (loopMode === 1) {
-                if (newIdx >= filtered.length) newIdx = 0;
-            } else if (loopMode === 2) {
-                newIdx = curIdx;
-            } else {
-                if (newIdx >= filtered.length) newIdx = filtered.length - 1;
-            }
-            if (newIdx !== curIdx) {
-                currentIndex = filtered[newIdx];
-                render(currentIndex);
-            }
-        }
+// ========================================================================
+// 14. 模式切换
+// ========================================================================
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+  if (mode === 'single') {
+    document.getElementById('singleModeArea').style.display = 'block';
+    document.getElementById('dialogModeArea').style.display = 'none';
+    document.getElementById('singleDisplay').style.display = 'block';
+    document.getElementById('dialogDisplay').style.display = 'none';
+  } else {
+    document.getElementById('singleModeArea').style.display = 'none';
+    document.getElementById('dialogModeArea').style.display = 'block';
+    document.getElementById('singleDisplay').style.display = 'none';
+    document.getElementById('dialogDisplay').style.display = 'block';
+    if (!dialogList.length) populateDialogScenes();
+    else loadDialogScene(currentDialogScene);
+  }
+}
 
-        function replayCurrent() {
-            if (isSpeaking) stopAllSpeech();
-            setTimeout(() => speakEn(), 100);
-        }
+// ========================================================================
+// 15. 自动连续播放
+// ========================================================================
+function toggleAutoPlay() {
+  if (isAutoPlaying) {
+    clearInterval(autoPlayInterval);
+    isAutoPlaying = false;
+    dom.autoPlayBtn.textContent = '🔁 连续';
+    dom.autoPlayBtn.classList.remove('active');
+    showToast('连续播放已停止');
+    return;
+  }
+  if (!dialogList.length) { showToast('没有对话可播放'); return; }
+  isAutoPlaying = true;
+  dom.autoPlayBtn.textContent = '⏹ 停止';
+  dom.autoPlayBtn.classList.add('active');
+  showToast('🔁 连续播放开始');
+  let idx = currentDialogIndex;
+  autoPlayInterval = setInterval(() => {
+    if (idx >= dialogList.length) idx = 0;
+    showDialogItem(idx);
+    const d = dialogList[idx];
+    speakText(d.q, function() { setTimeout(() => speakText(d.a), 500); });
+    idx++;
+  }, 4500);
+}
 
-        function toggleLoop() {
-            loopMode = (loopMode + 1) % 3;
-            loopBtn.textContent = LOOP_LABELS[loopMode];
-            loopBadge.textContent = LOOP_BADGES[loopMode];
-            loopBtn.className = 'ctrl-btn loop';
-            if (loopMode === 1) loopBtn.classList.add('active');
-            else if (loopMode === 2) loopBtn.classList.add('active-single');
-            render(currentIndex);
-        }
+// ========================================================================
+// 16. 人像
+// ========================================================================
+const canvas = document.getElementById('avatarCanvas');
+const ctx = canvas.getContext('2d');
+const W = 220, H = 220;
+function drawFace() {
+  ctx.clearRect(0, 0, W, H);
+  const cx = W / 2, cy = H / 2 - 4;
+  ctx.beginPath();
+  ctx.moveTo(cx - 78, cy - 20);
+  ctx.quadraticCurveTo(cx - 90, cy + 20, cx - 64, cy + 56);
+  ctx.quadraticCurveTo(cx, cy + 80, cx + 64, cy + 56);
+  ctx.quadraticCurveTo(cx + 90, cy + 20, cx + 78, cy - 20);
+  ctx.closePath();
+  const grad = ctx.createRadialGradient(cx - 20, cy - 30, 20, cx, cy, 100);
+  grad.addColorStop(0, '#fde8d0');
+  grad.addColorStop(0.7, '#f5d0b0');
+  grad.addColorStop(1, '#dbb098');
+  ctx.fillStyle = grad;
+  ctx.fill();
+  ctx.strokeStyle = '#cba28a';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+  ctx.fillStyle = '#2c1810';
+  ctx.beginPath();
+  ctx.ellipse(cx, cy - 34, 86, 62, 0, 0, Math.PI * 2);
+  ctx.fill();
+  for (let i = -2; i <= 2; i += 1) { ctx.beginPath();
+    ctx.ellipse(cx + i * 18, cy - 48, 12, 28, i * 0.1, 0, Math.PI * 2);
+    ctx.fill(); }
+  ctx.beginPath();
+  ctx.ellipse(cx - 76, cy + 20, 18, 80, -0.2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(cx + 76, cy + 20, 18, 80, 0.2, 0, Math.PI * 2);
+  ctx.fill();
+  function drawEye(ox, oy) {
+    ctx.beginPath();
+    ctx.ellipse(cx + ox, cy + oy, 19, 17, 0, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.strokeStyle = '#3a2a1a';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    const iris = ctx.createRadialGradient(cx + ox + 4, cy + oy + 2, 2, cx + ox + 4, cy + oy + 2, 11);
+    iris.addColorStop(0, '#6a4e3a');
+    iris.addColorStop(0.7, '#4a3728');
+    iris.addColorStop(1, '#2a1a10');
+    ctx.beginPath();
+    ctx.arc(cx + ox + 4, cy + oy + 2, 11, 0, Math.PI * 2);
+    ctx.fillStyle = iris;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx + ox + 6, cy + oy + 3, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx + ox + 9, cy + oy - 2, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx + ox + 2, cy + oy - 6, 1.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx + ox - 16, cy + oy - 14);
+    ctx.quadraticCurveTo(cx + ox, cy + oy - 24, cx + ox + 16, cy + oy - 14);
+    ctx.strokeStyle = '#3a2a1a';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx + ox - 12, cy + oy + 14);
+    ctx.quadraticCurveTo(cx + ox - 4, cy + oy + 18, cx + ox - 1, cy + oy + 16);
+    ctx.moveTo(cx + ox + 12, cy + oy + 14);
+    ctx.quadraticCurveTo(cx + ox + 4, cy + oy + 18, cx + ox + 1, cy + oy + 16);
+    ctx.strokeStyle = '#5a4a3a';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+  }
+  drawEye(-28, -6);
+  drawEye(28, -6);
+  ctx.beginPath();
+  ctx.moveTo(cx - 40, cy - 28);
+  ctx.quadraticCurveTo(cx - 28, cy - 38, cx - 16, cy - 26);
+  ctx.strokeStyle = '#3a2a1a';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(cx + 40, cy - 28);
+  ctx.quadraticCurveTo(cx + 28, cy - 38, cx + 16, cy - 26);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + 2);
+  ctx.lineTo(cx - 6, cy + 16);
+  ctx.quadraticCurveTo(cx, cy + 20, cx + 6, cy + 16);
+  ctx.closePath();
+  ctx.fillStyle = '#dbb098';
+  ctx.fill();
+  ctx.strokeStyle = '#cba28a';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.globalAlpha = 0.2;
+  ctx.beginPath();
+  ctx.arc(cx - 44, cy + 22, 16, 0, Math.PI * 2);
+  ctx.fillStyle = '#f5a3b8';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(cx + 44, cy + 22, 16, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+}
+drawFace();
+let baseImage = ctx.getImageData(0, 0, W, H);
+const mouthX = W / 2,
+  mouthY = H / 2 + 30,
+  mouthW = 32,
+  mouthHBase = 10;
+let mouthOpen = 0.1,
+  mouthTimer = null;
 
-        function initSpeech() {
-            if (window.speechSynthesis) {
-                window.speechSynthesis.getVoices();
-                window.speechSynthesis.onvoiceschanged = () => {
-                    window.speechSynthesis.getVoices();
-                };
-            }
-        }
+function drawMouth(open) {
+  ctx.putImageData(baseImage, 0, 0);
+  const h = mouthHBase + open * 28;
+  ctx.beginPath();
+  ctx.ellipse(mouthX - 3, mouthY, mouthW, h, 0, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(200,130,140,0.55)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(160,90,100,0.45)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  if (open > 0.6) { ctx.beginPath();
+    ctx.ellipse(mouthX - 3, mouthY + 8, 10, 6, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(232,112,122,0.4)';
+    ctx.fill(); }
+}
 
-        function initApp() {
-            statusDisplay.textContent = '生成句子中...';
-            setTimeout(() => {
-                try {
-                    SENTENCES = generateAllSentences();
-                    total = SENTENCES.length;
-                    progressBadge.textContent = `1 / ${total}`;
-                    initCategories();
-                    currentCategory = -1;
-                    currentIndex = 0;
-                    render(0);
-                    updateLoopUI();
-                    statusDisplay.textContent = `✅ 共 ${total} 句`;
-                    console.log(`✅ 已生成 ${total} 个句子`);
-                } catch (e) {
-                    console.error(e);
-                    statusDisplay.textContent = '生成失败，请刷新重试';
-                }
-            }, 100);
-        }
+function updateMouth(target) { mouthOpen += (target - mouthOpen) * 0.15;
+  drawMouth(mouthOpen); }
 
-        function updateLoopUI() {
-            loopBtn.textContent = LOOP_LABELS[loopMode];
-            loopBadge.textContent = LOOP_BADGES[loopMode];
-            loopBtn.className = 'ctrl-btn loop';
-            if (loopMode === 1) loopBtn.classList.add('active');
-            else if (loopMode === 2) loopBtn.classList.add('active-single');
-        }
+function startSpeakingMouth() {
+  if (mouthTimer) clearInterval(mouthTimer);
+  let phase = 0;
+  mouthTimer = setInterval(() => { phase += 0.3;
+    const target = (Math.sin(phase) * 0.5 + 0.5) * 0.8 + 0.2;
+    updateMouth(target); }, 50);
+}
 
-        // 绑定事件
-        enSpeak.addEventListener('click', speakEn);
-        zhSpeak.addEventListener('click', speakZh);
-        prevBtn.addEventListener('click', goPrev);
-        replayBtn.addEventListener('click', replayCurrent);
-        nextBtn.addEventListener('click', goNext);
-        loopBtn.addEventListener('click', toggleLoop);
+function stopSpeakingMouth() {
+  if (mouthTimer) { clearInterval(mouthTimer);
+    mouthTimer = null; }
+  let step = 0;
+  function closeIt() {
+    if (step < 15) { mouthOpen *= 0.9; if (mouthOpen < 0.05) mouthOpen = 0.05;
+      drawMouth(mouthOpen);
+      step++;
+      setTimeout(closeIt, 25); } else { mouthOpen = 0.05;
+      drawMouth(0.05); }
+  }
+  closeIt();
+}
 
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.key === 'ArrowLeft') { e.preventDefault();
-                goPrev(); }
-            if (e.key === 'ArrowRight') { e.preventDefault();
-                goNext(); }
-            if (e.key === 'r' || e.key === 'R') { replayCurrent(); }
-            if (e.key === 'e' || e.key === 'E') { speakEn(); }
-            if (e.key === 'c' || e.key === 'C') { speakZh(); }
-        });
+// ========================================================================
+// 17. AI 聊天
+// ========================================================================
+let chatHistory = [];
+function toggleChat() {
+  const box = dom.chatBox;
+  const input = document.getElementById('chatInputArea');
+  if (box.style.display === 'block') {
+    box.style.display = 'none';
+    input.style.display = 'none';
+    dom.aiToggle.textContent = '💬 AI';
+    return;
+  }
+  box.style.display = 'block';
+  input.style.display = 'flex';
+  dom.aiToggle.textContent = '💬 AI(开)';
+  if (!box.innerHTML) box.innerHTML = '<div class="chat-msg ai">👋 你好！我可以帮你练习英语对话。</div>';
+}
+function fillExample() {
+  document.getElementById('chatInput').value = 'How can I improve my English?';
+}
+async function sendTextMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  if (!apiKey) { showToast('⚠️ 请设置 API Key'); return; }
+  input.value = '';
+  const box = dom.chatBox;
+  box.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  box.scrollTop = box.scrollHeight;
+  dom.status.textContent = '🤖 AI 思考中...';
+  dom.status.className = 'status speaking';
+  try {
+    const resp = await fetch(apiBase + '/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: 'You are a helpful English tutor. Answer in English with a natural tone.' },
+          { role: 'user', content: msg }
+        ],
+        temperature: 0.7,
+        max_tokens: 150
+      })
+    });
+    if (!resp.ok) throw new Error('API error');
+    const data = await resp.json();
+    const reply = data.choices[0].message.content.trim();
+    box.innerHTML += `<div class="chat-msg ai">${reply}</div>`;
+    box.scrollTop = box.scrollHeight;
+    dom.status.textContent = '✅ AI 回复完成';
+    dom.status.className = 'status done';
+    speakText(reply);
+  } catch (e) {
+    dom.status.textContent = '❌ AI 失败: ' + e.message;
+    dom.status.className = 'status error';
+    showToast('AI 请求失败');
+  }
+}
+document.getElementById('chatInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') sendTextMessage(); });
 
-        window.addEventListener('beforeunload', () => { stopAllSpeech(); });
+// ========================================================================
+// 18. 语音识别 (mic)
+// ========================================================================
+let recognition = null;
+function toggleMic() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    showToast('⚠️ 浏览器不支持语音识别');
+    return;
+  }
+  if (recognition && recognition.listening) {
+    recognition.stop();
+    dom.micBtn.textContent = '🎤 Voice';
+    dom.micBtn.classList.remove('listening');
+    return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.continuous = false;
+  recognition.onresult = function(e) {
+    const transcript = e.results[0][0].transcript.trim();
+    dom.searchInput.value = transcript;
+    showToast('🎤 识别: ' + transcript);
+    searchSentence();
+    dom.micBtn.textContent = '🎤 Voice';
+    dom.micBtn.classList.remove('listening');
+  };
+  recognition.onerror = function(e) {
+    showToast('🎤 语音识别错误: ' + e.error);
+    dom.micBtn.textContent = '🎤 Voice';
+    dom.micBtn.classList.remove('listening');
+  };
+  recognition.onend = function() {
+    dom.micBtn.textContent = '🎤 Voice';
+    dom.micBtn.classList.remove('listening');
+  };
+  recognition.start();
+  dom.micBtn.textContent = '⏹ 停止';
+  dom.micBtn.classList.add('listening');
+  showToast('🎤 请说话...');
+}
 
-        initSpeech();
-        initApp();
-    </script>
+// ========================================================================
+// 19. 启动
+// ========================================================================
+function initPatternSelect() {
+  const select = dom.patternSelect;
+  select.innerHTML = '';
+  patternList.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = p.pattern + ' (' + p.cnPrefix + ')';
+    select.appendChild(opt);
+  });
+  select.value = 0;
+  select.addEventListener('change', function() { loadPattern(parseInt(this.value)); });
+  loadPattern(0);
+}
+
+function initApp() {
+  initPatternSelect();
+  populateDialogScenes();
+  setMode('single');
+  dom.progress.textContent = '总句数: ' + lessons.length + ' · 词块: ' + chunkPool.length;
+  updateFavUI();
+  // 快捷键
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowLeft') { e.preventDefault();
+      prevChunk(); }
+    if (e.key === 'ArrowRight') { e.preventDefault();
+      nextChunk(); }
+    if (e.key === ' ') { e.preventDefault();
+      togglePlayPause(); }
+    if (e.key === 'r' || e.key === 'R') { toggleRepeat(); }
+    if (e.key === 'e' || e.key === 'E') { playCurrent(); }
+    if (e.key === 'c' || e.key === 'C') { playChinese(); }
+  });
+  // 保存语音速率
+  const savedRate2 = parseFloat(localStorage.getItem('speechRate')) || 1.0;
+  setSpeed(savedRate2);
+  // 主题
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(savedTheme);
+  // 预加载语音
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = function() { window.speechSynthesis.getVoices(); };
+  }
+  console.log('🧩 对讲机已启动，总句数:', lessons.length);
+}
+
+initApp();
+</script>
 </body>
 </html>
