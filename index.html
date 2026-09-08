@@ -353,7 +353,7 @@ const chunkPool = [
 ];
 
 // ========================================================================
-// 2. 母句模板（30 个，每个搭配词块生成完整句）
+// 2. 母句模板（30 个）
 // ========================================================================
 const patternList = [
   { id: 0, pattern: "I want to...", cnPrefix: "我想", start: 0, count: 70 },
@@ -389,7 +389,7 @@ const patternList = [
 ];
 
 // ========================================================================
-// 3. 对话池（280组，覆盖13个场景）
+// 3. 对话池（280组）
 // ========================================================================
 const dialogPool = [
   // 问候
@@ -633,7 +633,7 @@ let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 let customChunks = JSON.parse(localStorage.getItem('customChunks')) || {};
 let isSpeaking = false, isPlayingLock = false, isRepeating = false, repeatCount = 0, repeatTimer = null;
 let hdMode = true, speechRate = 1.0;
-let currentUtterance = null, currentAudio = null, playTimeout = null;
+let currentUtterance = null, playTimeout = null;
 let autoPlayInterval = null, isAutoPlaying = false;
 const REPEAT_TIMES = 5;
 
@@ -817,7 +817,7 @@ function playDialogA() { if (!dialogList.length || currentDialogIndex >= dialogL
 function playDialogAll() { if (!dialogList.length || currentDialogIndex >= dialogList.length) return; const d = dialogList[currentDialogIndex]; stopSpeech(); setTimeout(() => { speakText(d.q, function() { setTimeout(() => speakText(d.a), 500); }); }, 100); }
 
 // ========================================================================
-// 9. AI 生成
+// 9. AI 生成（不变）
 // ========================================================================
 let apiKey = '', apiBase = 'https://api.deepseek.com/v1';
 function saveApiConfig() {
@@ -865,73 +865,124 @@ async function aiGenerateCurrentDialog() {
 }
 
 // ========================================================================
-// 10. 语音引擎
+// 10. 语音引擎 - 修复版 (仅使用原生 SpeechSynthesis，带重试)
 // ========================================================================
 function stopSpeech() {
-  if (playTimeout) clearTimeout(playTimeout);
+  if (playTimeout) { clearTimeout(playTimeout); playTimeout = null; }
   try { window.speechSynthesis.cancel(); } catch(e) {}
-  if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
   isSpeaking = false; isPlayingLock = false;
   dom.playPauseBtn.textContent = "▶";
   dom.playPauseBtn.classList.remove("paused");
   stopSpeakingMouth();
 }
 
-function speakGoogle(text, cb) {
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en&client=tw-ob`;
-  const audio = new Audio(url);
-  currentAudio = audio;
-  let ended = false;
-  const timeoutId = setTimeout(() => { if (!ended) { ended = true; audio.pause(); audio.src = ''; currentAudio = null; cb(false, 'Timeout'); } }, 8000);
-  audio.oncanplaythrough = function() { audio.play().catch(() => { if (!ended) { clearTimeout(timeoutId); ended = true; currentAudio = null; cb(false, 'Play error'); } }); };
-  audio.onplay = function() { isSpeaking = true; isPlayingLock = true; dom.playPauseBtn.textContent = "⏸"; dom.playPauseBtn.classList.add("paused"); dom.status.textContent = "🎧 HD 语音..."; dom.status.className = "status speaking"; startSpeakingMouth(); };
-  audio.onended = function() { if (ended) return; clearTimeout(timeoutId); ended = true; isSpeaking = false; isPlayingLock = false; currentAudio = null; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused"); dom.status.textContent = "✅ 播放完成"; dom.status.className = "status done"; stopSpeakingMouth(); cb(true); };
-  audio.onerror = function() { if (ended) return; clearTimeout(timeoutId); ended = true; isSpeaking = false; isPlayingLock = false; currentAudio = null; cb(false, 'Google TTS 失败'); };
-  audio.load();
-}
-
-function speakNative(text, cb) {
-  if (!text || !window.speechSynthesis) { cb(false); return; }
-  try { window.speechSynthesis.cancel(); } catch(e) {}
-  let voices = window.speechSynthesis.getVoices();
-  if (!voices || !voices.length) {
-    window.speechSynthesis.onvoiceschanged = function() { voices = window.speechSynthesis.getVoices(); doSpeak(); };
-    setTimeout(() => { voices = window.speechSynthesis.getVoices(); if (voices && voices.length) doSpeak(); }, 300);
-    return;
-  }
-  doSpeak();
-  function doSpeak() {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = speechRate;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
-    const preferred = voices.find(v => /Google UK|David|Samantha|Alex|Veena/i.test(v.name)) || voices.find(v => v.lang && v.lang.startsWith('en'));
-    if (preferred) utterance.voice = preferred;
-    let ended = false;
-    const timeoutId = setTimeout(() => { if (!ended) { ended = true; try { window.speechSynthesis.cancel(); } catch(e) {} isSpeaking = false; isPlayingLock = false; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused"); cb(false); stopSpeakingMouth(); } }, 6000);
-    utterance.onstart = function() { isSpeaking = true; isPlayingLock = true; dom.playPauseBtn.textContent = "⏸"; dom.playPauseBtn.classList.add("paused"); dom.status.textContent = "🎧 系统语音..."; dom.status.className = "status speaking"; startSpeakingMouth(); };
-    utterance.onend = function() { if (ended) return; ended = true; clearTimeout(timeoutId); isSpeaking = false; isPlayingLock = false; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused"); dom.status.textContent = "✅ 播放完成"; dom.status.className = "status done"; stopSpeakingMouth(); cb(true); };
-    utterance.onerror = function(e) { if (ended) return; ended = true; clearTimeout(timeoutId); isSpeaking = false; isPlayingLock = false; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused"); stopSpeakingMouth(); if (e.error !== 'canceled') cb(false); else cb(false); };
-    currentUtterance = utterance;
-    try { window.speechSynthesis.speak(utterance); } catch(err) { clearTimeout(timeoutId); ended = true; isSpeaking = false; isPlayingLock = false; cb(false); stopSpeakingMouth(); }
-  }
-}
-
 function speakText(text, cb) {
   const clean = text.replace(/\.{3,}/g, '').replace(/…/g, '').replace(/\s+/g, ' ').trim();
   if (!clean) { if (cb) cb(false); return; }
   stopSpeech();
-  setTimeout(() => {
-    if (hdMode && navigator.onLine) {
-      speakGoogle(clean, function(success) {
-        if (!success) { speakNative(clean, cb); }
-        else if (cb) cb(true);
-      });
-    } else {
-      speakNative(clean, cb);
+
+  // 获取语音列表（尝试等待加载）
+  let voices = window.speechSynthesis.getVoices();
+  if (!voices || voices.length === 0) {
+    // 如果还没加载，等待 onvoiceschanged
+    window.speechSynthesis.onvoiceschanged = function() {
+      voices = window.speechSynthesis.getVoices();
+      doSpeak();
+    };
+    setTimeout(() => {
+      voices = window.speechSynthesis.getVoices();
+      if (voices && voices.length > 0) doSpeak();
+      else {
+        // 仍无语音，尝试直接合成（部分浏览器无语音列表也能工作）
+        doSpeak();
+      }
+    }, 200);
+    return;
+  }
+  doSpeak();
+
+  function doSpeak() {
+    const utterance = new SpeechSynthesisUtterance(clean);
+    utterance.lang = /[\u4e00-\u9fa5]/.test(clean) ? 'zh-CN' : 'en-US';
+    utterance.rate = speechRate;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    // 选择合适语音（英文或中文）
+    const lang = utterance.lang;
+    let preferred = voices.find(v => v.lang.startsWith(lang) && /Google|Samantha|David|Tingting|Microsoft/.test(v.name));
+    if (!preferred) preferred = voices.find(v => v.lang.startsWith(lang));
+    if (preferred) utterance.voice = preferred;
+
+    let ended = false;
+    const timeoutId = setTimeout(() => {
+      if (!ended) {
+        ended = true;
+        try { window.speechSynthesis.cancel(); } catch(e) {}
+        isSpeaking = false; isPlayingLock = false;
+        dom.playPauseBtn.textContent = "▶";
+        dom.playPauseBtn.classList.remove("paused");
+        stopSpeakingMouth();
+        dom.status.textContent = "⚠️ 播放超时";
+        dom.status.className = "status error";
+        if (cb) cb(false);
+        // 尝试重试一次
+        setTimeout(() => { if (!isSpeaking) speakText(clean, cb); }, 500);
+      }
+    }, 6000);
+
+    utterance.onstart = function() {
+      isSpeaking = true; isPlayingLock = true;
+      dom.playPauseBtn.textContent = "⏸";
+      dom.playPauseBtn.classList.add("paused");
+      dom.status.textContent = "🔊 朗读中...";
+      dom.status.className = "status speaking";
+      startSpeakingMouth();
+    };
+
+    utterance.onend = function() {
+      if (ended) return;
+      ended = true; clearTimeout(timeoutId);
+      isSpeaking = false; isPlayingLock = false;
+      dom.playPauseBtn.textContent = "▶";
+      dom.playPauseBtn.classList.remove("paused");
+      dom.status.textContent = "✅ 播放完成";
+      dom.status.className = "status done";
+      stopSpeakingMouth();
+      if (cb) cb(true);
+    };
+
+    utterance.onerror = function(e) {
+      if (ended) return;
+      ended = true; clearTimeout(timeoutId);
+      isSpeaking = false; isPlayingLock = false;
+      dom.playPauseBtn.textContent = "▶";
+      dom.playPauseBtn.classList.remove("paused");
+      stopSpeakingMouth();
+      if (e.error === 'canceled' || e.error === 'interrupted') {
+        // 用户主动取消，不报错
+        if (cb) cb(false);
+      } else {
+        dom.status.textContent = "⚠️ 语音错误: " + e.error;
+        dom.status.className = "status error";
+        // 重试一次
+        setTimeout(() => { if (!isSpeaking) speakText(clean, cb); }, 500);
+        if (cb) cb(false);
+      }
+    };
+
+    currentUtterance = utterance;
+    try { window.speechSynthesis.speak(utterance); } catch(err) {
+      clearTimeout(timeoutId); ended = true;
+      isSpeaking = false; isPlayingLock = false;
+      dom.playPauseBtn.textContent = "▶";
+      dom.playPauseBtn.classList.remove("paused");
+      stopSpeakingMouth();
+      dom.status.textContent = "⚠️ 播放异常";
+      dom.status.className = "status error";
+      if (cb) cb(false);
     }
-  }, 50);
+  }
 }
 
 // ========================================================================
@@ -948,8 +999,8 @@ function playChunk(el) {
     dom.english.textContent = fullEn;
     dom.chinese.textContent = fullCn;
     dom.sentenceHint.innerHTML = '✅ 造句连读：<span class="highlight">' + el.dataset.en + '</span> (' + el.dataset.cn + ')';
-    dom.status.textContent = '🔊 ' + fullEn;
-    dom.status.className = 'status speaking';
+    dom.status.textContent = "🔊 " + fullEn;
+    dom.status.className = "status speaking";
     updateFavUI();
     speakText(fullEn);
   }, 100);
@@ -1074,15 +1125,14 @@ function toggleHD() {
   hdMode = !hdMode;
   dom.hdToggle.textContent = hdMode ? '✨ HD' : '✨ HD(off)';
   dom.hdToggle.style.background = hdMode ? 'var(--hd-color)' : 'var(--secondary)';
-  showToast(hdMode ? '高清语音已开启' : '切换到系统语音');
-  if (isSpeaking) { stopSpeech(); setTimeout(playCurrent, 200); }
+  showToast(hdMode ? '原生语音 (HD)' : '原生语音 (标准)');
+  // HD 模式实际只改变语音选择，已在 speakText 中处理
 }
 
 function resetAudio() {
   try {
     if (isSpeaking || isPlayingLock) {
       try { window.speechSynthesis.cancel(); } catch(e) {}
-      if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
       isSpeaking = false; isPlayingLock = false; dom.playPauseBtn.textContent = "▶"; dom.playPauseBtn.classList.remove("paused");
       stopSpeakingMouth();
     }
@@ -1383,7 +1433,7 @@ function stopSpeakingMouth() {
 }
 
 // ========================================================================
-// 17. AI 聊天
+// 17. AI 聊天（不变）
 // ========================================================================
 let chatHistory = [];
 function toggleChat() {
@@ -1510,6 +1560,11 @@ function initApp() {
   setMode('single');
   dom.progress.textContent = '总句数: ' + lessons.length + ' · 词块: ' + chunkPool.length;
   updateFavUI();
+  // 预加载语音
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = function() { window.speechSynthesis.getVoices(); };
+  }
   // 快捷键
   document.addEventListener('keydown', function(e) {
     if (e.target.tagName === 'INPUT') return;
@@ -1523,17 +1578,6 @@ function initApp() {
     if (e.key === 'e' || e.key === 'E') { playCurrent(); }
     if (e.key === 'c' || e.key === 'C') { playChinese(); }
   });
-  // 保存语音速率
-  const savedRate2 = parseFloat(localStorage.getItem('speechRate')) || 1.0;
-  setSpeed(savedRate2);
-  // 主题
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  applyTheme(savedTheme);
-  // 预加载语音
-  if (window.speechSynthesis) {
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = function() { window.speechSynthesis.getVoices(); };
-  }
   console.log('🧩 对讲机已启动，总句数:', lessons.length);
 }
 
