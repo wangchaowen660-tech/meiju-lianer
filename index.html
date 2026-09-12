@@ -15,10 +15,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .tab-mini{display:flex;gap:4px;background:#fff;border-radius:30px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
 .tab-mini button{padding:5px 12px;border:0;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;}
 .tab-mini button.active{background:#0f172a;color:#fff;}
-.category-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;-webkit-overflow-scrolling:touch;}
+
+/* 场景标签 */
+.category-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px;-webkit-overflow-scrolling:touch;}
 .category-tabs::-webkit-scrollbar{display:none;}
 .cat-tab{flex-shrink:0;padding:6px 14px;border:0;border-radius:20px;background:#fff;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);transition:0.15s;white-space:nowrap;}
 .cat-tab.active{background:#0f172a;color:#fff;}
+
+/* 工具条 */
+.toolbar{display:flex;gap:6px;margin-bottom:12px;align-items:center;}
+.type-filter{display:flex;gap:4px;background:#fff;border-radius:20px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,0.05);flex-shrink:0;}
+.type-btn{padding:5px 10px;border:0;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;background:transparent;color:#64748b;}
+.type-btn.active{background:#e94560;color:#fff;}
+.type-btn.active.q{background:#3b82f6;}
+.list-toggle{flex:1;padding:8px 12px;border:0;border-radius:20px;background:#fff;color:#0f172a;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;}
+.list-toggle .arrow{transition:0.2s;font-size:10px;}
+.list-toggle.open .arrow{transform:rotate(180deg);}
+.fav-toggle{flex-shrink:0;padding:8px 12px;border:0;border-radius:20px;background:#fff;color:#f59e0b;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+
+/* 母句列表 */
+.pattern-list{background:#fff;border-radius:16px;padding:8px;margin-bottom:12px;box-shadow:0 4px 14px rgba(0,0,0,0.06);max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease;}
+.pattern-list.open{max-height:400px;overflow-y:auto;padding:8px;}
+.pattern-list-item{padding:10px 12px;border-radius:10px;cursor:pointer;transition:0.15s;display:flex;justify-content:space-between;align-items:center;font-size:13px;border-bottom:1px solid #f1f5f9;}
+.pattern-list-item:last-child{border-bottom:0;}
+.pattern-list-item:hover{background:#f8fafc;}
+.pattern-list-item.active{background:#fff5f7;color:#e94560;font-weight:700;}
+.pattern-list-item .item-en{font-weight:600;}
+.pattern-list-item .item-type{font-size:10px;padding:2px 6px;border-radius:8px;font-weight:700;}
+.pattern-list-item .item-type.s{background:#dcfce7;color:#166534;}
+.pattern-list-item .item-type.q{background:#dbeafe;color:#1e40af;}
+.pattern-list-empty{text-align:center;color:#94a3b8;padding:20px;font-size:13px;}
+
+/* 母句卡片 */
 .pattern-card{background:#fff;border-radius:24px;padding:22px 20px 18px;box-shadow:0 8px 24px rgba(0,0,0,0.06);margin-bottom:14px;}
 .pattern-label{font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
 .pattern-label .type-tag{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;}
@@ -27,10 +55,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .pattern-en{font-size:23px;font-weight:800;color:#0f172a;line-height:1.3;word-break:break-word;}
 .pattern-en .blank{color:#e94560;}
 .pattern-cn{font-size:14px;color:#64748b;margin-top:6px;}
-.sentence-card{background:linear-gradient(135deg,#fff5f7,#fff);border-radius:24px;padding:22px 20px;box-shadow:0 8px 24px rgba(233,69,96,0.10);margin-bottom:14px;border:1px solid rgba(233,69,96,0.10);}
-.sentence-en{font-size:25px;font-weight:800;color:#0f172a;line-height:1.35;word-break:break-word;margin-bottom:6px;}
+.sentence-card{background:linear-gradient(135deg,#fff5f7,#fff);border-radius:24px;padding:22px 20px;box-shadow:0 8px 24px rgba(233,69,96,0.10);margin-bottom:14px;border:1px solid rgba(233,69,96,0.10);position:relative;}
+.sentence-en{font-size:25px;font-weight:800;color:#0f172a;line-height:1.35;word-break:break-word;margin-bottom:6px;padding-right:44px;}
 .sentence-en .chunk-hl{color:#e94560;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);padding:0 2px;border-radius:3px;}
 .sentence-cn{font-size:15px;color:#64748b;line-height:1.5;}
+.fav-btn-sentence{position:absolute;top:14px;right:14px;width:36px;height:36px;border:0;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:18px;cursor:pointer;color:#cbd5e1;transition:0.2s;}
+.fav-btn-sentence.active{color:#f59e0b;transform:scale(1.1);}
 .big-actions{display:flex;gap:10px;margin-bottom:14px;}
 .big-btn{flex:1;padding:15px;border:0;border-radius:20px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:0.15s;}
 .big-btn:active{transform:scale(0.97);}
@@ -56,7 +86,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .product-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.05);cursor:pointer;transition:0.15s;}
 .product-card:active{transform:scale(0.98);}
 .product-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);}
-.product-img img{width:100%;height:100%;object-fit:cover;}
 .product-body{padding:10px 12px 14px;}
 .product-name{font-size:14px;font-weight:700;color:#0f172a;}
 .product-name-en{font-size:10px;color:#94a3b8;margin-top:2px;}
@@ -70,16 +99,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .modal-price{color:#e94560;font-weight:800;font-size:22px;margin-top:6px;}
 .modal-desc-en{font-size:15px;color:#0f172a;line-height:1.5;margin-top:14px;}
 .modal-desc-cn{font-size:13px;color:#64748b;line-height:1.5;margin-top:6px;}
-/* 指南 */
-.guide-step{background:#f8fafc;border-radius:12px;padding:12px 14px;margin-bottom:10px;border-left:3px solid #e94560;}
-.guide-step h4{font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px;}
-.guide-step p{font-size:13px;color:#475569;line-height:1.6;}
-.guide-code{background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:10px;font-family:monospace;font-size:12px;line-height:1.5;overflow-x:auto;margin-top:6px;white-space:pre;}
-.guide-code .key{color:#fbbf24;}
-.guide-code .str{color:#86efac;}
 @media(max-width:480px){
   .pattern-en{font-size:19px;}
-  .sentence-en{font-size:20px;}
+  .sentence-en{font-size:20px;padding-right:40px;}
   .chunk-grid{grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:6px;}
   .chunk{padding:9px 5px;}
   .chunk .en{font-size:12px;}
@@ -94,12 +116,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="tab-mini">
       <button class="active" onclick="switchTab('learn', this)">📚 学习</button>
       <button onclick="switchTab('shop', this)">🛍️ 商城</button>
-      <button onclick="switchTab('guide', this)">📖 加内容</button>
     </div>
   </div>
 
   <div id="learnModule">
+    <!-- 场景标签 -->
     <div class="category-tabs" id="categoryTabs"></div>
+
+    <!-- 工具条：类型筛选 + 列表开关 + 收藏 -->
+    <div class="toolbar">
+      <div class="type-filter">
+        <button class="type-btn active" data-type="all" onclick="setType('all', this)">全部</button>
+        <button class="type-btn" data-type="s" onclick="setType('s', this)">陈述句</button>
+        <button class="type-btn" data-type="q" onclick="setType('q', this)">疑问句</button>
+      </div>
+      <button class="list-toggle" id="listToggle" onclick="toggleList()">
+        <span id="listLabel">📋 选择母句</span>
+        <span class="arrow">▼</span>
+      </button>
+      <button class="fav-toggle" onclick="toggleFavMode()" id="favToggle" title="收藏夹">⭐</button>
+    </div>
+
+    <!-- 母句列表（展开后显示） -->
+    <div class="pattern-list" id="patternList"></div>
+
+    <!-- 当前母句 -->
     <div class="pattern-card">
       <div class="pattern-label">
         <span>📐 母句 · <span id="patternScene">日常</span></span>
@@ -108,14 +149,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <div class="pattern-en" id="patternEn"></div>
       <div class="pattern-cn" id="patternCn"></div>
     </div>
+
+    <!-- 当前句子 -->
     <div class="sentence-card">
+      <button class="fav-btn-sentence" id="favSentenceBtn" onclick="toggleFavSentence()" title="收藏这句">☆</button>
       <div class="sentence-en" id="sentenceEn"></div>
       <div class="sentence-cn" id="sentenceCn"></div>
     </div>
+
+    <!-- 大按钮 -->
     <div class="big-actions">
       <button class="big-btn play" onclick="playCurrent()">🔊 朗读英文</button>
       <button class="big-btn cn" onclick="playChinese()">🇨🇳 读中文</button>
     </div>
+
+    <!-- 词块 -->
     <div class="chunk-section">
       <div class="chunk-section-title">
         <span>🧱 点词块，换一个说法</span>
@@ -123,11 +171,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       </div>
       <div class="chunk-grid" id="chunkGrid"></div>
     </div>
+
+    <!-- 导航 -->
     <div class="nav-bar">
       <button class="nav-btn" onclick="prevPattern()">⏮ 上一句型</button>
       <div class="nav-center" id="patternNav">1 / 94</div>
       <button class="nav-btn" onclick="nextPattern()">下一句型 ⏭</button>
     </div>
+
     <div class="status" id="status">点词块开始学习</div>
   </div>
 
@@ -135,48 +186,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="chunk-section">
       <div class="chunk-section-title"><span>🛍️ 精选好物</span></div>
       <div class="shop-grid" id="shopGrid"></div>
-    </div>
-  </div>
-
-  <div id="guideModule" style="display:none;">
-    <div class="chunk-section">
-      <div class="chunk-section-title"><span>📖 如何自己添加内容</span></div>
-      <div class="guide-step">
-        <h4>第 1 步：找到 PATTERNS 数组</h4>
-        <p>用记事本或编辑器打开这个 HTML 文件，搜索 <b>const PATTERNS = [</b>，这就是母句库。</p>
-      </div>
-      <div class="guide-step">
-        <h4>第 2 步：复制一个母句模板</h4>
-        <p>找到任意一个母句（如"日常"场景的第一条），复制它：</p>
-        <div class="guide-code">{
-  <span class="key">scene</span>: <span class="str">"日常"</span>,
-  <span class="key">type</span>: <span class="str">"s"</span>,           // s=陈述句 q=疑问句
-  <span class="key">en</span>: <span class="str">"I want to ___."</span>,
-  <span class="key">cn</span>: <span class="str">"我想 ______。"</span>,
-  <span class="key">chunks</span>: [
-    { en: <span class="str">"eat"</span>, cn: <span class="str">"吃"</span> },
-    { en: <span class="str">"drink"</span>, cn: <span class="str">"喝"</span> }
-  ]
-}</div>
-      </div>
-      <div class="guide-step">
-        <h4>第 3 步：修改内容并粘贴</h4>
-        <p>把 <b>scene</b> 改成场景名，<b>type</b> 改成 s 或 q，<b>en/cn</b> 改成新母句，<b>chunks</b> 里加更多词块（建议每个 8-12 个）。</p>
-        <p style="margin-top:6px;">🆕 <b>新场景</b>：把 <b>scene</b> 改成新名字（如 "银行"），顶部标签会自动出现新场景！</p>
-      </div>
-      <div class="guide-step">
-        <h4>第 4 步：保存并刷新</h4>
-        <p>保存文件，刷新浏览器，新内容立即出现。无需改任何代码。</p>
-      </div>
-      <div class="guide-step" style="border-left-color:#10b981;">
-        <h4>✅ 添加规则小结</h4>
-        <p>• <b>scene</b>：场景名（中文）<br>
-        • <b>type</b>：s = 陈述句，q = 疑问句<br>
-        • <b>en</b>：英文母句，用 ___ 表示填空位置<br>
-        • <b>cn</b>：中文释义，用 ______ 表示填空<br>
-        • <b>chunks</b>：词块列表，每个 { en, cn }<br>
-        • 末尾记得加 <b>逗号</b></p>
-      </div>
     </div>
   </div>
 </div>
@@ -194,14 +203,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <script>
 // ================================================================
-// 母句库 PATTERNS
-// 添加新内容：复制一个 { ... } 块，粘贴到合适位置，修改内容即可
-// scene=场景名  type=s陈述句/q疑问句  en=英文母句(用___填空)  cn=中文  chunks=词块
+// 母句库（与上一版相同，94个母句，940句）
 // ================================================================
 const PATTERNS = [
-  // ============================================================
-  // 一、日常基础 (8陈述 + 6疑问 = 14)
-  // ============================================================
   { scene: "日常", type: "s", en: "I want to ___.", cn: "我想 ______。",
     chunks: [
       { en: "eat something", cn: "吃点东西" }, { en: "drink water", cn: "喝水" },
@@ -329,9 +333,6 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 二、厨师工作 (8陈述 + 6疑问 = 14)
-  // ============================================================
   { scene: "厨师", type: "s", en: "I need to ___.", cn: "我需要 ______。",
     chunks: [
       { en: "chop vegetables", cn: "切菜" }, { en: "slice onions", cn: "切洋葱" },
@@ -459,9 +460,6 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 三、社交交流 (8陈述 + 6疑问 = 14)
-  // ============================================================
   { scene: "社交", type: "s", en: "Do you want to ___?", cn: "你想 ______ 吗？",
     chunks: [
       { en: "hang out", cn: "一起玩" }, { en: "grab coffee", cn: "喝咖啡" },
@@ -589,9 +587,6 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 四、旅行机场 (8陈述 + 6疑问 = 14)
-  // ============================================================
   { scene: "旅行", type: "s", en: "Where is ___?", cn: "______ 在哪里？",
     chunks: [
       { en: "the station", cn: "车站" }, { en: "the airport", cn: "机场" },
@@ -719,9 +714,6 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 五、购物消费 (8陈述 + 6疑问 = 14)
-  // ============================================================
   { scene: "购物", type: "s", en: "How much ___?", cn: "______ 多少钱？",
     chunks: [
       { en: "is this", cn: "这个" }, { en: "does it cost", cn: "这个" },
@@ -849,9 +841,6 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 六、紧急求助 (7陈述 + 5疑问 = 12)
-  // ============================================================
   { scene: "紧急", type: "s", en: "I need help ___.", cn: "我需要帮助 ______。",
     chunks: [
       { en: "right now", cn: "马上" }, { en: "with this", cn: "帮这个" },
@@ -961,9 +950,6 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 七、餐厅点餐 (7陈述 + 5疑问 = 12)
-  // ============================================================
   { scene: "餐厅", type: "s", en: "I'd like to ___.", cn: "我想 ______。",
     chunks: [
       { en: "order now", cn: "现在点餐" }, { en: "see the menu", cn: "看菜单" },
@@ -1094,10 +1080,13 @@ const PRODUCTS = [
 // 状态
 // ================================================================
 let currentScene = "全部";
+let currentType = "all";       // all / s / q
 let filteredPatterns = [];
 let currentPatternIndex = 0;
 let currentChunkIndex = 0;
 let isSpeaking = false;
+let showFavOnly = false;       // 是否只看收藏
+let favorites = JSON.parse(localStorage.getItem("wordblock_favs") || "[]"); // [{scene, patternEn, chunkEn}]
 
 const patternEn = document.getElementById("patternEn");
 const patternCn = document.getElementById("patternCn");
@@ -1110,6 +1099,11 @@ const chunkCount = document.getElementById("chunkCount");
 const patternNav = document.getElementById("patternNav");
 const statusEl = document.getElementById("status");
 const categoryTabs = document.getElementById("categoryTabs");
+const patternList = document.getElementById("patternList");
+const listToggle = document.getElementById("listToggle");
+const listLabel = document.getElementById("listLabel");
+const favToggle = document.getElementById("favToggle");
+const favSentenceBtn = document.getElementById("favSentenceBtn");
 
 // ================================================================
 // 语音引擎
@@ -1155,24 +1149,48 @@ function speak(text, lang, cb) {
 }
 
 // ================================================================
-// 场景标签
+// 筛选逻辑
 // ================================================================
-function initCategoryTabs() {
-  const scenes = ["全部", ...new Set(PATTERNS.map(p => p.scene))];
-  categoryTabs.innerHTML = scenes.map(s =>
-    '<button class="cat-tab' + (s === "全部" ? " active" : "") + '" data-scene="' + s + '">' + s + '</button>'
-  ).join("");
-  categoryTabs.querySelectorAll(".cat-tab").forEach(btn => {
-    btn.onclick = () => {
-      categoryTabs.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentScene = btn.dataset.scene;
-      filteredPatterns = currentScene === "全部" ? PATTERNS : PATTERNS.filter(p => p.scene === currentScene);
-      currentPatternIndex = 0;
-      currentChunkIndex = 0;
-      renderPattern();
-    };
-  });
+function updateFilteredPatterns() {
+  let list = PATTERNS;
+
+  // 场景筛选
+  if (currentScene !== "全部") {
+    list = list.filter(p => p.scene === currentScene);
+  }
+
+  // 类型筛选
+  if (currentType !== "all") {
+    list = list.filter(p => p.type === currentType);
+  }
+
+  // 收藏筛选
+  if (showFavOnly) {
+    list = list.filter(p => {
+      return favorites.some(f => f.patternEn === p.en && f.scene === p.scene);
+    });
+  }
+
+  filteredPatterns = list;
+
+  if (currentPatternIndex >= filteredPatterns.length) {
+    currentPatternIndex = 0;
+    currentChunkIndex = 0;
+  }
+
+  if (!filteredPatterns.length) {
+    // 空状态
+    patternEn.textContent = showFavOnly ? "还没有收藏" : "该筛选暂无内容";
+    patternCn.textContent = showFavOnly ? "点句子右上角☆收藏" : "换个条件试试";
+    chunkGrid.innerHTML = "";
+    sentenceEn.textContent = "";
+    sentenceCn.textContent = "";
+    patternNav.textContent = "0 / 0";
+    chunkCount.textContent = "0 个词块";
+    return;
+  }
+
+  renderPattern();
 }
 
 // ================================================================
@@ -1202,6 +1220,8 @@ function renderPattern() {
   patternNav.textContent = (currentPatternIndex + 1) + " / " + filteredPatterns.length;
 
   showSentence();
+  updateFavButton();
+  renderPatternList(); // 同步更新列表高亮
 }
 
 function showSentence() {
@@ -1220,6 +1240,7 @@ function selectChunk(index) {
     el.classList.toggle("active", i === index);
   });
   showSentence();
+  updateFavButton();
 
   const p = filteredPatterns[currentPatternIndex];
   const c = p.chunks[index];
@@ -1257,15 +1278,150 @@ function playChinese() {
 }
 
 function prevPattern() {
+  if (!filteredPatterns.length) return;
   currentPatternIndex = (currentPatternIndex - 1 + filteredPatterns.length) % filteredPatterns.length;
   currentChunkIndex = 0;
   renderPattern();
 }
 
 function nextPattern() {
+  if (!filteredPatterns.length) return;
   currentPatternIndex = (currentPatternIndex + 1) % filteredPatterns.length;
   currentChunkIndex = 0;
   renderPattern();
+}
+
+// ================================================================
+// 场景标签 & 类型筛选
+// ================================================================
+function initCategoryTabs() {
+  const scenes = ["全部", ...new Set(PATTERNS.map(p => p.scene))];
+  categoryTabs.innerHTML = scenes.map(s =>
+    '<button class="cat-tab' + (s === "全部" ? " active" : "") + '" data-scene="' + s + '">' + s + '</button>'
+  ).join("");
+  categoryTabs.querySelectorAll(".cat-tab").forEach(btn => {
+    btn.onclick = () => {
+      categoryTabs.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentScene = btn.dataset.scene;
+      currentPatternIndex = 0;
+      currentChunkIndex = 0;
+      updateFilteredPatterns();
+    };
+  });
+}
+
+function setType(type, btn) {
+  document.querySelectorAll(".type-btn").forEach(b => {
+    b.classList.remove("active");
+    b.classList.remove("q");
+  });
+  btn.classList.add("active");
+  if (type === "q") btn.classList.add("q");
+  currentType = type;
+  currentPatternIndex = 0;
+  currentChunkIndex = 0;
+  updateFilteredPatterns();
+}
+
+// ================================================================
+// 母句列表
+// ================================================================
+function toggleList() {
+  if (patternList.classList.contains("open")) {
+    patternList.classList.remove("open");
+    listToggle.classList.remove("open");
+    listLabel.textContent = "📋 选择母句";
+  } else {
+    patternList.classList.add("open");
+    listToggle.classList.add("open");
+    listLabel.textContent = "📋 收起列表";
+    renderPatternList();
+  }
+}
+
+function renderPatternList() {
+  if (!patternList.classList.contains("open")) return;
+  if (!filteredPatterns.length) {
+    patternList.innerHTML = '<div class="pattern-list-empty">暂无内容</div>';
+    return;
+  }
+  patternList.innerHTML = filteredPatterns.map((p, i) =>
+    '<div class="pattern-list-item' + (i === currentPatternIndex ? ' active' : '') + '" onclick="jumpToPattern(' + i + ')">' +
+      '<span class="item-en">' + p.en.replace(/___/g, '____') + '</span>' +
+      '<span class="item-type ' + p.type + '">' + (p.type === 'q' ? '问' : '述') + '</span>' +
+    '</div>'
+  ).join("");
+}
+
+function jumpToPattern(i) {
+  currentPatternIndex = i;
+  currentChunkIndex = 0;
+  renderPattern();
+  // 收起列表
+  patternList.classList.remove("open");
+  listToggle.classList.remove("open");
+  listLabel.textContent = "📋 选择母句";
+}
+
+// ================================================================
+// 收藏功能
+// ================================================================
+function isCurrentFav() {
+  const p = filteredPatterns[currentPatternIndex];
+  if (!p) return false;
+  const c = p.chunks[currentChunkIndex];
+  return favorites.some(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
+}
+
+function updateFavButton() {
+  if (isCurrentFav()) {
+    favSentenceBtn.classList.add("active");
+    favSentenceBtn.textContent = "★";
+  } else {
+    favSentenceBtn.classList.remove("active");
+    favSentenceBtn.textContent = "☆";
+  }
+}
+
+function toggleFavSentence() {
+  const p = filteredPatterns[currentPatternIndex];
+  if (!p) return;
+  const c = p.chunks[currentChunkIndex];
+
+  const idx = favorites.findIndex(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
+  if (idx >= 0) {
+    favorites.splice(idx, 1);
+    statusEl.textContent = "已取消收藏";
+    statusEl.className = "status";
+  } else {
+    favorites.push({
+      scene: p.scene,
+      patternEn: p.en,
+      patternCn: p.cn,
+      chunkEn: c.en,
+      chunkCn: c.cn,
+      type: p.type
+    });
+    statusEl.textContent = "⭐ 已收藏";
+    statusEl.className = "status";
+  }
+  localStorage.setItem("wordblock_favs", JSON.stringify(favorites));
+  updateFavButton();
+}
+
+function toggleFavMode() {
+  showFavOnly = !showFavOnly;
+  favToggle.style.background = showFavOnly ? "#f59e0b" : "#fff";
+  favToggle.style.color = showFavOnly ? "#fff" : "#f59e0b";
+  currentPatternIndex = 0;
+  currentChunkIndex = 0;
+  if (showFavOnly) {
+    statusEl.textContent = "⭐ 只显示收藏内容（共 " + favorites.length + " 条）";
+  } else {
+    statusEl.textContent = "显示全部内容";
+  }
+  updateFilteredPatterns();
 }
 
 // ================================================================
@@ -1273,28 +1429,22 @@ function nextPattern() {
 // ================================================================
 function renderShop() {
   const grid = document.getElementById("shopGrid");
-  grid.innerHTML = PRODUCTS.map(p => {
-    const imgHtml = p.emoji && p.emoji.startsWith("http")
-      ? '<img src="' + p.emoji + '" alt="">'
-      : (p.emoji || "📦");
-    return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
-      '<div class="product-img">' + imgHtml + '</div>' +
+  grid.innerHTML = PRODUCTS.map(p =>
+    '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
+      '<div class="product-img">' + p.emoji + '</div>' +
       '<div class="product-body">' +
         '<div class="product-name">' + p.name + '</div>' +
         '<div class="product-name-en">' + p.nameEn + '</div>' +
         '<div class="product-price">¥' + p.price + '</div>' +
       '</div>' +
-    '</div>';
-  }).join("");
+    '</div>'
+  ).join("");
 }
 
 function openProduct(id) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
-  const imgHtml = p.emoji && p.emoji.startsWith("http")
-    ? '<img src="' + p.emoji + '">'
-    : (p.emoji || "📦");
-  document.getElementById("mImg").innerHTML = imgHtml;
+  document.getElementById("mImg").innerHTML = p.emoji;
   document.getElementById("mName").textContent = p.name + " · " + p.nameEn;
   document.getElementById("mPrice").textContent = "¥" + p.price;
   document.getElementById("mDescEn").textContent = p.descEn;
@@ -1316,7 +1466,6 @@ function switchTab(tab, btn) {
   btn.classList.add("active");
   document.getElementById("learnModule").style.display = tab === "learn" ? "block" : "none";
   document.getElementById("shopModule").style.display = tab === "shop" ? "block" : "none";
-  document.getElementById("guideModule").style.display = tab === "guide" ? "block" : "none";
   if (tab === "shop") renderShop();
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1326,9 +1475,8 @@ function switchTab(tab, btn) {
 // 初始化
 // ================================================================
 function init() {
-  filteredPatterns = PATTERNS;
   initCategoryTabs();
-  renderPattern();
+  updateFilteredPatterns();
 
   const warm = () => { warmUp(); document.removeEventListener("click", warm); document.removeEventListener("touchstart", warm); };
   document.addEventListener("click", warm);
@@ -1340,12 +1488,9 @@ function init() {
   }
 
   const totalChunks = PATTERNS.reduce((s, p) => s + p.chunks.length, 0);
-  const sCount = PATTERNS.filter(p => p.type === "s").length;
-  const qCount = PATTERNS.filter(p => p.type === "q").length;
   console.log("✅ 词块学习版已启动");
-  console.log("📐 母句总数:", PATTERNS.length, "（陈述句", sCount, "+ 疑问句", qCount, "）");
-  console.log("🧱 总词块数:", totalChunks);
-  console.log("📖 场景:", [...new Set(PATTERNS.map(p => p.scene))].join(" / "));
+  console.log("📐 母句:", PATTERNS.length, " · 🧱 词块:", totalChunks);
+  console.log("⭐ 收藏数:", favorites.length);
 }
 
 document.getElementById("productModal").addEventListener("click", function(e) {
