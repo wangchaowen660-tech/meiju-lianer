@@ -4,27 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>词块学习 · 680句</title>
+<title>词块学习 · 940句</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#f0f4f8 0%,#e2e8f0 100%);color:#1e293b;min-height:100vh;}
 .container{max-width:600px;margin:0 auto;padding:16px;}
-
-/* 顶部 */
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .logo{font-size:20px;font-weight:800;color:#0f172a;}
 .logo span{color:#e94560;}
 .tab-mini{display:flex;gap:4px;background:#fff;border-radius:30px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
-.tab-mini button{padding:5px 14px;border:0;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;}
+.tab-mini button{padding:5px 12px;border:0;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;}
 .tab-mini button.active{background:#0f172a;color:#fff;}
-
-/* 场景标签 */
 .category-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;-webkit-overflow-scrolling:touch;}
 .category-tabs::-webkit-scrollbar{display:none;}
 .cat-tab{flex-shrink:0;padding:6px 14px;border:0;border-radius:20px;background:#fff;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);transition:0.15s;white-space:nowrap;}
 .cat-tab.active{background:#0f172a;color:#fff;}
-
-/* 母句卡片 */
 .pattern-card{background:#fff;border-radius:24px;padding:22px 20px 18px;box-shadow:0 8px 24px rgba(0,0,0,0.06);margin-bottom:14px;}
 .pattern-label{font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
 .pattern-label .type-tag{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;}
@@ -33,21 +27,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .pattern-en{font-size:23px;font-weight:800;color:#0f172a;line-height:1.3;word-break:break-word;}
 .pattern-en .blank{color:#e94560;}
 .pattern-cn{font-size:14px;color:#64748b;margin-top:6px;}
-
-/* 当前句子 */
 .sentence-card{background:linear-gradient(135deg,#fff5f7,#fff);border-radius:24px;padding:22px 20px;box-shadow:0 8px 24px rgba(233,69,96,0.10);margin-bottom:14px;border:1px solid rgba(233,69,96,0.10);}
 .sentence-en{font-size:25px;font-weight:800;color:#0f172a;line-height:1.35;word-break:break-word;margin-bottom:6px;}
 .sentence-en .chunk-hl{color:#e94560;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);padding:0 2px;border-radius:3px;}
 .sentence-cn{font-size:15px;color:#64748b;line-height:1.5;}
-
-/* 大按钮 */
 .big-actions{display:flex;gap:10px;margin-bottom:14px;}
 .big-btn{flex:1;padding:15px;border:0;border-radius:20px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:0.15s;}
 .big-btn:active{transform:scale(0.97);}
 .big-btn.play{background:#e94560;color:#fff;box-shadow:0 6px 16px rgba(233,69,96,0.30);}
 .big-btn.cn{background:#fff;color:#0f172a;box-shadow:0 4px 12px rgba(0,0,0,0.06);}
-
-/* 词块区 */
 .chunk-section{background:#fff;border-radius:24px;padding:18px 16px;box-shadow:0 8px 24px rgba(0,0,0,0.06);margin-bottom:14px;}
 .chunk-section-title{font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
 .chunk-section-title .count{background:#f1f5f9;color:#475569;padding:2px 10px;border-radius:20px;font-size:11px;}
@@ -58,18 +46,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .chunk .en{font-size:13px;font-weight:700;line-height:1.25;word-break:break-word;}
 .chunk .cn{font-size:10px;color:#94a3b8;margin-top:3px;word-break:break-word;}
 .chunk.active .cn{color:rgba(255,255,255,0.85);}
-
-/* 导航 */
 .nav-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;}
 .nav-btn{flex:1;padding:12px;border:0;border-radius:16px;background:#fff;color:#0f172a;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
 .nav-btn:active{transform:scale(0.97);}
 .nav-center{font-size:13px;font-weight:700;color:#64748b;min-width:80px;text-align:center;}
-
-/* 状态 */
 .status{text-align:center;font-size:12px;color:#94a3b8;min-height:18px;margin-bottom:8px;}
 .status.speaking{color:#e94560;font-weight:600;}
-
-/* 商城 */
 .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
 .product-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.05);cursor:pointer;transition:0.15s;}
 .product-card:active{transform:scale(0.98);}
@@ -79,18 +61,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .product-name{font-size:14px;font-weight:700;color:#0f172a;}
 .product-name-en{font-size:10px;color:#94a3b8;margin-top:2px;}
 .product-price{margin-top:6px;color:#e94560;font-weight:800;font-size:15px;}
-
-/* 弹窗 */
 .modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:200;justify-content:center;align-items:center;padding:16px;}
 .modal.open{display:flex;}
-.modal-box{background:#fff;border-radius:24px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;padding:24px;position:relative;}
+.modal-box{background:#fff;border-radius:24px;max-width:520px;width:100%;max-height:85vh;overflow-y:auto;padding:24px;position:relative;}
 .modal-close{position:absolute;top:14px;right:18px;font-size:26px;border:0;background:transparent;cursor:pointer;color:#94a3b8;}
 .modal-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:64px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);border-radius:18px;}
 .modal-name{font-size:20px;font-weight:800;margin-top:14px;}
 .modal-price{color:#e94560;font-weight:800;font-size:22px;margin-top:6px;}
 .modal-desc-en{font-size:15px;color:#0f172a;line-height:1.5;margin-top:14px;}
 .modal-desc-cn{font-size:13px;color:#64748b;line-height:1.5;margin-top:6px;}
-
+/* 指南 */
+.guide-step{background:#f8fafc;border-radius:12px;padding:12px 14px;margin-bottom:10px;border-left:3px solid #e94560;}
+.guide-step h4{font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px;}
+.guide-step p{font-size:13px;color:#475569;line-height:1.6;}
+.guide-code{background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:10px;font-family:monospace;font-size:12px;line-height:1.5;overflow-x:auto;margin-top:6px;white-space:pre;}
+.guide-code .key{color:#fbbf24;}
+.guide-code .str{color:#86efac;}
 @media(max-width:480px){
   .pattern-en{font-size:19px;}
   .sentence-en{font-size:20px;}
@@ -108,12 +94,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="tab-mini">
       <button class="active" onclick="switchTab('learn', this)">📚 学习</button>
       <button onclick="switchTab('shop', this)">🛍️ 商城</button>
+      <button onclick="switchTab('guide', this)">📖 加内容</button>
     </div>
   </div>
 
   <div id="learnModule">
     <div class="category-tabs" id="categoryTabs"></div>
-
     <div class="pattern-card">
       <div class="pattern-label">
         <span>📐 母句 · <span id="patternScene">日常</span></span>
@@ -122,17 +108,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <div class="pattern-en" id="patternEn"></div>
       <div class="pattern-cn" id="patternCn"></div>
     </div>
-
     <div class="sentence-card">
       <div class="sentence-en" id="sentenceEn"></div>
       <div class="sentence-cn" id="sentenceCn"></div>
     </div>
-
     <div class="big-actions">
       <button class="big-btn play" onclick="playCurrent()">🔊 朗读英文</button>
       <button class="big-btn cn" onclick="playChinese()">🇨🇳 读中文</button>
     </div>
-
     <div class="chunk-section">
       <div class="chunk-section-title">
         <span>🧱 点词块，换一个说法</span>
@@ -140,13 +123,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       </div>
       <div class="chunk-grid" id="chunkGrid"></div>
     </div>
-
     <div class="nav-bar">
       <button class="nav-btn" onclick="prevPattern()">⏮ 上一句型</button>
-      <div class="nav-center" id="patternNav">1 / 68</div>
+      <div class="nav-center" id="patternNav">1 / 94</div>
       <button class="nav-btn" onclick="nextPattern()">下一句型 ⏭</button>
     </div>
-
     <div class="status" id="status">点词块开始学习</div>
   </div>
 
@@ -154,6 +135,48 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="chunk-section">
       <div class="chunk-section-title"><span>🛍️ 精选好物</span></div>
       <div class="shop-grid" id="shopGrid"></div>
+    </div>
+  </div>
+
+  <div id="guideModule" style="display:none;">
+    <div class="chunk-section">
+      <div class="chunk-section-title"><span>📖 如何自己添加内容</span></div>
+      <div class="guide-step">
+        <h4>第 1 步：找到 PATTERNS 数组</h4>
+        <p>用记事本或编辑器打开这个 HTML 文件，搜索 <b>const PATTERNS = [</b>，这就是母句库。</p>
+      </div>
+      <div class="guide-step">
+        <h4>第 2 步：复制一个母句模板</h4>
+        <p>找到任意一个母句（如"日常"场景的第一条），复制它：</p>
+        <div class="guide-code">{
+  <span class="key">scene</span>: <span class="str">"日常"</span>,
+  <span class="key">type</span>: <span class="str">"s"</span>,           // s=陈述句 q=疑问句
+  <span class="key">en</span>: <span class="str">"I want to ___."</span>,
+  <span class="key">cn</span>: <span class="str">"我想 ______。"</span>,
+  <span class="key">chunks</span>: [
+    { en: <span class="str">"eat"</span>, cn: <span class="str">"吃"</span> },
+    { en: <span class="str">"drink"</span>, cn: <span class="str">"喝"</span> }
+  ]
+}</div>
+      </div>
+      <div class="guide-step">
+        <h4>第 3 步：修改内容并粘贴</h4>
+        <p>把 <b>scene</b> 改成场景名，<b>type</b> 改成 s 或 q，<b>en/cn</b> 改成新母句，<b>chunks</b> 里加更多词块（建议每个 8-12 个）。</p>
+        <p style="margin-top:6px;">🆕 <b>新场景</b>：把 <b>scene</b> 改成新名字（如 "银行"），顶部标签会自动出现新场景！</p>
+      </div>
+      <div class="guide-step">
+        <h4>第 4 步：保存并刷新</h4>
+        <p>保存文件，刷新浏览器，新内容立即出现。无需改任何代码。</p>
+      </div>
+      <div class="guide-step" style="border-left-color:#10b981;">
+        <h4>✅ 添加规则小结</h4>
+        <p>• <b>scene</b>：场景名（中文）<br>
+        • <b>type</b>：s = 陈述句，q = 疑问句<br>
+        • <b>en</b>：英文母句，用 ___ 表示填空位置<br>
+        • <b>cn</b>：中文释义，用 ______ 表示填空<br>
+        • <b>chunks</b>：词块列表，每个 { en, cn }<br>
+        • 末尾记得加 <b>逗号</b></p>
+      </div>
     </div>
   </div>
 </div>
@@ -171,11 +194,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <script>
 // ================================================================
-// 母句库：7场景 × 陈述句40个 + 疑问句28个 = 68个母句 × 10词块 = 680句
-// type: "s"=陈述句, "q"=疑问句
+// 母句库 PATTERNS
+// 添加新内容：复制一个 { ... } 块，粘贴到合适位置，修改内容即可
+// scene=场景名  type=s陈述句/q疑问句  en=英文母句(用___填空)  cn=中文  chunks=词块
 // ================================================================
 const PATTERNS = [
-  // ============ 一、日常基础 ============
+  // ============================================================
+  // 一、日常基础 (8陈述 + 6疑问 = 14)
+  // ============================================================
   { scene: "日常", type: "s", en: "I want to ___.", cn: "我想 ______。",
     chunks: [
       { en: "eat something", cn: "吃点东西" }, { en: "drink water", cn: "喝水" },
@@ -230,7 +256,24 @@ const PATTERNS = [
       { en: "chat with friends", cn: "和朋友聊天" }, { en: "learn new things", cn: "学新东西" }
     ]
   },
-  // --- 日常疑问句 ---
+  { scene: "日常", type: "s", en: "I'm trying to ___.", cn: "我正在试着 ______。",
+    chunks: [
+      { en: "save money", cn: "省钱" }, { en: "lose weight", cn: "减肥" },
+      { en: "learn English", cn: "学英语" }, { en: "quit smoking", cn: "戒烟" },
+      { en: "wake up early", cn: "早起" }, { en: "eat healthier", cn: "吃得更健康" },
+      { en: "save time", cn: "节省时间" }, { en: "find a new job", cn: "找新工作" },
+      { en: "help my family", cn: "帮家人" }, { en: "be more patient", cn: "更有耐心" }
+    ]
+  },
+  { scene: "日常", type: "s", en: "I feel ___.", cn: "我觉得 ______。",
+    chunks: [
+      { en: "tired", cn: "累" }, { en: "happy", cn: "开心" },
+      { en: "hungry", cn: "饿" }, { en: "thirsty", cn: "渴" },
+      { en: "bored", cn: "无聊" }, { en: "excited", cn: "兴奋" },
+      { en: "nervous", cn: "紧张" }, { en: "relaxed", cn: "放松" },
+      { en: "a bit sick", cn: "有点不舒服" }, { en: "much better", cn: "好多了" }
+    ]
+  },
   { scene: "日常", type: "q", en: "What do you want to ___?", cn: "你想要 ______ 什么？",
     chunks: [
       { en: "do", cn: "做" }, { en: "eat", cn: "吃" },
@@ -267,8 +310,28 @@ const PATTERNS = [
       { en: "worry", cn: "担心" }, { en: "cry", cn: "哭" }
     ]
   },
+  { scene: "日常", type: "q", en: "How often do you ___?", cn: "你多久 ______ 一次？",
+    chunks: [
+      { en: "exercise", cn: "锻炼" }, { en: "go shopping", cn: "购物" },
+      { en: "eat out", cn: "外出吃饭" }, { en: "see your family", cn: "见家人" },
+      { en: "travel", cn: "旅行" }, { en: "watch movies", cn: "看电影" },
+      { en: "read books", cn: "读书" }, { en: "call your parents", cn: "给父母打电话" },
+      { en: "clean your room", cn: "打扫房间" }, { en: "go to the gym", cn: "去健身房" }
+    ]
+  },
+  { scene: "日常", type: "q", en: "Do you often ___?", cn: "你经常 ______ 吗？",
+    chunks: [
+      { en: "eat out", cn: "外出吃饭" }, { en: "cook at home", cn: "在家做饭" },
+      { en: "go to bed late", cn: "晚睡" }, { en: "get up early", cn: "早起" },
+      { en: "take a taxi", cn: "打车" }, { en: "walk to work", cn: "走路上班" },
+      { en: "watch TV", cn: "看电视" }, { en: "play games", cn: "玩游戏" },
+      { en: "drink coffee", cn: "喝咖啡" }, { en: "go to the park", cn: "去公园" }
+    ]
+  },
 
-  // ============ 二、厨师工作 ============
+  // ============================================================
+  // 二、厨师工作 (8陈述 + 6疑问 = 14)
+  // ============================================================
   { scene: "厨师", type: "s", en: "I need to ___.", cn: "我需要 ______。",
     chunks: [
       { en: "chop vegetables", cn: "切菜" }, { en: "slice onions", cn: "切洋葱" },
@@ -323,7 +386,24 @@ const PATTERNS = [
       { en: "tables", cn: "桌子" }, { en: "glasses", cn: "杯子" }
     ]
   },
-  // --- 厨师疑问句 ---
+  { scene: "厨师", type: "s", en: "The ___ is ready.", cn: "______ 准备好了。",
+    chunks: [
+      { en: "soup", cn: "汤" }, { en: "rice", cn: "米饭" },
+      { en: "noodles", cn: "面条" }, { en: "steak", cn: "牛排" },
+      { en: "fish", cn: "鱼" }, { en: "chicken", cn: "鸡" },
+      { en: "salad", cn: "沙拉" }, { en: "dessert", cn: "甜点" },
+      { en: "order", cn: "订单" }, { en: "sauce", cn: "酱汁" }
+    ]
+  },
+  { scene: "厨师", type: "s", en: "Don't forget to ___.", cn: "别忘了 ______。",
+    chunks: [
+      { en: "turn off the stove", cn: "关火" }, { en: "close the fridge", cn: "关冰箱" },
+      { en: "wash your hands", cn: "洗手" }, { en: "check the order", cn: "看订单" },
+      { en: "lock the door", cn: "锁门" }, { en: "clean the counter", cn: "擦台面" },
+      { en: "cover the food", cn: "盖食物" }, { en: "throw away the trash", cn: "倒垃圾" },
+      { en: "label the boxes", cn: "贴标签" }, { en: "check the temperature", cn: "测温度" }
+    ]
+  },
   { scene: "厨师", type: "q", en: "How long does it take to ___?", cn: "______ 需要多长时间？",
     chunks: [
       { en: "cook", cn: "烹饪" }, { en: "bake", cn: "烘焙" },
@@ -360,8 +440,28 @@ const PATTERNS = [
       { en: "clean this", cn: "清理这个" }, { en: "get the plates", cn: "拿盘子" }
     ]
   },
+  { scene: "厨师", type: "q", en: "Is the ___ ready?", cn: "______ 好了吗？",
+    chunks: [
+      { en: "soup", cn: "汤" }, { en: "rice", cn: "米饭" },
+      { en: "steak", cn: "牛排" }, { en: "fish", cn: "鱼" },
+      { en: "chicken", cn: "鸡" }, { en: "salad", cn: "沙拉" },
+      { en: "order", cn: "订单" }, { en: "dessert", cn: "甜点" },
+      { en: "noodles", cn: "面条" }, { en: "pizza", cn: "披萨" }
+    ]
+  },
+  { scene: "厨师", type: "q", en: "What should I ___ first?", cn: "我应该先 ______ 什么？",
+    chunks: [
+      { en: "cook", cn: "煮" }, { en: "cut", cn: "切" },
+      { en: "wash", cn: "洗" }, { en: "prepare", cn: "准备" },
+      { en: "clean", cn: "清理" }, { en: "check", cn: "检查" },
+      { en: "make", cn: "做" }, { en: "start", cn: "开始" },
+      { en: "heat", cn: "加热" }, { en: "serve", cn: "上菜" }
+    ]
+  },
 
-  // ============ 三、社交交流 ============
+  // ============================================================
+  // 三、社交交流 (8陈述 + 6疑问 = 14)
+  // ============================================================
   { scene: "社交", type: "s", en: "Do you want to ___?", cn: "你想 ______ 吗？",
     chunks: [
       { en: "hang out", cn: "一起玩" }, { en: "grab coffee", cn: "喝咖啡" },
@@ -416,7 +516,24 @@ const PATTERNS = [
       { en: "this song", cn: "这首歌" }, { en: "the new boss", cn: "新老板" }
     ]
   },
-  // --- 社交疑问句 ---
+  { scene: "社交", type: "s", en: "I'm sorry to ___.", cn: "我很抱歉 ______。",
+    chunks: [
+      { en: "be late", cn: "迟到" }, { en: "hear that", cn: "听到这个" },
+      { en: "bother you", cn: "打扰你" }, { en: "say this", cn: "说这个" },
+      { en: "ask again", cn: "再问一次" }, { en: "keep you waiting", cn: "让你等" },
+      { en: "interrupt", cn: "打断" }, { en: "cancel", cn: "取消" },
+      { en: "say no", cn: "说不" }, { en: "leave early", cn: "早走" }
+    ]
+  },
+  { scene: "社交", type: "s", en: "Thank you for ___.", cn: "谢谢你 ______。",
+    chunks: [
+      { en: "your help", cn: "你的帮助" }, { en: "coming", cn: "过来" },
+      { en: "your time", cn: "你的时间" }, { en: "the gift", cn: "礼物" },
+      { en: "the invite", cn: "邀请" }, { en: "the meal", cn: "款待" },
+      { en: "everything", cn: "一切" }, { en: "your advice", cn: "你的建议" },
+      { en: "the ride", cn: "载我" }, { en: "your kindness", cn: "你的好意" }
+    ]
+  },
   { scene: "社交", type: "q", en: "Do you like ___?", cn: "你喜欢 ______ 吗？",
     chunks: [
       { en: "coffee", cn: "咖啡" }, { en: "music", cn: "音乐" },
@@ -453,8 +570,28 @@ const PATTERNS = [
       { en: "meeting us", cn: "在哪见我们" }, { en: "eating", cn: "在哪吃" }
     ]
   },
+  { scene: "社交", type: "q", en: "What's your favorite ___?", cn: "你最喜欢的 ______ 是什么？",
+    chunks: [
+      { en: "food", cn: "食物" }, { en: "color", cn: "颜色" },
+      { en: "music", cn: "音乐" }, { en: "movie", cn: "电影" },
+      { en: "sport", cn: "运动" }, { en: "city", cn: "城市" },
+      { en: "season", cn: "季节" }, { en: "drink", cn: "饮料" },
+      { en: "hobby", cn: "爱好" }, { en: "song", cn: "歌曲" }
+    ]
+  },
+  { scene: "社交", type: "q", en: "How long have you ___?", cn: "你 ______ 多久了？",
+    chunks: [
+      { en: "been here", cn: "在这里" }, { en: "worked here", cn: "在这里工作" },
+      { en: "lived here", cn: "住在这里" }, { en: "studied English", cn: "学英语" },
+      { en: "known him", cn: "认识他" }, { en: "been married", cn: "结婚" },
+      { en: "had this job", cn: "做这份工作" }, { en: "been in China", cn: "在中国" },
+      { en: "played guitar", cn: "弹吉他" }, { en: "been friends", cn: "是朋友" }
+    ]
+  },
 
-  // ============ 四、旅行机场 ============
+  // ============================================================
+  // 四、旅行机场 (8陈述 + 6疑问 = 14)
+  // ============================================================
   { scene: "旅行", type: "s", en: "Where is ___?", cn: "______ 在哪里？",
     chunks: [
       { en: "the station", cn: "车站" }, { en: "the airport", cn: "机场" },
@@ -509,7 +646,24 @@ const PATTERNS = [
       { en: "the tour bus", cn: "观光巴士" }, { en: "the taxi", cn: "出租车" }
     ]
   },
-  // --- 旅行疑问句 ---
+  { scene: "旅行", type: "s", en: "I'm looking for ___.", cn: "我在找 ______。",
+    chunks: [
+      { en: "the bus stop", cn: "公交站" }, { en: "my hotel", cn: "我的酒店" },
+      { en: "a taxi", cn: "出租车" }, { en: "the ticket office", cn: "售票处" },
+      { en: "a good restaurant", cn: "好餐厅" }, { en: "a pharmacy", cn: "药店" },
+      { en: "the departure gate", cn: "登机口" }, { en: "my luggage", cn: "我的行李" },
+      { en: "a place to stay", cn: "住的地方" }, { en: "a Wi-Fi spot", cn: "Wi-Fi点" }
+    ]
+  },
+  { scene: "旅行", type: "s", en: "Take me to ___, please.", cn: "请带我去 ______。",
+    chunks: [
+      { en: "the airport", cn: "机场" }, { en: "this address", cn: "这个地址" },
+      { en: "the train station", cn: "火车站" }, { en: "the city center", cn: "市中心" },
+      { en: "my hotel", cn: "我的酒店" }, { en: "the nearest bank", cn: "最近的银行" },
+      { en: "the bus terminal", cn: "汽车站" }, { en: "the hospital", cn: "医院" },
+      { en: "the shopping mall", cn: "购物中心" }, { en: "the museum", cn: "博物馆" }
+    ]
+  },
   { scene: "旅行", type: "q", en: "Where can I ___?", cn: "我在哪能 ______？",
     chunks: [
       { en: "buy a ticket", cn: "买票" }, { en: "find a taxi", cn: "找出租车" },
@@ -546,8 +700,28 @@ const PATTERNS = [
       { en: "bring a bag", cn: "带包" }, { en: "arrive early", cn: "早到" }
     ]
   },
+  { scene: "旅行", type: "q", en: "Could you tell me ___?", cn: "你能告诉我 ______ 吗？",
+    chunks: [
+      { en: "the way", cn: "怎么走" }, { en: "where it is", cn: "它在哪里" },
+      { en: "the price", cn: "价格" }, { en: "how to get there", cn: "怎么去那" },
+      { en: "the time", cn: "时间" }, { en: "the gate number", cn: "登机口号" },
+      { en: "where to buy tickets", cn: "哪买票" }, { en: "the schedule", cn: "时刻表" },
+      { en: "when it leaves", cn: "什么时候出发" }, { en: "the address", cn: "地址" }
+    ]
+  },
+  { scene: "旅行", type: "q", en: "How far is ___?", cn: "______ 有多远？",
+    chunks: [
+      { en: "the station", cn: "车站" }, { en: "the airport", cn: "机场" },
+      { en: "the hotel", cn: "酒店" }, { en: "the city center", cn: "市中心" },
+      { en: "the beach", cn: "海滩" }, { en: "the museum", cn: "博物馆" },
+      { en: "the bus stop", cn: "公交站" }, { en: "the restaurant", cn: "餐厅" },
+      { en: "the shopping mall", cn: "商场" }, { en: "it from here", cn: "离这" }
+    ]
+  },
 
-  // ============ 五、购物消费 ============
+  // ============================================================
+  // 五、购物消费 (8陈述 + 6疑问 = 14)
+  // ============================================================
   { scene: "购物", type: "s", en: "How much ___?", cn: "______ 多少钱？",
     chunks: [
       { en: "is this", cn: "这个" }, { en: "does it cost", cn: "这个" },
@@ -602,7 +776,24 @@ const PATTERNS = [
       { en: "dark", cn: "深色" }, { en: "bright", cn: "亮" }
     ]
   },
-  // --- 购物疑问句 ---
+  { scene: "购物", type: "s", en: "Can you give me ___?", cn: "你能给我 ______ 吗？",
+    chunks: [
+      { en: "a discount", cn: "折扣" }, { en: "a bag", cn: "袋子" },
+      { en: "a receipt", cn: "收据" }, { en: "a refund", cn: "退款" },
+      { en: "a better price", cn: "更好的价格" }, { en: "another one", cn: "另一个" },
+      { en: "a warranty card", cn: "保修卡" }, { en: "free delivery", cn: "免费配送" },
+      { en: "some samples", cn: "一些样品" }, { en: "a bigger size", cn: "更大尺码" }
+    ]
+  },
+  { scene: "购物", type: "s", en: "It's too ___ for me.", cn: "这对我来说太 ______ 了。",
+    chunks: [
+      { en: "expensive", cn: "贵" }, { en: "big", cn: "大" },
+      { en: "small", cn: "小" }, { en: "heavy", cn: "重" },
+      { en: "long", cn: "长" }, { en: "short", cn: "短" },
+      { en: "tight", cn: "紧" }, { en: "loose", cn: "松" },
+      { en: "dark", cn: "深" }, { en: "bright", cn: "亮" }
+    ]
+  },
   { scene: "购物", type: "q", en: "What's the price of ___?", cn: "______ 的价格是多少？",
     chunks: [
       { en: "this", cn: "这个" }, { en: "that", cn: "那个" },
@@ -639,8 +830,28 @@ const PATTERNS = [
       { en: "smaller size", cn: "更小尺码" }, { en: "delivery", cn: "配送" }
     ]
   },
+  { scene: "购物", type: "q", en: "What size do you ___?", cn: "你 ______ 什么尺码？",
+    chunks: [
+      { en: "need", cn: "需要" }, { en: "wear", cn: "穿" },
+      { en: "take", cn: "拿" }, { en: "want", cn: "要" },
+      { en: "have", cn: "有" }, { en: "prefer", cn: "偏好" },
+      { en: "recommend", cn: "推荐" }, { en: "suggest", cn: "建议" },
+      { en: "usually buy", cn: "通常买" }, { en: "like", cn: "喜欢" }
+    ]
+  },
+  { scene: "购物", type: "q", en: "Can I pay with ___?", cn: "我可以用 ______ 支付吗？",
+    chunks: [
+      { en: "cash", cn: "现金" }, { en: "a credit card", cn: "信用卡" },
+      { en: "WeChat Pay", cn: "微信" }, { en: "Alipay", cn: "支付宝" },
+      { en: "my phone", cn: "手机" }, { en: "a gift card", cn: "礼品卡" },
+      { en: "US dollars", cn: "美元" }, { en: "a coupon", cn: "优惠券" },
+      { en: "Apple Pay", cn: "Apple Pay" }, { en: "a debit card", cn: "借记卡" }
+    ]
+  },
 
-  // ============ 六、紧急求助 ============
+  // ============================================================
+  // 六、紧急求助 (7陈述 + 5疑问 = 12)
+  // ============================================================
   { scene: "紧急", type: "s", en: "I need help ___.", cn: "我需要帮助 ______。",
     chunks: [
       { en: "right now", cn: "马上" }, { en: "with this", cn: "帮这个" },
@@ -686,7 +897,24 @@ const PATTERNS = [
       { en: "an allergy", cn: "过敏" }, { en: "a rash", cn: "皮疹" }
     ]
   },
-  // --- 紧急疑问句 ---
+  { scene: "紧急", type: "s", en: "There's a problem with ___.", cn: "______ 出了问题。",
+    chunks: [
+      { en: "my room", cn: "我的房间" }, { en: "the bill", cn: "账单" },
+      { en: "my order", cn: "我的订单" }, { en: "the car", cn: "车" },
+      { en: "the door", cn: "门" }, { en: "the water", cn: "水" },
+      { en: "the Wi-Fi", cn: "Wi-Fi" }, { en: "the air conditioner", cn: "空调" },
+      { en: "the key card", cn: "房卡" }, { en: "the TV", cn: "电视" }
+    ]
+  },
+  { scene: "紧急", type: "s", en: "Please help me ___.", cn: "请帮我 ______。",
+    chunks: [
+      { en: "call a taxi", cn: "叫出租车" }, { en: "find my hotel", cn: "找酒店" },
+      { en: "read this", cn: "读这个" }, { en: "understand this", cn: "理解这个" },
+      { en: "find a doctor", cn: "找医生" }, { en: "fix this", cn: "修这个" },
+      { en: "contact my family", cn: "联系家人" }, { en: "get a refund", cn: "退款" },
+      { en: "fill this form", cn: "填表" }, { en: "explain this", cn: "解释这个" }
+    ]
+  },
   { scene: "紧急", type: "q", en: "What should I do if ___?", cn: "如果 ______ 怎么办？",
     chunks: [
       { en: "I lose my passport", cn: "护照丢了" }, { en: "I get sick", cn: "生病了" },
@@ -723,8 +951,19 @@ const PATTERNS = [
       { en: "okay to walk", cn: "可以走过去" }, { en: "dangerous", cn: "危险" }
     ]
   },
+  { scene: "紧急", type: "q", en: "Could you ___ for me?", cn: "你能为我 ______ 吗？",
+    chunks: [
+      { en: "call a taxi", cn: "叫出租车" }, { en: "call the police", cn: "报警" },
+      { en: "call an ambulance", cn: "叫救护车" }, { en: "write it down", cn: "写下来" },
+      { en: "translate this", cn: "翻译这个" }, { en: "show me on the map", cn: "在地图上指给我" },
+      { en: "call my family", cn: "给我家人打电话" }, { en: "help me find it", cn: "帮我找" },
+      { en: "explain this", cn: "解释这个" }, { en: "read this", cn: "读这个" }
+    ]
+  },
 
-  // ============ 七、餐厅点餐 ============
+  // ============================================================
+  // 七、餐厅点餐 (7陈述 + 5疑问 = 12)
+  // ============================================================
   { scene: "餐厅", type: "s", en: "I'd like to ___.", cn: "我想 ______。",
     chunks: [
       { en: "order now", cn: "现在点餐" }, { en: "see the menu", cn: "看菜单" },
@@ -770,7 +1009,24 @@ const PATTERNS = [
       { en: "have a receipt", cn: "要收据" }, { en: "see the manager", cn: "见经理" }
     ]
   },
-  // --- 餐厅疑问句 ---
+  { scene: "餐厅", type: "s", en: "The ___ is delicious.", cn: "这个 ______ 很好吃。",
+    chunks: [
+      { en: "soup", cn: "汤" }, { en: "steak", cn: "牛排" },
+      { en: "fish", cn: "鱼" }, { en: "chicken", cn: "鸡" },
+      { en: "salad", cn: "沙拉" }, { en: "pasta", cn: "意面" },
+      { en: "rice", cn: "米饭" }, { en: "noodles", cn: "面条" },
+      { en: "dessert", cn: "甜点" }, { en: "coffee", cn: "咖啡" }
+    ]
+  },
+  { scene: "餐厅", type: "s", en: "I'm allergic to ___.", cn: "我对 ______ 过敏。",
+    chunks: [
+      { en: "peanuts", cn: "花生" }, { en: "seafood", cn: "海鲜" },
+      { en: "milk", cn: "牛奶" }, { en: "eggs", cn: "鸡蛋" },
+      { en: "nuts", cn: "坚果" }, { en: "gluten", cn: "麸质" },
+      { en: "spicy food", cn: "辣的食物" }, { en: "shellfish", cn: "贝类" },
+      { en: "soy", cn: "大豆" }, { en: "pork", cn: "猪肉" }
+    ]
+  },
   { scene: "餐厅", type: "q", en: "What do you ___?", cn: "你 ______ 什么？",
     chunks: [
       { en: "recommend", cn: "推荐" }, { en: "suggest", cn: "建议" },
@@ -805,6 +1061,15 @@ const PATTERNS = [
       { en: "the salad", cn: "沙拉怎么样" }, { en: "your tea", cn: "茶怎么样" },
       { en: "the rice", cn: "米饭怎么样" }, { en: "your food", cn: "食物怎么样" },
       { en: "the fish", cn: "鱼怎么样" }, { en: "your drink", cn: "饮料怎么样" }
+    ]
+  },
+  { scene: "餐厅", type: "q", en: "Could we have ___?", cn: "我们可以要 ______ 吗？",
+    chunks: [
+      { en: "a table", cn: "一张桌" }, { en: "the menu", cn: "菜单" },
+      { en: "some water", cn: "一些水" }, { en: "the bill", cn: "账单" },
+      { en: "two coffees", cn: "两杯咖啡" }, { en: "more rice", cn: "更多米饭" },
+      { en: "a high chair", cn: "儿童椅" }, { en: "a quiet table", cn: "安静的桌子" },
+      { en: "some napkins", cn: "一些餐巾" }, { en: "the check", cn: "账单" }
     ]
   }
 ];
@@ -1051,6 +1316,7 @@ function switchTab(tab, btn) {
   btn.classList.add("active");
   document.getElementById("learnModule").style.display = tab === "learn" ? "block" : "none";
   document.getElementById("shopModule").style.display = tab === "shop" ? "block" : "none";
+  document.getElementById("guideModule").style.display = tab === "guide" ? "block" : "none";
   if (tab === "shop") renderShop();
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1074,9 +1340,12 @@ function init() {
   }
 
   const totalChunks = PATTERNS.reduce((s, p) => s + p.chunks.length, 0);
+  const sCount = PATTERNS.filter(p => p.type === "s").length;
+  const qCount = PATTERNS.filter(p => p.type === "q").length;
   console.log("✅ 词块学习版已启动");
-  console.log("📐 母句总数:", PATTERNS.length, "（陈述句", PATTERNS.filter(p=>p.type==="s").length, "+ 疑问句", PATTERNS.filter(p=>p.type==="q").length, "）");
+  console.log("📐 母句总数:", PATTERNS.length, "（陈述句", sCount, "+ 疑问句", qCount, "）");
   console.log("🧱 总词块数:", totalChunks);
+  console.log("📖 场景:", [...new Set(PATTERNS.map(p => p.scene))].join(" / "));
 }
 
 document.getElementById("productModal").addEventListener("click", function(e) {
