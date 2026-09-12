@@ -7,112 +7,113 @@
 <title>学英语 · 逛好物</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#f5f7fa;color:#1e293b;-webkit-text-size-adjust:100%;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#f5f7fa;color:#1e293b;}
 .container{max-width:900px;margin:0 auto;padding:0 14px;}
-
-/* 顶部导航 */
 header{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:sticky;top:0;z-index:100;}
 .header-inner{display:flex;justify-content:space-between;align-items:center;padding:10px 0;gap:8px;flex-wrap:wrap;}
-.logo{font-size:19px;font-weight:800;color:#0f172a;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.logo{font-size:19px;font-weight:800;color:#0f172a;display:flex;align-items:center;gap:5px;}
 .logo .brand-shop{color:#e94560;position:relative;}
 .logo .brand-shop .shop-badge{position:absolute;top:-8px;right:-24px;background:#22c55e;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;}
-
 .nav-tabs{display:flex;gap:5px;background:#f1f5f9;border-radius:30px;padding:3px;}
 .nav-tab{padding:7px 14px;border:0;border-radius:30px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;transition:0.2s;display:flex;align-items:center;gap:4px;}
 .nav-tab.active{background:#0f172a;color:#fff;}
 .nav-tab.shop-tab.active{background:#e94560;color:#fff;}
 .nav-tab .tab-badge{background:#e94560;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;min-width:20px;text-align:center;}
 .nav-tab.shop-tab.active .tab-badge{background:#fff;color:#e94560;}
-
-.shop-entry-btn{display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,#e94560,#f97316);color:#fff;border:0;border-radius:30px;padding:7px 15px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,69,96,0.25);transition:0.2s;}
-.shop-entry-btn:hover{transform:translateY(-1px);}
-.shop-entry-btn .mini-badge{background:#fff;color:#e94560;font-size:10px;font-weight:800;padding:1px 6px;border-radius:10px;}
-
+.shop-entry-btn{display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,#e94560,#f97316);color:#fff;border:0;border-radius:30px;padding:7px 15px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,69,96,0.25);}
 .card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid #e2e8f0;margin-bottom:14px;}
-
-/* 英语学习 */
 .scene-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
 .scene-bar label{font-weight:600;font-size:14px;white-space:nowrap;}
-.scene-bar select{flex:1;min-width:120px;padding:8px 10px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;background:#fff;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;}
+.scene-bar select{flex:1;min-width:120px;padding:8px 10px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;background:#fff;outline:none;cursor:pointer;}
 .badge{background:#e94560;color:#fff;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;}
-
-.dialog-item{background:#f8fafc;border-radius:14px;padding:14px;border-left:4px solid #e94560;margin-bottom:12px;}
-.dialog-row{display:flex;align-items:flex-start;gap:8px;padding:6px 0;}
-.dialog-row.answer{border-top:1px dashed #e2e8f0;margin-top:6px;padding-top:10px;}
+.group-header{background:linear-gradient(135deg,#e0e7ff,#f1f5f9);padding:8px 14px;border-radius:12px;margin-bottom:10px;font-size:13px;font-weight:600;color:#475569;display:flex;justify-content:space-between;align-items:center;}
+.group-header .group-title{color:#0f172a;font-weight:700;}
+.group-header .group-tag{background:#e94560;color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;}
+.dialog-item{background:#f8fafc;border-radius:14px;padding:12px 14px;border-left:4px solid #e94560;margin-bottom:10px;}
+.dialog-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;}
+.dialog-row.answer{border-top:1px dashed #e2e8f0;margin-top:5px;padding-top:8px;}
 .dialog-label{font-weight:700;font-size:13px;min-width:36px;padding-top:3px;}
 .dialog-label.q{color:#e94560;}
 .dialog-label.a{color:#8b5cf6;}
 .dialog-text{flex:1;min-width:0;}
-.line-en{font-size:17px;font-weight:600;color:#0f172a;line-height:1.4;word-break:break-word;}
-.line-cn{font-size:14px;color:#64748b;margin-top:2px;word-break:break-word;}
-.speak-btn{flex-shrink:0;width:36px;height:36px;border:0;border-radius:50%;background:#e2e8f0;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.15s;-webkit-user-select:none;user-select:none;}
+.line-en{font-size:16px;font-weight:600;color:#0f172a;line-height:1.4;word-break:break-word;}
+.line-cn{font-size:13px;color:#64748b;margin-top:2px;word-break:break-word;}
+.speak-btn{flex-shrink:0;width:34px;height:34px;border:0;border-radius:50%;background:#e2e8f0;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.15s;}
 .speak-btn:active{transform:scale(0.92);}
 .speak-btn.speaking{background:#e94560;color:#fff;}
-.speak-btn.cn{background:#fef3c7;font-size:13px;font-weight:700;color:#92400e;}
+.speak-btn.cn{background:#fef3c7;font-size:12px;font-weight:700;color:#92400e;}
 .speak-btn.cn.speaking{background:#f59e0b;color:#fff;}
-
+.related-box{background:#fffbeb;border-radius:12px;padding:10px 14px;margin-top:8px;border-left:3px solid #f59e0b;}
+.related-box h5{font-size:12px;color:#92400e;margin-bottom:6px;font-weight:700;}
+.related-box .rel-item{font-size:13px;color:#475569;padding:2px 0;}
+.related-box .rel-item strong{color:#0f172a;}
 .controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
 .btn{padding:9px 18px;border:0;border-radius:24px;font-size:13px;font-weight:600;cursor:pointer;background:#e2e8f0;color:#1e293b;transition:0.15s;}
 .btn:active{transform:scale(0.96);}
 .btn.primary{background:#e94560;color:#fff;}
 .btn.dark{background:#0f172a;color:#fff;}
-
+.btn.small{padding:6px 12px;font-size:12px;}
+.btn.danger{background:#ef4444;color:#fff;}
 .status{text-align:center;font-size:12px;color:#94a3b8;margin-top:8px;min-height:18px;}
 .status.speaking{color:#3b82f6;}
 .status.done{color:#22c55e;}
-.status.error{color:#ef4444;}
-
-/* 商品城 */
 .categories{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
 .cat-btn{padding:7px 18px;border:1px solid #e2e8f0;border-radius:30px;background:#fff;font-size:13px;font-weight:500;color:#475569;cursor:pointer;}
 .cat-btn.active{background:#0f172a;color:#fff;border-color:#0f172a;}
-
 .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
 .product-card{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e2e8f0;cursor:pointer;transition:0.15s;}
 .product-card:active{transform:scale(0.98);}
-.product-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);}
+.product-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);overflow:hidden;}
+.product-img img{width:100%;height:100%;object-fit:cover;}
 .product-body{padding:10px 12px 12px;}
 .product-name{font-size:14px;font-weight:700;color:#0f172a;line-height:1.3;}
 .product-name-en{font-size:11px;color:#94a3b8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .product-price{margin-top:6px;color:#e94560;font-weight:800;font-size:16px;}
 .product-price small{font-size:11px;font-weight:500;color:#94a3b8;text-decoration:line-through;margin-left:4px;}
-
-/* 弹窗 */
+.empty-tip{text-align:center;padding:30px 10px;color:#94a3b8;font-size:14px;}
 .modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,0.55);z-index:200;justify-content:center;align-items:center;padding:16px;}
 .modal.open{display:flex;}
-.modal-box{background:#fff;border-radius:22px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;padding:22px;position:relative;-webkit-overflow-scrolling:touch;}
+.modal-box{background:#fff;border-radius:22px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;padding:22px;position:relative;}
 .modal-close{position:absolute;top:14px;right:18px;font-size:26px;border:0;background:transparent;cursor:pointer;color:#94a3b8;line-height:1;}
-.modal-img{height:170px;display:flex;align-items:center;justify-content:center;font-size:72px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);border-radius:16px;}
+.modal-img{height:170px;display:flex;align-items:center;justify-content:center;font-size:72px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);border-radius:16px;overflow:hidden;}
+.modal-img img{width:100%;height:100%;object-fit:cover;}
 .modal-name{font-size:20px;font-weight:800;margin-top:14px;}
 .modal-name-en{font-size:14px;color:#94a3b8;margin-top:2px;}
 .modal-price{color:#e94560;font-weight:800;font-size:24px;margin-top:8px;}
 .modal-price small{font-size:14px;color:#94a3b8;text-decoration:line-through;font-weight:500;margin-left:6px;}
 .modal-section{margin-top:14px;}
-.modal-section h4{font-size:13px;font-weight:700;color:#64748b;margin-bottom:6px;letter-spacing:0.5px;}
+.modal-section h4{font-size:13px;font-weight:700;color:#64748b;margin-bottom:6px;}
 .modal-section .en{font-size:15px;color:#0f172a;line-height:1.5;}
 .modal-section .cn{font-size:14px;color:#64748b;margin-top:4px;line-height:1.5;}
-
-/* 询盘 */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
 .form-row .full{grid-column:1/-1;}
-input,textarea{width:100%;padding:11px 12px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;transition:0.15s;-webkit-appearance:none;appearance:none;}
-input:focus,textarea:focus{border-color:#e94560;box-shadow:0 0 0 3px rgba(233,69,96,0.08);}
-textarea{resize:vertical;min-height:80px;}
+input,textarea,select{width:100%;padding:11px 12px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;background:#fff;}
+input:focus,textarea:focus,select:focus{border-color:#e94560;box-shadow:0 0 0 3px rgba(233,69,96,0.08);}
+textarea{resize:vertical;min-height:70px;}
+label.field-label{font-size:12px;font-weight:600;color:#64748b;display:block;margin-bottom:3px;margin-top:6px;}
 .form-success{display:none;background:#dcfce7;color:#166534;padding:10px 14px;border-radius:10px;font-size:13px;margin-top:10px;}
 .form-success.show{display:block;}
-
-.empty-tip{text-align:center;padding:30px 10px;color:#94a3b8;font-size:14px;}
+.admin-item{background:#f8fafc;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;gap:10px;align-items:center;border:1px solid #e2e8f0;}
+.admin-item .ai-img{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden;}
+.admin-item .ai-img img{width:100%;height:100%;object-fit:cover;}
+.admin-item .ai-info{flex:1;min-width:0;}
+.admin-item .ai-name{font-size:14px;font-weight:700;}
+.admin-item .ai-sub{font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.admin-item .ai-actions{display:flex;gap:4px;flex-shrink:0;}
+.admin-item .ai-actions button{padding:4px 10px;font-size:11px;border:0;border-radius:8px;cursor:pointer;}
+.admin-empty{text-align:center;color:#94a3b8;padding:20px;font-size:13px;}
 footer{text-align:center;padding:24px 0;color:#94a3b8;font-size:12px;}
-
 @media(max-width:600px){
   .form-row{grid-template-columns:1fr;}
   .product-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
   .product-img{height:110px;font-size:44px;}
   .line-en{font-size:15px;}
+  .line-cn{font-size:12px;}
   .logo{font-size:16px;}
   .nav-tab{padding:6px 10px;font-size:12px;}
   .shop-entry-btn{padding:6px 10px;font-size:12px;}
-  .header-inner{gap:6px;}
+  .speak-btn{width:30px;height:30px;font-size:14px;}
+  .speak-btn.cn{font-size:11px;}
 }
 </style>
 </head>
@@ -124,9 +125,7 @@ footer{text-align:center;padding:24px 0;color:#94a3b8;font-size:12px;}
       <span>学英语</span><span style="color:#e94560;font-weight:900;">·</span>
       <span class="brand-shop">逛好物<span class="shop-badge">商城</span></span>
     </div>
-    <button class="shop-entry-btn" onclick="switchTab('shop')">
-      🛍️ 商城 <span class="mini-badge">新品</span>
-    </button>
+    <button class="shop-entry-btn" onclick="switchTab('shop')">🛍️ 商城 <span style="background:#fff;color:#e94560;font-size:10px;font-weight:800;padding:1px 6px;border-radius:10px;">新品</span></button>
     <div class="nav-tabs">
       <button class="nav-tab active" data-tab="learn" onclick="switchTab('learn')">📚 学习</button>
       <button class="nav-tab shop-tab" data-tab="shop" onclick="switchTab('shop')">🛍️ 商品城 <span class="tab-badge" id="tabShopBadge">0</span></button>
@@ -136,6 +135,7 @@ footer{text-align:center;padding:24px 0;color:#94a3b8;font-size:12px;}
 
 <div class="container" style="padding-top:14px;padding-bottom:20px;">
 
+  <!-- 学习模块 -->
   <div id="learnModule">
     <div class="card">
       <div class="scene-bar">
@@ -145,21 +145,27 @@ footer{text-align:center;padding:24px 0;color:#94a3b8;font-size:12px;}
       </div>
       <div id="dialogArea"></div>
       <div class="controls">
-        <button class="btn" onclick="prevDialog()">⏮ 上一组</button>
-        <button class="btn primary" onclick="playAll()">▶ 整组朗读</button>
-        <button class="btn" onclick="nextDialog()">下一组 ⏭</button>
+        <button class="btn" onclick="prevGroup()">⏮ 上一组</button>
+        <button class="btn primary" onclick="playGroup()">▶ 整组朗读</button>
+        <button class="btn" onclick="nextGroup()">下一组 ⏭</button>
       </div>
       <div class="status" id="status">就绪</div>
     </div>
   </div>
 
+  <!-- 商品城 -->
   <div id="shopModule" style="display:none;">
     <div class="categories" id="categories"></div>
     <div class="product-grid" id="productGrid"></div>
+
+    <div class="controls" style="margin-top:16px;">
+      <button class="btn dark" onclick="openAdmin()">⚙️ 管理商品</button>
+    </div>
+
     <div class="card" style="margin-top:20px;">
       <h3 style="font-size:18px;font-weight:700;">📩 发送询盘</h3>
       <p style="color:#64748b;font-size:13px;margin-top:4px;">留下您的需求，我们会尽快联系您。</p>
-      <form id="inquiryForm" onsubmit="submitInquiry(event)">
+      <form onsubmit="submitInquiry(event)">
         <div class="form-row">
           <input type="text" placeholder="您的姓名 *" required>
           <input type="tel" placeholder="手机号 *" required>
@@ -178,9 +184,10 @@ footer{text-align:center;padding:24px 0;color:#94a3b8;font-size:12px;}
 
 <footer>© 2026 学英语·逛好物 · 边学边买</footer>
 
+<!-- 商品详情弹窗 -->
 <div class="modal" id="productModal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <button class="modal-close" onclick="closeModal('productModal')">&times;</button>
     <div class="modal-img" id="mImg"></div>
     <div class="modal-name" id="mName"></div>
     <div class="modal-name-en" id="mNameEn"></div>
@@ -193,248 +200,459 @@ footer{text-align:center;padding:24px 0;color:#94a3b8;font-size:12px;}
     </div>
     <div class="controls" style="margin-top:18px;">
       <button class="btn primary" onclick="scrollToInquiry()">📩 立即询盘</button>
-      <button class="btn" onclick="closeModal()">继续逛逛</button>
+      <button class="btn" onclick="closeModal('productModal')">继续逛逛</button>
+    </div>
+  </div>
+</div>
+
+<!-- 商品编辑弹窗 -->
+<div class="modal" id="productFormModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('productFormModal')">&times;</button>
+    <h3 style="font-size:19px;font-weight:800;margin-bottom:6px;" id="formTitle">添加商品</h3>
+    <p style="font-size:12px;color:#94a3b8;">填写商品信息，保存后立即上架</p>
+    <input type="hidden" id="fId">
+    <label class="field-label">商品名称（中文）*</label>
+    <input type="text" id="fName" placeholder="如：陶瓷咖啡杯套装">
+    <label class="field-label">商品名称（英文）</label>
+    <input type="text" id="fNameEn" placeholder="如：Ceramic Coffee Mug Set">
+    <div class="form-row">
+      <div>
+        <label class="field-label">现价（元）*</label>
+        <input type="number" id="fPrice" placeholder="39.9" step="0.01">
+      </div>
+      <div>
+        <label class="field-label">原价（元，可空）</label>
+        <input type="number" id="fOriginalPrice" placeholder="59.9" step="0.01">
+      </div>
+    </div>
+    <label class="field-label">分类 *</label>
+    <select id="fCategory"></select>
+    <label class="field-label">商品图标（emoji 或 图片URL）</label>
+    <input type="text" id="fEmoji" placeholder="☕ 或 https://...jpg">
+    <label class="field-label">英文描述（可朗读）</label>
+    <textarea id="fDescEn" placeholder="English description..."></textarea>
+    <label class="field-label">中文描述</label>
+    <textarea id="fDescCn" placeholder="中文描述..."></textarea>
+    <div class="form-row">
+      <div>
+        <label class="field-label">库存</label>
+        <input type="number" id="fStock" placeholder="100">
+      </div>
+      <div>
+        <label class="field-label">销量</label>
+        <input type="number" id="fSales" placeholder="0">
+      </div>
+    </div>
+    <div class="controls" style="margin-top:18px;">
+      <button class="btn primary" onclick="saveProduct()">💾 保存商品</button>
+      <button class="btn" onclick="closeModal('productFormModal')">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- 管理商品列表弹窗 -->
+<div class="modal" id="adminModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('adminModal')">&times;</button>
+    <h3 style="font-size:19px;font-weight:800;margin-bottom:10px;">⚙️ 商品管理</h3>
+    <p style="font-size:12px;color:#94a3b8;margin-bottom:12px;">共 <span id="adminCount">0</span> 件商品 · 数据保存在本地</p>
+    <div id="adminList"></div>
+    <div class="controls" style="margin-top:14px;flex-wrap:wrap;">
+      <button class="btn primary" onclick="closeModal('adminModal');openProductForm()">➕ 添加商品</button>
+      <button class="btn" onclick="exportData()">📤 导出</button>
+      <button class="btn" onclick="closeModal('adminModal');document.getElementById('changePasswordModal').classList.add('open')">🔑 改密码</button>
+      <button class="btn danger" onclick="adminLogout()">🔒 退出管理</button>
+      <button class="btn" onclick="closeModal('adminModal')">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 管理员登录弹窗 -->
+<div class="modal" id="adminLoginModal">
+  <div class="modal-box" style="max-width:360px;">
+    <button class="modal-close" onclick="closeModal('adminLoginModal')">&times;</button>
+    <div style="text-align:center;padding:6px 0 10px;">
+      <div style="font-size:52px;">🔐</div>
+      <h3 style="font-size:19px;font-weight:800;margin-top:6px;">管理员身份验证</h3>
+      <p style="font-size:12px;color:#94a3b8;margin-top:4px;">此入口仅限开发者本人操作</p>
+    </div>
+    <label class="field-label">管理员密码</label>
+    <input type="password" id="adminPasswordInput" placeholder="请输入密码" onkeydown="if(event.key==='Enter')verifyAdmin()" autocomplete="off">
+    <div id="loginError" style="color:#ef4444;font-size:12px;margin-top:8px;min-height:18px;text-align:center;"></div>
+    <div class="controls" style="margin-top:12px;">
+      <button class="btn primary" onclick="verifyAdmin()">🔓 进入管理</button>
+      <button class="btn" onclick="closeModal('adminLoginModal')">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- 修改密码弹窗 -->
+<div class="modal" id="changePasswordModal">
+  <div class="modal-box" style="max-width:380px;">
+    <button class="modal-close" onclick="closeModal('changePasswordModal')">&times;</button>
+    <h3 style="font-size:18px;font-weight:800;margin-bottom:10px;">🔑 修改管理员密码</h3>
+    <label class="field-label">当前密码</label>
+    <input type="password" id="oldPassword" autocomplete="off">
+    <label class="field-label">新密码（至少6位）</label>
+    <input type="password" id="newPassword" autocomplete="off">
+    <label class="field-label">确认新密码</label>
+    <input type="password" id="confirmPassword" autocomplete="off">
+    <div id="changePasswordError" style="color:#ef4444;font-size:12px;margin-top:8px;min-height:18px;text-align:center;"></div>
+    <div class="controls" style="margin-top:12px;">
+      <button class="btn primary" onclick="changePassword()">确认修改</button>
+      <button class="btn" onclick="closeModal('changePasswordModal')">取消</button>
     </div>
   </div>
 </div>
 
 <script>
 // ========================================================================
-// 一、对话数据（200+组，16场景）
+// 一、管理员认证系统
+// ========================================================================
+const ADMIN_DEFAULT_PASSWORD = "admin888";
+
+function simpleHash(str) {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash) + str.charCodeAt(i);
+    hash = hash & hash;
+  }
+  return (hash >>> 0).toString(16);
+}
+
+function getAdminPasswordHash() {
+  let stored = localStorage.getItem("admin_pwd_hash");
+  if (!stored) {
+    stored = simpleHash(ADMIN_DEFAULT_PASSWORD);
+    localStorage.setItem("admin_pwd_hash", stored);
+  }
+  return stored;
+}
+
+function isAdminLoggedIn() {
+  return sessionStorage.getItem("admin_logged_in") === "yes";
+}
+function setAdminLoggedIn(v) {
+  if (v) sessionStorage.setItem("admin_logged_in", "yes");
+  else sessionStorage.removeItem("admin_logged_in");
+}
+
+let _pendingAdminAction = null;
+function requireAdmin(action) {
+  if (isAdminLoggedIn()) {
+    if (typeof action === "function") action();
+    return;
+  }
+  _pendingAdminAction = action;
+  document.getElementById("adminPasswordInput").value = "";
+  document.getElementById("loginError").textContent = "";
+  document.getElementById("adminLoginModal").classList.add("open");
+  setTimeout(() => document.getElementById("adminPasswordInput").focus(), 300);
+}
+
+let _loginAttempts = 0;
+let _lockUntil = 0;
+
+function verifyAdmin() {
+  const now = Date.now();
+  if (now < _lockUntil) {
+    const secs = Math.ceil((_lockUntil - now) / 1000);
+    document.getElementById("loginError").textContent = "⏳ 请" + secs + "秒后再试";
+    return;
+  }
+  const pwd = document.getElementById("adminPasswordInput").value;
+  const errorEl = document.getElementById("loginError");
+  if (!pwd) { errorEl.textContent = "请输入密码"; return; }
+
+  if (simpleHash(pwd) === getAdminPasswordHash()) {
+    setAdminLoggedIn(true);
+    _loginAttempts = 0;
+    closeModal("adminLoginModal");
+    errorEl.textContent = "";
+    const action = _pendingAdminAction;
+    _pendingAdminAction = null;
+    if (typeof action === "function") action();
+    showToast("✅ 验证成功，欢迎回来");
+  } else {
+    _loginAttempts++;
+    if (_loginAttempts >= 3) {
+      _lockUntil = Date.now() + 30000;
+      _loginAttempts = 0;
+      errorEl.textContent = "❌ 密码错误过多，已锁定30秒";
+    } else {
+      errorEl.textContent = "❌ 密码错误，还可尝试 " + (3 - _loginAttempts) + " 次";
+    }
+    document.getElementById("adminPasswordInput").value = "";
+    document.getElementById("adminPasswordInput").focus();
+  }
+}
+
+function adminLogout() {
+  setAdminLoggedIn(false);
+  closeModal("adminModal");
+  showToast("🔒 已退出管理模式");
+}
+
+function changePassword() {
+  const oldPwd = document.getElementById("oldPassword").value;
+  const newPwd = document.getElementById("newPassword").value;
+  const confirmPwd = document.getElementById("confirmPassword").value;
+  const errEl = document.getElementById("changePasswordError");
+
+  if (simpleHash(oldPwd) !== getAdminPasswordHash()) {
+    errEl.textContent = "当前密码错误"; return;
+  }
+  if (newPwd.length < 6) { errEl.textContent = "新密码至少6位"; return; }
+  if (newPwd !== confirmPwd) { errEl.textContent = "两次输入不一致"; return; }
+
+  localStorage.setItem("admin_pwd_hash", simpleHash(newPwd));
+  errEl.textContent = "";
+  document.getElementById("oldPassword").value = "";
+  document.getElementById("newPassword").value = "";
+  document.getElementById("confirmPassword").value = "";
+  closeModal("changePasswordModal");
+  showToast("✅ 密码已修改，请牢记");
+}
+
+// ========================================================================
+// 二、对话数据（200+问答，16场景）
 // ========================================================================
 const dialogPool = [
-  // 问候 (15)
+  // ============ 问候 ============
   { scene:"问候", qEn:"Hello, how are you?", qCn:"你好，你好吗？", aEn:"I'm fine, thank you. And you?", aCn:"我很好，谢谢。你呢？" },
-  { scene:"问候", qEn:"Good morning!", qCn:"早上好！", aEn:"Good morning! Did you sleep well?", aCn:"早上好！你睡得好吗？" },
-  { scene:"问候", qEn:"Nice to meet you.", qCn:"很高兴认识你。", aEn:"Nice to meet you too.", aCn:"我也很高兴认识你。" },
-  { scene:"问候", qEn:"Long time no see!", qCn:"好久不见！", aEn:"Yes, it's been a while!", aCn:"是啊，有一阵子了！" },
-  { scene:"问候", qEn:"How is your family?", qCn:"你的家人怎么样？", aEn:"Everyone is doing well.", aCn:"大家都很好。" },
-  { scene:"问候", qEn:"How was your weekend?", qCn:"你周末过得怎么样？", aEn:"It was great! I went hiking.", aCn:"很棒！我去徒步了。" },
-  { scene:"问候", qEn:"What's new with you?", qCn:"你最近怎么样？", aEn:"Not much, just working.", aCn:"没什么，就是工作。" },
-  { scene:"问候", qEn:"Are you feeling okay?", qCn:"你感觉还好吗？", aEn:"I'm a bit tired, but fine.", aCn:"有点累，但还好。" },
-  { scene:"问候", qEn:"How's your day going?", qCn:"你今天过得怎么样？", aEn:"It's going well, thanks!", aCn:"很好，谢谢！" },
-  { scene:"问候", qEn:"What have you been up to?", qCn:"你最近在忙什么？", aEn:"I've been traveling a lot.", aCn:"我一直在旅行。" },
-  { scene:"问候", qEn:"Where are you from?", qCn:"你来自哪里？", aEn:"I'm from China.", aCn:"我来自中国。" },
-  { scene:"问候", qEn:"How old are you?", qCn:"你多大了？", aEn:"I'm twenty-five years old.", aCn:"我二十五岁。" },
-  { scene:"问候", qEn:"Do you speak English?", qCn:"你会说英语吗？", aEn:"Yes, I speak a little.", aCn:"是的，我会说一点。" },
-  { scene:"问候", qEn:"Nice weather, isn't it?", qCn:"天气真好，不是吗？", aEn:"Yes, it's beautiful today.", aCn:"是啊，今天天气很好。" },
-  { scene:"问候", qEn:"Can I have your phone number?", qCn:"能给我你的电话号码吗？", aEn:"Sure, it's 138-0000-0000.", aCn:"当然，138-0000-0000。" },
-  // 餐厅 (15)
-  { scene:"餐厅", qEn:"Could we have a table for two?", qCn:"我们可以要一张两人的桌子吗？", aEn:"Sure, this way please.", aCn:"当然，这边请。" },
-  { scene:"餐厅", qEn:"What do you recommend?", qCn:"你推荐什么？", aEn:"The grilled fish is very popular.", aCn:"烤鱼很受欢迎。" },
-  { scene:"餐厅", qEn:"Can I have the bill, please?", qCn:"请买单。", aEn:"Of course, I'll bring it right away.", aCn:"好的，我马上拿来。" },
+  { scene:"问候", qEn:"I'm fine too. What's your name?", qCn:"我也很好。你叫什么名字？", aEn:"My name is Alex. Nice to meet you.", aCn:"我叫亚历克斯。很高兴认识你。" },
+  { scene:"问候", qEn:"Nice to meet you too. Where are you from?", qCn:"我也很高兴认识你。你来自哪里？", aEn:"I'm from China. And you?", aCn:"我来自中国。你呢？" },
+  { scene:"问候", qEn:"Good morning! Did you sleep well?", qCn:"早上好！你睡得好吗？", aEn:"Yes, I slept very well, thanks.", aCn:"是的，我睡得很好，谢谢。" },
+  { scene:"问候", qEn:"What's your plan for today?", qCn:"你今天有什么计划？", aEn:"I'm going to work. How about you?", aCn:"我要去上班。你呢？" },
+  { scene:"问候", qEn:"Long time no see! How have you been?", qCn:"好久不见！你最近怎么样？", aEn:"I've been busy with work. And you?", aCn:"我一直忙于工作。你呢？" },
+  { scene:"问候", qEn:"Not bad. How is your family?", qCn:"还不错。你的家人怎么样？", aEn:"Everyone is doing well, thanks.", aCn:"大家都很好，谢谢。" },
+  { scene:"问候", qEn:"How was your weekend?", qCn:"你周末过得怎么样？", aEn:"It was great! I went hiking with friends.", aCn:"很棒！我和朋友去徒步了。" },
+  { scene:"问候", qEn:"That sounds fun! What else did you do?", qCn:"听起来很有趣！你还做了什么？", aEn:"We had a picnic in the park.", aCn:"我们在公园野餐了。" },
+  { scene:"问候", qEn:"Nice! Where are you heading now?", qCn:"不错！你现在要去哪里？", aEn:"I'm going to the office.", aCn:"我要去办公室。" },
+  { scene:"问候", qEn:"How old are you, if you don't mind?", qCn:"如果不介意的话，你多大了？", aEn:"I'm twenty-five years old.", aCn:"我二十五岁。" },
+  { scene:"问候", qEn:"You look young! Do you speak English?", qCn:"你看起来很年轻！你会说英语吗？", aEn:"Yes, I speak a little English.", aCn:"是的，我会说一点英语。" },
+  { scene:"问候", qEn:"Your English is good! Where did you learn?", qCn:"你的英语很好！你在哪里学的？", aEn:"I learned it online and from movies.", aCn:"我在网上和电影里学的。" },
+  { scene:"问候", qEn:"Nice weather today, isn't it?", qCn:"今天天气真好，不是吗？", aEn:"Yes, it's beautiful. Perfect for a walk.", aCn:"是啊，很好。非常适合散步。" },
+  { scene:"问候", qEn:"Let's keep in touch. Can I have your number?", qCn:"我们保持联系吧。能给我你的电话吗？", aEn:"Sure, it's 138-0000-0000.", aCn:"当然，138-0000-0000。" },
+
+  // ============ 餐厅 ============
+  { scene:"餐厅", qEn:"Good evening! Do you have a reservation?", qCn:"晚上好！您有预订吗？", aEn:"No, we don't. Do you have a table for two?", aCn:"没有。有两人的桌子吗？" },
+  { scene:"餐厅", qEn:"Sure, this way please. Here's the menu.", qCn:"当然，这边请。这是菜单。", aEn:"Thank you. What do you recommend?", aCn:"谢谢。你推荐什么？" },
+  { scene:"餐厅", qEn:"The grilled fish is very popular.", qCn:"烤鱼很受欢迎。", aEn:"Sounds good. I'll have that.", aCn:"听起来不错。我要那个。" },
+  { scene:"餐厅", qEn:"Would you like something to drink?", qCn:"您想喝点什么？", aEn:"Yes, a glass of water, please.", aCn:"好的，请给我一杯水。" },
   { scene:"餐厅", qEn:"Is the food spicy?", qCn:"菜辣吗？", aEn:"It's mild, not too spicy.", aCn:"味道温和，不太辣。" },
-  { scene:"餐厅", qEn:"Can I pay by WeChat Pay?", qCn:"可以用微信支付吗？", aEn:"Yes, of course.", aCn:"当然可以。" },
-  { scene:"餐厅", qEn:"I'd like the steak, medium rare.", qCn:"我想要牛排，五分熟。", aEn:"Would you like a side salad?", aCn:"您要一份配菜沙拉吗？" },
-  { scene:"餐厅", qEn:"Is there a vegetarian dish?", qCn:"有素食菜吗？", aEn:"Yes, we have vegetable pasta.", aCn:"有的，我们有蔬菜意面。" },
-  { scene:"餐厅", qEn:"What's the soup of the day?", qCn:"今天的例汤是什么？", aEn:"It's tomato soup.", aCn:"番茄汤。" },
-  { scene:"餐厅", qEn:"Could I have a fork?", qCn:"能给我一个叉子吗？", aEn:"Yes, here you are.", aCn:"好的，给您。" },
-  { scene:"餐厅", qEn:"Can I order takeout?", qCn:"我可以点外卖吗？", aEn:"Yes, you can.", aCn:"可以。" },
-  { scene:"餐厅", qEn:"How long is the wait?", qCn:"要等多久？", aEn:"About 15 minutes.", aCn:"大约15分钟。" },
-  { scene:"餐厅", qEn:"Is there a kids' menu?", qCn:"有儿童菜单吗？", aEn:"Yes, we have one.", aCn:"有的。" },
+  { scene:"餐厅", qEn:"Great. Can I have a fork, please?", qCn:"好的。能给我一个叉子吗？", aEn:"Yes, here you are.", aCn:"好的，给您。" },
+  { scene:"餐厅", qEn:"How is everything?", qCn:"一切都好吗？", aEn:"The food is amazing! Thank you.", aCn:"食物太好吃了！谢谢。" },
+  { scene:"餐厅", qEn:"Can I have the bill, please?", qCn:"请买单。", aEn:"Of course, I'll bring it right away.", aCn:"好的，我马上拿来。" },
+  { scene:"餐厅", qEn:"How much is it in total?", qCn:"总共多少钱？", aEn:"It's 128 yuan in total.", aCn:"总共128元。" },
+  { scene:"餐厅", qEn:"Can I pay by WeChat Pay?", qCn:"可以用微信支付吗？", aEn:"Yes, of course. Please scan here.", aCn:"当然可以。请扫这里。" },
+  { scene:"餐厅", qEn:"Do you have a vegetarian dish?", qCn:"有素食菜吗？", aEn:"Yes, we have vegetable pasta.", aCn:"有的，我们有蔬菜意面。" },
+  { scene:"餐厅", qEn:"What's the soup of the day?", qCn:"今天的例汤是什么？", aEn:"It's tomato soup. Would you like some?", aCn:"番茄汤。您要来点吗？" },
+  { scene:"餐厅", qEn:"Yes, please. And a kids' menu?", qCn:"好的。还有儿童菜单吗？", aEn:"Yes, we have one for children.", aCn:"有的，我们有儿童菜单。" },
   { scene:"餐厅", qEn:"Could you recommend a dessert?", qCn:"你能推荐一款甜点吗？", aEn:"The chocolate cake is delicious.", aCn:"巧克力蛋糕很好吃。" },
-  { scene:"餐厅", qEn:"Can I have some water, please?", qCn:"能给我一些水吗？", aEn:"Sure, I'll bring it right over.", aCn:"好的，马上送来。" },
-  { scene:"餐厅", qEn:"The food was amazing!", qCn:"食物太好吃了！", aEn:"I'm glad you enjoyed it!", aCn:"很高兴您喜欢！" },
-  // 购物 (15)
-  { scene:"购物", qEn:"How much does this cost?", qCn:"这个多少钱？", aEn:"It's fifty yuan.", aCn:"五十元。" },
+  { scene:"餐厅", qEn:"Perfect. Let's order that.", qCn:"太好了。我们就点那个。", aEn:"Great choice! I'll bring it soon.", aCn:"很好的选择！我马上送来。" },
+
+  // ============ 购物 ============
+  { scene:"购物", qEn:"Excuse me, how much does this cost?", qCn:"打扰一下，这个多少钱？", aEn:"It's fifty yuan. It's on sale today.", aCn:"五十元。今天打折。" },
+  { scene:"购物", qEn:"Really? How much is the discount?", qCn:"真的吗？折扣多少？", aEn:"It's 20% off. Only 40 yuan.", aCn:"打八折。只要40元。" },
   { scene:"购物", qEn:"Can I try this on?", qCn:"我可以试穿吗？", aEn:"Sure, the fitting room is over there.", aCn:"可以，试衣间在那边。" },
-  { scene:"购物", qEn:"Do you have a larger size?", qCn:"有大一点的尺码吗？", aEn:"Let me check in the back.", aCn:"我去后面看看。" },
-  { scene:"购物", qEn:"Is there a discount?", qCn:"有折扣吗？", aEn:"It's on sale for 20% off.", aCn:"正在打八折。" },
-  { scene:"购物", qEn:"I'll take this one.", qCn:"我要这个。", aEn:"Would you like a bag?", aCn:"您要袋子吗？" },
-  { scene:"购物", qEn:"Can I pay by card?", qCn:"可以刷卡吗？", aEn:"Yes, we accept all major cards.", aCn:"是的，我们接受所有主要卡。" },
-  { scene:"购物", qEn:"Does this come in other colors?", qCn:"这个有其他颜色吗？", aEn:"Yes, we have blue and green.", aCn:"有的，我们有蓝色和绿色。" },
-  { scene:"购物", qEn:"Do you have this in black?", qCn:"这个有黑色的吗？", aEn:"Sorry, we're out of stock.", aCn:"抱歉，我们缺货了。" },
-  { scene:"购物", qEn:"Can I return it later?", qCn:"我可以以后退货吗？", aEn:"Yes, within 30 days.", aCn:"可以，30天内。" },
-  { scene:"购物", qEn:"Is there a warranty?", qCn:"有保修吗？", aEn:"Yes, one-year warranty.", aCn:"有的，保修一年。" },
-  { scene:"购物", qEn:"Could you wrap it as a gift?", qCn:"能把它包装成礼物吗？", aEn:"Sure, we can do that.", aCn:"当然可以。" },
-  { scene:"购物", qEn:"How much is the total?", qCn:"总共多少钱？", aEn:"It's 78 yuan in total.", aCn:"一共78元。" },
-  { scene:"购物", qEn:"Do you have a smaller size?", qCn:"有小一点的吗？", aEn:"Let me check the stock.", aCn:"让我查一下库存。" },
-  { scene:"购物", qEn:"I'm just looking, thanks.", qCn:"我只是看看，谢谢。", aEn:"Take your time!", aCn:"您慢慢看！" },
-  { scene:"购物", qEn:"Can I exchange it if it doesn't fit?", qCn:"如果不合适可以换吗？", aEn:"Yes, we offer free exchanges.", aCn:"可以，我们提供免费换货。" },
-  // 旅行 (15)
-  { scene:"旅行", qEn:"Where is the nearest metro station?", qCn:"最近的地铁站在哪里？", aEn:"It's about five minutes' walk.", aCn:"步行大约五分钟。" },
-  { scene:"旅行", qEn:"Can you take a photo of me?", qCn:"你能帮我拍张照吗？", aEn:"Sure, say cheese!", aCn:"当然，说茄子！" },
-  { scene:"旅行", qEn:"How do I get to the train station?", qCn:"我怎么去火车站？", aEn:"Take bus number 10.", aCn:"坐10路公交车。" },
-  { scene:"旅行", qEn:"Is it far from here?", qCn:"离这里远吗？", aEn:"No, it's just around the corner.", aCn:"不远，就在拐角。" },
-  { scene:"旅行", qEn:"Can I book a room here?", qCn:"我可以在这里订房间吗？", aEn:"Yes, we have rooms available.", aCn:"可以，我们有空房。" },
-  { scene:"旅行", qEn:"What time does the museum open?", qCn:"博物馆几点开门？", aEn:"It opens at 9 AM.", aCn:"早上9点。" },
+  { scene:"购物", qEn:"Do you have a larger size?", qCn:"有大一点的尺码吗？", aEn:"Let me check in the back. What size?", aCn:"我去后面看看。您要什么尺码？" },
+  { scene:"购物", qEn:"Size M, please. Do you have it in black?", qCn:"M码，谢谢。有黑色的吗？", aEn:"Yes, we have black and blue.", aCn:"有的，我们有黑色和蓝色。" },
+  { scene:"购物", qEn:"I'll take the black one. How much total?", qCn:"我要黑色的。总共多少钱？", aEn:"That's 40 yuan. Would you like a bag?", aCn:"40元。您要袋子吗？" },
+  { scene:"购物", qEn:"Yes, please. Can I pay by card?", qCn:"好的。可以刷卡吗？", aEn:"Yes, we accept all major cards.", aCn:"可以，我们接受所有主要卡。" },
+  { scene:"购物", qEn:"Here's your receipt. Anything else?", qCn:"这是您的收据。还需要别的吗？", aEn:"No, thanks. Is there a warranty?", aCn:"不用了，谢谢。有保修吗？" },
+  { scene:"购物", qEn:"Yes, one-year warranty. Keep the receipt.", qCn:"有的，保修一年。请保留收据。", aEn:"Great, thank you very much.", aCn:"好的，非常感谢。" },
+  { scene:"购物", qEn:"Can I return it if it doesn't fit?", qCn:"如果不合适可以退吗？", aEn:"Yes, within 30 days with receipt.", aCn:"可以，30天内凭收据。" },
+  { scene:"购物", qEn:"Does this come in other colors?", qCn:"这个有其他颜色吗？", aEn:"Yes, we have blue, green and red.", aCn:"有的，我们有蓝色、绿色和红色。" },
+  { scene:"购物", qEn:"Do you have this in a smaller size?", qCn:"这个有小一点的吗？", aEn:"Let me check the stock. One moment.", aCn:"让我查一下库存。请稍等。" },
+  { scene:"购物", qEn:"I'm just looking, thanks.", qCn:"我只是看看，谢谢。", aEn:"Take your time! Let me know if you need help.", aCn:"您慢慢看！需要帮忙随时说。" },
+  { scene:"购物", qEn:"Could you wrap it as a gift?", qCn:"能把它包装成礼物吗？", aEn:"Sure, we can do that. Free of charge.", aCn:"当然可以。免费。" },
+  { scene:"购物", qEn:"Can I exchange it if I don't like it?", qCn:"如果我不喜欢可以换吗？", aEn:"Yes, we offer free exchanges within 7 days.", aCn:"可以，7天内免费换货。" },
+
+  // ============ 旅行 ============
+  { scene:"旅行", qEn:"Excuse me, where is the nearest metro station?", qCn:"打扰一下，最近的地铁站在哪里？", aEn:"It's about five minutes' walk from here.", aCn:"离这里步行大约五分钟。" },
+  { scene:"旅行", qEn:"How do I get there exactly?", qCn:"具体怎么走？", aEn:"Go straight and turn left at the corner.", aCn:"一直走，在拐角左转。" },
+  { scene:"旅行", qEn:"Thank you! Is it far from here?", qCn:"谢谢！离这里远吗？", aEn:"No, it's just around the corner.", aCn:"不远，就在拐角。" },
+  { scene:"旅行", qEn:"Can you take a photo of me?", qCn:"你能帮我拍张照吗？", aEn:"Sure, say cheese! One, two, three!", aCn:"当然，说茄子！一、二、三！" },
+  { scene:"旅行", qEn:"Thanks! What time does the museum open?", qCn:"谢谢！博物馆几点开门？", aEn:"It opens at 9 AM. You have time.", aCn:"早上9点。您还有时间。" },
   { scene:"旅行", qEn:"Do you have a city map?", qCn:"有城市地图吗？", aEn:"Yes, you can get one at the information desk.", aCn:"有的，您可以在问讯处拿到。" },
-  { scene:"旅行", qEn:"Can I book a tour here?", qCn:"我可以在这里预订旅行团吗？", aEn:"Yes, we have several options.", aCn:"可以，我们有几种选择。" },
-  { scene:"旅行", qEn:"What's the best way to explore the city?", qCn:"探索这座城市的最好方式是什么？", aEn:"Walking is great, or you can rent a bike.", aCn:"步行很好，或者可以租自行车。" },
-  { scene:"旅行", qEn:"Is there a tourist information center?", qCn:"有游客信息中心吗？", aEn:"Yes, it's in the city center.", aCn:"有的，在市中心。" },
+  { scene:"旅行", qEn:"Great. Can I book a tour here?", qCn:"好的。我可以在这里订旅行团吗？", aEn:"Yes, we have several options. Which one?", aCn:"可以，我们有几种选择。您想选哪个？" },
+  { scene:"旅行", qEn:"What's the best way to explore the city?", qCn:"探索这座城市最好的方式是什么？", aEn:"Walking is great, or you can rent a bike.", aCn:"步行很好，或者可以租自行车。" },
   { scene:"旅行", qEn:"How much is the entrance fee?", qCn:"门票多少钱？", aEn:"It's 15 yuan per person.", aCn:"每人15元。" },
-  { scene:"旅行", qEn:"Is it safe to walk at night?", qCn:"晚上走路安全吗？", aEn:"Yes, it's quite safe.", aCn:"是的，很安全。" },
-  { scene:"旅行", qEn:"Could you recommend a good hotel?", qCn:"你能推荐一家好酒店吗？", aEn:"The Grand Hotel is very nice.", aCn:"格兰德酒店很不错。" },
-  { scene:"旅行", qEn:"What should I see in this city?", qCn:"在这个城市我应该看什么？", aEn:"You should visit the old town.", aCn:"你应该去老城区。" },
-  { scene:"旅行", qEn:"How long does the tour take?", qCn:"游览大约需要多长时间？", aEn:"About three hours.", aCn:"大约三个小时。" },
-  // 工作 (15)
-  { scene:"工作", qEn:"Could you send me the report?", qCn:"你能把报告发给我吗？", aEn:"Sure, I'll email it to you.", aCn:"好的，我会发邮件给你。" },
-  { scene:"工作", qEn:"When is the deadline?", qCn:"截止日期是什么时候？", aEn:"The deadline is next Friday.", aCn:"下周五。" },
-  { scene:"工作", qEn:"Can we have a meeting about this?", qCn:"我们能开个会讨论这个吗？", aEn:"Yes, let's meet at 3 PM.", aCn:"好的，我们下午3点开。" },
-  { scene:"工作", qEn:"Do you need any help?", qCn:"你需要帮忙吗？", aEn:"No, I'm fine, thank you.", aCn:"不用，我很好，谢谢。" },
-  { scene:"工作", qEn:"Great job on the presentation!", qCn:"演示做得很好！", aEn:"Thank you! I appreciate it.", aCn:"谢谢！我很感激。" },
+  { scene:"旅行", qEn:"Is it safe to walk at night?", qCn:"晚上走路安全吗？", aEn:"Yes, it's quite safe in this area.", aCn:"是的，这个区域很安全。" },
+  { scene:"旅行", qEn:"Could you recommend a good hotel?", qCn:"你能推荐一家好酒店吗？", aEn:"The Grand Hotel is very nice and clean.", aCn:"格兰德酒店很不错，很干净。" },
+  { scene:"旅行", qEn:"What should I see in this city?", qCn:"在这个城市我应该看什么？", aEn:"You should visit the old town and the river.", aCn:"你应该去老城区和河边。" },
+  { scene:"旅行", qEn:"How long does the tour take?", qCn:"游览大约需要多长时间？", aEn:"About three hours. It's a walking tour.", aCn:"大约三个小时。是步行游览。" },
+  { scene:"旅行", qEn:"Do I need to book in advance?", qCn:"我需要提前预订吗？", aEn:"Yes, it's recommended. It gets busy.", aCn:"是的，建议预订。会很忙。" },
+  { scene:"旅行", qEn:"What's the local food like?", qCn:"当地食物怎么样？", aEn:"It's delicious, especially the seafood.", aCn:"很好吃，尤其是海鲜。" },
+
+  // ============ 工作 ============
+  { scene:"工作", qEn:"Good morning! Could you send me the report?", qCn:"早上好！你能把报告发给我吗？", aEn:"Sure, I'll email it to you right away.", aCn:"好的，我马上发邮件给你。" },
+  { scene:"工作", qEn:"Thanks. When is the deadline for this?", qCn:"谢谢。这个截止日期是什么时候？", aEn:"The deadline is next Friday. You have time.", aCn:"截止日期下周五。你还有时间。" },
+  { scene:"工作", qEn:"Good. Can we have a meeting about this?", qCn:"好的。我们能开个会讨论这个吗？", aEn:"Yes, let's meet at 3 PM in room 2.", aCn:"好的，我们下午3点在2号会议室开。" },
+  { scene:"工作", qEn:"Do you need any help with the project?", qCn:"这个项目你需要帮忙吗？", aEn:"No, I'm fine, thank you. Almost done.", aCn:"不用，我很好，谢谢。快完成了。" },
+  { scene:"工作", qEn:"Great job on the presentation yesterday!", qCn:"昨天演示做得很好！", aEn:"Thank you! I appreciate it. It took hours.", aCn:"谢谢！我很感激。花了好几个小时。" },
   { scene:"工作", qEn:"I'll finish this task today.", qCn:"我今天会完成这个任务。", aEn:"Great, keep up the good work!", aCn:"太好了，继续加油！" },
-  { scene:"工作", qEn:"Can you check my work?", qCn:"你能检查一下我的工作吗？", aEn:"Sure, I'll review it now.", aCn:"好的，我现在就看。" },
+  { scene:"工作", qEn:"Can you check my work before I submit?", qCn:"我提交前你能检查一下我的工作吗？", aEn:"Sure, I'll review it now. Give me 10 minutes.", aCn:"好的，我现在就看。给我10分钟。" },
   { scene:"工作", qEn:"What's the project status?", qCn:"项目进展如何？", aEn:"We're almost done with phase one.", aCn:"我们第一阶段快完成了。" },
-  { scene:"工作", qEn:"Let's take a quick break.", qCn:"我们快速休息一下吧。", aEn:"Good idea, I'm tired.", aCn:"好主意，我累了。" },
-  { scene:"工作", qEn:"Do you have the data?", qCn:"你有数据吗？", aEn:"Yes, it's in the spreadsheet.", aCn:"有的，在电子表格里。" },
-  { scene:"工作", qEn:"Can you print this document?", qCn:"你能打印这份文件吗？", aEn:"Sure, I'll do it now.", aCn:"好的，我现在就打印。" },
-  { scene:"工作", qEn:"We need to meet the deadline.", qCn:"我们需要赶上截止日期。", aEn:"I agree, let's focus.", aCn:"我同意，让我们集中精力。" },
-  { scene:"工作", qEn:"Who is the team leader?", qCn:"谁是团队负责人？", aEn:"It's Sarah, she's in charge.", aCn:"是Sarah，她负责。" },
-  { scene:"工作", qEn:"Could you explain this part?", qCn:"你能解释一下这部分吗？", aEn:"Sure, let me go through it again.", aCn:"好的，让我再讲一遍。" },
-  { scene:"工作", qEn:"What time do you start work?", qCn:"你几点开始工作？", aEn:"I start at eight in the morning.", aCn:"我早上八点开始。" },
-  // 学习 (13)
-  { scene:"学习", qEn:"How do you spell 'necessary'?", qCn:"'necessary'怎么拼写？", aEn:"It's n-e-c-e-s-s-a-r-y.", aCn:"n-e-c-e-s-s-a-r-y。" },
+  { scene:"工作", qEn:"Let's take a quick break, okay?", qCn:"我们快速休息一下吧，好吗？", aEn:"Good idea, I'm tired. Coffee?", aCn:"好主意，我累了。要咖啡吗？" },
+  { scene:"工作", qEn:"Do you have the data I asked for?", qCn:"你有我要的数据吗？", aEn:"Yes, it's in the spreadsheet I shared.", aCn:"有的，在我分享的电子表格里。" },
+  { scene:"工作", qEn:"Can you print this document for me?", qCn:"你能打印这份文件吗？", aEn:"Sure, I'll do it now. How many copies?", aCn:"好的，我现在就打印。要几份？" },
+  { scene:"工作", qEn:"We need to meet the deadline. Can you focus?", qCn:"我们需要赶上截止日期。你能集中精力吗？", aEn:"I agree, let's focus. No distractions.", aCn:"我同意，让我们集中精力。不分心。" },
+  { scene:"工作", qEn:"Who is the team leader for this project?", qCn:"这个项目的团队负责人是谁？", aEn:"It's Sarah, she's in charge.", aCn:"是Sarah，她负责。" },
+  { scene:"工作", qEn:"Could you explain this part again?", qCn:"你能再解释一下这部分吗？", aEn:"Sure, let me go through it again slowly.", aCn:"好的，让我再慢慢讲一遍。" },
+  { scene:"工作", qEn:"What time do you start work usually?", qCn:"你通常几点开始工作？", aEn:"I start at eight in the morning.", aCn:"我早上八点开始。" },
+
+  // ============ 学习 ============
+  { scene:"学习", qEn:"How do you spell 'necessary'?", qCn:"'necessary'怎么拼写？", aEn:"It's n-e-c-e-s-s-a-r-y. Double c and double s.", aCn:"n-e-c-e-s-s-a-r-y。两个c和两个s。" },
   { scene:"学习", qEn:"What does this word mean?", qCn:"这个词是什么意思？", aEn:"Let me look it up in the dictionary.", aCn:"让我查一下字典。" },
-  { scene:"学习", qEn:"I need to practice speaking.", qCn:"我需要练习口语。", aEn:"Why not join a language exchange group?", aCn:"为什么不加入语言交换小组呢？" },
-  { scene:"学习", qEn:"How can I improve my English?", qCn:"我怎么才能提高英语？", aEn:"Read and listen every day.", aCn:"每天阅读和听。" },
+  { scene:"学习", qEn:"I need to practice speaking more.", qCn:"我需要多练习口语。", aEn:"Why not join a language exchange group?", aCn:"为什么不加入语言交换小组呢？" },
+  { scene:"学习", qEn:"How can I improve my English quickly?", qCn:"我怎么才能快速提高英语？", aEn:"Read and listen every day. Be patient.", aCn:"每天阅读和听。要有耐心。" },
   { scene:"学习", qEn:"Is this sentence correct?", qCn:"这个句子对吗？", aEn:"Almost, just change the verb form.", aCn:"差不多，只要改一下动词形式。" },
   { scene:"学习", qEn:"Could you explain this grammar rule?", qCn:"你能解释一下这个语法规则吗？", aEn:"Sure, this is the present perfect tense.", aCn:"好的，这是现在完成时。" },
-  { scene:"学习", qEn:"What's the difference between these two?", qCn:"这两个有什么区别？", aEn:"The first one is more formal.", aCn:"第一个更正式。" },
-  { scene:"学习", qEn:"Can you write it down for me?", qCn:"你能给我写下来吗？", aEn:"Sure, here you are.", aCn:"好的，给您。" },
+  { scene:"学习", qEn:"What's the difference between these two?", qCn:"这两个有什么区别？", aEn:"The first one is more formal than the second.", aCn:"第一个比第二个更正式。" },
+  { scene:"学习", qEn:"Can you write it down for me?", qCn:"你能给我写下来吗？", aEn:"Sure, here you are. Take a photo.", aCn:"好的，给您。拍张照吧。" },
   { scene:"学习", qEn:"What's the pronunciation of this word?", qCn:"这个词怎么发音？", aEn:"It's pronounced uh-lev-ee-ay-shun.", aCn:"发音是 uh-lev-ee-ay-shun。" },
   { scene:"学习", qEn:"Is there a shortcut to learning vocabulary?", qCn:"学习词汇有捷径吗？", aEn:"Use flashcards and review daily.", aCn:"使用闪卡，每天复习。" },
-  { scene:"学习", qEn:"Can you give me an example?", qCn:"你能给我举个例子吗？", aEn:"Sure, let me think.", aCn:"好的，让我想想。" },
+  { scene:"学习", qEn:"Can you give me an example sentence?", qCn:"你能给我一个例句吗？", aEn:"Sure, let me think. Here's one.", aCn:"好的，让我想想。这里有一个。" },
   { scene:"学习", qEn:"What's the best way to learn grammar?", qCn:"学语法最好的方法是什么？", aEn:"Practice with exercises and real conversations.", aCn:"通过练习和真实对话来练习。" },
-  { scene:"学习", qEn:"I'm struggling with listening.", qCn:"我在听力方面有困难。", aEn:"Try watching English movies with subtitles.", aCn:"试试看带字幕的英语电影。" },
-  // 社交 (13)
-  { scene:"社交", qEn:"What do you like to do in your free time?", qCn:"你空闲时间喜欢做什么？", aEn:"I like reading and hiking.", aCn:"我喜欢阅读和徒步。" },
-  { scene:"社交", qEn:"Do you like music?", qCn:"你喜欢音乐吗？", aEn:"Yes, I love playing the guitar.", aCn:"喜欢，我喜欢弹吉他。" },
-  { scene:"社交", qEn:"What's your hobby?", qCn:"你的爱好是什么？", aEn:"I enjoy photography.", aCn:"我喜欢摄影。" },
-  { scene:"社交", qEn:"Do you have any pets?", qCn:"你有宠物吗？", aEn:"Yes, I have a cute cat.", aCn:"有，我有一只可爱的猫。" },
-  { scene:"社交", qEn:"Let's hang out sometime.", qCn:"我们找时间一起出去玩吧。", aEn:"That sounds great!", aCn:"听起来很棒！" },
-  { scene:"社交", qEn:"What kind of movies do you like?", qCn:"你喜欢什么类型的电影？", aEn:"I love action movies.", aCn:"我喜欢动作片。" },
+  { scene:"学习", qEn:"I'm struggling with listening comprehension.", qCn:"我在听力理解方面有困难。", aEn:"Try watching English movies with subtitles.", aCn:"试试看带字幕的英语电影。" },
+
+  // ============ 社交 ============
+  { scene:"社交", qEn:"What do you like to do in your free time?", qCn:"你空闲时间喜欢做什么？", aEn:"I like reading and hiking. And you?", aCn:"我喜欢阅读和徒步。你呢？" },
+  { scene:"社交", qEn:"I enjoy playing the guitar. Do you like music?", qCn:"我喜欢弹吉他。你喜欢音乐吗？", aEn:"Yes, I love music! What kind do you play?", aCn:"是的，我爱音乐！你弹什么类型的？" },
+  { scene:"社交", qEn:"Mostly pop and rock. What's your hobby?", qCn:"主要是流行和摇滚。你的爱好是什么？", aEn:"I enjoy photography. It's relaxing.", aCn:"我喜欢摄影。很放松。" },
+  { scene:"社交", qEn:"Do you have any pets?", qCn:"你有宠物吗？", aEn:"Yes, I have a cute cat named Mimi.", aCn:"有，我有一只可爱的猫叫咪咪。" },
+  { scene:"社交", qEn:"Let's hang out sometime. Are you free?", qCn:"我们找时间一起出去玩吧。你有空吗？", aEn:"That sounds great! How about Saturday?", aCn:"听起来很棒！周六怎么样？" },
+  { scene:"社交", qEn:"What kind of movies do you like?", qCn:"你喜欢什么类型的电影？", aEn:"I love action movies. And you?", aCn:"我喜欢动作片。你呢？" },
   { scene:"社交", qEn:"Have you read any good books lately?", qCn:"你最近读过什么好书吗？", aEn:"Yes, I just finished a great novel.", aCn:"是的，我刚读完一本很棒的小说。" },
   { scene:"社交", qEn:"Do you like traveling?", qCn:"你喜欢旅行吗？", aEn:"Yes, I love exploring new places.", aCn:"喜欢，我喜欢探索新地方。" },
-  { scene:"社交", qEn:"What's your favorite food?", qCn:"你最喜欢的食物是什么？", aEn:"I love hot pot!", aCn:"我喜欢火锅！" },
-  { scene:"社交", qEn:"Do you play any sports?", qCn:"你做什么运动吗？", aEn:"I play tennis and basketball.", aCn:"我打网球和篮球。" },
-  { scene:"社交", qEn:"What do you do on weekends?", qCn:"你周末做什么？", aEn:"I usually go out with friends.", aCn:"我通常和朋友出去。" },
-  { scene:"社交", qEn:"Do you know any good restaurants?", qCn:"你知道有什么好餐厅吗？", aEn:"Yes, I can recommend one.", aCn:"知道，我可以推荐一家。" },
-  { scene:"社交", qEn:"Let's keep in touch.", qCn:"让我们保持联系。", aEn:"Sure, add me on WeChat.", aCn:"好的，加我微信吧。" },
-  // 家庭 (13)
+  { scene:"社交", qEn:"What's your favorite food?", qCn:"你最喜欢的食物是什么？", aEn:"I love hot pot! It's my favorite.", aCn:"我喜欢火锅！是我的最爱。" },
+  { scene:"社交", qEn:"Do you play any sports?", qCn:"你做什么运动吗？", aEn:"I play tennis and basketball on weekends.", aCn:"我周末打网球和篮球。" },
+  { scene:"社交", qEn:"What do you usually do on weekends?", qCn:"你周末通常做什么？", aEn:"I usually go out with friends.", aCn:"我通常和朋友出去。" },
+  { scene:"社交", qEn:"Do you know any good restaurants around here?", qCn:"你知道附近有什么好餐厅吗？", aEn:"Yes, I can recommend one. It's nearby.", aCn:"知道，我可以推荐一家。就在附近。" },
+  { scene:"社交", qEn:"Let's keep in touch! Do you have WeChat?", qCn:"我们保持联系！你有微信吗？", aEn:"Sure, add me on WeChat.", aCn:"当然，加我微信吧。" },
+
+  // ============ 家庭 ============
   { scene:"家庭", qEn:"How many people are in your family?", qCn:"你家有几口人？", aEn:"There are four: my parents, my sister and me.", aCn:"有四口：父母、姐姐和我。" },
   { scene:"家庭", qEn:"Do you have any siblings?", qCn:"你有兄弟姐妹吗？", aEn:"Yes, I have a younger brother.", aCn:"有，我有一个弟弟。" },
-  { scene:"家庭", qEn:"What does your father do?", qCn:"你父亲做什么？", aEn:"He is a teacher.", aCn:"他是老师。" },
+  { scene:"家庭", qEn:"What does your father do for work?", qCn:"你父亲做什么工作？", aEn:"He is a teacher at a high school.", aCn:"他是一所高中的老师。" },
   { scene:"家庭", qEn:"Are you married?", qCn:"你结婚了吗？", aEn:"Yes, I've been married for five years.", aCn:"是的，我结婚五年了。" },
   { scene:"家庭", qEn:"Do you live with your family?", qCn:"你和家人住一起吗？", aEn:"No, I live alone in the city.", aCn:"不，我一个人住在城里。" },
-  { scene:"家庭", qEn:"Do you have children?", qCn:"你有孩子吗？", aEn:"Yes, I have two children.", aCn:"有，我有两个孩子。" },
+  { scene:"家庭", qEn:"Do you have any children?", qCn:"你有孩子吗？", aEn:"Yes, I have two children.", aCn:"有，我有两个孩子。" },
   { scene:"家庭", qEn:"How old are they?", qCn:"他们多大了？", aEn:"They are 5 and 8 years old.", aCn:"5岁和8岁。" },
-  { scene:"家庭", qEn:"Are you close to your family?", qCn:"你和家人亲近吗？", aEn:"Yes, we are very close.", aCn:"是的，我们非常亲近。" },
-  { scene:"家庭", qEn:"What's your family like?", qCn:"你的家人怎么样？", aEn:"They are very supportive.", aCn:"他们非常支持我。" },
+  { scene:"家庭", qEn:"Are you close to your family?", qCn:"你和家人亲近吗？", aEn:"Yes, we are very close. We talk daily.", aCn:"是的，我们非常亲近。我们每天都聊天。" },
+  { scene:"家庭", qEn:"What's your family like?", qCn:"你的家人怎么样？", aEn:"They are very supportive and kind.", aCn:"他们非常支持和善良。" },
   { scene:"家庭", qEn:"Do you have any cousins?", qCn:"你有表兄弟姐妹吗？", aEn:"Yes, I have several cousins.", aCn:"有，我有好几个。" },
-  { scene:"家庭", qEn:"What does your mother do?", qCn:"你母亲做什么？", aEn:"She is a nurse.", aCn:"她是护士。" },
-  { scene:"家庭", qEn:"Do you often visit your parents?", qCn:"你经常看望父母吗？", aEn:"Yes, every weekend.", aCn:"是的，每个周末。" },
-  { scene:"家庭", qEn:"Family is important to me.", qCn:"家庭对我很重要。", aEn:"Me too, I love my family.", aCn:"我也是，我爱我的家人。" },
-  // 天气 (12)
-  { scene:"天气", qEn:"What's the weather like today?", qCn:"今天天气怎么样？", aEn:"It's sunny and warm.", aCn:"晴朗温暖。" },
-  { scene:"天气", qEn:"Is it going to rain?", qCn:"会下雨吗？", aEn:"The forecast says it might rain later.", aCn:"预报说稍后可能下雨。" },
-  { scene:"天气", qEn:"It's so hot outside!", qCn:"外面好热！", aEn:"Yes, let's stay inside.", aCn:"是的，我们待在室内吧。" },
-  { scene:"天气", qEn:"Do you like cold weather?", qCn:"你喜欢冷天吗？", aEn:"Not really, I prefer spring.", aCn:"不太喜欢，我更喜欢春天。" },
-  { scene:"天气", qEn:"What's the temperature?", qCn:"温度多少？", aEn:"It's about 25 degrees Celsius.", aCn:"大约25摄氏度。" },
-  { scene:"天气", qEn:"Is it windy?", qCn:"刮风吗？", aEn:"Yes, it's quite windy today.", aCn:"是的，今天风很大。" },
+  { scene:"家庭", qEn:"What does your mother do?", qCn:"你母亲做什么？", aEn:"She is a nurse at the hospital.", aCn:"她是医院的护士。" },
+  { scene:"家庭", qEn:"Do you often visit your parents?", qCn:"你经常看望父母吗？", aEn:"Yes, every weekend. Family is important.", aCn:"是的，每个周末。家庭很重要。" },
+
+  // ============ 天气 ============
+  { scene:"天气", qEn:"What's the weather like today?", qCn:"今天天气怎么样？", aEn:"It's sunny and warm. Perfect day!", aCn:"晴朗温暖。完美的一天！" },
+  { scene:"天气", qEn:"Is it going to rain later?", qCn:"稍后会下雨吗？", aEn:"The forecast says it might rain later.", aCn:"预报说稍后可能下雨。" },
+  { scene:"天气", qEn:"It's so hot outside! Let's stay inside.", qCn:"外面好热！我们待在室内吧。", aEn:"Yes, let's stay inside with the AC.", aCn:"好的，我们待在室内开空调吧。" },
+  { scene:"天气", qEn:"Do you like cold weather?", qCn:"你喜欢冷天吗？", aEn:"Not really, I prefer spring and autumn.", aCn:"不太喜欢，我更喜欢春天和秋天。" },
+  { scene:"天气", qEn:"What's the temperature today?", qCn:"今天温度多少？", aEn:"It's about 25 degrees Celsius.", aCn:"大约25摄氏度。" },
+  { scene:"天气", qEn:"Is it windy today?", qCn:"今天刮风吗？", aEn:"Yes, it's quite windy. Wear a jacket.", aCn:"是的，风很大。穿件外套。" },
   { scene:"天气", qEn:"Will it snow tomorrow?", qCn:"明天会下雪吗？", aEn:"No, it's too warm for snow.", aCn:"不会，天气太暖了不会下雪。" },
-  { scene:"天气", qEn:"Is it humid here?", qCn:"这里潮湿吗？", aEn:"Yes, it's very humid in summer.", aCn:"是的，夏天很潮湿。" },
-  { scene:"天气", qEn:"It's a beautiful day!", qCn:"今天天气真好！", aEn:"Yes, perfect for a walk.", aCn:"是的，非常适合散步。" },
-  { scene:"天气", qEn:"I love rainy days.", qCn:"我喜欢下雨天。", aEn:"I like them too, they're cozy.", aCn:"我也喜欢，很舒适。" },
-  { scene:"天气", qEn:"The sun is shining.", qCn:"阳光明媚。", aEn:"Yes, let's enjoy it!", aCn:"是啊，让我们享受吧！" },
-  { scene:"天气", qEn:"What's the weather like in your city?", qCn:"你城市的天气怎么样？", aEn:"It's usually cold in winter.", aCn:"冬天通常很冷。" },
-  // 健康 (12)
-  { scene:"健康", qEn:"I have a headache.", qCn:"我头疼。", aEn:"You should take some rest.", aCn:"你应该休息一下。" },
-  { scene:"健康", qEn:"Do you feel better now?", qCn:"你现在感觉好点了吗？", aEn:"Yes, much better, thanks.", aCn:"是的，好多了，谢谢。" },
-  { scene:"健康", qEn:"I need to see a doctor.", qCn:"我需要看医生。", aEn:"There's a clinic nearby.", aCn:"附近有一个诊所。" },
-  { scene:"健康", qEn:"Have you taken any medicine?", qCn:"你吃药了吗？", aEn:"Not yet, I'll take it after breakfast.", aCn:"还没，我早餐后吃。" },
-  { scene:"健康", qEn:"I feel tired all the time.", qCn:"我一直觉得很累。", aEn:"You should get more sleep.", aCn:"你应该多睡觉。" },
-  { scene:"健康", qEn:"How is your health?", qCn:"你身体怎么样？", aEn:"I'm doing well, thanks.", aCn:"我很好，谢谢。" },
+  { scene:"天气", qEn:"Is it humid here in summer?", qCn:"这里夏天潮湿吗？", aEn:"Yes, it's very humid. Drink water.", aCn:"是的，很潮湿。多喝水。" },
+  { scene:"天气", qEn:"It's a beautiful day! Let's go out.", qCn:"今天天气真好！我们出去吧。", aEn:"Yes, perfect for a walk in the park.", aCn:"是的，非常适合在公园散步。" },
+  { scene:"天气", qEn:"I love rainy days. It's so cozy.", qCn:"我喜欢下雨天。很舒适。", aEn:"I like them too, especially with tea.", aCn:"我也喜欢，尤其是配茶。" },
+  { scene:"天气", qEn:"What's the weather like in your city?", qCn:"你城市的天气怎么样？", aEn:"It's usually cold in winter and hot in summer.", aCn:"冬天通常很冷，夏天很热。" },
+
+  // ============ 健康 ============
+  { scene:"健康", qEn:"I have a headache. Do you have any medicine?", qCn:"我头疼。你有药吗？", aEn:"You should take some rest. Have you eaten?", aCn:"你应该休息一下。你吃饭了吗？" },
+  { scene:"健康", qEn:"Do you feel better now?", qCn:"你现在感觉好点了吗？", aEn:"Yes, much better, thanks. The rest helped.", aCn:"是的，好多了，谢谢。休息有帮助。" },
+  { scene:"健康", qEn:"I need to see a doctor. Where is the clinic?", qCn:"我需要看医生。诊所在哪里？", aEn:"There's a clinic nearby. I'll show you.", aCn:"附近有一个诊所。我带你去。" },
+  { scene:"健康", qEn:"Have you taken any medicine yet?", qCn:"你吃药了吗？", aEn:"Not yet, I'll take it after breakfast.", aCn:"还没，我早餐后吃。" },
+  { scene:"健康", qEn:"I feel tired all the time. What should I do?", qCn:"我一直觉得很累。我该怎么办？", aEn:"You should get more sleep and exercise.", aCn:"你应该多睡觉和锻炼。" },
+  { scene:"健康", qEn:"How is your health lately?", qCn:"你最近身体怎么样？", aEn:"I'm doing well, thanks. How about you?", aCn:"我很好，谢谢。你呢？" },
   { scene:"健康", qEn:"Do you exercise regularly?", qCn:"你经常锻炼吗？", aEn:"Yes, I go to the gym three times a week.", aCn:"是的，我每周去三次健身房。" },
-  { scene:"健康", qEn:"I can't stop coughing.", qCn:"我咳个不停。", aEn:"You should drink more warm water.", aCn:"你应该多喝温水。" },
-  { scene:"健康", qEn:"Are you feeling sick?", qCn:"你感觉不舒服吗？", aEn:"A little, I think I'm coming down with something.", aCn:"有点，我想我可能生病了。" },
-  { scene:"健康", qEn:"You should eat more vegetables.", qCn:"你应该多吃蔬菜。", aEn:"I know, I'm trying to eat healthier.", aCn:"我知道，我在努力吃得更健康。" },
-  { scene:"健康", qEn:"I think I have a fever.", qCn:"我想我发烧了。", aEn:"Let me feel your forehead.", aCn:"让我摸摸你的额头。" },
-  { scene:"健康", qEn:"Take care of yourself!", qCn:"照顾好自己！", aEn:"Thank you, I will.", aCn:"谢谢，我会的。" },
-  // 交通 (12)
-  { scene:"交通", qEn:"How can I get to the airport?", qCn:"我怎么去机场？", aEn:"Take the express train.", aCn:"坐快线火车。" },
-  { scene:"交通", qEn:"Is there a bus stop nearby?", qCn:"附近有公交站吗？", aEn:"Yes, it's on the corner.", aCn:"有的，在拐角处。" },
-  { scene:"交通", qEn:"How much is a ticket?", qCn:"一张票多少钱？", aEn:"It's two yuan.", aCn:"两元。" },
-  { scene:"交通", qEn:"When does the bus arrive?", qCn:"公交车什么时候到？", aEn:"It should be here in five minutes.", aCn:"应该五分钟后到。" },
-  { scene:"交通", qEn:"Can I take the subway?", qCn:"我可以坐地铁吗？", aEn:"Yes, it's the fastest way.", aCn:"可以，这是最快的方式。" },
-  { scene:"交通", qEn:"Is it a long ride?", qCn:"路程远吗？", aEn:"About 20 minutes.", aCn:"大约20分钟。" },
-  { scene:"交通", qEn:"Do I need to transfer?", qCn:"我需要转车吗？", aEn:"No, it's a direct route.", aCn:"不用，是直达线路。" },
+  { scene:"健康", qEn:"I can't stop coughing. Any advice?", qCn:"我咳个不停。有什么建议？", aEn:"You should drink more warm water and rest.", aCn:"你应该多喝温水，多休息。" },
+  { scene:"健康", qEn:"Are you feeling sick today?", qCn:"你今天感觉不舒服吗？", aEn:"A little, I think I'm coming down with something.", aCn:"有点，我想我可能生病了。" },
+  { scene:"健康", qEn:"You should eat more vegetables and fruit.", qCn:"你应该多吃蔬菜和水果。", aEn:"I know, I'm trying to eat healthier.", aCn:"我知道，我在努力吃得更健康。" },
+  { scene:"健康", qEn:"I think I have a fever. Can you check?", qCn:"我想我发烧了。你能看看吗？", aEn:"Let me feel your forehead. You're warm.", aCn:"让我摸摸你的额头。你有点热。" },
+  { scene:"健康", qEn:"Take care of yourself and rest well!", qCn:"照顾好自己，好好休息！", aEn:"Thank you, I will. See you later.", aCn:"谢谢，我会的。回头见。" },
+
+  // ============ 交通 ============
+  { scene:"交通", qEn:"How can I get to the airport quickly?", qCn:"我怎么快速去机场？", aEn:"Take the express train. It's fastest.", aCn:"坐快线火车。那是最快的。" },
+  { scene:"交通", qEn:"Is there a bus stop nearby?", qCn:"附近有公交站吗？", aEn:"Yes, it's on the corner. Bus number 10.", aCn:"有的，在拐角处。10路公交。" },
+  { scene:"交通", qEn:"How much is a ticket to the city center?", qCn:"去市中心的车票多少钱？", aEn:"It's two yuan. You can pay by phone.", aCn:"两元。可以用手机支付。" },
+  { scene:"交通", qEn:"When does the next bus arrive?", qCn:"下一班公交什么时候到？", aEn:"It should be here in five minutes.", aCn:"应该五分钟后到。" },
+  { scene:"交通", qEn:"Can I take the subway to the museum?", qCn:"我可以坐地铁去博物馆吗？", aEn:"Yes, it's the fastest way. Take Line 2.", aCn:"可以，这是最快的方式。坐2号线。" },
+  { scene:"交通", qEn:"Is it a long ride to the station?", qCn:"到车站路程远吗？", aEn:"About 20 minutes by bus.", aCn:"坐公交大约20分钟。" },
+  { scene:"交通", qEn:"Do I need to transfer to another line?", qCn:"我需要换乘另一条线吗？", aEn:"No, it's a direct route. Very easy.", aCn:"不用，是直达线路。很方便。" },
   { scene:"交通", qEn:"Where is the taxi stand?", qCn:"出租车停靠站在哪里？", aEn:"Just outside the main entrance.", aCn:"就在主入口外面。" },
-  { scene:"交通", qEn:"Can I get a ride with you?", qCn:"我能搭你的车吗？", aEn:"Sure, hop in!", aCn:"当然，上车吧！" },
-  { scene:"交通", qEn:"The traffic is terrible today.", qCn:"今天交通太糟糕了。", aEn:"Yes, it's rush hour.", aCn:"是的，现在是高峰期。" },
-  { scene:"交通", qEn:"How do I get to the train station?", qCn:"我怎么去火车站？", aEn:"You can take a taxi.", aCn:"你可以打车。" },
-  { scene:"交通", qEn:"Is parking available?", qCn:"有停车位吗？", aEn:"Yes, there's a parking lot nearby.", aCn:"有的，附近有停车场。" },
-  // 酒店 (12)
-  { scene:"酒店", qEn:"I have a reservation under Smith.", qCn:"我用史密斯的名字预订了。", aEn:"Welcome, Mr. Smith. Here's your key.", aCn:"欢迎，史密斯先生，这是您的钥匙。" },
-  { scene:"酒店", qEn:"What time is breakfast?", qCn:"早餐几点？", aEn:"Breakfast is from 7 to 10 AM.", aCn:"早餐从早上7点到10点。" },
-  { scene:"酒店", qEn:"Is there Wi-Fi in the room?", qCn:"房间有WiFi吗？", aEn:"Yes, it's free and the password is on the desk.", aCn:"有的，免费，密码在桌上。" },
-  { scene:"酒店", qEn:"Can I get a wake-up call?", qCn:"可以叫醒服务吗？", aEn:"Certainly, what time?", aCn:"当然，几点？" },
-  { scene:"酒店", qEn:"I'd like to check out now.", qCn:"我想现在退房。", aEn:"OK, let me print your receipt.", aCn:"好的，我打印您的收据。" },
-  { scene:"酒店", qEn:"Is there a gym in the hotel?", qCn:"酒店里有健身房吗？", aEn:"Yes, it's on the ground floor.", aCn:"有的，在一楼。" },
-  { scene:"酒店", qEn:"Can I get extra towels?", qCn:"能给我额外的毛巾吗？", aEn:"Sure, I'll send them to your room.", aCn:"好的，我会送到您房间。" },
-  { scene:"酒店", qEn:"Can I extend my stay?", qCn:"我可以延住吗？", aEn:"Yes, we can extend it for another night.", aCn:"可以，我们可以再延长一晚。" },
-  { scene:"酒店", qEn:"What's the check-in time?", qCn:"入住时间是什么时候？", aEn:"Check-in is from 2 PM.", aCn:"下午2点开始。" },
-  { scene:"酒店", qEn:"Is there a swimming pool?", qCn:"有游泳池吗？", aEn:"Yes, it's on the rooftop.", aCn:"有的，在屋顶。" },
-  { scene:"酒店", qEn:"Do you have parking?", qCn:"你们有停车场吗？", aEn:"Yes, it's free for guests.", aCn:"有的，对客人免费。" },
-  { scene:"酒店", qEn:"Can I get a late checkout?", qCn:"我可以延迟退房吗？", aEn:"Yes, until 1 PM at no extra charge.", aCn:"可以，到下午1点不加收费用。" },
-  // 机场 (12)
-  { scene:"机场", qEn:"Where is the check-in counter?", qCn:"值机柜台在哪里？", aEn:"It's on the second floor.", aCn:"在二楼。" },
-  { scene:"机场", qEn:"What's the boarding time?", qCn:"登机时间是什么时候？", aEn:"Boarding starts at 10:30.", aCn:"10:30开始登机。" },
-  { scene:"机场", qEn:"Can I have a window seat?", qCn:"我可以要靠窗的座位吗？", aEn:"Let me check. Yes, you can.", aCn:"我看看。可以。" },
-  { scene:"机场", qEn:"Is my flight on time?", qCn:"我的航班准时吗？", aEn:"Yes, it's on schedule.", aCn:"是的，准点。" },
-  { scene:"机场", qEn:"Do I need to declare anything?", qCn:"我需要申报什么吗？", aEn:"Only if you have goods over five hundred dollars.", aCn:"只有当您有超过五百美元的物品时。" },
-  { scene:"机场", qEn:"Where is the departure gate?", qCn:"登机口在哪里？", aEn:"Gate 15, it's down this hallway.", aCn:"15号登机口，在这条走廊尽头。" },
-  { scene:"机场", qEn:"What's the flight duration?", qCn:"飞行时间多长？", aEn:"About six hours.", aCn:"大约六个小时。" },
-  { scene:"机场", qEn:"Can I use my phone on the plane?", qCn:"我可以在飞机上使用手机吗？", aEn:"Yes, in airplane mode.", aCn:"可以，开启飞行模式。" },
-  { scene:"机场", qEn:"Is there a lounge for business class?", qCn:"有商务舱休息室吗？", aEn:"Yes, it's near gate 8.", aCn:"有的，在8号登机口附近。" },
-  { scene:"机场", qEn:"What's the weight limit for carry-on?", qCn:"手提行李的重量限制是多少？", aEn:"It's 7 kilograms.", aCn:"7公斤。" },
+  { scene:"交通", qEn:"Can I get a ride with you to work?", qCn:"我能搭你的车去上班吗？", aEn:"Sure, hop in! We leave in 5 minutes.", aCn:"当然，上车吧！我们5分钟后出发。" },
+  { scene:"交通", qEn:"The traffic is terrible today. Why?", qCn:"今天交通太糟糕了。为什么？", aEn:"Yes, it's rush hour. Lots of cars.", aCn:"是的，现在是高峰期。车很多。" },
+  { scene:"交通", qEn:"Is parking available near the mall?", qCn:"商场附近有停车位吗？", aEn:"Yes, there's a parking lot nearby.", aCn:"有的，附近有停车场。" },
+
+  // ============ 酒店 ============
+  { scene:"酒店", qEn:"Good afternoon! I have a reservation.", qCn:"下午好！我有预订。", aEn:"Welcome! May I have your name, please?", aCn:"欢迎！请问您叫什么名字？" },
+  { scene:"酒店", qEn:"It's under Smith. I reserved a double room.", qCn:"用史密斯的名字。我订了一间双人房。", aEn:"Found it. Here's your key. Room 508.", aCn:"找到了。这是您的钥匙。508房。" },
+  { scene:"酒店", qEn:"What time is breakfast served?", qCn:"早餐几点供应？", aEn:"Breakfast is from 7 to 10 AM.", aCn:"早餐从早上7点到10点。" },
+  { scene:"酒店", qEn:"Is there Wi-Fi in the room?", qCn:"房间有WiFi吗？", aEn:"Yes, it's free. Password is on the desk.", aCn:"有的，免费。密码在桌上。" },
+  { scene:"酒店", qEn:"Can I get a wake-up call at 6 AM?", qCn:"能在早上6点叫醒我吗？", aEn:"Certainly, what time would you like?", aCn:"当然，您想几点？" },
+  { scene:"酒店", qEn:"I'd like to check out now. Can I pay?", qCn:"我想现在退房。可以结账吗？", aEn:"OK, let me print your receipt. One moment.", aCn:"好的，我打印您的收据。请稍等。" },
+  { scene:"酒店", qEn:"Is there a gym in the hotel?", qCn:"酒店里有健身房吗？", aEn:"Yes, it's on the ground floor. Free for guests.", aCn:"有的，在一楼。对客人免费。" },
+  { scene:"酒店", qEn:"Can I get extra towels, please?", qCn:"能给我额外的毛巾吗？", aEn:"Sure, I'll send them to your room.", aCn:"好的，我会送到您房间。" },
+  { scene:"酒店", qEn:"Can I extend my stay for one more night?", qCn:"我可以延住一晚吗？", aEn:"Yes, we can extend it for another night.", aCn:"可以，我们可以再延长一晚。" },
+  { scene:"酒店", qEn:"Is there a swimming pool?", qCn:"有游泳池吗？", aEn:"Yes, it's on the rooftop. Open till 10 PM.", aCn:"有的，在屋顶。开放到晚上10点。" },
+  { scene:"酒店", qEn:"Can I get a late checkout, please?", qCn:"我可以延迟退房吗？", aEn:"Yes, until 1 PM at no extra charge.", aCn:"可以，到下午1点不加收费用。" },
+
+  // ============ 机场 ============
+  { scene:"机场", qEn:"Where is the check-in counter for flight CA123?", qCn:"CA123航班的登机柜台在哪里？", aEn:"It's on the second floor, counter B12.", aCn:"在二楼，B12柜台。" },
+  { scene:"机场", qEn:"What's the boarding time for this flight?", qCn:"这个航班什么时候登机？", aEn:"Boarding starts at 10:30. Gate 15.", aCn:"10:30开始登机。15号登机口。" },
+  { scene:"机场", qEn:"Can I have a window seat, please?", qCn:"能给我靠窗的座位吗？", aEn:"Let me check. Yes, you can. Here you go.", aCn:"我看看。可以。给您。" },
+  { scene:"机场", qEn:"Is my flight on time?", qCn:"我的航班准时吗？", aEn:"Yes, it's on schedule. No delay.", aCn:"是的，准点。没有延误。" },
+  { scene:"机场", qEn:"Do I need to declare anything at customs?", qCn:"我需要在海关申报什么吗？", aEn:"Only if you have goods over 500 dollars.", aCn:"只有当您有超过500美元的物品时。" },
+  { scene:"机场", qEn:"Where is the departure gate for CA123?", qCn:"CA123的登机口在哪里？", aEn:"Gate 15, down this hallway, 5 minutes.", aCn:"15号登机口，这条走廊尽头，5分钟。" },
+  { scene:"机场", qEn:"What's the flight duration to London?", qCn:"到伦敦的飞行时间多长？", aEn:"About 11 hours. Quite long.", aCn:"大约11个小时。挺长的。" },
+  { scene:"机场", qEn:"Can I use my phone on the plane?", qCn:"我可以在飞机上使用手机吗？", aEn:"Yes, in airplane mode. No calls.", aCn:"可以，开启飞行模式。不能打电话。" },
+  { scene:"机场", qEn:"Is there duty-free shopping here?", qCn:"这里有免税店吗？", aEn:"Yes, after security. Good prices.", aCn:"有，在安检之后。价格不错。" },
   { scene:"机场", qEn:"Can I bring liquids on board?", qCn:"我可以带液体上飞机吗？", aEn:"Only in small containers, under 100ml.", aCn:"只能带小容器，100毫升以下。" },
-  { scene:"机场", qEn:"Is there duty-free shopping?", qCn:"有免税店吗？", aEn:"Yes, after security.", aCn:"有，在安检之后。" },
-  // 银行 (12)
-  { scene:"银行", qEn:"Where is the nearest bank?", qCn:"最近的银行在哪里？", aEn:"It's on the main street.", aCn:"在主街上。" },
-  { scene:"银行", qEn:"What time does the bank open?", qCn:"银行几点开门？", aEn:"It opens at 9 AM.", aCn:"早上9点。" },
-  { scene:"银行", qEn:"I'd like to exchange some money.", qCn:"我想换一些钱。", aEn:"Sure, how much would you like to exchange?", aCn:"好的，您想换多少？" },
-  { scene:"银行", qEn:"What's the exchange rate?", qCn:"汇率是多少？", aEn:"It's 1 dollar to 7 yuan today.", aCn:"今天1美元兑7元。" },
-  { scene:"银行", qEn:"Can I withdraw cash here?", qCn:"我可以在这里取现金吗？", aEn:"Yes, from the ATM.", aCn:"可以，从ATM机取。" },
-  { scene:"银行", qEn:"Do I need to fill in a form?", qCn:"我需要填表格吗？", aEn:"Yes, please fill out this form.", aCn:"是的，请填写这份表格。" },
-  { scene:"银行", qEn:"What's the minimum balance?", qCn:"最低余额是多少？", aEn:"It's 100 yuan.", aCn:"100元。" },
-  { scene:"银行", qEn:"Can I open a bank account?", qCn:"我可以开银行账户吗？", aEn:"Yes, you need your ID card.", aCn:"可以，您需要带身份证。" },
+
+  // ============ 银行 ============
+  { scene:"银行", qEn:"Where is the nearest bank? I need to exchange money.", qCn:"最近的银行在哪里？我想换钱。", aEn:"It's on the main street. 5 minutes' walk.", aCn:"在主街上。步行5分钟。" },
+  { scene:"银行", qEn:"What time does the bank open?", qCn:"银行几点开门？", aEn:"It opens at 9 AM. It's open now.", aCn:"早上9点。现在开着。" },
+  { scene:"银行", qEn:"I'd like to exchange 100 dollars.", qCn:"我想换100美元。", aEn:"Sure, how much would you like to exchange?", aCn:"好的，您想换多少？" },
+  { scene:"银行", qEn:"What's the exchange rate today?", qCn:"今天汇率是多少？", aEn:"It's 1 dollar to 7 yuan today.", aCn:"今天1美元兑7元。" },
+  { scene:"银行", qEn:"Can I withdraw cash from the ATM?", qCn:"我可以从ATM取现金吗？", aEn:"Yes, there's an ATM right there.", aCn:"可以，那里就有一台ATM。" },
+  { scene:"银行", qEn:"Do I need to fill in a form?", qCn:"我需要填表格吗？", aEn:"Yes, please fill out this form. Blue pen.", aCn:"是的，请填写这份表格。蓝笔。" },
+  { scene:"银行", qEn:"Can I open a bank account here?", qCn:"我可以在这里开银行账户吗？", aEn:"Yes, you need your ID card and phone.", aCn:"可以，您需要带身份证和手机。" },
+  { scene:"银行", qEn:"I'd like to transfer money to a friend.", qCn:"我想给朋友转账。", aEn:"Please fill in the recipient's details.", aCn:"请填写收款人的详细信息。" },
+  { scene:"银行", qEn:"Can I check my balance?", qCn:"我能查一下余额吗？", aEn:"Yes, please enter your password on the screen.", aCn:"可以，请在屏幕上输入密码。" },
   { scene:"银行", qEn:"Is there a transaction fee?", qCn:"有交易费吗？", aEn:"Yes, it's 1 yuan per transaction.", aCn:"有的，每笔1元。" },
-  { scene:"银行", qEn:"I'd like to transfer money.", qCn:"我想转账。", aEn:"Please fill in the recipient's details.", aCn:"请填写收款人的详细信息。" },
-  { scene:"银行", qEn:"Can I check my balance?", qCn:"我能查一下余额吗？", aEn:"Yes, please enter your password.", aCn:"可以，请输入密码。" },
-  { scene:"银行", qEn:"Is there an ATM nearby?", qCn:"附近有ATM机吗？", aEn:"Yes, it's next to the bank.", aCn:"有的，在银行旁边。" },
-  // 紧急 (12)
-  { scene:"紧急", qEn:"Call an ambulance!", qCn:"叫救护车！", aEn:"I'm calling now!", aCn:"我正在打电话！" },
-  { scene:"紧急", qEn:"I lost my wallet.", qCn:"我丢了钱包。", aEn:"Where did you last see it?", aCn:"你最后一次看到它是在哪里？" },
-  { scene:"紧急", qEn:"Is there a police station nearby?", qCn:"附近有警察局吗？", aEn:"Yes, it's two blocks away.", aCn:"有的，两个街区外。" },
-  { scene:"紧急", qEn:"I need help!", qCn:"我需要帮助！", aEn:"What's the problem?", aCn:"出什么事了？" },
-  { scene:"紧急", qEn:"There's a fire!", qCn:"着火了！", aEn:"Call the fire department!", aCn:"叫消防队！" },
-  { scene:"紧急", qEn:"My car broke down.", qCn:"我的车坏了。", aEn:"Let me call a tow truck.", aCn:"我叫一辆拖车。" },
-  { scene:"紧急", qEn:"I've been robbed.", qCn:"我被抢劫了。", aEn:"Stay calm, I'll call the police.", aCn:"保持冷静，我报警。" },
-  { scene:"紧急", qEn:"Is it serious?", qCn:"严重吗？", aEn:"I think so, we need to go to the hospital.", aCn:"我觉得是，我们需要去医院。" },
-  { scene:"紧急", qEn:"I locked myself out.", qCn:"我把自己锁在外面了。", aEn:"Do you have a spare key?", aCn:"你有备用钥匙吗？" },
-  { scene:"紧急", qEn:"I feel dizzy.", qCn:"我觉得头晕。", aEn:"Sit down and rest for a while.", aCn:"坐下来休息一下。" },
-  { scene:"紧急", qEn:"Where is the lost and found?", qCn:"失物招领处在哪里？", aEn:"It's near the entrance.", aCn:"在入口附近。" },
-  { scene:"紧急", qEn:"I need a doctor now.", qCn:"我现在需要医生。", aEn:"I'll take you to the hospital.", aCn:"我带你去医院。" },
-  // 娱乐 (12)
-  { scene:"娱乐", qEn:"What movie do you want to watch?", qCn:"你想看什么电影？", aEn:"Let's watch a comedy.", aCn:"我们看喜剧吧。" },
-  { scene:"娱乐", qEn:"Do you want to go to the concert?", qCn:"你想去听音乐会吗？", aEn:"Yes, I'd love to!", aCn:"想，我很想去！" },
-  { scene:"娱乐", qEn:"What's your favorite song?", qCn:"你最喜欢的歌是什么？", aEn:"I love pop music.", aCn:"我喜欢流行音乐。" },
-  { scene:"娱乐", qEn:"Let's play a game.", qCn:"我们玩个游戏吧。", aEn:"Sure, what game?", aCn:"好的，什么游戏？" },
-  { scene:"娱乐", qEn:"Do you like karaoke?", qCn:"你喜欢唱K吗？", aEn:"Yes, I love singing!", aCn:"喜欢，我很爱唱歌！" },
-  { scene:"娱乐", qEn:"Are you free tonight?", qCn:"你今晚有空吗？", aEn:"Yes, what's up?", aCn:"有空，怎么了？" },
-  { scene:"娱乐", qEn:"Let's go to the park.", qCn:"我们去公园吧。", aEn:"Good idea, let's go!", aCn:"好主意，走吧！" },
-  { scene:"娱乐", qEn:"Do you want to watch a football match?", qCn:"你想看足球比赛吗？", aEn:"Sure, who's playing?", aCn:"好啊，谁对谁？" },
-  { scene:"娱乐", qEn:"What do you do for fun?", qCn:"你平时玩什么？", aEn:"I play video games.", aCn:"我玩电子游戏。" },
-  { scene:"娱乐", qEn:"Let's take a walk by the river.", qCn:"我们去河边散步吧。", aEn:"That sounds relaxing.", aCn:"听起来很放松。" },
-  { scene:"娱乐", qEn:"Do you like dancing?", qCn:"你喜欢跳舞吗？", aEn:"Yes, but I'm not good at it.", aCn:"喜欢，但我不太会跳。" },
-  { scene:"娱乐", qEn:"Want to grab a coffee?", qCn:"想去喝杯咖啡吗？", aEn:"Sure, let's go!", aCn:"好啊，走吧！" },
+
+  // ============ 紧急 ============
+  { scene:"紧急", qEn:"Call an ambulance! Someone fainted!", qCn:"叫救护车！有人晕倒了！", aEn:"I'm calling now! Stay with the person.", aCn:"我正在打电话！陪着他。" },
+  { scene:"紧急", qEn:"I lost my wallet. What should I do?", qCn:"我丢了钱包。我该怎么办？", aEn:"Where did you last see it? Let's look.", aCn:"你最后一次看到它是在哪里？我们找找。" },
+  { scene:"紧急", qEn:"Is there a police station nearby?", qCn:"附近有警察局吗？", aEn:"Yes, it's two blocks away. I'll take you.", aCn:"有的，两个街区外。我带你去。" },
+  { scene:"紧急", qEn:"I need help! My car broke down.", qCn:"我需要帮助！我的车坏了。", aEn:"Let me call a tow truck for you.", aCn:"我叫一辆拖车给你。" },
+  { scene:"紧急", qEn:"There's a fire! Call the fire department!", qCn:"着火了！叫消防队！", aEn:"I'm calling 119 now! Get out safely.", aCn:"我现在打119！安全离开。" },
+  { scene:"紧急", qEn:"I locked myself out of my apartment.", qCn:"我把自己锁在公寓外面了。", aEn:"Do you have a spare key or a locksmith?", aCn:"你有备用钥匙或者找锁匠吗？" },
+  { scene:"紧急", qEn:"I feel dizzy and weak.", qCn:"我觉得头晕无力。", aEn:"Sit down and rest. I'll get you water.", aCn:"坐下来休息。我给你拿水。" },
+  { scene:"紧急", qEn:"Is it serious? Should I go to the hospital?", qCn:"严重吗？我要去医院吗？", aEn:"I think so, we should go now.", aCn:"我觉得是，我们应该现在去。" },
+  { scene:"紧急", qEn:"Where is the lost and found office?", qCn:"失物招领处在哪里？", aEn:"It's near the main entrance. Follow me.", aCn:"在主入口附近。跟我来。" },
+
+  // ============ 娱乐 ============
+  { scene:"娱乐", qEn:"What movie do you want to watch tonight?", qCn:"你今晚想看什么电影？", aEn:"Let's watch a comedy. Something funny.", aCn:"我们看喜剧吧。有趣一点的。" },
+  { scene:"娱乐", qEn:"Do you want to go to the concert?", qCn:"你想去听音乐会吗？", aEn:"Yes, I'd love to! When is it?", aCn:"想，我很想去！什么时候？" },
+  { scene:"娱乐", qEn:"What's your favorite song right now?", qCn:"你现在最喜欢的歌是什么？", aEn:"I love pop music. It's so catchy.", aCn:"我喜欢流行音乐。很好听。" },
+  { scene:"娱乐", qEn:"Let's play a game. Are you in?", qCn:"我们玩个游戏吧。你来吗？", aEn:"Sure, what game? Cards or board game?", aCn:"好的，什么游戏？扑克还是桌游？" },
+  { scene:"娱乐", qEn:"Do you like karaoke?", qCn:"你喜欢唱K吗？", aEn:"Yes, I love singing! Let's go tonight.", aCn:"喜欢，我很爱唱歌！我们今晚去吧。" },
+  { scene:"娱乐", qEn:"Are you free tonight? Want to grab dinner?", qCn:"你今晚有空吗？想一起吃晚饭吗？", aEn:"Yes, what time and where?", aCn:"有空，几点？在哪里？" },
+  { scene:"娱乐", qEn:"Let's go to the park and take a walk.", qCn:"我们去公园散步吧。", aEn:"Good idea! The weather is nice today.", aCn:"好主意！今天天气很好。" },
+  { scene:"娱乐", qEn:"Do you want to watch a football match?", qCn:"你想看足球比赛吗？", aEn:"Sure, who's playing? Is it important?", aCn:"好啊，谁对谁？比赛重要吗？" },
+  { scene:"娱乐", qEn:"What do you do for fun on weekends?", qCn:"你周末玩什么？", aEn:"I play video games and watch movies.", aCn:"我玩电子游戏和看电影。" },
+  { scene:"娱乐", qEn:"Let's take a walk by the river tonight.", qCn:"我们今晚去河边散步吧。", aEn:"That sounds relaxing. What time?", aCn:"听起来很放松。几点？" },
 ];
 
 // ========================================================================
-// 二、商品数据
+// 三、商品数据
 // ========================================================================
-const products = [
+const DEFAULT_PRODUCTS = [
   { id:1, category:"home", name:"陶瓷咖啡杯套装", nameEn:"Ceramic Coffee Mug Set", price:39.9, originalPrice:59.9, emoji:"☕",
     descEn:"This set includes four elegant ceramic mugs. They are microwave and dishwasher safe, perfect for home and office use.",
     descCn:"本套装包含四只优雅的陶瓷马克杯，可微波炉和洗碗机使用，适合家庭和办公室。", stock:100, sales:0 },
@@ -460,14 +678,34 @@ const categoryNames = {
   fashion: "服饰箱包", food: "食品", other: "其他"
 };
 
+let products = [];
+function loadProducts() {
+  try {
+    const saved = localStorage.getItem("shop_products");
+    if (saved) products = JSON.parse(saved);
+    else {
+      products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+      saveProducts();
+    }
+  } catch (e) {
+    products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+  }
+}
+function saveProducts() {
+  try { localStorage.setItem("shop_products", JSON.stringify(products)); }
+  catch (e) { showToast("存储空间不足"); }
+}
+
 // ========================================================================
-// 三、状态
+// 四、状态
 // ========================================================================
 let currentScene = "";
 let dialogList = [];
-let currentDialogIndex = 0;
+let currentGroupIndex = 0;
+let allGroups = [];
 let currentCategory = "all";
 let currentProduct = null;
+const GROUP_SIZE = 3;
 
 const sceneSelect = document.getElementById("sceneSelect");
 const dialogArea = document.getElementById("dialogArea");
@@ -475,52 +713,36 @@ const dialogCount = document.getElementById("dialogCount");
 const statusEl = document.getElementById("status");
 
 // ========================================================================
-// 四、【核心】iPad优化语音引擎
+// 五、iPad优化语音引擎
 // ========================================================================
-let speechReady = false;       // 是否已预热
-let currentUtterance = null;   // 当前语音对象
-let speakQueue = [];           // 播放队列
-let isSpeaking = false;        // 是否正在播放
+let speechReady = false;
+let isSpeaking = false;
 
-/**
- * 首次用户交互时调用，预热语音引擎
- * iOS 必须在用户手势中触发一次语音，后续才能正常播放
- */
 function warmUpSpeech() {
   if (speechReady) return;
   if (!window.speechSynthesis) return;
   try {
     const u = new SpeechSynthesisUtterance(" ");
     u.volume = 0;
-    u.rate = 1;
     u.onend = () => { speechReady = true; };
     u.onerror = () => { speechReady = true; };
     window.speechSynthesis.speak(u);
     speechReady = true;
-  } catch (e) {
-    speechReady = true;
-  }
+  } catch (e) { speechReady = true; }
 }
 
-/**
- * 过滤 iOS 导致崩溃的特殊字符
- */
 function cleanText(text) {
   return String(text)
-    .replace(/[<>]/g, "")        // 移除尖括号
-    .replace(/[.…]{2,}/g, "")    // 移除连续省略号
-    .replace(/&[a-z]+;/gi, "")   // 移除HTML实体
+    .replace(/[<>]/g, "")
+    .replace(/[.…]{2,}/g, "")
     .replace(/\s+/g, " ")
     .trim();
 }
 
-/**
- * 将长文本拆分为短句（iOS 长文本容易卡顿）
- */
-function splitText(text, maxLen = 120) {
+function splitText(text, maxLen) {
+  maxLen = maxLen || 120;
   const clean = cleanText(text);
   if (clean.length <= maxLen) return [clean];
-  // 按标点拆句
   const parts = clean.split(/(?<=[.!?。！？])\s*/);
   const result = [];
   let buf = "";
@@ -536,56 +758,32 @@ function splitText(text, maxLen = 120) {
   return result.filter(x => x.length > 0);
 }
 
-/**
- * 播放一段文本（原子播放）
- */
 function speakOne(text, lang) {
   return new Promise((resolve) => {
     const clean = cleanText(text);
     if (!clean) { resolve(); return; }
-
     const u = new SpeechSynthesisUtterance(clean);
     u.lang = lang || (/[\u4e00-\u9fa5]/.test(clean) ? "zh-CN" : "en-US");
-    // iOS 语速限制在 0.5-1.5
-    u.rate = Math.min(1.5, Math.max(0.5, 0.95));
+    u.rate = 0.95;
     u.pitch = 1.0;
     u.volume = 1.0;
-
     let ended = false;
-    const finish = () => {
-      if (ended) return;
-      ended = true;
-      resolve();
-    };
+    const finish = () => { if (ended) return; ended = true; resolve(); };
     u.onend = finish;
     u.onerror = finish;
-
-    currentUtterance = u;
-    try {
-      window.speechSynthesis.speak(u);
-    } catch (e) {
-      finish();
-    }
-    // 安全超时：15秒未结束则强制 resolve
+    try { window.speechSynthesis.speak(u); } catch (e) { finish(); }
     setTimeout(finish, 15000);
   });
 }
 
-/**
- * 播放主函数（支持队列，串行播放，避免卡顿）
- */
 async function speak(text, lang, callback) {
   if (!window.speechSynthesis) {
-    statusEl.textContent = "❌ 浏览器不支持语音";
+    statusEl.textContent = "❌ 不支持语音";
     statusEl.className = "status error";
     if (callback) callback();
     return;
   }
-
-  // 首次播放时预热
   warmUpSpeech();
-
-  // 打断当前播放
   try { window.speechSynthesis.cancel(); } catch (e) {}
   isSpeaking = true;
 
@@ -594,33 +792,25 @@ async function speak(text, lang, callback) {
   statusEl.className = "status speaking";
 
   for (let i = 0; i < parts.length; i++) {
-    if (!isSpeaking) break; // 被新的播放打断
+    if (!isSpeaking) break;
     await speakOne(parts[i], lang);
-    // 多段之间加 80ms 间隔，避免 iOS 引擎忙不过来
-    if (i < parts.length - 1) {
-      await new Promise(r => setTimeout(r, 80));
-    }
+    if (i < parts.length - 1) await new Promise(r => setTimeout(r, 80));
   }
-
   isSpeaking = false;
   statusEl.textContent = "✅ 播放完成";
   statusEl.className = "status done";
   if (callback) callback();
 }
 
-/**
- * 停止播放
- */
 function stopSpeech() {
   isSpeaking = false;
   if (window.speechSynthesis) {
     try { window.speechSynthesis.cancel(); } catch (e) {}
   }
-  currentUtterance = null;
 }
 
 // ========================================================================
-// 五、英语学习模块
+// 六、英语学习模块
 // ========================================================================
 function getAllScenes() {
   const set = new Set();
@@ -638,110 +828,115 @@ function initScenes() {
     sceneSelect.appendChild(opt);
   });
   sceneSelect.value = scenes[0] || "";
-  currentScene = scenes[0] || "";
-  loadScene(currentScene);
+  loadScene(scenes[0] || "");
 }
 
 function loadScene(scene) {
   currentScene = scene;
   dialogList = dialogPool.filter(d => d.scene === scene);
-  currentDialogIndex = 0;
-  dialogCount.textContent = dialogList.length + " 组";
-  renderDialog();
+  allGroups = [];
+  for (let i = 0; i < dialogList.length; i += GROUP_SIZE) {
+    allGroups.push(dialogList.slice(i, i + GROUP_SIZE));
+  }
+  currentGroupIndex = 0;
+  dialogCount.textContent = allGroups.length + " 组";
+  renderGroup();
 }
 
 function escapeQuote(str) {
-  return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  return String(str).replace(/'/g, "\\'").replace(/"/g, "&quot;");
 }
 
-function renderDialog() {
-  if (!dialogList.length) {
+function renderGroup() {
+  if (!allGroups.length) {
     dialogArea.innerHTML = '<div class="empty-tip">该场景暂无对话</div>';
     return;
   }
-  if (currentDialogIndex >= dialogList.length) currentDialogIndex = 0;
-  if (currentDialogIndex < 0) currentDialogIndex = dialogList.length - 1;
+  if (currentGroupIndex >= allGroups.length) currentGroupIndex = 0;
+  if (currentGroupIndex < 0) currentGroupIndex = allGroups.length - 1;
 
-  const d = dialogList[currentDialogIndex];
-  dialogArea.innerHTML = `
-    <div class="dialog-item">
-      <div class="dialog-row">
-        <span class="dialog-label q">问</span>
-        <div class="dialog-text">
-          <div class="line-en">${d.qEn}</div>
-          <div class="line-cn">${d.qCn}</div>
-        </div>
-        <button class="speak-btn" onclick="onSpeak('${escapeQuote(d.qEn)}','en-US',this)">🔊</button>
-        <button class="speak-btn cn" onclick="onSpeak('${escapeQuote(d.qCn)}','zh-CN',this)">中</button>
-      </div>
-      <div class="dialog-row answer">
-        <span class="dialog-label a">答</span>
-        <div class="dialog-text">
-          <div class="line-en">${d.aEn}</div>
-          <div class="line-cn">${d.aCn}</div>
-        </div>
-        <button class="speak-btn" onclick="onSpeak('${escapeQuote(d.aEn)}','en-US',this)">🔊</button>
-        <button class="speak-btn cn" onclick="onSpeak('${escapeQuote(d.aCn)}','zh-CN',this)">中</button>
-      </div>
-    </div>
-    <div style="text-align:center;color:#94a3b8;font-size:12px;">第 ${currentDialogIndex + 1} / ${dialogList.length} 组</div>
-  `;
+  const group = allGroups[currentGroupIndex];
+
+  let html = '<div class="group-header">' +
+    '<span class="group-title">📖 对话组 ' + (currentGroupIndex + 1) + ' / ' + allGroups.length + '</span>' +
+    '<span class="group-tag">' + group.length + ' 轮对话</span>' +
+    '</div>';
+
+  group.forEach((d, idx) => {
+    html += '<div class="dialog-item">' +
+      '<div class="dialog-row">' +
+        '<span class="dialog-label q">问' + (idx+1) + '</span>' +
+        '<div class="dialog-text">' +
+          '<div class="line-en">' + d.qEn + '</div>' +
+          '<div class="line-cn">' + d.qCn + '</div>' +
+        '</div>' +
+        '<button class="speak-btn" onclick="onSpeak(\'' + escapeQuote(d.qEn) + '\',\'en-US\',this)">🔊</button>' +
+        '<button class="speak-btn cn" onclick="onSpeak(\'' + escapeQuote(d.qCn) + '\',\'zh-CN\',this)">中</button>' +
+      '</div>' +
+      '<div class="dialog-row answer">' +
+        '<span class="dialog-label a">答' + (idx+1) + '</span>' +
+        '<div class="dialog-text">' +
+          '<div class="line-en">' + d.aEn + '</div>' +
+          '<div class="line-cn">' + d.aCn + '</div>' +
+        '</div>' +
+        '<button class="speak-btn" onclick="onSpeak(\'' + escapeQuote(d.aEn) + '\',\'en-US\',this)">🔊</button>' +
+        '<button class="speak-btn cn" onclick="onSpeak(\'' + escapeQuote(d.aCn) + '\',\'zh-CN\',this)">中</button>' +
+      '</div>' +
+    '</div>';
+  });
+
+  html += '<div class="related-box">' +
+    '<h5>💡 学习提示</h5>' +
+    '<div class="rel-item"><strong>话题：</strong>本组对话围绕"' + currentScene + '"场景展开，建议先听后说。</div>' +
+    '<div class="rel-item"><strong>练习：</strong>点击每句的 🔊 听英文，点击"中"听中文，跟读模仿。</div>' +
+    '<div class="rel-item"><strong>整组：</strong>点击下方"整组朗读"可以连续听完整对话。</div>' +
+  '</div>';
+
+  dialogArea.innerHTML = html;
 }
 
-// 按钮点击处理（含高亮状态）
 function onSpeak(text, lang, btn) {
-  // 清除所有按钮的高亮
   document.querySelectorAll(".speak-btn").forEach(b => b.classList.remove("speaking"));
   if (btn) btn.classList.add("speaking");
-
   speak(text, lang, () => {
     if (btn) btn.classList.remove("speaking");
   });
 }
 
-function prevDialog() {
-  if (!dialogList.length) return;
+function prevGroup() {
+  if (!allGroups.length) return;
   stopSpeech();
-  currentDialogIndex = (currentDialogIndex - 1 + dialogList.length) % dialogList.length;
-  renderDialog();
+  currentGroupIndex = (currentGroupIndex - 1 + allGroups.length) % allGroups.length;
+  renderGroup();
 }
-function nextDialog() {
-  if (!dialogList.length) return;
+function nextGroup() {
+  if (!allGroups.length) return;
   stopSpeech();
-  currentDialogIndex = (currentDialogIndex + 1) % dialogList.length;
-  renderDialog();
+  currentGroupIndex = (currentGroupIndex + 1) % allGroups.length;
+  renderGroup();
 }
 
-/**
- * 整组朗读：问英 → 问中 → 答英 → 答中
- * 使用异步串行，避免 iOS 卡顿
- */
-async function playAll() {
-  if (!dialogList.length) return;
+async function playGroup() {
+  if (!allGroups.length) return;
   stopSpeech();
-  const d = dialogList[currentDialogIndex];
-
-  // 清除高亮
+  const group = allGroups[currentGroupIndex];
   document.querySelectorAll(".speak-btn").forEach(b => b.classList.remove("speaking"));
 
-  const steps = [
-    { text: d.qEn, lang: "en-US" },
-    { text: d.qCn, lang: "zh-CN" },
-    { text: d.aEn, lang: "en-US" },
-    { text: d.aCn, lang: "zh-CN" }
-  ];
-
-  for (const step of steps) {
-    await new Promise(resolve => {
-      speak(step.text, step.lang, resolve);
-    });
-    await new Promise(r => setTimeout(r, 150));
+  for (const d of group) {
+    await new Promise(r => speak(d.qEn, "en-US", r));
+    await new Promise(r => setTimeout(r, 200));
+    await new Promise(r => speak(d.qCn, "zh-CN", r));
+    await new Promise(r => setTimeout(r, 200));
+    await new Promise(r => speak(d.aEn, "en-US", r));
+    await new Promise(r => setTimeout(r, 200));
+    await new Promise(r => speak(d.aCn, "zh-CN", r));
+    await new Promise(r => setTimeout(r, 300));
     if (!isSpeaking) break;
   }
 }
 
 // ========================================================================
-// 六、商品城模块
+// 七、商品城模块
 // ========================================================================
 function initCategories() {
   const box = document.getElementById("categories");
@@ -768,86 +963,261 @@ function renderProducts() {
     : products.filter(p => p.category === currentCategory);
 
   if (!list.length) {
-    grid.innerHTML = '<div class="empty-tip" style="grid-column:1/-1;">该分类暂无商品，敬请期待～</div>';
+    grid.innerHTML = '<div class="empty-tip" style="grid-column:1/-1;">该分类暂无商品，点下方"⚙️ 管理商品"上架</div>';
+    document.getElementById("tabShopBadge").textContent = products.length;
     return;
   }
 
-  grid.innerHTML = list.map(p => `
-    <div class="product-card" onclick="openProduct(${p.id})">
-      <div class="product-img">${p.emoji}</div>
-      <div class="product-body">
-        <div class="product-name">${p.name}</div>
-        <div class="product-name-en">${p.nameEn}</div>
-        <div class="product-price">¥${p.price} ${p.originalPrice ? `<small>¥${p.originalPrice}</small>` : ""}</div>
-      </div>
-    </div>
-  `).join("");
+  grid.innerHTML = list.map(p => {
+    const imgHtml = p.emoji && (p.emoji.startsWith("http") || p.emoji.startsWith("data:"))
+      ? '<img src="' + p.emoji + '" alt="' + p.name + '" onerror="this.parentNode.textContent=\'📦\'">'
+      : (p.emoji || "📦");
+    return '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
+      '<div class="product-img">' + imgHtml + '</div>' +
+      '<div class="product-body">' +
+        '<div class="product-name">' + p.name + '</div>' +
+        '<div class="product-name-en">' + (p.nameEn || "") + '</div>' +
+        '<div class="product-price">¥' + p.price + ' ' + (p.originalPrice ? '<small>¥' + p.originalPrice + '</small>' : '') + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join("");
 
   document.getElementById("tabShopBadge").textContent = products.length;
 }
 
 // ========================================================================
-// 七、商品详情弹窗
+// 八、商品详情
 // ========================================================================
 function openProduct(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
   currentProduct = p;
-  document.getElementById("mImg").textContent = p.emoji;
+  const imgHtml = p.emoji && (p.emoji.startsWith("http") || p.emoji.startsWith("data:"))
+    ? '<img src="' + p.emoji + '" alt="' + p.name + '">'
+    : (p.emoji || "📦");
+  document.getElementById("mImg").innerHTML = imgHtml;
   document.getElementById("mName").textContent = p.name;
-  document.getElementById("mNameEn").textContent = p.nameEn;
-  document.getElementById("mPrice").innerHTML = `¥${p.price} ${p.originalPrice ? `<small>¥${p.originalPrice}</small>` : ""}`;
-  document.getElementById("mDescEn").textContent = p.descEn;
-  document.getElementById("mDescCn").textContent = p.descCn;
+  document.getElementById("mNameEn").textContent = p.nameEn || "";
+  document.getElementById("mPrice").innerHTML = '¥' + p.price + ' ' + (p.originalPrice ? '<small>¥' + p.originalPrice + '</small>' : '');
+  document.getElementById("mDescEn").textContent = p.descEn || "";
+  document.getElementById("mDescCn").textContent = p.descCn || "";
   document.getElementById("productModal").classList.add("open");
   resetProductSpeakBtn();
 }
 
-function closeModal() {
-  document.getElementById("productModal").classList.remove("open");
-  stopSpeech();
-  resetProductSpeakBtn();
+function closeModal(id) {
+  document.getElementById(id).classList.remove("open");
+  if (id === "productModal") {
+    stopSpeech();
+    resetProductSpeakBtn();
+  }
 }
 
 function scrollToInquiry() {
-  closeModal();
-  document.getElementById("shopModule").scrollIntoView({ behavior: "smooth" });
+  closeModal("productModal");
+  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
 }
 
 let productSpeaking = false;
-
 function resetProductSpeakBtn() {
   const btn = document.getElementById("mSpeakBtn");
+  if (!btn) return;
   btn.textContent = "🔊 朗读英文描述";
   btn.classList.remove("primary");
   productSpeaking = false;
 }
-
 function speakProductDesc() {
   if (!currentProduct) return;
-  if (productSpeaking) {
-    stopSpeech();
-    resetProductSpeakBtn();
-    return;
-  }
-  if (!window.speechSynthesis) {
-    alert("您的浏览器不支持语音");
-    return;
-  }
-
+  if (productSpeaking) { stopSpeech(); resetProductSpeakBtn(); return; }
+  if (!window.speechSynthesis) { alert("浏览器不支持语音"); return; }
   const btn = document.getElementById("mSpeakBtn");
   btn.textContent = "⏹ 停止朗读";
   btn.classList.add("primary");
   productSpeaking = true;
-
-  speak(currentProduct.descEn, "en-US", () => {
+  speak(currentProduct.descEn || "", "en-US", () => {
     productSpeaking = false;
     resetProductSpeakBtn();
   });
 }
 
 // ========================================================================
-// 八、询盘
+// 九、商品管理（带密码保护）
+// ========================================================================
+function openAdmin() {
+  requireAdmin(() => {
+    renderAdminList();
+    document.getElementById("adminModal").classList.add("open");
+  });
+}
+
+function renderAdminList() {
+  const box = document.getElementById("adminList");
+  document.getElementById("adminCount").textContent = products.length;
+  if (!products.length) {
+    box.innerHTML = '<div class="admin-empty">还没有商品，点击下方"添加商品"开始上架</div>';
+    return;
+  }
+  box.innerHTML = products.map(p => {
+    const imgHtml = p.emoji && (p.emoji.startsWith("http") || p.emoji.startsWith("data:"))
+      ? '<img src="' + p.emoji + '" alt="">'
+      : (p.emoji || "📦");
+    return '<div class="admin-item">' +
+      '<div class="ai-img">' + imgHtml + '</div>' +
+      '<div class="ai-info">' +
+        '<div class="ai-name">' + p.name + '</div>' +
+        '<div class="ai-sub">' + (categoryNames[p.category] || p.category) + ' · ¥' + p.price + ' · 库存' + (p.stock || 0) + '</div>' +
+      '</div>' +
+      '<div class="ai-actions">' +
+        '<button style="background:#dbeafe;color:#1e40af;" onclick="closeModal(\'adminModal\');openProductForm(' + p.id + ')">编辑</button>' +
+        '<button style="background:#fee2e2;color:#991b1b;" onclick="deleteProduct(' + p.id + ')">删除</button>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+}
+
+function openProductForm(id) {
+  if (!isAdminLoggedIn()) {
+    requireAdmin(() => openProductForm(id));
+    return;
+  }
+
+  const formTitle = document.getElementById("formTitle");
+  const fId = document.getElementById("fId");
+  const fName = document.getElementById("fName");
+  const fNameEn = document.getElementById("fNameEn");
+  const fPrice = document.getElementById("fPrice");
+  const fOriginalPrice = document.getElementById("fOriginalPrice");
+  const fCategory = document.getElementById("fCategory");
+  const fEmoji = document.getElementById("fEmoji");
+  const fDescEn = document.getElementById("fDescEn");
+  const fDescCn = document.getElementById("fDescCn");
+  const fStock = document.getElementById("fStock");
+  const fSales = document.getElementById("fSales");
+
+  fCategory.innerHTML = "";
+  Object.keys(categoryNames).forEach(key => {
+    if (key === "all") return;
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = categoryNames[key];
+    fCategory.appendChild(opt);
+  });
+
+  if (id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    formTitle.textContent = "编辑商品";
+    fId.value = p.id;
+    fName.value = p.name || "";
+    fNameEn.value = p.nameEn || "";
+    fPrice.value = p.price || "";
+    fOriginalPrice.value = p.originalPrice || "";
+    fCategory.value = p.category || "home";
+    fEmoji.value = p.emoji || "";
+    fDescEn.value = p.descEn || "";
+    fDescCn.value = p.descCn || "";
+    fStock.value = p.stock || 0;
+    fSales.value = p.sales || 0;
+  } else {
+    formTitle.textContent = "添加商品";
+    fId.value = "";
+    fName.value = "";
+    fNameEn.value = "";
+    fPrice.value = "";
+    fOriginalPrice.value = "";
+    fCategory.value = "home";
+    fEmoji.value = "";
+    fDescEn.value = "";
+    fDescCn.value = "";
+    fStock.value = 100;
+    fSales.value = 0;
+  }
+  document.getElementById("productFormModal").classList.add("open");
+}
+
+function saveProduct() {
+  if (!isAdminLoggedIn()) { showToast("请先验证身份"); return; }
+
+  const fId = document.getElementById("fId").value;
+  const fName = document.getElementById("fName").value.trim();
+  const fNameEn = document.getElementById("fNameEn").value.trim();
+  const fPrice = parseFloat(document.getElementById("fPrice").value);
+  const fOriginalPrice = parseFloat(document.getElementById("fOriginalPrice").value) || 0;
+  const fCategory = document.getElementById("fCategory").value;
+  const fEmoji = document.getElementById("fEmoji").value.trim();
+  const fDescEn = document.getElementById("fDescEn").value.trim();
+  const fDescCn = document.getElementById("fDescCn").value.trim();
+  const fStock = parseInt(document.getElementById("fStock").value) || 0;
+  const fSales = parseInt(document.getElementById("fSales").value) || 0;
+
+  if (!fName) { showToast("请填写商品名称"); return; }
+  if (isNaN(fPrice) || fPrice <= 0) { showToast("请填写有效的价格"); return; }
+
+  if (fId) {
+    const p = products.find(x => x.id === parseInt(fId));
+    if (p) {
+      p.name = fName;
+      p.nameEn = fNameEn;
+      p.price = fPrice;
+      p.originalPrice = fOriginalPrice;
+      p.category = fCategory;
+      p.emoji = fEmoji || "📦";
+      p.descEn = fDescEn;
+      p.descCn = fDescCn;
+      p.stock = fStock;
+      p.sales = fSales;
+    }
+    showToast("✅ 商品已更新");
+  } else {
+    const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
+    products.push({
+      id: newId,
+      category: fCategory,
+      name: fName,
+      nameEn: fNameEn,
+      price: fPrice,
+      originalPrice: fOriginalPrice,
+      emoji: fEmoji || "📦",
+      descEn: fDescEn,
+      descCn: fDescCn,
+      stock: fStock,
+      sales: fSales
+    });
+    showToast("✅ 商品已上架");
+  }
+
+  saveProducts();
+  closeModal("productFormModal");
+  renderProducts();
+  renderAdminList();
+  switchTab("shop");
+}
+
+function deleteProduct(id) {
+  if (!isAdminLoggedIn()) { showToast("请先验证身份"); return; }
+  if (!confirm("确定要删除这个商品吗？")) return;
+  products = products.filter(p => p.id !== id);
+  saveProducts();
+  renderProducts();
+  renderAdminList();
+  showToast("🗑️ 商品已删除");
+}
+
+function exportData() {
+  if (!isAdminLoggedIn()) { showToast("请先验证身份"); return; }
+  const data = JSON.stringify(products, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "products_backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast("📤 数据已导出");
+}
+
+// ========================================================================
+// 十、询盘
 // ========================================================================
 function submitInquiry(e) {
   e.preventDefault();
@@ -858,7 +1228,7 @@ function submitInquiry(e) {
 }
 
 // ========================================================================
-// 九、导航切换
+// 十一、导航 & 工具
 // ========================================================================
 function switchTab(tab) {
   document.querySelectorAll(".nav-tab").forEach(t => {
@@ -871,64 +1241,73 @@ function switchTab(tab) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function showToast(msg) {
+  let t = document.getElementById("toast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id = "toast";
+    t.style.cssText = "position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:8px 20px;border-radius:30px;font-size:13px;opacity:0;transition:0.3s;z-index:999;pointer-events:none;";
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = "1";
+  setTimeout(() => t.style.opacity = "0", 1800);
+}
+
 // ========================================================================
-// 十、初始化
+// 十二、初始化
 // ========================================================================
 function initApp() {
+  loadProducts();
   initScenes();
   sceneSelect.onchange = () => loadScene(sceneSelect.value);
   initCategories();
   renderProducts();
 
-  // 首次点击页面任意处，预热语音引擎（iOS必须）
-  document.addEventListener("touchstart", function onFirstTouch() {
+  document.addEventListener("touchstart", function onFirst() {
     warmUpSpeech();
-    document.removeEventListener("touchstart", onFirstTouch);
+    document.removeEventListener("touchstart", onFirst);
   }, { passive: true });
-
-  document.addEventListener("click", function onFirstClick() {
+  document.addEventListener("click", function onFirst() {
     warmUpSpeech();
-    document.removeEventListener("click", onFirstClick);
-  }, { once: false });
+    document.removeEventListener("click", onFirst);
+  });
 
-  // 从后台返回时，重新初始化语音引擎（iOS常见问题）
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden && window.speechSynthesis) {
       window.speechSynthesis.getVoices();
-      // 重置状态
       isSpeaking = false;
     }
+    if (document.hidden) stopSpeech();
   });
 
-  // 页面隐藏时停止播放（iOS切后台会强制停止）
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
+  document.addEventListener("keydown", e => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.key === "Escape") {
+      document.querySelectorAll(".modal").forEach(m => m.classList.remove("open"));
       stopSpeech();
     }
-  });
-
-  // 键盘快捷键
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeModal();
     if (document.getElementById("learnModule").style.display !== "none") {
-      if (e.key === "ArrowLeft") prevDialog();
-      if (e.key === "ArrowRight") nextDialog();
+      if (e.key === "ArrowLeft") prevGroup();
+      if (e.key === "ArrowRight") nextGroup();
     }
   });
 
-  document.getElementById("productModal").addEventListener("click", function(e) {
-    if (e.target === this) closeModal();
+  document.querySelectorAll(".modal").forEach(m => {
+    m.addEventListener("click", function(e) {
+      if (e.target === this) closeModal(this.id);
+    });
   });
 
-  // 预加载语音列表
   if (window.speechSynthesis) {
     window.speechSynthesis.getVoices();
     window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
   }
 
-  console.log("✅ 学英语·逛好物 已启动（iPad优化版）");
-  console.log("📚 对话总数:", dialogPool.length, "组");
-  console.log("🛍️ 商品总数:", products.length, "件");
+  console.log("✅ 学英语·逛好物 完整版已启动");
+  console.log("📚 对话组:", allGroups.length, "组 × 每组", GROUP_SIZE, "轮");
+  console.log("🛍️ 商品:", products.length, "件");
+  console.log("🔐 管理员默认密码: admin888 （请登录后立即修改）");
 }
 
 initApp();
