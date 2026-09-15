@@ -2,9 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-               maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>🎧 每句练耳 · Chaowen AI</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -31,6 +29,17 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 .hint-decoded.empty{font-style:italic;font-weight:400;font-size:13px;color:#a89974}
 .hint-notes{font-size:13px;color:#7a6b4a;line-height:1.9}
 .hint-notes div::before{content:"· ";color:#c9b375;font-weight:700}
+.chunk-panel{display:none;margin-top:18px;text-align:left;background:#f0f5ff;border-radius:14px;padding:14px}
+.chunk-panel.show{display:block}
+.chunk-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.chunk-title{font-size:12px;font-weight:700;color:#4a6fa5;letter-spacing:.5px}
+.chunk-playall{font-size:11.5px;font-weight:600;padding:6px 12px;background:#1a202c;color:#fff;border:none;border-radius:9px;cursor:pointer;font-family:inherit;transition:transform .12s ease}
+.chunk-playall:active{transform:scale(.95)}
+.chunk-list{display:flex;flex-wrap:wrap;gap:6px}
+.chunk-item{padding:8px 12px;background:#fff;border:1px solid #dae5f5;border-radius:10px;font-size:14px;font-weight:600;color:#2c4a75;cursor:pointer;font-family:inherit;transition:all .15s ease;line-height:1.3;text-align:left}
+.chunk-item:active{transform:scale(.96)}
+.chunk-item.playing{background:#1a202c;color:#fff;border-color:#1a202c}
+.chunk-note{margin-top:10px;font-size:11.5px;color:#7a8aa0;line-height:1.6}
 .chips{display:flex;gap:8px;margin-top:22px;margin-bottom:12px}
 .chip{flex:1;padding:11px 6px;font-size:13px;font-weight:600;background:#f3f5f8;color:#4a5563;border:none;border-radius:12px;cursor:pointer;font-family:inherit;transition:all .15s ease}
 .chip:active{transform:scale(.97)}
@@ -74,11 +83,20 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
       <div class="hint-decoded" id="hintDecoded"></div>
       <div class="hint-notes" id="hintNotes"></div>
     </div>
+    <div class="chunk-panel" id="chunkPanel">
+      <div class="chunk-head">
+        <span class="chunk-title">🧩 语块切分</span>
+        <button class="chunk-playall" id="chunkPlayAll">▶ 逐块播放</button>
+      </div>
+      <div class="chunk-list" id="chunkList"></div>
+      <div class="chunk-note">母语者按「块」听，不逐词听。点任意一块单独听，或点「逐块播放」挨个听——块与块之间会有停顿。</div>
+    </div>
   </div>
   <div class="chips">
     <button class="chip" id="englishBtn">👀 英文</button>
     <button class="chip" id="chineseBtn">🇨🇳 中文</button>
     <button class="chip" id="hintBtn">🔍 解密</button>
+    <button class="chip" id="chunkBtn">🧩 语块</button>
   </div>
   <button class="play" id="playBtn">🎧 听句子</button>
 </div>
@@ -104,7 +122,7 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 <script>
 
 /* =========================================================
-   1. 课程数据（1000 句）—— 数组格式 [分类, 英文, 中文]
+   1. 课程数据（1000 句）
    ========================================================= */
 
 const RAW=[
@@ -1102,7 +1120,6 @@ const RAW=[
 ["Health","Stay healthy.","保持健康。"]
 ];
 
-/* 转为对象格式 */
 const lessons = RAW.map(r => ({ c: r[0], e: r[1], z: r[2] }));
 
 if (lessons.length !== 1000) {
@@ -1154,11 +1171,6 @@ const WEAK_FORMS = [
 
 const FALLBACK_NOTE = "本句语速较慢，没有明显的连读或缩略，注意句子的重音和节奏。";
 
-
-/* =========================================================
-   3. 生成解密提示
-   ========================================================= */
-
 function buildHint(en) {
 
     let decoded = en;
@@ -1191,13 +1203,77 @@ function buildHint(en) {
 
 
 /* =========================================================
+   3. 语块切分引擎
+   ========================================================= */
+
+const CHUNK_BREAK = new Set([
+    "and","but","or","so","because","if","when","while","that",
+    "to","for","in","on","at","with","from","by",
+    "your","my","his","her","their","our"
+]);
+
+function chunkSentence(en) {
+
+    const segs = en.trim().split(/\s*[,;:]\s*/).filter(Boolean);
+    const chunks = [];
+
+    segs.forEach(function (seg) {
+
+        const words = seg.split(/\s+/).filter(Boolean);
+        if (words.length === 0) return;
+
+        if (words.length <= 5) {
+            chunks.push(words.join(" "));
+            return;
+        }
+
+        const result = [];
+        let cur = [];
+
+        for (let i = 0; i < words.length; i++) {
+
+            const wClean = words[i].toLowerCase().replace(/[^\w']/g, "");
+
+            const canBreak =
+                i > 0 &&
+                cur.length >= 3 &&
+                words.length - i >= 2 &&
+                CHUNK_BREAK.has(wClean);
+
+            if (canBreak) {
+                result.push(cur.join(" "));
+                cur = [];
+            }
+            cur.push(words[i]);
+        }
+        if (cur.length) result.push(cur.join(" "));
+
+        if (result.length === 1 && words.length > 7) {
+            const mid = Math.ceil(words.length / 2);
+            result.length = 0;
+            result.push(
+                words.slice(0, mid).join(" "),
+                words.slice(mid).join(" ")
+            );
+        }
+        chunks.push.apply(chunks, result);
+    });
+
+    return chunks;
+}
+
+
+/* =========================================================
    4. 状态
    ========================================================= */
 
-let currentIndex = 0;
-let currentSpeed = 0.7;
-let currentVoice = null;
-let speakToken  = 0;
+let currentIndex   = 0;
+let currentSpeed   = 0.7;
+let currentVoice   = null;
+let speakToken     = 0;
+let currentChunks  = [];
+let chunkQueue     = [];
+let chunkPlaying   = false;
 
 
 /* =========================================================
@@ -1214,6 +1290,10 @@ const translation  = document.getElementById("translation");
 const hintPanel    = document.getElementById("hintPanel");
 const hintDecoded  = document.getElementById("hintDecoded");
 const hintNotes    = document.getElementById("hintNotes");
+const chunkPanel   = document.getElementById("chunkPanel");
+const chunkList    = document.getElementById("chunkList");
+const chunkBtn     = document.getElementById("chunkBtn");
+const chunkPlayAll = document.getElementById("chunkPlayAll");
 const englishBtn   = document.getElementById("englishBtn");
 const chineseBtn   = document.getElementById("chineseBtn");
 const hintBtn      = document.getElementById("hintBtn");
@@ -1280,9 +1360,15 @@ function showLesson() {
     sentence.classList.remove("show");
     translation.classList.remove("show");
     hintPanel.classList.remove("show");
+    chunkPanel.classList.remove("show");
     englishBtn.classList.remove("active");
     chineseBtn.classList.remove("active");
     hintBtn.classList.remove("active");
+    chunkBtn.classList.remove("active");
+
+    chunkPlaying = false;
+    chunkQueue = [];
+    currentChunks = chunkSentence(lesson.e);
 
     stageIcon.textContent = "🎧";
     instruction.textContent = "先不要看英文，听完整句话";
@@ -1312,7 +1398,48 @@ function updateProgress() {
 
 
 /* =========================================================
-   10. 播放
+   10. 通用播放（token 防重叠）
+   ========================================================= */
+
+function speakText(text, opts) {
+
+    opts = opts || {};
+
+    const token = ++speakToken;
+
+    window.speechSynthesis.cancel();
+
+    const u = new SpeechSynthesisUtterance(text);
+
+    u.lang   = "en-US";
+    u.rate   = currentSpeed;
+    u.pitch  = 1;
+    u.volume = 1;
+
+    if (currentVoice) u.voice = currentVoice;
+
+    u.onstart = function () {
+        if (token !== speakToken) return;
+        if (opts.onStart) opts.onStart();
+    };
+    u.onend = function () {
+        if (token !== speakToken) return;
+        if (opts.onEnd) opts.onEnd();
+    };
+    u.onerror = function () {
+        if (token !== speakToken) return;
+        if (opts.onError) opts.onError();
+    };
+
+    setTimeout(function () {
+        if (token !== speakToken) return;
+        window.speechSynthesis.speak(u);
+    }, 60);
+}
+
+
+/* =========================================================
+   11. 播放整句
    ========================================================= */
 
 function speakCurrent() {
@@ -1322,7 +1449,9 @@ function speakCurrent() {
         return;
     }
 
-    const token = ++speakToken;
+    chunkPlaying = false;
+    chunkQueue = [];
+    highlightChunk(-1);
 
     sentence.classList.remove("show");
     translation.classList.remove("show");
@@ -1332,57 +1461,41 @@ function speakCurrent() {
     hintBtn.classList.remove("active");
     instruction.textContent = "先不要看英文，听完整句话";
 
-    window.speechSynthesis.cancel();
-
-    const lesson    = lessons[currentIndex];
-    const utterance = new SpeechSynthesisUtterance(lesson.e);
-
-    utterance.lang   = "en-US";
-    utterance.rate   = currentSpeed;
-    utterance.pitch  = 1;
-    utterance.volume = 1;
-
-    if (currentVoice) utterance.voice = currentVoice;
-
-    utterance.onstart = function () {
-        if (token !== speakToken) return;
-        stageIcon.textContent = "🔊";
-        statusEl.textContent  = "正在播放……";
-        playBtn.textContent   = "🔊 播放中";
-        playBtn.classList.add("playing");
-    };
-
-    utterance.onend = function () {
-        if (token !== speakToken) return;
-        stageIcon.textContent = "🎧";
-        statusEl.textContent  = "播放完成。现在试着自己说一遍。";
-        playBtn.textContent   = "🎧 再听一次";
-        playBtn.classList.remove("playing");
-    };
-
-    utterance.onerror = function () {
-        if (token !== speakToken) return;
-        stageIcon.textContent = "⚠️";
-        statusEl.textContent  = "语音播放出现问题，请再点一次。";
-        playBtn.textContent   = "🎧 听句子";
-        playBtn.classList.remove("playing");
-    };
-
-    setTimeout(function () {
-        if (token !== speakToken) return;
-        window.speechSynthesis.speak(utterance);
-    }, 80);
+    speakText(lessons[currentIndex].e, {
+        onStart: function () {
+            stageIcon.textContent = "🔊";
+            statusEl.textContent  = "正在播放……";
+            playBtn.textContent   = "🔊 播放中";
+            playBtn.classList.add("playing");
+        },
+        onEnd: function () {
+            stageIcon.textContent = "🎧";
+            statusEl.textContent  = "播放完成。现在试着自己说一遍。";
+            playBtn.textContent   = "🎧 再听一次";
+            playBtn.classList.remove("playing");
+        },
+        onError: function () {
+            stageIcon.textContent = "⚠️";
+            statusEl.textContent  = "语音播放出现问题，请再点一次。";
+            playBtn.textContent   = "🎧 听句子";
+            playBtn.classList.remove("playing");
+        }
+    });
 }
 
 
 /* =========================================================
-   11. 停止
+   12. 停止
    ========================================================= */
 
 function stopSpeaking() {
 
     speakToken++;
     window.speechSynthesis.cancel();
+
+    chunkPlaying = false;
+    chunkQueue = [];
+    highlightChunk(-1);
 
     stageIcon.textContent = "🎧";
     playBtn.textContent   = "🎧 听句子";
@@ -1392,7 +1505,7 @@ function stopSpeaking() {
 
 
 /* =========================================================
-   12. 切换显示
+   13. 切换显示
    ========================================================= */
 
 function toggleEnglish() {
@@ -1408,16 +1521,28 @@ function toggleEnglish() {
 }
 
 function toggleChinese() {
-
     const showing = translation.classList.toggle("show");
     chineseBtn.classList.toggle("active", showing);
 }
 
 function toggleHint() {
-
     const showing = hintPanel.classList.toggle("show");
     hintBtn.classList.toggle("active", showing);
     if (showing) renderHint();
+}
+
+function toggleChunks() {
+
+    const showing = chunkPanel.classList.toggle("show");
+    chunkBtn.classList.toggle("active", showing);
+
+    if (showing) {
+        renderChunks();
+    } else {
+        chunkPlaying = false;
+        chunkQueue = [];
+        highlightChunk(-1);
+    }
 }
 
 function renderHint() {
@@ -1444,7 +1569,99 @@ function renderHint() {
 
 
 /* =========================================================
-   13. 导航
+   14. 语块渲染与播放
+   ========================================================= */
+
+function renderChunks() {
+
+    chunkList.innerHTML = "";
+
+    currentChunks.forEach(function (text, i) {
+
+        const btn = document.createElement("button");
+        btn.className = "chunk-item";
+        btn.textContent = text;
+        btn.addEventListener("click", function () {
+            playSingleChunk(i);
+        });
+
+        chunkList.appendChild(btn);
+    });
+}
+
+function highlightChunk(i) {
+    const items = chunkList.querySelectorAll(".chunk-item");
+    items.forEach(function (el, idx) {
+        el.classList.toggle("playing", idx === i);
+    });
+}
+
+function playSingleChunk(i) {
+
+    chunkPlaying = false;
+    chunkQueue = [];
+
+    const text = currentChunks[i];
+    if (!text) return;
+
+    highlightChunk(i);
+
+    speakText(text, {
+        onStart: function () {
+            stageIcon.textContent = "🔊";
+            statusEl.textContent  = `语块 ${i + 1} / ${currentChunks.length}`;
+        },
+        onEnd: function () {
+            stageIcon.textContent = "🎧";
+            statusEl.textContent  = "单块播放完毕。";
+        }
+    });
+}
+
+function playAllChunks() {
+
+    if (currentChunks.length === 0) return;
+
+    chunkPlaying = true;
+
+    chunkQueue = currentChunks.map(function (text, i) {
+        return { text: text, i: i };
+    });
+
+    playNextChunk();
+}
+
+function playNextChunk() {
+
+    if (!chunkPlaying) return;
+
+    if (chunkQueue.length === 0) {
+        chunkPlaying = false;
+        highlightChunk(-1);
+        stageIcon.textContent = "🎧";
+        statusEl.textContent  = "全部语块播完。试着自己连起来说一遍。";
+        return;
+    }
+
+    const item = chunkQueue.shift();
+    highlightChunk(item.i);
+
+    speakText(item.text, {
+        onStart: function () {
+            stageIcon.textContent = "🔊";
+            statusEl.textContent  = `语块 ${item.i + 1} / ${currentChunks.length}`;
+        },
+        onEnd: function () {
+            setTimeout(function () {
+                if (chunkPlaying) playNextChunk();
+            }, 340);
+        }
+    });
+}
+
+
+/* =========================================================
+   15. 导航
    ========================================================= */
 
 function goToIndex(index, message) {
@@ -1460,7 +1677,6 @@ function goToIndex(index, message) {
 }
 
 function nextLesson() {
-
     if (currentIndex + 1 >= lessons.length) {
         goToIndex(0, "🎉 1000 句全部完成！重新开始。");
     } else {
@@ -1469,7 +1685,6 @@ function nextLesson() {
 }
 
 function prevLesson() {
-
     if (currentIndex === 0) {
         statusEl.textContent = "已经是第一句了。";
         return;
@@ -1478,9 +1693,7 @@ function prevLesson() {
 }
 
 function jumpTo() {
-
     const n = parseInt(jumpInput.value, 10);
-
     if (isNaN(n) || n < 1 || n > lessons.length) {
         statusEl.textContent = `请输入 1 到 ${lessons.length} 之间的数字。`;
         return;
@@ -1491,7 +1704,7 @@ function jumpTo() {
 
 
 /* =========================================================
-   14. 语速
+   16. 语速
    ========================================================= */
 
 const speedButtons = document.querySelectorAll(".speed");
@@ -1513,7 +1726,7 @@ speedButtons.forEach(button => {
 
 
 /* =========================================================
-   15. 事件绑定
+   17. 事件绑定
    ========================================================= */
 
 playBtn.addEventListener("click", speakCurrent);
@@ -1522,6 +1735,8 @@ nextBtn.addEventListener("click", nextLesson);
 englishBtn.addEventListener("click", toggleEnglish);
 chineseBtn.addEventListener("click", toggleChinese);
 hintBtn.addEventListener("click", toggleHint);
+chunkBtn.addEventListener("click", toggleChunks);
+chunkPlayAll.addEventListener("click", playAllChunks);
 jumpBtn.addEventListener("click", jumpTo);
 
 jumpInput.addEventListener("keydown", e => {
@@ -1530,7 +1745,7 @@ jumpInput.addEventListener("keydown", e => {
 
 
 /* =========================================================
-   16. 键盘快捷键
+   18. 键盘快捷键
    ========================================================= */
 
 document.addEventListener("keydown", function (e) {
@@ -1547,6 +1762,8 @@ document.addEventListener("keydown", function (e) {
         prevLesson();
     } else if (e.key === "h" || e.key === "H") {
         toggleHint();
+    } else if (e.key === "c" || e.key === "C") {
+        toggleChunks();
     } else if (e.code === "Escape") {
         stopSpeaking();
     }
@@ -1554,7 +1771,7 @@ document.addEventListener("keydown", function (e) {
 
 
 /* =========================================================
-   17. 切到后台时停止
+   19. 切到后台停止
    ========================================================= */
 
 document.addEventListener("visibilitychange", function () {
@@ -1563,7 +1780,7 @@ document.addEventListener("visibilitychange", function () {
 
 
 /* =========================================================
-   18. 语音列表异步加载
+   20. 语音列表异步加载
    ========================================================= */
 
 if ("speechSynthesis" in window) {
@@ -1572,7 +1789,7 @@ if ("speechSynthesis" in window) {
 
 
 /* =========================================================
-   19. 启动
+   21. 启动
    ========================================================= */
 
 init();
