@@ -11,7 +11,7 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 .app{max-width:500px;margin:0 auto;padding:22px 16px 40px}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .logo{font-size:18px;font-weight:800;letter-spacing:-.3px}
-.counter{font-size:13px;color:#8895a4;font-weight:600;font-variant-numeric:tabular-nums}
+.counter{font-size:13px;color:#8895a4;font-weight:600}
 .progress{height:3px;background:#e2e6eb;border-radius:3px;overflow:hidden;margin-bottom:22px}
 .progress-bar{height:100%;width:0%;background:#1a202c;border-radius:3px;transition:width .35s ease}
 .card{background:#fff;border-radius:24px;padding:30px 22px 20px;box-shadow:0 4px 24px rgba(20,30,50,.05)}
@@ -19,7 +19,7 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 .stage{min-height:120px;text-align:center;display:flex;flex-direction:column;justify-content:center}
 .stage-icon{font-size:42px;line-height:1;margin-bottom:14px}
 .instruction{font-size:14px;color:#8895a4;line-height:1.6}
-.sentence{display:none;font-size:26px;font-weight:700;line-height:1.35;letter-spacing:-.3px;color:#1a202c}
+.sentence{display:none;font-size:26px;font-weight:700;line-height:1.35;color:#1a202c}
 .sentence.show{display:block}
 .translation{display:none;font-size:15px;color:#6b7684;line-height:1.6;margin-top:10px}
 .translation.show{display:block}
@@ -47,23 +47,22 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 .chip{flex:1;padding:11px 6px;font-size:13px;font-weight:600;background:#f3f5f8;color:#4a5563;border:none;border-radius:12px;cursor:pointer;font-family:inherit;transition:all .15s ease}
 .chip:active{transform:scale(.97)}
 .chip.active{background:#1a202c;color:#fff}
-.play{width:100%;padding:17px;font-size:17px;font-weight:700;background:#1a202c;color:#fff;border:none;border-radius:16px;cursor:pointer;font-family:inherit;letter-spacing:.2px;transition:all .15s ease}
+.play{width:100%;padding:17px;font-size:17px;font-weight:700;background:#1a202c;color:#fff;border:none;border-radius:16px;cursor:pointer;font-family:inherit;transition:all .15s ease}
 .play:active{transform:scale(.98)}
 .play.playing{background:#2d3748}
 .nav{display:flex;align-items:center;gap:10px;margin-top:16px}
 .nav-btn{width:46px;height:46px;flex:0 0 auto;background:#fff;color:#1a202c;border:none;border-radius:13px;font-size:18px;font-weight:600;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(20,30,50,.04);transition:all .15s ease}
 .nav-btn:active{transform:scale(.95)}
 .speed-group{display:flex;flex:1;gap:3px;background:#fff;padding:4px;border-radius:13px;box-shadow:0 2px 8px rgba(20,30,50,.04)}
-.speed{flex:1;padding:10px 4px;font-size:13px;font-weight:600;background:transparent;color:#6b7684;border:none;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .15s ease}
+.speed{flex:1;padding:10px 4px;font-size:13px;font-weight:600;background:transparent;color:#6b7684;border:none;border-radius:10px;cursor:pointer;font-family:inherit}
 .speed.active{background:#1a202c;color:#fff}
 .jump-row{display:flex;gap:6px;margin-top:10px}
 .jump-row input{flex:1;padding:11px 14px;font-size:13px;border:1px solid #e5e9ee;border-radius:13px;background:#fff;font-family:inherit;color:#4a5563;outline:none;text-align:center}
 .jump-row input:focus{border-color:#1a202c}
 .jump-row button{padding:11px 20px;font-size:13px;font-weight:600;background:#fff;color:#4a5563;border:1px solid #e5e9ee;border-radius:13px;font-family:inherit;cursor:pointer}
-.jump-row button:active{transform:scale(.97)}
-.status{margin-top:14px;text-align:center;font-size:12.5px;color:#8895a4;min-height:18px;line-height:1.5}
-.footer{text-align:center;font-size:11px;color:#b8c2ce;margin-top:28px;letter-spacing:.3px}
-@media(max-width:380px){.sentence{font-size:22px}.stage-icon{font-size:36px}.chip{font-size:12px;padding:10px 4px}.chunk-act{font-size:11px;padding:5px 8px}}
+.status{margin-top:14px;text-align:center;font-size:12.5px;color:#8895a4;min-height:18px}
+.footer{text-align:center;font-size:11px;color:#b8c2ce;margin-top:28px}
+@media(max-width:380px){.sentence{font-size:22px}.stage-icon{font-size:36px}.chip{font-size:12px;padding:10px 4px}}
 </style>
 </head>
 <body>
@@ -71,7 +70,7 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 
 <header class="header">
   <div class="logo">🎧 每句练耳</div>
-  <div class="counter" id="counter">1 / 1000</div>
+  <div class="counter" id="counter">1 / 220</div>
 </header>
 <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
 
@@ -95,7 +94,7 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
         </div>
       </div>
       <div class="chunk-list" id="chunkList"></div>
-      <div class="chunk-note">母语者按「块」听，不逐词听。点任意一块单独听；「▶ 逐块」挨个听；「🔗 连句」先逐块再整句——感受块与块如何无缝连起来。</div>
+      <div class="chunk-note">母语者按「块」听，不逐词听。点任意块单独听；「▶ 逐块」挨个听；「🔗 连句」先逐块再整句——感受块与块如何无缝连起来。</div>
     </div>
   </div>
   <div class="chips">
@@ -118,7 +117,7 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 </nav>
 
 <div class="jump-row">
-  <input type="number" id="jumpInput" min="1" max="1000" placeholder="跳转到第几号">
+  <input type="number" id="jumpInput" min="1" placeholder="跳转到第几号">
   <button id="jumpBtn">跳转</button>
 </div>
 <div class="status" id="status"></div>
@@ -128,586 +127,1037 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 <script>
 
 /* =========================================================
-   1. 课程数据（1000 句）
+   1. 课程数据（220 句精选）
+   格式：[分类, 英文, 中文]
+   想扩展到更多句，按同样格式追加即可
    ========================================================= */
 
 const RAW=[
+
+/* Daily 日常 25 */
 ["Daily","Good morning.","早上好。"],
 ["Daily","Good afternoon.","下午好。"],
 ["Daily","Good evening.","晚上好。"],
 ["Daily","Good night.","晚安。"],
 ["Daily","How are you?","你好吗？"],
-["Daily","I'm fine.","我很好。"],
-["Daily","I'm okay.","我还好。"],
-["Daily","I'm tired.","我很累。"],
-["Daily","I'm hungry.","我饿了。"],
-["Daily","I'm thirsty.","我渴了。"],
-["Daily","I'm busy.","我很忙。"],
-["Daily","I'm free now.","我现在有空。"],
-["Daily","See you later.","待会儿见。"],
-["Daily","See you tomorrow.","明天见。"],
+["Daily","I'm fine, thanks.","我很好，谢谢。"],
 ["Daily","Nice to meet you.","很高兴认识你。"],
+["Daily","See you later.","待会儿见。"],
 ["Daily","Thank you very much.","非常感谢你。"],
 ["Daily","You're welcome.","不客气。"],
 ["Daily","I'm sorry.","对不起。"],
-["Daily","That's all right.","没关系。"],
 ["Daily","Excuse me.","打扰一下。"],
 ["Daily","No problem.","没问题。"],
-["Daily","Of course.","当然。"],
-["Daily","Maybe later.","也许以后吧。"],
-["Daily","Sounds good.","听起来不错。"],
-["Daily","Sounds great.","听起来很棒。"],
-["Daily","I think so.","我觉得是这样。"],
-["Daily","I don't think so.","我不这么认为。"],
-["Daily","I agree.","我同意。"],
-["Daily","I don't agree.","我不同意。"],
-["Daily","Let me think.","让我想想。"],
-["Daily","I have no idea.","我不知道。"],
-["Daily","I understand.","我明白。"],
 ["Daily","I don't understand.","我不明白。"],
 ["Daily","Could you say that again?","你能再说一遍吗？"],
 ["Daily","Please speak slowly.","请说慢一点。"],
 ["Daily","What does that mean?","那是什么意思？"],
-["Daily","How do you say this?","这个怎么说？"],
-["Daily","What time is it?","现在几点？"],
-["Daily","It's time to go.","该走了。"],
-["Daily","Let's go.","我们走吧。"],
-["Daily","Wait a moment.","等一下。"],
-["Daily","Hurry up.","快点。"],
-["Daily","Take your time.","慢慢来。"],
-["Daily","Be careful.","小心。"],
-["Daily","Don't worry.","别担心。"],
-["Daily","Relax.","放松点。"],
-["Daily","Cheer up.","振作起来。"],
-["Daily","Good job.","干得好。"],
-["Daily","Well done.","做得好。"],
-["Daily","Never mind.","没关系。"],
-["Daily","I want to eat.","我想吃东西。"],
-["Daily","I want to drink water.","我想喝水。"],
-["Daily","I want to sleep.","我想睡觉。"],
 ["Daily","I want to go home.","我想回家。"],
-["Daily","I want to rest.","我想休息。"],
-["Daily","I need help.","我需要帮助。"],
 ["Daily","I need some water.","我需要一些水。"],
-["Daily","I need a break.","我需要休息一下。"],
 ["Daily","Please wait for me.","请等我。"],
-["Daily","Come with me.","跟我来。"],
-["Daily","Follow me.","跟我来。"],
-["Daily","Let's go home.","我们回家吧。"],
-["Daily","Let's take a rest.","我们休息一下吧。"],
-["Daily","Let's have lunch.","我们吃午饭吧。"],
-["Daily","Let's have dinner.","我们吃晚饭吧。"],
-["Daily","I'm going to work.","我要去上班。"],
-["Daily","I'm going to school.","我要去上学。"],
-["Daily","I'm going home.","我要回家。"],
-["Daily","I'm coming.","我来了。"],
-["Daily","I'm leaving now.","我现在要走了。"],
-["Daily","I'm back.","我回来了。"],
-["Daily","I'm here.","我在这里。"],
-["Daily","I'm ready.","我准备好了。"],
-["Daily","Are you ready?","你准备好了吗？"],
-["Daily","Are you sure?","你确定吗？"],
-["Daily","Are you free?","你有空吗？"],
-["Daily","Are you okay?","你还好吗？"],
-["Daily","What's up?","怎么了？"],
-["Daily","What happened?","发生什么了？"],
-["Daily","What's wrong?","出什么事了？"],
-["Daily","What are you doing?","你在做什么？"],
-["Daily","Where are you?","你在哪里？"],
-["Daily","Where are you from?","你来自哪里？"],
-["Daily","Who are you?","你是谁？"],
-["Daily","How old are you?","你多大了？"],
-["Daily","How's the weather?","天气怎么样？"],
-["Daily","It's hot today.","今天很热。"],
-["Daily","It's cold today.","今天很冷。"],
-["Daily","It's raining.","在下雨。"],
-["Daily","It's snowing.","在下雪。"],
-["Daily","It's sunny.","天晴。"],
-["Daily","It's cloudy.","多云。"],
-["Daily","It's windy.","有风。"],
-["Daily","Nice weather today.","今天天气不错。"],
-["Daily","I like this weather.","我喜欢这样的天气。"],
-["Daily","I don't like rain.","我不喜欢下雨。"],
-["Daily","Let's go outside.","我们出去吧。"],
-["Daily","Let's stay home.","我们待在家吧。"],
-["Daily","I'm at home.","我在家。"],
 ["Daily","I'm on my way.","我在路上。"],
-["Daily","I'll be there soon.","我马上到。"],
 ["Daily","I'll call you later.","我稍后打给你。"],
-["Daily","Call me tonight.","今晚给我打电话。"],
-["Daily","Text me later.","稍后给我发消息。"],
-["Daily","Send me a message.","给我发条消息。"],
-["Daily","I got your message.","我收到你的消息了。"],
-["Daily","I missed your call.","我没接到你的电话。"],
-["Daily","The phone is ringing.","电话在响。"],
-["Daily","Please turn it off.","请把它关掉。"],
-["Daily","Please turn it on.","请把它打开。"],
-["Daily","Turn up the volume.","把音量调大。"],
-["Daily","Turn down the volume.","把音量调小。"],
-["Daily","Where is the light?","灯在哪里？"],
-["Daily","Turn on the light.","把灯打开。"],
-["Daily","Turn off the light.","把灯关掉。"],
-["Daily","Close the door.","把门关上。"],
-["Daily","Open the window.","把窗户打开。"],
-["Daily","The door is open.","门开着。"],
-["Daily","The window is closed.","窗户关着。"],
-["Daily","I'm cleaning my room.","我在打扫我的房间。"],
-["Daily","I'm doing the dishes.","我在洗碗。"],
-["Daily","I'm washing my clothes.","我在洗衣服。"],
-["Daily","I'm cooking dinner.","我在做晚饭。"],
-["Daily","I'm watching TV.","我在看电视。"],
-["Daily","I'm reading a book.","我在看书。"],
-["Daily","I'm listening to music.","我在听音乐。"],
-["Daily","I'm taking a shower.","我在洗澡。"],
-["Daily","I'm going to bed.","我要睡觉了。"],
-["Daily","I just woke up.","我刚醒来。"],
-["Daily","I'm getting dressed.","我在穿衣服。"],
-["Daily","I'm brushing my teeth.","我在刷牙。"],
-["Daily","I'm having breakfast.","我在吃早饭。"],
-["Daily","I'm having lunch.","我在吃午饭。"],
-["Daily","I'm having dinner.","我在吃晚饭。"],
-["Daily","The food is ready.","饭好了。"],
-["Daily","Breakfast is ready.","早饭好了。"],
-["Daily","Dinner is served.","晚饭上桌了。"],
-["Daily","It's delicious.","很好吃。"],
-["Daily","It tastes good.","味道不错。"],
-["Daily","It's too spicy.","太辣了。"],
-["Daily","It's too salty.","太咸了。"],
-["Daily","It's too sweet.","太甜了。"],
-["Daily","I'm full.","我吃饱了。"],
-["Daily","I'm still hungry.","我还饿。"],
+["Daily","Let's go.","我们走吧。"],
+["Daily","Hurry up.","快点。"],
+["Daily","Take care.","保重。"],
 
+/* Social 社交 20 */
 ["Social","How have you been?","你最近怎么样？"],
 ["Social","Long time no see.","好久不见。"],
-["Social","It's been a while.","有一阵子没见了。"],
 ["Social","What's new?","有什么新鲜事吗？"],
-["Social","Nothing much.","没什么特别的事。"],
 ["Social","Same as usual.","和往常一样。"],
 ["Social","How's your family?","你家人怎么样？"],
-["Social","How's your work?","你工作怎么样？"],
-["Social","How's your day?","你今天过得怎么样？"],
-["Social","I had a good day.","我今天过得不错。"],
-["Social","I had a bad day.","我今天过得很糟。"],
 ["Social","That's great news.","那真是好消息。"],
 ["Social","I'm happy for you.","我为你高兴。"],
 ["Social","Congratulations.","恭喜你。"],
 ["Social","Good luck.","祝你好运。"],
-["Social","Best wishes.","最美好的祝愿。"],
 ["Social","Happy birthday.","生日快乐。"],
-["Social","Happy new year.","新年快乐。"],
-["Social","Merry Christmas.","圣诞快乐。"],
 ["Social","Have a nice day.","祝你今天愉快。"],
-["Social","Have a good trip.","旅途愉快。"],
-["Social","Take care.","保重。"],
 ["Social","Get well soon.","早日康复。"],
 ["Social","I'm sorry to hear that.","听到这个消息我很难过。"],
-["Social","That's too bad.","太糟糕了。"],
-["Social","What a pity.","真可惜。"],
 ["Social","Don't be sad.","别难过。"],
-["Social","It's not your fault.","这不是你的错。"],
 ["Social","Everything will be fine.","一切都会好起来的。"],
-["Social","I believe in you.","我相信你。"],
 ["Social","You can do it.","你能做到的。"],
-["Social","Keep going.","继续加油。"],
-["Social","You did a great job.","你做得很好。"],
-["Social","I'm proud of you.","我为你骄傲。"],
 ["Social","You look great today.","你今天看起来很棒。"],
-["Social","You look tired.","你看起来累了。"],
-["Social","You look happy.","你看起来很愉快。"],
-["Social","I like your smile.","我喜欢你的笑容。"],
-["Social","You are so kind.","你真好。"],
-["Social","You are so funny.","你真有趣。"],
-["Social","You are so smart.","你真聪明。"],
-["Social","You are so brave.","你真勇敢。"],
-["Social","You are so patient.","你真有耐心。"],
-["Social","You are so helpful.","你真乐于助人。"],
-["Social","I love spending time with you.","我喜欢和你待在一起。"],
 ["Social","I miss you.","我想你。"],
-["Social","I miss my family.","我想念我的家人。"],
-["Social","I miss my home.","我想家。"],
-["Social","I feel lonely.","我感到孤独。"],
-["Social","I feel happy.","我感到开心。"],
-["Social","I feel sad.","我感到难过。"],
-["Social","I feel angry.","我生气。"],
-["Social","I feel scared.","我感到害怕。"],
-["Social","I feel nervous.","我感到紧张。"],
-["Social","I feel excited.","我感到兴奋。"],
-["Social","I feel bored.","我感到无聊。"],
-["Social","I feel relaxed.","我感到放松。"],
-["Social","I feel great.","我感觉很棒。"],
-["Social","I feel terrible.","我感觉很糟。"],
 ["Social","I feel much better.","我感觉好多了。"],
-["Social","I feel a little tired.","我有点累。"],
-["Social","I'm in a good mood.","我心情很好。"],
-["Social","I'm in a bad mood.","我心情不好。"],
-["Social","Don't be angry.","别生气。"],
-["Social","Calm down.","冷静下来。"],
 ["Social","Take a deep breath.","深呼吸。"],
-["Social","Everything is okay.","一切都好。"],
-["Social","It's not a big deal.","没什么大不了的。"],
-["Social","Don't take it seriously.","别太当真。"],
-["Social","I was just kidding.","我只是开玩笑。"],
-["Social","Are you joking?","你在开玩笑吗？"],
-["Social","That's really funny.","那真的很有趣。"],
-["Social","That's interesting.","那很有意思。"],
-["Social","That's amazing.","太神奇了。"],
-["Social","That's wonderful.","太棒了。"],
-["Social","That's terrible.","太糟糕了。"],
-["Social","That's impossible.","那不可能。"],
-["Social","That's possible.","那有可能。"],
-["Social","That's true.","那是真的。"],
-["Social","That's not true.","那不是真的。"],
-["Social","That makes sense.","那有道理。"],
-["Social","That doesn't make sense.","那没道理。"],
-["Social","I see your point.","我明白你的意思。"],
-["Social","You have a point.","你说得有道理。"],
-["Social","Let me explain.","让我解释一下。"],
-["Social","Let me tell you something.","让我告诉你一件事。"],
-["Social","Can I ask you something?","我可以问你一件事吗？"],
-["Social","Can I help you?","我能帮你吗？"],
-["Social","Can I join you?","我能加入你们吗？"],
-["Social","Can I come with you?","我能和你一起去吗？"],
-["Social","Would you like to join us?","你愿意加入我们吗？"],
-["Social","Would you like some coffee?","你想喝点咖啡吗？"],
-["Social","Would you like to go out?","你想出去吗？"],
-["Social","Do you want to come?","你想来吗？"],
-["Social","Do you have time?","你有时间吗？"],
-["Social","Do you have any plans?","你有什么计划吗？"],
-["Social","What are your plans?","你有什么计划？"],
-["Social","What do you think?","你怎么想？"],
-["Social","What do you mean?","你是什么意思？"],
-["Social","What do you want?","你想要什么？"],
-["Social","What do you need?","你需要什么？"],
-["Social","What do you like?","你喜欢什么？"],
-["Social","What do you do?","你是做什么工作的？"],
-["Social","Where do you live?","你住在哪里？"],
-["Social","Where do you work?","你在哪里工作？"],
-["Social","Who is with you?","谁和你在一起？"],
-["Social","Who told you that?","谁告诉你的？"],
-["Social","Why not?","为什么不呢？"],
-["Social","Why are you here?","你为什么在这里？"],
-["Social","Why did you do that?","你为什么那样做？"],
-["Social","How do you know?","你怎么知道的？"],
-["Social","How did you do that?","你是怎么做到的？"],
-["Social","How long will it take?","要多久？"],
-["Social","How much does it cost?","多少钱？"],
-["Social","How many do you want?","你想要多少？"],
-["Social","Tell me more.","再多告诉我一些。"],
-["Social","Tell me the truth.","告诉我真相。"],
-["Social","I need to tell you something.","我需要告诉你一件事。"],
-["Social","I have something to say.","我有话要说。"],
-["Social","I have a question.","我有个问题。"],
-["Social","I have an idea.","我有个主意。"],
-["Social","I have a problem.","我有个问题。"],
-["Social","I have good news.","我有好消息。"],
-["Social","I have bad news.","我有坏消息。"],
-["Social","Let's talk about it.","我们谈谈吧。"],
-["Social","Let's discuss it later.","我们晚点再讨论。"],
-["Social","Let's meet tomorrow.","我们明天见吧。"],
-["Social","Let's have a drink.","我们去喝一杯吧。"],
-["Social","Let's have a coffee.","我们去喝杯咖啡吧。"],
 
+/* Airport 机场 25 */
 ["Airport","May I see your passport?","我可以看看你的护照吗？"],
-["Airport","Sure. Here is my passport.","当然。这是我的护照。"],
+["Airport","Here is my passport.","这是我的护照。"],
 ["Airport","Here is my ticket.","这是我的机票。"],
 ["Airport","Where are you going?","你要去哪里？"],
 ["Airport","I'm going to China.","我要去中国。"],
-["Airport","I'm going to America.","我要去美国。"],
-["Airport","I'm going to Japan.","我要去日本。"],
-["Airport","I'm going to Korea.","我要去韩国。"],
-["Airport","I'm going to Europe.","我要去欧洲。"],
 ["Airport","How long will you stay?","你要待多久？"],
 ["Airport","I'll stay for one week.","我会待一周。"],
-["Airport","I'll stay for two weeks.","我会待两周。"],
-["Airport","I'll stay for one month.","我会待一个月。"],
 ["Airport","What's the purpose of your visit?","你此行的目的是什么？"],
 ["Airport","I'm here on business.","我是来出差的。"],
-["Airport","I'm here on vacation.","我是来度假的。"],
-["Airport","I'm here to visit friends.","我是来拜访朋友的。"],
-["Airport","I'm here to study.","我是来学习的。"],
-["Airport","I'm a tourist.","我是游客。"],
 ["Airport","Do you have any bags?","你有行李吗？"],
 ["Airport","Yes, I have one bag.","是的，我有一个包。"],
-["Airport","I have two bags.","我有两个包。"],
-["Airport","I have a carry-on.","我有一个随身行李。"],
-["Airport","Please put your bag here.","请把包放在这里。"],
-["Airport","Please open your bag.","请打开你的包。"],
-["Airport","Is this your bag?","这是你的包吗？"],
-["Airport","What's in your bag?","你的包里有什么？"],
-["Airport","Just some clothes.","只是一些衣服。"],
-["Airport","Some books and clothes.","一些书和衣服。"],
 ["Airport","Do you have anything to declare?","你有什么要申报的吗？"],
 ["Airport","Nothing to declare.","没有什么要申报的。"],
 ["Airport","Do you want a window seat?","你想要靠窗的座位吗？"],
-["Airport","Yes, please.","好的，谢谢。"],
 ["Airport","I'd like an aisle seat.","我想要一个靠过道的座位。"],
-["Airport","I'd like a window seat.","我想要一个靠窗的座位。"],
-["Airport","Where is my seat?","我的座位在哪里？"],
 ["Airport","Here is your boarding pass.","这是你的登机牌。"],
 ["Airport","What's the gate number?","登机口是几号？"],
-["Airport","The gate is B12.","登机口是 B12。"],
 ["Airport","When is boarding time?","什么时候登机？"],
-["Airport","Boarding starts at 8.","八点开始登机。"],
 ["Airport","The flight is delayed.","航班延误了。"],
-["Airport","The flight is canceled.","航班取消了。"],
-["Airport","The flight is on time.","航班准时。"],
-["Airport","Where is the check-in counter?","值机柜台在哪里？"],
 ["Airport","Where is the security check?","安检在哪里？"],
 ["Airport","Where is the restroom?","洗手间在哪里？"],
-["Airport","Where is the duty-free shop?","免税店在哪里？"],
-["Airport","Where can I get a taxi?","我在哪里可以打到出租车？"],
-["Airport","I'm looking for my gate.","我在找我的登机口。"],
-["Airport","I can't find my gate.","我找不到我的登机口。"],
-["Airport","I lost my boarding pass.","我把登机牌弄丢了。"],
-["Airport","I missed my flight.","我错过了航班。"],
-["Airport","Can I change my flight?","我可以改签航班吗？"],
-["Airport","Can I get a refund?","我可以退款吗？"],
-["Airport","My luggage is lost.","我的行李丢了。"],
-["Airport","My luggage is damaged.","我的行李损坏了。"],
 ["Airport","Please fasten your seat belt.","请系好安全带。"],
-["Airport","Please turn off your phone.","请关掉手机。"],
-["Airport","Please put your seat up.","请把椅背调直。"],
 ["Airport","Would you like some water?","你想要点水吗？"],
-["Airport","Chicken or beef?","鸡肉还是牛肉？"],
-["Airport","I'd like chicken, please.","我要鸡肉，谢谢。"],
-["Airport","I'd like beef, please.","我要牛肉，谢谢。"],
-["Airport","Can I have some coffee?","可以给我一些咖啡吗？"],
-["Airport","Can I have a blanket?","可以给我一条毯子吗？"],
-["Airport","Can I have a pillow?","可以给我一个枕头吗？"],
-["Airport","I don't feel well.","我感觉不舒服。"],
-["Airport","I feel airsick.","我晕机。"],
-["Airport","Please help me.","请帮帮我。"],
-["Airport","Where is my connecting flight?","我的转机航班在哪里？"],
-["Airport","I have a connecting flight.","我有一个转机航班。"],
-["Airport","How long is the layover?","转机要等多久？"],
-["Airport","The layover is two hours.","转机要等两个小时。"],
-["Airport","Is this the right gate?","这是正确的登机口吗？"],
-["Airport","Am I in the right line?","我排的队对吗？"],
-["Airport","Please go to gate 12.","请去 12 号登机口。"],
-["Airport","Please wait in line.","请排队等候。"],
-["Airport","Have a safe flight.","一路平安。"],
-["Airport","Welcome aboard.","欢迎登机。"],
-["Airport","Welcome to China.","欢迎来到中国。"],
-["Airport","Enjoy your flight.","祝你旅途愉快。"],
-["Airport","Thank you for flying with us.","感谢您乘坐我们的航班。"],
-["Airport","Please take your seat.","请就座。"],
-["Airport","Please remain seated.","请留在座位上。"],
-["Airport","Please stay calm.","请保持冷静。"],
-["Airport","We are landing soon.","我们很快就要降落了。"],
-["Airport","We have landed.","我们已经降落了。"],
-["Airport","Please exit from the front.","请从前门下机。"],
-["Airport","Please exit from the back.","请从后门下机。"],
 ["Airport","Where is the baggage claim?","行李提取处在哪里？"],
-["Airport","Where can I get a cart?","我在哪里可以拿到手推车？"],
-["Airport","Where is the exit?","出口在哪里？"],
-["Airport","Where is the bus stop?","公交车站在哪里？"],
-["Airport","Where is the train station?","火车站在哪里？"],
-["Airport","I need a taxi.","我需要一辆出租车。"],
 ["Airport","How much to the city center?","到市中心多少钱？"],
-["Airport","Please take me to this address.","请带我去这个地址。"],
-["Airport","Do you have a SIM card?","你有 SIM 卡吗？"],
-["Airport","Where can I buy a SIM card?","我在哪里可以买到 SIM 卡？"],
-["Airport","Where can I exchange money?","我在哪里可以换钱？"],
-["Airport","What's the exchange rate?","汇率是多少？"],
-["Airport","Can I pay by card?","我可以刷卡吗？"],
-["Airport","Can I pay in cash?","我可以付现金吗？"],
-["Airport","Is there free Wi-Fi?","有免费 Wi-Fi 吗？"],
-["Airport","What's the Wi-Fi password?","Wi-Fi 密码是什么？"],
-["Airport","Is there a hotel nearby?","附近有酒店吗？"],
-["Airport","Is there a restaurant here?","这里有餐厅吗？"],
-["Airport","I'm waiting for my friend.","我在等我朋友。"],
-["Airport","My friend is picking me up.","我朋友来接我。"],
-["Airport","Please wait here.","请在这里等。"],
 
+/* Travel 旅行 20 */
 ["Travel","I love traveling.","我喜欢旅行。"],
-["Travel","I travel a lot.","我经常旅行。"],
 ["Travel","This is my first trip.","这是我第一次旅行。"],
-["Travel","This is my first time here.","这是我第一次来这里。"],
-["Travel","I want to travel the world.","我想环游世界。"],
 ["Travel","I'm on vacation.","我在度假。"],
-["Travel","I'm on a business trip.","我在出差。"],
-["Travel","I'm traveling alone.","我一个人旅行。"],
-["Travel","I'm traveling with my family.","我和家人一起旅行。"],
-["Travel","I'm traveling with friends.","我和朋友一起旅行。"],
 ["Travel","Where should I visit?","我应该去哪里玩？"],
-["Travel","What should I see here?","这里有什么值得看的？"],
-["Travel","What's famous here?","这里以什么出名？"],
 ["Travel","Can you recommend a place?","你能推荐一个地方吗？"],
-["Travel","Any good places to visit?","有什么好地方可以去？"],
 ["Travel","How do I get there?","我怎么去那里？"],
 ["Travel","Is it far from here?","离这里远吗？"],
-["Travel","Is it within walking distance?","走路能到吗？"],
 ["Travel","How long does it take?","要多久？"],
-["Travel","It takes about ten minutes.","大约十分钟。"],
-["Travel","It's not far.","不远。"],
-["Travel","It's very far.","很远。"],
 ["Travel","Let's take a photo.","我们拍张照吧。"],
 ["Travel","Can you take a photo for me?","你能帮我拍张照吗？"],
-["Travel","Can you take a photo of us?","你能帮我们拍张照吗？"],
 ["Travel","The view is amazing.","景色太美了。"],
-["Travel","The scenery is beautiful.","风景很美。"],
 ["Travel","I love this place.","我喜欢这个地方。"],
-["Travel","This place is amazing.","这个地方太棒了。"],
-["Travel","This place is crowded.","这个地方很拥挤。"],
-["Travel","This place is quiet.","这个地方很安静。"],
-["Travel","It's very beautiful here.","这里很美。"],
 ["Travel","I want to come back again.","我想再来一次。"],
-["Travel","I'll never forget this trip.","我永远不会忘记这次旅行。"],
-["Travel","What a wonderful trip.","多么美妙的旅行。"],
-["Travel","Let's plan a trip.","我们计划一次旅行吧。"],
 ["Travel","Where do you want to go?","你想去哪里？"],
 ["Travel","I want to go to the beach.","我想去海边。"],
-["Travel","I want to go to the mountains.","我想去山里。"],
-["Travel","I want to see the sea.","我想看海。"],
-["Travel","I want to see the sunset.","我想看日落。"],
-["Travel","I want to see the sunrise.","我想看日出。"],
-["Travel","The sunset is beautiful.","日落很美。"],
-["Travel","The sunrise is beautiful.","日出很美。"],
-["Travel","I love the sea.","我喜欢大海。"],
-["Travel","I love nature.","我喜欢大自然。"],
-["Travel","Let's go to the beach.","我们去海边吧。"],
-["Travel","Let's go hiking.","我们去徒步吧。"],
-["Travel","Let's go camping.","我们去露营吧。"],
 ["Travel","Let's go sightseeing.","我们去观光吧。"],
-["Travel","Let's take a walk.","我们散散步吧。"],
-["Travel","I'm tired from walking.","我走累了。"],
-["Travel","I need to rest.","我需要休息。"],
 ["Travel","I need a map.","我需要一张地图。"],
 ["Travel","I'm lost.","我迷路了。"],
 ["Travel","Can you show me on the map?","你能在地图上指给我看吗？"],
-["Travel","I'm looking for this place.","我在找这个地方。"],
-["Travel","Is this the right way?","走这条路对吗？"],
-["Travel","Am I going the right way?","我走的方向对吗？"],
-["Travel","Turn left.","左转。"],
-["Travel","Turn right.","右转。"],
-["Travel","Go straight.","直走。"],
-["Travel","Go past the bank.","经过银行。"],
-["Travel","It's on your left.","在你左边。"],
-["Travel","It's on your right.","在你右边。"],
-["Travel","It's next to the hotel.","在酒店旁边。"],
-["Travel","It's across the street.","在马路对面。"],
-["Travel","It's at the corner.","在拐角处。"],
-["Travel","It's near the station.","在车站附近。"],
-["Travel","Take me to the airport.","带我去机场。"],
-["Travel","Take me to the hotel.","带我去酒店。"],
-["Travel","Take me to the station.","带我去车站。"],
 ["Travel","Take me to the city center.","带我去市中心。"],
-["Travel","Take me to the museum.","带我去博物馆。"],
-["Travel","Take me to the beach.","带我去海边。"],
-["Travel","I'd like to book a tour.","我想订一个旅游团。"],
-["Travel","How much is the tour?","旅游团多少钱？"],
-["Travel","What time does it start?","什么时候开始？"],
-["Travel","What time does it end?","什么时候结束？"],
-["Travel","I want to buy souvenirs.","我想买些纪念品。"],
 
+/* Restaurant 餐厅 25 */
 ["Restaurant","I want some food.","我想要一些食物。"],
-["Restaurant","I'm hungry.","我饿了。"],
-["Restaurant","Let's eat something.","我们吃点东西吧。"],
 ["Restaurant","Where can I eat?","我在哪里可以吃饭？"],
 ["Restaurant","Can you recommend a restaurant?","你能推荐一家餐厅吗？"],
-["Restaurant","Is there a good restaurant nearby?","附近有好的餐厅吗？"],
 ["Restaurant","Do you have a table for two?","你们有两个人的桌子吗？"],
-["Restaurant","Do you have a table for four?","你们有四个人的桌子吗？"],
-["Restaurant","I'd like a table by the window.","我想要靠窗的桌子。"],
 ["Restaurant","I have a reservation.","我有预订。"],
-["Restaurant","I'd like to make a reservation.","我想预订。"],
-["Restaurant","Wait a moment, please.","请等一下。"],
-["Restaurant","This way, please.","这边请。"],
 ["Restaurant","Can I have the menu?","我可以看一下菜单吗？"],
 ["Restaurant","What do you recommend?","你推荐什么？"],
 ["Restaurant","What's today's special?","今天的特色菜是什么？"],
-["Restaurant","What's good here?","这里什么好吃？"],
 ["Restaurant","I'll take this one.","我要这个。"],
-["Restaurant","I'll have the same.","我也要一样的。"],
-["Restaurant","I'm not ready to order.","我还没准备好点菜。"],
-["Restaurant","Can I have a minute?","可以等一下吗？"],
 ["Restaurant","I'd like to order now.","我现在想点菜。"],
-["Restaurant","Are you ready to order?","你准备好点菜了吗？"],
 ["Restaurant","Can I have some water?","可以给我一些水吗？"],
-["Restaurant","Can I have some tea?","可以给我一些茶吗？"],
-["Restaurant","Can I have some coffee?","可以给我一些咖啡吗？"],
-["Restaurant","Can I have some juice?","可以给我一些果汁吗？"],
-["Restaurant","I'd like a glass of wine.","我想要一杯酒。"],
-["Restaurant","I'd like a beer.","我想要一杯啤酒。"],
-["Restaurant","Just water, please.","只要水，谢谢。"],
-["Restaurant","No ice, please.","不要冰，谢谢。"],
 ["Restaurant","I would like some rice.","我想要一些米饭。"],
-["Restaurant","I would like some noodles.","我想要一些面条。"],
-["Restaurant","I would like some bread.","我想要一些面包。"],
-["Restaurant","I would like some soup.","我想要一些汤。"],
-["Restaurant","I would like some salad.","我想要一些沙拉。"],
 ["Restaurant","I would like some chicken.","我想要一些鸡肉。"],
-["Restaurant","I would like some beef.","我想要一些牛肉。"],
-["Restaurant","I would like some fish.","我想要一些鱼。"],
-["Restaurant","I would like some pork.","我想要一些猪肉。"],
-["Restaurant","I would like some vegetables.","我想要一些蔬菜。"],
-["Restaurant","I would like some fruit.","我想要一些水果。"],
 ["Restaurant","I don't eat meat.","我不吃肉。"],
-["Restaurant","I'm a vegetarian.","我是素食者。"],
-["Restaurant","I'm allergic to nuts.","我对坚果过敏。"],
 ["Restaurant","Not too spicy, please.","不要太辣，谢谢。"],
-["Restaurant","Extra spicy, please.","多加辣，谢谢。"],
-["Restaurant","No sugar, please.","不要糖，谢谢。"],
-["Restaurant","No salt, please.","不要盐，谢谢。"],
-["Restaurant","Less oil, please.","少放油，谢谢。"],
 ["Restaurant","Can I have more rice?","可以再给我一些米饭吗？"],
-["Restaurant","Can I have more water?","可以再给我一些水吗？"],
 ["Restaurant","Can I have some napkins?","可以给我一些餐巾纸吗？"],
-["Restaurant","Can I have a fork?","可以给我一把叉子吗？"],
-["Restaurant","Can I have a knife?","可以给我一把刀吗？"],
-["Restaurant","Can I have a spoon?","可以给我一把勺子吗？"],
-["Restaurant","Can I have chopsticks?","可以给我一双筷子吗？"],
-["Restaurant","Can I have some sauce?","可以给我一些酱吗？"],
-["Restaurant","Can I have some salt?","可以给我一些盐吗？"],
-["Restaurant","Can I have some pepper?","可以给我一些胡椒吗？"],
 ["Restaurant","How long will it take?","要等多久？"],
-["Restaurant","It will take ten minutes.","需要十分钟。"],
-["Restaurant","It's coming soon.","马上就好。"],
-["Restaurant","Here is your food.","您的食物来了。"],
-["Restaurant","Enjoy your meal.","请慢用。"],
-["Restaurant","How is everything?","一切都还好吗？"],
-["Restaurant","Everything is good.","一切都好。"],
 ["Restaurant","It's delicious.","很好吃。"],
-["Restaurant","It's very tasty.","味道很好。"],
 ["Restaurant","It's too spicy.","太辣了。"],
-["Restaurant","It's too salty.","太咸了。"],
-["Restaurant","It's too sweet.","太甜了。"],
-["Restaurant","It's too sour.","太酸了。"],
-["Restaurant","It's too hot.","太烫了。"],
-["Restaurant","It's too cold.","太凉了。"],
-["Restaurant","It's not fresh.","不新鲜。"],
-["Restaurant","This is not what I ordered.","这不是我点的。"],
-["Restaurant","I didn't order this.","我没点这个。"],
-["Restaurant","I'm still waiting.","我还在等。"],
 ["Restaurant","I'm full.","我吃饱了。"],
-["Restaurant","I can't eat anymore.","我吃不下了。"],
 ["Restaurant","Can I have the bill?","可以给我账单吗？"],
-["Restaurant","Check, please.","结账。"],
-["Restaurant","How much is it?","多少钱？"],
-["Restaurant","How much in total?","总共多少钱？"],
 ["Restaurant","Can I pay by card?","我可以刷卡吗？"],
-["Restaurant","Can I pay in cash?","我可以付现金吗？"],
-["Restaurant","Can we split the bill?","我们可以分开付吗？"],
-["Restaurant","It's on me.","我来付。"],
-["Restaurant","Let me pay.","让我付吧。"],
-["Restaurant","Keep the change.","不用找零。"],
-["Restaurant","Here is your change.","这是您的找零。"],
-["Restaurant","Thank you. Come again.","谢谢，欢迎再来。"],
-["Restaurant","Is there a tip?","需要给小费吗？"],
-["Restaurant","Do you accept tips?","你们收小费吗？"],
-["Restaurant","Where is the restroom?","洗手间在哪里？"],
-["Restaurant","Can I have a takeaway box?","可以给我一个打包盒吗？"],
-["Restaurant","I want to take this away.","我想打包这个。"],
 ["Restaurant","Can I have it to go?","可以打包吗？"],
-["Restaurant","I'd like to order delivery.","我想点外卖。"],
-["Restaurant","Do you deliver?","你们送外卖吗？"],
-["Restaurant","What time do you open?","你们几点开门？"],
-["Restaurant","What time do you close?","你们几点关门？"],
-["Restaurant","Are you open now?","你们现在营业吗？"],
-["Restaurant","Are you closed today?","你们今天休息吗？"],
-["Restaurant","Do I need a reservation?","我需要预订吗？"],
-["Restaurant","Is it busy tonight?","今晚人多吗？"],
-["Restaurant","Let's find a place to eat.","我们找个地方吃饭吧。"],
-["Restaurant","I know a good place.","我知道一个好地方。"],
-["Restaurant","Let's try something new.","我们试试新的东西吧。"],
-["Restaurant","I've never
+["Restaurant","Where is the restroom?","洗手间在哪里？"],
+
+/* Shopping 购物 20 */
+["Shopping","How much is it?","多少钱？"],
+["Shopping","That's too expensive.","太贵了。"],
+["Shopping","Can you give me a discount?","你能给我打个折吗？"],
+["Shopping","It's on sale.","在打折。"],
+["Shopping","I want to buy it.","我想买它。"],
+["Shopping","I'll take it.","我要了。"],
+["Shopping","I'm just looking, thanks.","我只是看看，谢谢。"],
+["Shopping","Can you help me?","你可以帮我吗？"],
+["Shopping","I'm looking for a shirt.","我在找一件衬衫。"],
+["Shopping","Do you have this in blue?","这个有蓝色的吗？"],
+["Shopping","Do you have a bigger size?","有大一点的尺码吗？"],
+["Shopping","Can I try it on?","我可以试穿吗？"],
+["Shopping","Where is the fitting room?","试衣间在哪里？"],
+["Shopping","It fits well.","很合身。"],
+["Shopping","It's too big.","太大了。"],
+["Shopping","Can I pay by card?","我可以刷卡吗？"],
+["Shopping","Can I have a receipt?","可以给我一张收据吗？"],
+["Shopping","Can I return this?","我可以退货吗？"],
+["Shopping","I want a refund.","我想要退款。"],
+["Shopping","Where is the supermarket?","超市在哪里？"],
+
+/* Transport 交通 20 */
+["Transport","Where are you going?","你要去哪里？"],
+["Transport","I'm going to work.","我要去上班。"],
+["Transport","How do I get to the station?","我怎么去车站？"],
+["Transport","Where is the bus stop?","公交车站在哪里？"],
+["Transport","Where is the subway station?","地铁站在哪里？"],
+["Transport","Which bus goes there?","哪路公交车去那里？"],
+["Transport","How much is the ticket?","票价多少钱？"],
+["Transport","One ticket, please.","请给我一张票。"],
+["Transport","When is the next bus?","下一班公交车什么时候？"],
+["Transport","Is this seat taken?","这个座位有人吗？"],
+["Transport","I need to get off.","我要下车。"],
+["Transport","You need to transfer.","你需要换乘。"],
+["Transport","I missed my stop.","我坐过站了。"],
+["Transport","Are you free?","你空车吗？"],
+["Transport","Please use the meter.","请打表。"],
+["Transport","How much is the fare?","车费多少？"],
+["Transport","Stop here, please.","请在这里停。"],
+["Transport","We're stuck in traffic.","我们堵车了。"],
+["Transport","Let's take the subway.","我们坐地铁吧。"],
+["Transport","It takes about 20 minutes.","大约需要 20 分钟。"],
+
+/* Hotel 酒店 20 */
+["Hotel","I have a reservation.","我有预订。"],
+["Hotel","I'd like to check in.","我想办理入住。"],
+["Hotel","What time is check-in?","几点可以入住？"],
+["Hotel","Do you have any rooms?","你们有空房吗？"],
+["Hotel","Do you have a single room?","你们有单人间吗？"],
+["Hotel","How much per night?","每晚多少钱？"],
+["Hotel","Is breakfast included?","包含早餐吗？"],
+["Hotel","Is Wi-Fi included?","包含 Wi-Fi 吗？"],
+["Hotel","I'd like a quiet room.","我想要一个安静的房间。"],
+["Hotel","Can I see the room?","我可以看看房间吗？"],
+["Hotel","Here is your key.","这是您的钥匙。"],
+["Hotel","What's my room number?","我的房间号是多少？"],
+["Hotel","Where is the elevator?","电梯在哪里？"],
+["Hotel","Can I have a wake-up call?","可以给我一个叫醒服务吗？"],
+["Hotel","Can I have extra towels?","可以再给我几条毛巾吗？"],
+["Hotel","The air conditioner doesn't work.","空调坏了。"],
+["Hotel","Can you fix it?","你能修一下吗？"],
+["Hotel","Can I extend my stay?","我可以延住吗？"],
+["Hotel","Can I have the bill?","可以给我账单吗？"],
+["Hotel","What's the Wi-Fi password?","Wi-Fi 密码是什么？"],
+
+/* Work 工作 25 */
+["Work","I have a meeting.","我有一个会议。"],
+["Work","I'm very busy today.","我今天很忙。"],
+["Work","I'm working on a project.","我在做一个项目。"],
+["Work","I'm in a meeting.","我在开会。"],
+["Work","Can we talk later?","我们能稍后谈吗？"],
+["Work","The meeting starts at nine.","会议九点开始。"],
+["Work","Please come to my office.","请来我办公室。"],
+["Work","I'll send you an email.","我会给你发邮件。"],
+["Work","Can you send me the file?","你能把文件发给我吗？"],
+["Work","Please sign here.","请在这里签字。"],
+["Work","I need your feedback.","我需要你的反馈。"],
+["Work","I'll take care of it.","我会处理的。"],
+["Work","It's almost done.","快完成了。"],
+["Work","When is the deadline?","截止日期是什么时候？"],
+["Work","Let's schedule a meeting.","我们安排一个会议吧。"],
+["Work","What time works for you?","什么时间对您方便？"],
+["Work","I'm available tomorrow.","我明天有空。"],
+["Work","Can we meet tomorrow?","我们明天可以见面吗？"],
+["Work","Can you hear me?","你能听到我吗？"],
+["Work","You're on mute.","你静音了。"],
+["Work","Can you share your screen?","你能共享屏幕吗？"],
+["Work","Any questions?","有什么问题吗？"],
+["Work","I'll get back to you.","我会回复你的。"],
+["Work","I got a new job.","我找到新工作了。"],
+["Work","I have a job interview.","我有一个面试。"],
+
+/* Health 健康 20 */
+["Health","I don't feel well.","我感觉不舒服。"],
+["Health","I have a cold.","我感冒了。"],
+["Health","I have a fever.","我发烧了。"],
+["Health","I have a headache.","我头疼。"],
+["Health","I have a sore throat.","我喉咙痛。"],
+["Health","I feel dizzy.","我感到头晕。"],
+["Health","I need a doctor.","我需要看医生。"],
+["Health","Where is the hospital?","医院在哪里？"],
+["Health","Call an ambulance.","叫救护车。"],
+["Health","It's an emergency.","这是紧急情况。"],
+["Health","It hurts here.","这里疼。"],
+["Health","It started yesterday.","昨天开始的。"],
+["Health","I'm taking medicine.","我在吃药。"],
+["Health","Where is the pharmacy?","药店在哪里？"],
+["Health","How should I take this?","这个怎么吃？"],
+["Health","I feel better now.","我现在好多了。"],
+["Health","You should rest.","你应该休息。"],
+["Health","You should drink more water.","你应该多喝水。"],
+["Health","I need to relax.","我需要放松。"],
+["Health","Take a break.","休息一下。"]
+
+];
+
+const lessons = RAW.map(r => ({ c: r[0], e: r[1], z: r[2] }));
+document.getElementById("counter").textContent = "1 / " + lessons.length;
+
+
+/* =========================================================
+   2. 解密规则
+   ========================================================= */
+
+const DECODE_RULES = [
+    { re:/\bwant to\b/gi,      to:"wanna",    note:"want to → wanna /ˈwɑːnə/（连读 + 弱读）" },
+    { re:/\bgoing to\b/gi,     to:"gonna",    note:"going to → gonna /ˈɡɔːnə/（连读 + 弱读）" },
+    { re:/\bgot to\b/gi,       to:"gotta",    note:"got to → gotta /ˈɡɑːtə/" },
+    { re:/\bhave to\b/gi,      to:"hafta",    note:"have to → hafta（v 清化为 f）" },
+    { re:/\bkind of\b/gi,      to:"kinda",    note:"kind of → kinda /ˈkaɪndə/" },
+    { re:/\bsort of\b/gi,      to:"sorta",    note:"sort of → sorta /ˈsɔːrtə/" },
+    { re:/\blot of\b/gi,       to:"lotta",    note:"lot of → lotta /ˈlɑːtə/" },
+    { re:/\bdon't know\b/gi,   to:"dunno",    note:"don't know → dunno /dəˈnoʊ/" },
+    { re:/\blet me\b/gi,       to:"lemme",    note:"let me → lemme /ˈlɛmi/" },
+    { re:/\bgive me\b/gi,      to:"gimme",    note:"give me → gimme /ˈɡɪmi/" },
+    { re:/\bwhat do you\b/gi,  to:"whaddaya", note:"what do you → whaddaya" },
+    { re:/\bwhat are you\b/gi, to:"whaddaya", note:"what are you → whaddaya" },
+    { re:/\bdid you\b/gi,      to:"didja",    note:"did you → didja（d + y 同化）" },
+    { re:/\bwould you\b/gi,    to:"wouldja",  note:"would you → wouldja" },
+    { re:/\bcould you\b/gi,    to:"couldja",  note:"could you → couldja" },
+    { re:/\bcan you\b/gi,      to:"canya",    note:"can you → canya" },
+    { re:/\bare you\b/gi,      to:"arya",     note:"are you → arya /ˈɑːrjə/" }
+];
+
+const WEAK_FORMS = [
+    { re:/\bto\b/i,   note:"to → /tə/（弱读）" },
+    { re:/\bfor\b/i,  note:"for → /fər/（弱读）" },
+    { re:/\bof\b/i,   note:"of → /əv/ 或 /ə/（弱读）" },
+    { re:/\band\b/i,  note:"and → /ən/ 或 /n/（弱读）" },
+    { re:/\byou\b/i,  note:"you → /jə/（弱读）" },
+    { re:/\byour\b/i, note:"your → /jər/（弱读）" },
+    { re:/\bcan\b/i,  note:"can → /kən/（弱读）" },
+    { re:/\bfrom\b/i, note:"from → /frəm/（弱读）" },
+    { re:/\bthe\b/i,  note:"the → /ðə/（元音前变 /ði/）" },
+    { re:/\bhim\b/i,  note:"him → /ɪm/（h 常省音）" },
+    { re:/\bher\b/i,  note:"her → /ər/（h 常省音）" },
+    { re:/\bthem\b/i, note:"them → /əm/（th 常省音）" }
+];
+
+const FALLBACK_NOTE = "本句语速较慢，没有明显的连读或缩略，注意句子的重音和节奏。";
+
+function buildHint(en) {
+
+    let decoded = en;
+    const notes = [];
+
+    DECODE_RULES.forEach(rule => {
+        const before = decoded;
+        decoded = decoded.replace(rule.re, rule.to);
+        if (decoded !== before && !notes.includes(rule.note)) {
+            notes.push(rule.note);
+        }
+    });
+
+    WEAK_FORMS.forEach(rule => {
+        const testRe = new RegExp(rule.re.source, "i");
+        if (testRe.test(en) && !notes.includes(rule.note)) {
+            notes.push(rule.note);
+        }
+    });
+
+    if (notes.length === 0) {
+        notes.push(FALLBACK_NOTE);
+        return { decoded: null, notes };
+    }
+    if (decoded === en) {
+        return { decoded: null, notes };
+    }
+    return { decoded, notes };
+}
+
+
+/* =========================================================
+   3. 语块切分引擎（升级版：语法 + 语义单元）
+   ---------------------------------------------------------
+   优先级：
+   1) 标点主切
+   2) 动词短语边界（want to / would like / can I ...）
+   3) 介词短语边界（at / in / on / with ...）
+   4) 从属连词边界（that / if / when / because ...）
+   5) 长短兜底
+   ========================================================= */
+
+/* 动词短语起始词——这些词是「新的语块」的开头 */
+const VP_START = new Set([
+    "want","need","like","love","hate",
+    "go","come","get","take","give","make","have","has","had",
+    "say","tell","ask","try","help","let","put","keep",
+    "know","think","feel","look","watch","see","hear",
+    "eat","drink","sleep","work","play","read","write",
+    "buy","sell","pay","call","send","meet","wait"
+]);
+
+/* 介词——连接介词短语，通常开启新块 */
+const PREPS = new Set([
+    "at","in","on","of","to","for","with","from","by",
+    "about","into","over","under","through","between",
+    "near","next","across","around","before","after"
+]);
+
+/* 从属连词——开启从句，新块 */
+const SUBORD = new Set([
+    "that","if","when","while","because","since","although",
+    "though","unless","until","as","so","but","and","or"
+]);
+
+/* 助动词——开新块 */
+const AUX = new Set([
+    "can","could","will","would","shall","should",
+    "may","might","must","do","does","did"
+]);
+
+function isWord(s) {
+    return /^[a-zA-Z']/.test(s);
+}
+
+function chunkSentence(en) {
+
+    /* 1. 标点主切 */
+    const segs = en.trim().split(/\s*[,;:]\s*/).filter(Boolean);
+    const chunks = [];
+
+    segs.forEach(function (seg) {
+
+        const words = seg.split(/\s+/).filter(Boolean);
+        if (words.length === 0) return;
+
+        /* 短段整块 */
+        if (words.length <= 4) {
+            chunks.push(words.join(" "));
+            return;
+        }
+
+        /* 逐词扫描，识别语法边界 */
+        const result = [];
+        let cur = [words[0]];
+
+        for (let i = 1; i < words.length; i++) {
+
+            const w = words[i].toLowerCase().replace(/[^\w']/g, "");
+            const prev = words[i - 1].toLowerCase().replace(/[^\w']/g, "");
+
+            /* 判断是否应该在此处开新块 */
+            let shouldBreak = false;
+
+            /* 条件 A：当前词是助动词 / 从属连词，且前面已有 ≥2 词 */
+            if ((AUX.has(w) || SUBORD.has(w)) && cur.length >= 2) {
+                shouldBreak = true;
+            }
+
+            /* 条件 B：当前词是动词，前面是代词/名词（主语 + 谓语边界） */
+            if (
+                VP_START.has(w) &&
+                cur.length >= 2 &&
+                (prev === "i" || prev === "you" || prev === "we" ||
+                 prev === "they" || prev === "he" || prev === "she" ||
+                 prev === "it" || prev.endsWith("'s"))
+            ) {
+                /* 但如果当前词正好是 "to"，作为动词短语延续，不切 */
+                if (w !== "to") shouldBreak = true;
+            }
+
+            /* 条件 C：当前词是介词，且前面已有 ≥3 词，切 */
+            if (PREPS.has(w) && cur.length >= 3) {
+                /* "a lot of" 之类不切 */
+                if (!(prev === "lot" || prev === "lots")) {
+                    shouldBreak = true;
+                }
+            }
+
+            /* 条件 D：当前词后面跟宾语从句标志 —— 保持在一个块内更自然 */
+            if (prev === "to" && (VP_START.has(w) || w === "be")) {
+                /* "want to go" → 应在一块 */
+                shouldBreak = false;
+            }
+
+            /* 若切后剩 1 词，则不合，取消切 */
+            if (shouldBreak && (words.length - i) <= 1 && cur.length > 2) {
+                shouldBreak = false;
+            }
+
+            if (shouldBreak) {
+                result.push(cur.join(" "));
+                cur = [words[i]];
+            } else {
+                cur.push(words[i]);
+            }
+        }
+
+        if (cur.length) result.push(cur.join(" "));
+
+        /* 兜底：整段 >8 词且只切出一块 → 对半切 */
+        if (result.length === 1 && words.length > 8) {
+            const mid = Math.ceil(words.length / 2);
+            result.length = 0;
+            result.push(
+                words.slice(0, mid).join(" "),
+                words.slice(mid).join(" ")
+            );
+        }
+
+        chunks.push.apply(chunks, result);
+    });
+
+    return chunks;
+}
+
+
+/* =========================================================
+   4. 状态
+   ========================================================= */
+
+let currentIndex   = 0;
+let currentSpeed   = 0.7;
+let currentVoice   = null;
+let speakToken     = 0;
+let currentChunks  = [];
+let chunkQueue     = [];
+let chunkPlaying   = false;
+
+
+/* =========================================================
+   5. DOM
+   ========================================================= */
+
+const counter      = document.getElementById("counter");
+const progressBar  = document.getElementById("progressBar");
+const category     = document.getElementById("category");
+const stageIcon    = document.getElementById("stageIcon");
+const instruction  = document.getElementById("instruction");
+const sentence     = document.getElementById("sentence");
+const translation  = document.getElementById("translation");
+const hintPanel    = document.getElementById("hintPanel");
+const hintDecoded  = document.getElementById("hintDecoded");
+const hintNotes    = document.getElementById("hintNotes");
+const chunkPanel   = document.getElementById("chunkPanel");
+const chunkList    = document.getElementById("chunkList");
+const chunkBtn     = document.getElementById("chunkBtn");
+const chunkPlayAll = document.getElementById("chunkPlayAll");
+const chunkPlayChain = document.getElementById("chunkPlayChain");
+const englishBtn   = document.getElementById("englishBtn");
+const chineseBtn   = document.getElementById("chineseBtn");
+const hintBtn      = document.getElementById("hintBtn");
+const playBtn      = document.getElementById("playBtn");
+const prevBtn      = document.getElementById("prevBtn");
+const nextBtn      = document.getElementById("nextBtn");
+const jumpInput    = document.getElementById("jumpInput");
+const jumpBtn      = document.getElementById("jumpBtn");
+const statusEl     = document.getElementById("status");
+
+
+/* =========================================================
+   6. 语音加载
+   ========================================================= */
+
+function loadVoices() {
+
+    if (!("speechSynthesis" in window)) return;
+
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return;
+
+    currentVoice = voices.find(v =>
+        v.lang && v.lang.toLowerCase() === "en-us"
+    );
+    if (!currentVoice) {
+        currentVoice = voices.find(v =>
+            v.lang && v.lang.toLowerCase().startsWith("en")
+        );
+    }
+}
+
+
+/* =========================================================
+   7. 初始化
+   ========================================================= */
+
+function init() {
+
+    loadVoices();
+
+    try {
+        const saved = parseInt(localStorage.getItem("cw_listen_index"), 10);
+        if (!isNaN(saved) && saved >= 0 && saved < lessons.length) {
+            currentIndex = saved;
+        }
+    } catch (e) {}
+
+    showLesson();
+    statusEl.textContent = "准备好了。先听，不要看英文。";
+}
+
+
+/* =========================================================
+   8. 显示句子
+   ========================================================= */
+
+function showLesson() {
+
+    const lesson = lessons[currentIndex];
+
+    category.textContent    = lesson.c;
+    sentence.textContent    = lesson.e;
+    translation.textContent = lesson.z;
+
+    sentence.classList.remove("show");
+    translation.classList.remove("show");
+    hintPanel.classList.remove("show");
+    chunkPanel.classList.remove("show");
+    englishBtn.classList.remove("active");
+    chineseBtn.classList.remove("active");
+    hintBtn.classList.remove("active");
+    chunkBtn.classList.remove("active");
+
+    chunkPlaying = false;
+    chunkQueue = [];
+    currentChunks = chunkSentence(lesson.e);
+
+    stageIcon.textContent = "🎧";
+    instruction.textContent = "先不要看英文，听完整句话";
+    playBtn.textContent = "🎧 听句子";
+    playBtn.classList.remove("playing");
+
+    updateProgress();
+
+    try {
+        localStorage.setItem("cw_listen_index", currentIndex);
+    } catch (e) {}
+}
+
+
+/* =========================================================
+   9. 进度
+   ========================================================= */
+
+function updateProgress() {
+
+    const total  = lessons.length;
+    const number = currentIndex + 1;
+
+    counter.textContent = `${number} / ${total}`;
+    progressBar.style.width = ((number / total) * 100) + "%";
+}
+
+
+/* =========================================================
+   10. 通用播放（token 防重叠）
+   ========================================================= */
+
+function speakText(text, opts) {
+
+    opts = opts || {};
+
+    if (!("speechSynthesis" in window)) {
+        statusEl.textContent = "你的设备暂不支持语音播放。";
+        return;
+    }
+
+    const token = ++speakToken;
+
+    window.speechSynthesis.cancel();
+
+    const u = new SpeechSynthesisUtterance(text);
+
+    u.lang   = "en-US";
+    u.rate   = currentSpeed;
+    u.pitch  = 1;
+    u.volume = 1;
+
+    if (currentVoice) u.voice = currentVoice;
+
+    u.onstart = function () {
+        if (token !== speakToken) return;
+        if (opts.onStart) opts.onStart();
+    };
+    u.onend = function () {
+        if (token !== speakToken) return;
+        if (opts.onEnd) opts.onEnd();
+    };
+    u.onerror = function () {
+        if (token !== speakToken) return;
+        if (opts.onError) opts.onError();
+    };
+
+    setTimeout(function () {
+        if (token !== speakToken) return;
+        window.speechSynthesis.speak(u);
+    }, 60);
+}
+
+
+/* =========================================================
+   11. 播放整句
+   ========================================================= */
+
+function speakCurrent() {
+
+    if (!("speechSynthesis" in window)) {
+        statusEl.textContent = "你的设备暂不支持语音播放。";
+        return;
+    }
+
+    chunkPlaying = false;
+    chunkQueue = [];
+    highlightChunk(-1);
+
+    sentence.classList.remove("show");
+    translation.classList.remove("show");
+    hintPanel.classList.remove("show");
+    englishBtn.classList.remove("active");
+    chineseBtn.classList.remove("active");
+    hintBtn.classList.remove("active");
+    instruction.textContent = "先不要看英文，听完整句话";
+
+    speakText(lessons[currentIndex].e, {
+        onStart: function () {
+            stageIcon.textContent = "🔊";
+            statusEl.textContent  = "正在播放……";
+            playBtn.textContent   = "🔊 播放中";
+            playBtn.classList.add("playing");
+        },
+        onEnd: function () {
+            stageIcon.textContent = "🎧";
+            statusEl.textContent  = "播放完成。现在试着自己说一遍。";
+            playBtn.textContent   = "🎧 再听一次";
+            playBtn.classList.remove("playing");
+        },
+        onError: function () {
+            stageIcon.textContent = "⚠️";
+            statusEl.textContent  = "语音播放出现问题，请再点一次。";
+            playBtn.textContent   = "🎧 听句子";
+            playBtn.classList.remove("playing");
+        }
+    });
+}
+
+
+/* =========================================================
+   12. 停止
+   ========================================================= */
+
+function stopSpeaking() {
+
+    speakToken++;
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+
+    chunkPlaying = false;
+    chunkQueue = [];
+    highlightChunk(-1);
+
+    stageIcon.textContent = "🎧";
+    playBtn.textContent   = "🎧 听句子";
+    playBtn.classList.remove("playing");
+    statusEl.textContent  = "已停止。";
+}
+
+
+/* =========================================================
+   13. 切换显示
+   ========================================================= */
+
+function toggleEnglish() {
+    const showing = sentence.classList.toggle("show");
+    englishBtn.classList.toggle("active", showing);
+    instruction.textContent = showing
+        ? "看看你刚才听到的声音"
+        : "先不要看英文，听完整句话";
+}
+
+function toggleChinese() {
+    const showing = translation.classList.toggle("show");
+    chineseBtn.classList.toggle("active", showing);
+}
+
+function toggleHint() {
+    const showing = hintPanel.classList.toggle("show");
+    hintBtn.classList.toggle("active", showing);
+    if (showing) renderHint();
+}
+
+function toggleChunks() {
+    const showing = chunkPanel.classList.toggle("show");
+    chunkBtn.classList.toggle("active", showing);
+    if (showing) {
+        renderChunks();
+    } else {
+        chunkPlaying = false;
+        chunkQueue = [];
+        highlightChunk(-1);
+    }
+}
+
+function renderHint() {
+
+    const lesson = lessons[currentIndex];
+    const hint   = buildHint(lesson.e);
+
+    if (hint.decoded) {
+        hintDecoded.textContent = hint.decoded;
+        hintDecoded.classList.remove("empty");
+    } else {
+        hintDecoded.textContent = "（和原句一致，没有明显连读或缩略）";
+        hintDecoded.classList.add("empty");
+    }
+
+    hintNotes.innerHTML = "";
+    hint.notes.forEach(n => {
+        const div = document.createElement("div");
+        div.textContent = n;
+        hintNotes.appendChild(div);
+    });
+}
+
+
+/* =========================================================
+   14. 语块渲染与播放
+   ========================================================= */
+
+function renderChunks() {
+
+    chunkList.innerHTML = "";
+
+    currentChunks.forEach(function (text, i) {
+        const btn = document.createElement("button");
+        btn.className = "chunk-item";
+        btn.textContent = text;
+        btn.addEventListener("click", function () {
+            playSingleChunk(i);
+        });
+        chunkList.appendChild(btn);
+    });
+}
+
+function highlightChunk(i, cls) {
+    const items = chunkList.querySelectorAll(".chunk-item");
+    items.forEach(function (el, idx) {
+        el.classList.remove("playing");
+        el.classList.remove("chain");
+        if (idx === i) {
+            el.classList.add(cls || "playing");
+        }
+    });
+}
+
+/* 单块播放 */
+function playSingleChunk(i) {
+
+    chunkPlaying = false;
+    chunkQueue = [];
+
+    const text = currentChunks[i];
+    if (!text) return;
+
+    highlightChunk(i, "playing");
+
+    speakText(text, {
+        onStart: function () {
+            stageIcon.textContent = "🔊";
+            statusEl.textContent  = `语块 ${i + 1} / ${currentChunks.length}`;
+        },
+        onEnd: function () {
+            stageIcon.textContent = "🎧";
+            statusEl.textContent  = "单块播放完毕。";
+        }
+    });
+}
+
+/* 逐块播放（块间短停） */
+function playAllChunks() {
+
+    if (currentChunks.length === 0) return;
+
+    chunkPlaying = true;
+
+    chunkQueue = currentChunks.map(function (text, i) {
+        return { text: text, i: i, full: false };
+    });
+
+    playNextChunk();
+}
+
+/* 连句：先逐块 → 最后整句连读 */
+function playChain() {
+
+    if (currentChunks.length === 0) return;
+
+    chunkPlaying = true;
+
+    chunkQueue = currentChunks.map(function (text, i) {
+        return { text: text, i: i, full: false };
+    });
+
+    /* 追加整句作为最后一项 */
+    chunkQueue.push({
+        text: lessons[currentIndex].e,
+        i: -1,
+        full: true
+    });
+
+    playNextChunk();
+}
+
+function playNextChunk() {
+
+    if (!chunkPlaying) return;
+
+    if (chunkQueue.length === 0) {
+        chunkPlaying = false;
+        highlightChunk(-1);
+        stageIcon.textContent = "🎧";
+        statusEl.textContent  = "播放完成。";
+        return;
+    }
+
+    const item = chunkQueue.shift();
+
+    if (item.full) {
+        highlightChunk(-1);
+        statusEl.textContent = "🔗 整句连读——感受块与块如何连起来";
+    } else {
+        highlightChunk(item.i, "chain");
+        statusEl.textContent = `语块 ${item.i + 1} / ${currentChunks.length}`;
+    }
+
+    speakText(item.text, {
+        onStart: function () {
+            stageIcon.textContent = "🔊";
+        },
+        onEnd: function () {
+            /* 块间短停；整句播完直接结束 */
+            const delay = item.full ? 0 : 300;
+            setTimeout(function () {
+                if (chunkPlaying) playNextChunk();
+            }, delay);
+        }
+    });
+}
+
+
+/* =========================================================
+   15. 导航
+   ========================================================= */
+
+function goToIndex(index, message) {
+
+    stopSpeaking();
+
+    if (index < 0) index = 0;
+    if (index >= lessons.length) index = lessons.length - 1;
+
+    currentIndex = index;
+    showLesson();
+    statusEl.textContent = message;
+}
+
+function nextLesson() {
+    if (currentIndex + 1 >= lessons.length) {
+        goToIndex(0, "🎉 全部完成！重新开始。");
+    } else {
+        goToIndex(currentIndex + 1, "下一句，先听，不要看英文。");
+    }
+}
+
+function prevLesson() {
+    if (currentIndex === 0) {
+        statusEl.textContent = "已经是第一句了。";
+        return;
+    }
+    goToIndex(currentIndex - 1, "上一句，先听，不要看英文。");
+}
+
+function jumpTo() {
+    const n = parseInt(jumpInput.value, 10);
+    if (isNaN(n) || n < 1 || n > lessons.length) {
+        statusEl.textContent = `请输入 1 到 ${lessons.length} 之间的数字。`;
+        return;
+    }
+    jumpInput.value = "";
+    goToIndex(n - 1, `已跳到第 ${n} 句。`);
+}
+
+
+/* =========================================================
+   16. 语速
+   ========================================================= */
+
+const speedButtons = document.querySelectorAll(".speed");
+
+speedButtons.forEach(button => {
+    button.addEventListener("click", function () {
+
+        speedButtons.forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+
+        currentSpeed = parseFloat(this.dataset.speed);
+        statusEl.textContent = `语速 ${currentSpeed}×`;
+
+        if (window.speechSynthesis && window.speechSynthesis.speaking) {
+            speakCurrent();
+        }
+    });
+});
+
+
+/* =========================================================
+   17. 事件绑定
+   ========================================================= */
+
+playBtn.addEventListener("click", speakCurrent);
+prevBtn.addEventListener("click", prevLesson);
+nextBtn.addEventListener("click", nextLesson);
+englishBtn.addEventListener("click", toggleEnglish);
+chineseBtn.addEventListener("click", toggleChinese);
+hintBtn.addEventListener("click", toggleHint);
+chunkBtn.addEventListener("click", toggleChunks);
+chunkPlayAll.addEventListener("click", playAllChunks);
+chunkPlayChain.addEventListener("click", playChain);
+jumpBtn.addEventListener("click", jumpTo);
+
+jumpInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") jumpTo();
+});
+
+
+/* =========================================================
+   18. 键盘快捷键
+   ========================================================= */
+
+document.addEventListener("keydown", function (e) {
+
+    const tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+
+    if (e.code === "Space") {
+        e.preventDefault();
+        speakCurrent();
+    } else if (e.code === "ArrowRight") {
+        nextLesson();
+    } else if (e.code === "ArrowLeft") {
+        prevLesson();
+    } else if (e.key === "h" || e.key === "H") {
+        toggleHint();
+    } else if (e.key === "c" || e.key === "C") {
+        toggleChunks();
+    } else if (e.code === "Escape") {
+        stopSpeaking();
+    }
+});
+
+
+/* =========================================================
+   19. 切到后台停止
+   ========================================================= */
+
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) stopSpeaking();
+});
+
+
+/* =========================================================
+   20. 语音列表异步加载 + 启动
+   ========================================================= */
+
+if ("speechSynthesis" in window) {
+    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+    /* iOS 首次需要触摸才能解锁语音 */
+    document.addEventListener("touchstart", function once() {
+        loadVoices();
+        /* 静默播一个空字符串，解锁语音引擎 */
+        const u = new SpeechSynthesisUtterance(" ");
+        u.volume = 0;
+        window.speechSynthesis.speak(u);
+        document.removeEventListener("touchstart", once);
+    }, { once: true });
+}
+
+init();
+
+</script>
+</body>
+</html>
