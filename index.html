@@ -5,7 +5,6 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0,
                maximum-scale=1.0, user-scalable=no">
-
 <title>🎧 每句练耳 · Chaowen AI</title>
 
 <style>
@@ -121,6 +120,72 @@ body {
     margin-top: 12px;
 }
 
+/* ---------- 解密提示面板 ---------- */
+
+.hint-panel {
+    display: none;
+    margin-top: 18px;
+    padding: 18px 16px 16px;
+    background: #fffdf5;
+    border: 1px solid #f0e5c0;
+    border-radius: 16px;
+    text-align: left;
+}
+
+.hint-panel.show {
+    display: block;
+}
+
+.hint-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #a08a3c;
+    letter-spacing: 0.6px;
+    margin: 14px 0 6px;
+}
+
+.hint-label:first-child {
+    margin-top: 0;
+}
+
+.hint-original {
+    font-size: 16px;
+    color: #18202a;
+    line-height: 1.55;
+}
+
+.hint-decoded {
+    font-size: 18px;
+    font-weight: 700;
+    color: #c9770a;
+    line-height: 1.55;
+    letter-spacing: 0.2px;
+}
+
+.hint-decoded.empty {
+    color: #9aa3ad;
+    font-weight: 400;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.hint-notes {
+    font-size: 14px;
+    color: #5e6673;
+    line-height: 1.85;
+}
+
+.hint-notes div {
+    padding-left: 2px;
+}
+
+.hint-note-title {
+    font-weight: 700;
+    color: #8a7530;
+}
+
+/* ---------- 按钮 ---------- */
+
 button {
     border: none;
     border-radius: 15px;
@@ -129,10 +194,16 @@ button {
     padding: 15px 18px;
     cursor: pointer;
     transition: transform 0.08s ease, opacity 0.2s ease;
+    font-family: inherit;
 }
 
 button:active {
     transform: scale(0.97);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .main-btn {
@@ -147,6 +218,18 @@ button:active {
     background: #eef1f5;
     color: #18202a;
     margin-top: 12px;
+}
+
+.hint-btn {
+    width: 100%;
+    background: #fff6dd;
+    color: #8a6d1a;
+    margin-top: 12px;
+    border: 1px solid #f0e0a8;
+}
+
+.hint-btn.active {
+    background: #f7e9b4;
 }
 
 .controls {
@@ -187,6 +270,38 @@ button:active {
     color: white;
 }
 
+.jump-box {
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.jump-box input {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #dfe4ea;
+    font-size: 15px;
+    font-family: inherit;
+    color: #18202a;
+    background: #f7f9fb;
+    outline: none;
+    text-align: center;
+}
+
+.jump-box input:focus {
+    border-color: #18202a;
+}
+
+.jump-box button {
+    flex: 0 0 auto;
+    padding: 12px 18px;
+    font-size: 15px;
+    background: #eef1f5;
+    color: #18202a;
+}
+
 .tip {
     margin-top: 20px;
     padding: 15px;
@@ -213,13 +328,9 @@ button:active {
 }
 
 @media (max-width: 380px) {
-    .sentence {
-        font-size: 23px;
-    }
-
-    button {
-        font-size: 16px;
-    }
+    .sentence { font-size: 23px; }
+    button { font-size: 16px; }
+    .hint-decoded { font-size: 16px; }
 }
 </style>
 </head>
@@ -234,7 +345,7 @@ button:active {
 
         <div class="progress-box">
             <div class="progress-text" id="progressText">
-                第 1 / 30 句
+                第 1 / 1000 句
             </div>
 
             <div class="progress">
@@ -243,16 +354,11 @@ button:active {
         </div>
     </div>
 
-
     <div class="card">
 
-        <div class="category" id="category">
-            Daily
-        </div>
+        <div class="category" id="category">Daily</div>
 
-        <div class="listen-icon" id="listenIcon">
-            🎧
-        </div>
+        <div class="listen-icon" id="listenIcon">🎧</div>
 
         <div class="instruction" id="instruction">
             先不要看英文。<br>
@@ -260,91 +366,66 @@ button:active {
         </div>
 
         <div class="sentence" id="sentence"></div>
-
         <div class="translation" id="translation"></div>
 
+        <button class="main-btn" id="listenBtn">🎧 听句子</button>
+        <button class="secondary-btn" id="showEnglishBtn">👀 显示英文</button>
+        <button class="secondary-btn" id="showChineseBtn">🇨🇳 显示中文意思</button>
+        <button class="hint-btn" id="hintBtn">🔍 解密提示</button>
 
-        <button class="main-btn" id="listenBtn">
-            🎧 听句子
-        </button>
+        <!-- 解密提示面板 -->
+        <div class="hint-panel" id="hintPanel">
 
-        <button class="secondary-btn" id="showEnglishBtn">
-            👀 显示英文
-        </button>
+            <div class="hint-label">📖 原句</div>
+            <div class="hint-original" id="hintOriginal"></div>
 
-        <button class="secondary-btn" id="showChineseBtn">
-            🇨🇳 显示中文意思
-        </button>
+            <div class="hint-label">🎧 真实语流</div>
+            <div class="hint-decoded" id="hintDecoded"></div>
 
+            <div class="hint-label">📝 解密要点</div>
+            <div class="hint-notes" id="hintNotes"></div>
+
+        </div>
 
         <div class="controls">
 
             <div class="row">
-
-                <button
-                    class="secondary-btn"
-                    id="repeatBtn">
-                    🔁 再听一次
-                </button>
-
-                <button
-                    class="secondary-btn"
-                    id="stopBtn">
-                    ⏹️ 停止
-                </button>
-
+                <button class="secondary-btn" id="prevBtn">← 上一句</button>
+                <button class="secondary-btn" id="repeatBtn">🔁 再听一次</button>
             </div>
 
-
-            <div class="speed-title">
-                语速
+            <div class="row" style="margin-top:10px;">
+                <button class="secondary-btn" id="stopBtn">⏹️ 停止</button>
             </div>
+
+            <div class="speed-title">语速</div>
 
             <div class="speed-buttons">
-
-                <button
-                    class="speed-btn active"
-                    data-speed="0.7">
-                    0.7×
-                </button>
-
-                <button
-                    class="speed-btn"
-                    data-speed="0.85">
-                    0.85×
-                </button>
-
-                <button
-                    class="speed-btn"
-                    data-speed="1">
-                    1.0×
-                </button>
-
+                <button class="speed-btn active" data-speed="0.7">0.7×</button>
+                <button class="speed-btn" data-speed="0.85">0.85×</button>
+                <button class="speed-btn" data-speed="1">1.0×</button>
             </div>
 
+            <div class="jump-box">
+                <input type="number" id="jumpInput" min="1" placeholder="跳到第几号">
+                <button id="jumpBtn">跳转</button>
+            </div>
 
-            <button
-                class="main-btn"
-                id="nextBtn">
-                下一句 →
-            </button>
+            <button class="main-btn" id="nextBtn">下一句 →</button>
 
         </div>
-
 
         <div class="status" id="status"></div>
 
-
         <div class="tip">
             💡 <strong>训练方法：</strong><br>
-            第一次：不看英文，只听。<br>
-            第二次：再听一遍，尝试抓住整体意思。<br>
-            第三次：显示英文，确认自己听到了什么。<br>
-            最后：跟着声音说一遍。
+            ① 第一次：不看英文，只听。<br>
+            ② 第二次：再听一遍，尝试抓住整体意思。<br>
+            ③ 卡住了：点「🔍 解密提示」，看看真实语流里发生了哪些变化。<br>
+            ④ 最后：跟着声音说一遍。
         </div>
 
     </div>
-
 
     <div class="footer">
         Chaowen AI · 每一句都是一次听力训练
@@ -352,703 +433,1551 @@ button:active {
 
 </div>
 
-
 <script>
 
 /* =========================================================
-   1. 课程数据
+   1. 课程数据（1000 句）
    ========================================================= */
 
 const lessons = [
 
-    {
-        category: "Daily",
-        en: "Good morning.",
-        zh: "早上好。"
-    },
+/* ---------- Daily Life 日常生活（1-150） ---------- */
+{c:"Daily", e:"Good morning.", z:"早上好。"},
+{c:"Daily", e:"Good afternoon.", z:"下午好。"},
+{c:"Daily", e:"Good evening.", z:"晚上好。"},
+{c:"Daily", e:"Good night.", z:"晚安。"},
+{c:"Daily", e:"How are you?", z:"你好吗？"},
+{c:"Daily", e:"I'm fine.", z:"我很好。"},
+{c:"Daily", e:"I'm okay.", z:"我还好。"},
+{c:"Daily", e:"I'm tired.", z:"我很累。"},
+{c:"Daily", e:"I'm hungry.", z:"我饿了。"},
+{c:"Daily", e:"I'm thirsty.", z:"我渴了。"},
+{c:"Daily", e:"I'm busy.", z:"我很忙。"},
+{c:"Daily", e:"I'm free now.", z:"我现在有空。"},
+{c:"Daily", e:"See you later.", z:"待会儿见。"},
+{c:"Daily", e:"See you tomorrow.", z:"明天见。"},
+{c:"Daily", e:"Nice to meet you.", z:"很高兴认识你。"},
+{c:"Daily", e:"Thank you very much.", z:"非常感谢你。"},
+{c:"Daily", e:"You're welcome.", z:"不客气。"},
+{c:"Daily", e:"I'm sorry.", z:"对不起。"},
+{c:"Daily", e:"That's all right.", z:"没关系。"},
+{c:"Daily", e:"Excuse me.", z:"打扰一下。"},
+{c:"Daily", e:"No problem.", z:"没问题。"},
+{c:"Daily", e:"Of course.", z:"当然。"},
+{c:"Daily", e:"Maybe later.", z:"也许以后吧。"},
+{c:"Daily", e:"Sounds good.", z:"听起来不错。"},
+{c:"Daily", e:"Sounds great.", z:"听起来很棒。"},
+{c:"Daily", e:"I think so.", z:"我觉得是这样。"},
+{c:"Daily", e:"I don't think so.", z:"我不这么认为。"},
+{c:"Daily", e:"I agree.", z:"我同意。"},
+{c:"Daily", e:"I don't agree.", z:"我不同意。"},
+{c:"Daily", e:"Let me think.", z:"让我想想。"},
+{c:"Daily", e:"I have no idea.", z:"我不知道。"},
+{c:"Daily", e:"I understand.", z:"我明白。"},
+{c:"Daily", e:"I don't understand.", z:"我不明白。"},
+{c:"Daily", e:"Could you say that again?", z:"你能再说一遍吗？"},
+{c:"Daily", e:"Please speak slowly.", z:"请说慢一点。"},
+{c:"Daily", e:"What does that mean?", z:"那是什么意思？"},
+{c:"Daily", e:"How do you say this?", z:"这个怎么说？"},
+{c:"Daily", e:"What time is it?", z:"现在几点？"},
+{c:"Daily", e:"It's time to go.", z:"该走了。"},
+{c:"Daily", e:"Let's go.", z:"我们走吧。"},
+{c:"Daily", e:"Wait a moment.", z:"等一下。"},
+{c:"Daily", e:"Hurry up.", z:"快点。"},
+{c:"Daily", e:"Take your time.", z:"慢慢来。"},
+{c:"Daily", e:"Be careful.", z:"小心。"},
+{c:"Daily", e:"Don't worry.", z:"别担心。"},
+{c:"Daily", e:"Relax.", z:"放松点。"},
+{c:"Daily", e:"Cheer up.", z:"振作起来。"},
+{c:"Daily", e:"Good job.", z:"干得好。"},
+{c:"Daily", e:"Well done.", z:"做得好。"},
+{c:"Daily", e:"Never mind.", z:"没关系。"},
+{c:"Daily", e:"I want to eat.", z:"我想吃东西。"},
+{c:"Daily", e:"I want to drink water.", z:"我想喝水。"},
+{c:"Daily", e:"I want to sleep.", z:"我想睡觉。"},
+{c:"Daily", e:"I want to go home.", z:"我想回家。"},
+{c:"Daily", e:"I want to rest.", z:"我想休息。"},
+{c:"Daily", e:"I need help.", z:"我需要帮助。"},
+{c:"Daily", e:"I need some water.", z:"我需要一些水。"},
+{c:"Daily", e:"I need a break.", z:"我需要休息一下。"},
+{c:"Daily", e:"Please wait for me.", z:"请等我。"},
+{c:"Daily", e:"Come with me.", z:"跟我来。"},
+{c:"Daily", e:"Follow me.", z:"跟我来。"},
+{c:"Daily", e:"Let's go home.", z:"我们回家吧。"},
+{c:"Daily", e:"Let's take a rest.", z:"我们休息一下吧。"},
+{c:"Daily", e:"Let's have lunch.", z:"我们吃午饭吧。"},
+{c:"Daily", e:"Let's have dinner.", z:"我们吃晚饭吧。"},
+{c:"Daily", e:"I'm going to work.", z:"我要去上班。"},
+{c:"Daily", e:"I'm going to school.", z:"我要去上学。"},
+{c:"Daily", e:"I'm going home.", z:"我要回家。"},
+{c:"Daily", e:"I'm coming.", z:"我来了。"},
+{c:"Daily", e:"I'm leaving now.", z:"我现在要走了。"},
+{c:"Daily", e:"I'm back.", z:"我回来了。"},
+{c:"Daily", e:"I'm here.", z:"我在这里。"},
+{c:"Daily", e:"I'm ready.", z:"我准备好了。"},
+{c:"Daily", e:"Are you ready?", z:"你准备好了吗？"},
+{c:"Daily", e:"Are you sure?", z:"你确定吗？"},
+{c:"Daily", e:"Are you free?", z:"你有空吗？"},
+{c:"Daily", e:"Are you okay?", z:"你还好吗？"},
+{c:"Daily", e:"What's up?", z:"怎么了？"},
+{c:"Daily", e:"What happened?", z:"发生什么了？"},
+{c:"Daily", e:"What's wrong?", z:"出什么事了？"},
+{c:"Daily", e:"What are you doing?", z:"你在做什么？"},
+{c:"Daily", e:"Where are you?", z:"你在哪里？"},
+{c:"Daily", e:"Where are you from?", z:"你来自哪里？"},
+{c:"Daily", e:"Who are you?", z:"你是谁？"},
+{c:"Daily", e:"How old are you?", z:"你多大了？"},
+{c:"Daily", e:"How's the weather?", z:"天气怎么样？"},
+{c:"Daily", e:"It's hot today.", z:"今天很热。"},
+{c:"Daily", e:"It's cold today.", z:"今天很冷。"},
+{c:"Daily", e:"It's raining.", z:"在下雨。"},
+{c:"Daily", e:"It's snowing.", z:"在下雪。"},
+{c:"Daily", e:"It's sunny.", z:"天晴。"},
+{c:"Daily", e:"It's cloudy.", z:"多云。"},
+{c:"Daily", e:"It's windy.", z:"有风。"},
+{c:"Daily", e:"Nice weather today.", z:"今天天气不错。"},
+{c:"Daily", e:"I like this weather.", z:"我喜欢这样的天气。"},
+{c:"Daily", e:"I don't like rain.", z:"我不喜欢下雨。"},
+{c:"Daily", e:"Let's go outside.", z:"我们出去吧。"},
+{c:"Daily", e:"Let's stay home.", z:"我们待在家吧。"},
+{c:"Daily", e:"I'm at home.", z:"我在家。"},
+{c:"Daily", e:"I'm on my way.", z:"我在路上。"},
+{c:"Daily", e:"I'll be there soon.", z:"我马上到。"},
+{c:"Daily", e:"I'll call you later.", z:"我稍后打给你。"},
+{c:"Daily", e:"Call me tonight.", z:"今晚给我打电话。"},
+{c:"Daily", e:"Text me later.", z:"稍后给我发消息。"},
+{c:"Daily", e:"Send me a message.", z:"给我发条消息。"},
+{c:"Daily", e:"I got your message.", z:"我收到你的消息了。"},
+{c:"Daily", e:"I missed your call.", z:"我没接到你的电话。"},
+{c:"Daily", e:"The phone is ringing.", z:"电话在响。"},
+{c:"Daily", e:"Please turn it off.", z:"请把它关掉。"},
+{c:"Daily", e:"Please turn it on.", z:"请把它打开。"},
+{c:"Daily", e:"Turn up the volume.", z:"把音量调大。"},
+{c:"Daily", e:"Turn down the volume.", z:"把音量调小。"},
+{c:"Daily", e:"Where is the light?", z:"灯在哪里？"},
+{c:"Daily", e:"Turn on the light.", z:"把灯打开。"},
+{c:"Daily", e:"Turn off the light.", z:"把灯关掉。"},
+{c:"Daily", e:"Close the door.", z:"把门关上。"},
+{c:"Daily", e:"Open the window.", z:"把窗户打开。"},
+{c:"Daily", e:"The door is open.", z:"门开着。"},
+{c:"Daily", e:"The window is closed.", z:"窗户关着。"},
+{c:"Daily", e:"I'm cleaning my room.", z:"我在打扫我的房间。"},
+{c:"Daily", e:"I'm doing the dishes.", z:"我在洗碗。"},
+{c:"Daily", e:"I'm washing my clothes.", z:"我在洗衣服。"},
+{c:"Daily", e:"I'm cooking dinner.", z:"我在做晚饭。"},
+{c:"Daily", e:"I'm watching TV.", z:"我在看电视。"},
+{c:"Daily", e:"I'm reading a book.", z:"我在看书。"},
+{c:"Daily", e:"I'm listening to music.", z:"我在听音乐。"},
+{c:"Daily", e:"I'm taking a shower.", z:"我在洗澡。"},
+{c:"Daily", e:"I'm going to bed.", z:"我要睡觉了。"},
+{c:"Daily", e:"I just woke up.", z:"我刚醒来。"},
+{c:"Daily", e:"I'm getting dressed.", z:"我在穿衣服。"},
+{c:"Daily", e:"I'm brushing my teeth.", z:"我在刷牙。"},
+{c:"Daily", e:"I'm having breakfast.", z:"我在吃早饭。"},
+{c:"Daily", e:"I'm having lunch.", z:"我在吃午饭。"},
+{c:"Daily", e:"I'm having dinner.", z:"我在吃晚饭。"},
+{c:"Daily", e:"The food is ready.", z:"饭好了。"},
+{c:"Daily", e:"Breakfast is ready.", z:"早饭好了。"},
+{c:"Daily", e:"Dinner is served.", z:"晚饭上桌了。"},
+{c:"Daily", e:"It's delicious.", z:"很好吃。"},
+{c:"Daily", e:"It tastes good.", z:"味道不错。"},
+{c:"Daily", e:"It's too spicy.", z:"太辣了。"},
+{c:"Daily", e:"It's too salty.", z:"太咸了。"},
+{c:"Daily", e:"It's too sweet.", z:"太甜了。"},
+{c:"Daily", e:"I'm full.", z:"我吃饱了。"},
+{c:"Daily", e:"I'm still hungry.", z:"我还饿。"},
 
-    {
-        category: "Daily",
-        en: "How are you?",
-        zh: "你好吗？"
-    },
+/* ---------- Social 社交情感（151-280） ---------- */
+{c:"Social", e:"How have you been?", z:"你最近怎么样？"},
+{c:"Social", e:"Long time no see.", z:"好久不见。"},
+{c:"Social", e:"It's been a while.", z:"有一阵子没见了。"},
+{c:"Social", e:"What's new?", z:"有什么新鲜事吗？"},
+{c:"Social", e:"Nothing much.", z:"没什么特别的事。"},
+{c:"Social", e:"Same as usual.", z:"和往常一样。"},
+{c:"Social", e:"How's your family?", z:"你家人怎么样？"},
+{c:"Social", e:"How's your work?", z:"你工作怎么样？"},
+{c:"Social", e:"How's your day?", z:"你今天过得怎么样？"},
+{c:"Social", e:"I had a good day.", z:"我今天过得不错。"},
+{c:"Social", e:"I had a bad day.", z:"我今天过得很糟。"},
+{c:"Social", e:"That's great news.", z:"那真是好消息。"},
+{c:"Social", e:"I'm happy for you.", z:"我为你高兴。"},
+{c:"Social", e:"Congratulations.", z:"恭喜你。"},
+{c:"Social", e:"Good luck.", z:"祝你好运。"},
+{c:"Social", e:"Best wishes.", z:"最美好的祝愿。"},
+{c:"Social", e:"Happy birthday.", z:"生日快乐。"},
+{c:"Social", e:"Happy new year.", z:"新年快乐。"},
+{c:"Social", e:"Merry Christmas.", z:"圣诞快乐。"},
+{c:"Social", e:"Have a nice day.", z:"祝你今天愉快。"},
+{c:"Social", e:"Have a good trip.", z:"旅途愉快。"},
+{c:"Social", e:"Take care.", z:"保重。"},
+{c:"Social", e:"Get well soon.", z:"早日康复。"},
+{c:"Social", e:"I'm sorry to hear that.", z:"听到这个消息我很难过。"},
+{c:"Social", e:"That's too bad.", z:"太糟糕了。"},
+{c:"Social", e:"What a pity.", z:"真可惜。"},
+{c:"Social", e:"Don't be sad.", z:"别难过。"},
+{c:"Social", e:"It's not your fault.", z:"这不是你的错。"},
+{c:"Social", e:"Everything will be fine.", z:"一切都会好起来的。"},
+{c:"Social", e:"I believe in you.", z:"我相信你。"},
+{c:"Social", e:"You can do it.", z:"你能做到的。"},
+{c:"Social", e:"Keep going.", z:"继续加油。"},
+{c:"Social", e:"You did a great job.", z:"你做得很好。"},
+{c:"Social", e:"I'm proud of you.", z:"我为你骄傲。"},
+{c:"Social", e:"You look great today.", z:"你今天看起来很棒。"},
+{c:"Social", e:"You look tired.", z:"你看起来累了。"},
+{c:"Social", e:"You look happy.", z:"你看起来很愉快。"},
+{c:"Social", e:"I like your smile.", z:"我喜欢你的笑容。"},
+{c:"Social", e:"You are so kind.", z:"你真好。"},
+{c:"Social", e:"You are so funny.", z:"你真有趣。"},
+{c:"Social", e:"You are so smart.", z:"你真聪明。"},
+{c:"Social", e:"You are so brave.", z:"你真勇敢。"},
+{c:"Social", e:"You are so patient.", z:"你真有耐心。"},
+{c:"Social", e:"You are so helpful.", z:"你真乐于助人。"},
+{c:"Social", e:"I love spending time with you.", z:"我喜欢和你待在一起。"},
+{c:"Social", e:"I miss you.", z:"我想你。"},
+{c:"Social", e:"I miss my family.", z:"我想念我的家人。"},
+{c:"Social", e:"I miss my home.", z:"我想家。"},
+{c:"Social", e:"I feel lonely.", z:"我感到孤独。"},
+{c:"Social", e:"I feel happy.", z:"我感到开心。"},
+{c:"Social", e:"I feel sad.", z:"我感到难过。"},
+{c:"Social", e:"I feel angry.", z:"我生气。"},
+{c:"Social", e:"I feel scared.", z:"我感到害怕。"},
+{c:"Social", e:"I feel nervous.", z:"我感到紧张。"},
+{c:"Social", e:"I feel excited.", z:"我感到兴奋。"},
+{c:"Social", e:"I feel bored.", z:"我感到无聊。"},
+{c:"Social", e:"I feel relaxed.", z:"我感到放松。"},
+{c:"Social", e:"I feel great.", z:"我感觉很棒。"},
+{c:"Social", e:"I feel terrible.", z:"我感觉很糟。"},
+{c:"Social", e:"I feel much better.", z:"我感觉好多了。"},
+{c:"Social", e:"I feel a little tired.", z:"我有点累。"},
+{c:"Social", e:"I'm in a good mood.", z:"我心情很好。"},
+{c:"Social", e:"I'm in a bad mood.", z:"我心情不好。"},
+{c:"Social", e:"Don't be angry.", z:"别生气。"},
+{c:"Social", e:"Calm down.", z:"冷静下来。"},
+{c:"Social", e:"Take a deep breath.", z:"深呼吸。"},
+{c:"Social", e:"Everything is okay.", z:"一切都好。"},
+{c:"Social", e:"It's not a big deal.", z:"没什么大不了的。"},
+{c:"Social", e:"Don't take it seriously.", z:"别太当真。"},
+{c:"Social", e:"I was just kidding.", z:"我只是开玩笑。"},
+{c:"Social", e:"Are you joking?", z:"你在开玩笑吗？"},
+{c:"Social", e:"That's really funny.", z:"那真的很有趣。"},
+{c:"Social", e:"That's interesting.", z:"那很有意思。"},
+{c:"Social", e:"That's amazing.", z:"太神奇了。"},
+{c:"Social", e:"That's wonderful.", z:"太棒了。"},
+{c:"Social", e:"That's terrible.", z:"太糟糕了。"},
+{c:"Social", e:"That's impossible.", z:"那不可能。"},
+{c:"Social", e:"That's possible.", z:"那有可能。"},
+{c:"Social", e:"That's true.", z:"那是真的。"},
+{c:"Social", e:"That's not true.", z:"那不是真的。"},
+{c:"Social", e:"That makes sense.", z:"那有道理。"},
+{c:"Social", e:"That doesn't make sense.", z:"那没道理。"},
+{c:"Social", e:"I see your point.", z:"我明白你的意思。"},
+{c:"Social", e:"You have a point.", z:"你说得有道理。"},
+{c:"Social", e:"Let me explain.", z:"让我解释一下。"},
+{c:"Social", e:"Let me tell you something.", z:"让我告诉你一件事。"},
+{c:"Social", e:"Can I ask you something?", z:"我可以问你一件事吗？"},
+{c:"Social", e:"Can I help you?", z:"我能帮你吗？"},
+{c:"Social", e:"Can I join you?", z:"我能加入你们吗？"},
+{c:"Social", e:"Can I come with you?", z:"我能和你一起去吗？"},
+{c:"Social", e:"Would you like to join us?", z:"你愿意加入我们吗？"},
+{c:"Social", e:"Would you like some coffee?", z:"你想喝点咖啡吗？"},
+{c:"Social", e:"Would you like to go out?", z:"你想出去吗？"},
+{c:"Social", e:"Do you want to come?", z:"你想来吗？"},
+{c:"Social", e:"Do you have time?", z:"你有时间吗？"},
+{c:"Social", e:"Do you have any plans?", z:"你有什么计划吗？"},
+{c:"Social", e:"What are your plans?", z:"你有什么计划？"},
+{c:"Social", e:"What do you think?", z:"你怎么想？"},
+{c:"Social", e:"What do you mean?", z:"你是什么意思？"},
+{c:"Social", e:"What do you want?", z:"你想要什么？"},
+{c:"Social", e:"What do you need?", z:"你需要什么？"},
+{c:"Social", e:"What do you like?", z:"你喜欢什么？"},
+{c:"Social", e:"What do you do?", z:"你是做什么工作的？"},
+{c:"Social", e:"Where do you live?", z:"你住在哪里？"},
+{c:"Social", e:"Where do you work?", z:"你在哪里工作？"},
+{c:"Social", e:"Who is with you?", z:"谁和你在一起？"},
+{c:"Social", e:"Who told you that?", z:"谁告诉你的？"},
+{c:"Social", e:"Why not?", z:"为什么不呢？"},
+{c:"Social", e:"Why are you here?", z:"你为什么在这里？"},
+{c:"Social", e:"Why did you do that?", z:"你为什么那样做？"},
+{c:"Social", e:"How do you know?", z:"你怎么知道的？"},
+{c:"Social", e:"How did you do that?", z:"你是怎么做到的？"},
+{c:"Social", e:"How long will it take?", z:"要多久？"},
+{c:"Social", e:"How much does it cost?", z:"多少钱？"},
+{c:"Social", e:"How many do you want?", z:"你想要多少？"},
+{c:"Social", e:"Tell me more.", z:"再多告诉我一些。"},
+{c:"Social", e:"Tell me the truth.", z:"告诉我真相。"},
+{c:"Social", e:"I need to tell you something.", z:"我需要告诉你一件事。"},
+{c:"Social", e:"I have something to say.", z:"我有话要说。"},
+{c:"Social", e:"I have a question.", z:"我有个问题。"},
+{c:"Social", e:"I have an idea.", z:"我有个主意。"},
+{c:"Social", e:"I have a problem.", z:"我有个问题。"},
+{c:"Social", e:"I have good news.", z:"我有好消息。"},
+{c:"Social", e:"I have bad news.", z:"我有坏消息。"},
+{c:"Social", e:"Let's talk about it.", z:"我们谈谈吧。"},
+{c:"Social", e:"Let's discuss it later.", z:"我们晚点再讨论。"},
+{c:"Social", e:"Let's meet tomorrow.", z:"我们明天见吧。"},
+{c:"Social", e:"Let's have a drink.", z:"我们去喝一杯吧。"},
+{c:"Social", e:"Let's have a coffee.", z:"我们去喝杯咖啡吧。"},
 
-    {
-        category: "Daily",
-        en: "I'm fine.",
-        zh: "我很好。"
-    },
+/* ---------- Airport 机场（281-390） ---------- */
+{c:"Airport", e:"May I see your passport?", z:"我可以看看你的护照吗？"},
+{c:"Airport", e:"Sure. Here is my passport.", z:"当然。这是我的护照。"},
+{c:"Airport", e:"Here is my ticket.", z:"这是我的机票。"},
+{c:"Airport", e:"Where are you going?", z:"你要去哪里？"},
+{c:"Airport", e:"I'm going to China.", z:"我要去中国。"},
+{c:"Airport", e:"I'm going to America.", z:"我要去美国。"},
+{c:"Airport", e:"I'm going to Japan.", z:"我要去日本。"},
+{c:"Airport", e:"I'm going to Korea.", z:"我要去韩国。"},
+{c:"Airport", e:"I'm going to Europe.", z:"我要去欧洲。"},
+{c:"Airport", e:"How long will you stay?", z:"你要待多久？"},
+{c:"Airport", e:"I'll stay for one week.", z:"我会待一周。"},
+{c:"Airport", e:"I'll stay for two weeks.", z:"我会待两周。"},
+{c:"Airport", e:"I'll stay for one month.", z:"我会待一个月。"},
+{c:"Airport", e:"What's the purpose of your visit?", z:"你此行的目的是什么？"},
+{c:"Airport", e:"I'm here on business.", z:"我是来出差的。"},
+{c:"Airport", e:"I'm here on vacation.", z:"我是来度假的。"},
+{c:"Airport", e:"I'm here to visit friends.", z:"我是来拜访朋友的。"},
+{c:"Airport", e:"I'm here to study.", z:"我是来学习的。"},
+{c:"Airport", e:"I'm a tourist.", z:"我是游客。"},
+{c:"Airport", e:"Do you have any bags?", z:"你有行李吗？"},
+{c:"Airport", e:"Yes, I have one bag.", z:"是的，我有一个包。"},
+{c:"Airport", e:"I have two bags.", z:"我有两个包。"},
+{c:"Airport", e:"I have a carry-on.", z:"我有一个随身行李。"},
+{c:"Airport", e:"Please put your bag here.", z:"请把包放在这里。"},
+{c:"Airport", e:"Please open your bag.", z:"请打开你的包。"},
+{c:"Airport", e:"Is this your bag?", z:"这是你的包吗？"},
+{c:"Airport", e:"What's in your bag?", z:"你的包里有什么？"},
+{c:"Airport", e:"Just some clothes.", z:"只是一些衣服。"},
+{c:"Airport", e:"Some books and clothes.", z:"一些书和衣服。"},
+{c:"Airport", e:"Do you have anything to declare?", z:"你有什么要申报的吗？"},
+{c:"Airport", e:"Nothing to declare.", z:"没有什么要申报的。"},
+{c:"Airport", e:"Do you want a window seat?", z:"你想要靠窗的座位吗？"},
+{c:"Airport", e:"Yes, please.", z:"好的，谢谢。"},
+{c:"Airport", e:"I'd like an aisle seat.", z:"我想要一个靠过道的座位。"},
+{c:"Airport", e:"I'd like a window seat.", z:"我想要一个靠窗的座位。"},
+{c:"Airport", e:"Where is my seat?", z:"我的座位在哪里？"},
+{c:"Airport", e:"Here is your boarding pass.", z:"这是你的登机牌。"},
+{c:"Airport", e:"What's the gate number?", z:"登机口是几号？"},
+{c:"Airport", e:"The gate is B12.", z:"登机口是 B12。"},
+{c:"Airport", e:"When is boarding time?", z:"什么时候登机？"},
+{c:"Airport", e:"Boarding starts at 8.", z:"八点开始登机。"},
+{c:"Airport", e:"The flight is delayed.", z:"航班延误了。"},
+{c:"Airport", e:"The flight is canceled.", z:"航班取消了。"},
+{c:"Airport", e:"The flight is on time.", z:"航班准时。"},
+{c:"Airport", e:"Where is the check-in counter?", z:"值机柜台在哪里？"},
+{c:"Airport", e:"Where is the security check?", z:"安检在哪里？"},
+{c:"Airport", e:"Where is the restroom?", z:"洗手间在哪里？"},
+{c:"Airport", e:"Where is the duty-free shop?", z:"免税店在哪里？"},
+{c:"Airport", e:"Where can I get a taxi?", z:"我在哪里可以打到出租车？"},
+{c:"Airport", e:"I'm looking for my gate.", z:"我在找我的登机口。"},
+{c:"Airport", e:"I can't find my gate.", z:"我找不到我的登机口。"},
+{c:"Airport", e:"I lost my boarding pass.", z:"我把登机牌弄丢了。"},
+{c:"Airport", e:"I missed my flight.", z:"我错过了航班。"},
+{c:"Airport", e:"Can I change my flight?", z:"我可以改签航班吗？"},
+{c:"Airport", e:"Can I get a refund?", z:"我可以退款吗？"},
+{c:"Airport", e:"My luggage is lost.", z:"我的行李丢了。"},
+{c:"Airport", e:"My luggage is damaged.", z:"我的行李损坏了。"},
+{c:"Airport", e:"Please fasten your seat belt.", z:"请系好安全带。"},
+{c:"Airport", e:"Please turn off your phone.", z:"请关掉手机。"},
+{c:"Airport", e:"Please put your seat up.", z:"请把椅背调直。"},
+{c:"Airport", e:"Would you like some water?", z:"你想要点水吗？"},
+{c:"Airport", e:"Chicken or beef?", z:"鸡肉还是牛肉？"},
+{c:"Airport", e:"I'd like chicken, please.", z:"我要鸡肉，谢谢。"},
+{c:"Airport", e:"I'd like beef, please.", z:"我要牛肉，谢谢。"},
+{c:"Airport", e:"Can I have some coffee?", z:"可以给我一些咖啡吗？"},
+{c:"Airport", e:"Can I have a blanket?", z:"可以给我一条毯子吗？"},
+{c:"Airport", e:"Can I have a pillow?", z:"可以给我一个枕头吗？"},
+{c:"Airport", e:"I don't feel well.", z:"我感觉不舒服。"},
+{c:"Airport", e:"I feel airsick.", z:"我晕机。"},
+{c:"Airport", e:"Please help me.", z:"请帮帮我。"},
+{c:"Airport", e:"Where is my connecting flight?", z:"我的转机航班在哪里？"},
+{c:"Airport", e:"I have a connecting flight.", z:"我有一个转机航班。"},
+{c:"Airport", e:"How long is the layover?", z:"转机要等多久？"},
+{c:"Airport", e:"The layover is two hours.", z:"转机要等两个小时。"},
+{c:"Airport", e:"Is this the right gate?", z:"这是正确的登机口吗？"},
+{c:"Airport", e:"Am I in the right line?", z:"我排的队对吗？"},
+{c:"Airport", e:"Please go to gate 12.", z:"请去 12 号登机口。"},
+{c:"Airport", e:"Please wait in line.", z:"请排队等候。"},
+{c:"Airport", e:"Have a safe flight.", z:"一路平安。"},
+{c:"Airport", e:"Welcome aboard.", z:"欢迎登机。"},
+{c:"Airport", e:"Welcome to China.", z:"欢迎来到中国。"},
+{c:"Airport", e:"Enjoy your flight.", z:"祝你旅途愉快。"},
+{c:"Airport", e:"Thank you for flying with us.", z:"感谢您乘坐我们的航班。"},
+{c:"Airport", e:"Please take your seat.", z:"请就座。"},
+{c:"Airport", e:"Please remain seated.", z:"请留在座位上。"},
+{c:"Airport", e:"Please stay calm.", z:"请保持冷静。"},
+{c:"Airport", e:"We are landing soon.", z:"我们很快就要降落了。"},
+{c:"Airport", e:"We have landed.", z:"我们已经降落了。"},
+{c:"Airport", e:"Please exit from the front.", z:"请从前门下机。"},
+{c:"Airport", e:"Please exit from the back.", z:"请从后门下机。"},
+{c:"Airport", e:"Where is the baggage claim?", z:"行李提取处在哪里？"},
+{c:"Airport", e:"Where can I get a cart?", z:"我在哪里可以拿到手推车？"},
+{c:"Airport", e:"Where is the exit?", z:"出口在哪里？"},
+{c:"Airport", e:"Where is the bus stop?", z:"公交车站在哪里？"},
+{c:"Airport", e:"Where is the train station?", z:"火车站在哪里？"},
+{c:"Airport", e:"I need a taxi.", z:"我需要一辆出租车。"},
+{c:"Airport", e:"How much to the city center?", z:"到市中心多少钱？"},
+{c:"Airport", e:"Please take me to this address.", z:"请带我去这个地址。"},
+{c:"Airport", e:"Do you have a SIM card?", z:"你有 SIM 卡吗？"},
+{c:"Airport", e:"Where can I buy a SIM card?", z:"我在哪里可以买到 SIM 卡？"},
+{c:"Airport", e:"Where can I exchange money?", z:"我在哪里可以换钱？"},
+{c:"Airport", e:"What's the exchange rate?", z:"汇率是多少？"},
+{c:"Airport", e:"Can I pay by card?", z:"我可以刷卡吗？"},
+{c:"Airport", e:"Can I pay in cash?", z:"我可以付现金吗？"},
+{c:"Airport", e:"Is there free Wi-Fi?", z:"有免费 Wi-Fi 吗？"},
+{c:"Airport", e:"What's the Wi-Fi password?", z:"Wi-Fi 密码是什么？"},
+{c:"Airport", e:"Is there a hotel nearby?", z:"附近有酒店吗？"},
+{c:"Airport", e:"Is there a restaurant here?", z:"这里有餐厅吗？"},
+{c:"Airport", e:"I'm waiting for my friend.", z:"我在等我朋友。"},
+{c:"Airport", e:"My friend is picking me up.", z:"我朋友来接我。"},
+{c:"Airport", e:"Please wait here.", z:"请在这里等。"},
 
-    {
-        category: "Daily",
-        en: "I want to eat.",
-        zh: "我想吃东西。"
-    },
+/* ---------- Travel 旅行（391-470） ---------- */
+{c:"Travel", e:"I love traveling.", z:"我喜欢旅行。"},
+{c:"Travel", e:"I travel a lot.", z:"我经常旅行。"},
+{c:"Travel", e:"This is my first trip.", z:"这是我第一次旅行。"},
+{c:"Travel", e:"This is my first time here.", z:"这是我第一次来这里。"},
+{c:"Travel", e:"I want to travel the world.", z:"我想环游世界。"},
+{c:"Travel", e:"I'm on vacation.", z:"我在度假。"},
+{c:"Travel", e:"I'm on a business trip.", z:"我在出差。"},
+{c:"Travel", e:"I'm traveling alone.", z:"我一个人旅行。"},
+{c:"Travel", e:"I'm traveling with my family.", z:"我和家人一起旅行。"},
+{c:"Travel", e:"I'm traveling with friends.", z:"我和朋友一起旅行。"},
+{c:"Travel", e:"Where should I visit?", z:"我应该去哪里玩？"},
+{c:"Travel", e:"What should I see here?", z:"这里有什么值得看的？"},
+{c:"Travel", e:"What's famous here?", z:"这里以什么出名？"},
+{c:"Travel", e:"Can you recommend a place?", z:"你能推荐一个地方吗？"},
+{c:"Travel", e:"Any good places to visit?", z:"有什么好地方可以去？"},
+{c:"Travel", e:"How do I get there?", z:"我怎么去那里？"},
+{c:"Travel", e:"Is it far from here?", z:"离这里远吗？"},
+{c:"Travel", e:"Is it within walking distance?", z:"走路能到吗？"},
+{c:"Travel", e:"How long does it take?", z:"要多久？"},
+{c:"Travel", e:"It takes about ten minutes.", z:"大约十分钟。"},
+{c:"Travel", e:"It's not far.", z:"不远。"},
+{c:"Travel", e:"It's very far.", z:"很远。"},
+{c:"Travel", e:"Let's take a photo.", z:"我们拍张照吧。"},
+{c:"Travel", e:"Can you take a photo for me?", z:"你能帮我拍张照吗？"},
+{c:"Travel", e:"Can you take a photo of us?", z:"你能帮我们拍张照吗？"},
+{c:"Travel", e:"The view is amazing.", z:"景色太美了。"},
+{c:"Travel", e:"The scenery is beautiful.", z:"风景很美。"},
+{c:"Travel", e:"I love this place.", z:"我喜欢这个地方。"},
+{c:"Travel", e:"This place is amazing.", z:"这个地方太棒了。"},
+{c:"Travel", e:"This place is crowded.", z:"这个地方很拥挤。"},
+{c:"Travel", e:"This place is quiet.", z:"这个地方很安静。"},
+{c:"Travel", e:"It's very beautiful here.", z:"这里很美。"},
+{c:"Travel", e:"I want to come back again.", z:"我想再来一次。"},
+{c:"Travel", e:"I'll never forget this trip.", z:"我永远不会忘记这次旅行。"},
+{c:"Travel", e:"What a wonderful trip.", z:"多么美妙的旅行。"},
+{c:"Travel", e:"Let's plan a trip.", z:"我们计划一次旅行吧。"},
+{c:"Travel", e:"Where do you want to go?", z:"你想去哪里？"},
+{c:"Travel", e:"I want to go to the beach.", z:"我想去海边。"},
+{c:"Travel", e:"I want to go to the mountains.", z:"我想去山里。"},
+{c:"Travel", e:"I want to see the sea.", z:"我想看海。"},
+{c:"Travel", e:"I want to see the sunset.", z:"我想看日落。"},
+{c:"Travel", e:"I want to see the sunrise.", z:"我想看日出。"},
+{c:"Travel", e:"The sunset is beautiful.", z:"日落很美。"},
+{c:"Travel", e:"The sunrise is beautiful.", z:"日出很美。"},
+{c:"Travel", e:"I love the sea.", z:"我喜欢大海。"},
+{c:"Travel", e:"I love nature.", z:"我喜欢大自然。"},
+{c:"Travel", e:"Let's go to the beach.", z:"我们去海边吧。"},
+{c:"Travel", e:"Let's go hiking.", z:"我们去徒步吧。"},
+{c:"Travel", e:"Let's go camping.", z:"我们去露营吧。"},
+{c:"Travel", e:"Let's go sightseeing.", z:"我们去观光吧。"},
+{c:"Travel", e:"Let's take a walk.", z:"我们散散步吧。"},
+{c:"Travel", e:"I'm tired from walking.", z:"我走累了。"},
+{c:"Travel", e:"I need to rest.", z:"我需要休息。"},
+{c:"Travel", e:"I need a map.", z:"我需要一张地图。"},
+{c:"Travel", e:"I'm lost.", z:"我迷路了。"},
+{c:"Travel", e:"Can you show me on the map?", z:"你能在地图上指给我看吗？"},
+{c:"Travel", e:"I'm looking for this place.", z:"我在找这个地方。"},
+{c:"Travel", e:"Is this the right way?", z:"走这条路对吗？"},
+{c:"Travel", e:"Am I going the right way?", z:"我走的方向对吗？"},
+{c:"Travel", e:"Turn left.", z:"左转。"},
+{c:"Travel", e:"Turn right.", z:"右转。"},
+{c:"Travel", e:"Go straight.", z:"直走。"},
+{c:"Travel", e:"Go past the bank.", z:"经过银行。"},
+{c:"Travel", e:"It's on your left.", z:"在你左边。"},
+{c:"Travel", e:"It's on your right.", z:"在你右边。"},
+{c:"Travel", e:"It's next to the hotel.", z:"在酒店旁边。"},
+{c:"Travel", e:"It's across the street.", z:"在马路对面。"},
+{c:"Travel", e:"It's at the corner.", z:"在拐角处。"},
+{c:"Travel", e:"It's near the station.", z:"在车站附近。"},
+{c:"Travel", e:"Take me to the airport.", z:"带我去机场。"},
+{c:"Travel", e:"Take me to the hotel.", z:"带我去酒店。"},
+{c:"Travel", e:"Take me to the station.", z:"带我去车站。"},
+{c:"Travel", e:"Take me to the city center.", z:"带我去市中心。"},
+{c:"Travel", e:"Take me to the museum.", z:"带我去博物馆。"},
+{c:"Travel", e:"Take me to the beach.", z:"带我去海边。"},
+{c:"Travel", e:"I'd like to book a tour.", z:"我想订一个旅游团。"},
+{c:"Travel", e:"How much is the tour?", z:"旅游团多少钱？"},
+{c:"Travel", e:"What time does it start?", z:"什么时候开始？"},
+{c:"Travel", e:"What time does it end?", z:"什么时候结束？"},
+{c:"Travel", e:"I want to buy souvenirs.", z:"我想买些纪念品。"},
 
-    {
-        category: "Daily",
-        en: "I want to drink water.",
-        zh: "我想喝水。"
-    },
+/* ---------- Restaurant 餐厅（471-590） ---------- */
+{c:"Restaurant", e:"I want some food.", z:"我想要一些食物。"},
+{c:"Restaurant", e:"I'm hungry.", z:"我饿了。"},
+{c:"Restaurant", e:"Let's eat something.", z:"我们吃点东西吧。"},
+{c:"Restaurant", e:"Where can I eat?", z:"我在哪里可以吃饭？"},
+{c:"Restaurant", e:"Can you recommend a restaurant?", z:"你能推荐一家餐厅吗？"},
+{c:"Restaurant", e:"Is there a good restaurant nearby?", z:"附近有好的餐厅吗？"},
+{c:"Restaurant", e:"Do you have a table for two?", z:"你们有两个人的桌子吗？"},
+{c:"Restaurant", e:"Do you have a table for four?", z:"你们有四个人的桌子吗？"},
+{c:"Restaurant", e:"I'd like a table by the window.", z:"我想要靠窗的桌子。"},
+{c:"Restaurant", e:"I have a reservation.", z:"我有预订。"},
+{c:"Restaurant", e:"I'd like to make a reservation.", z:"我想预订。"},
+{c:"Restaurant", e:"Wait a moment, please.", z:"请等一下。"},
+{c:"Restaurant", e:"This way, please.", z:"这边请。"},
+{c:"Restaurant", e:"Can I have the menu?", z:"我可以看一下菜单吗？"},
+{c:"Restaurant", e:"What do you recommend?", z:"你推荐什么？"},
+{c:"Restaurant", e:"What's today's special?", z:"今天的特色菜是什么？"},
+{c:"Restaurant", e:"What's good here?", z:"这里什么好吃？"},
+{c:"Restaurant", e:"I'll take this one.", z:"我要这个。"},
+{c:"Restaurant", e:"I'll have the same.", z:"我也要一样的。"},
+{c:"Restaurant", e:"I'm not ready to order.", z:"我还没准备好点菜。"},
+{c:"Restaurant", e:"Can I have a minute?", z:"可以等一下吗？"},
+{c:"Restaurant", e:"I'd like to order now.", z:"我现在想点菜。"},
+{c:"Restaurant", e:"Are you ready to order?", z:"你准备好点菜了吗？"},
+{c:"Restaurant", e:"Can I have some water?", z:"可以给我一些水吗？"},
+{c:"Restaurant", e:"Can I have some tea?", z:"可以给我一些茶吗？"},
+{c:"Restaurant", e:"Can I have some coffee?", z:"可以给我一些咖啡吗？"},
+{c:"Restaurant", e:"Can I have some juice?", z:"可以给我一些果汁吗？"},
+{c:"Restaurant", e:"I'd like a glass of wine.", z:"我想要一杯酒。"},
+{c:"Restaurant", e:"I'd like a beer.", z:"我想要一杯啤酒。"},
+{c:"Restaurant", e:"Just water, please.", z:"只要水，谢谢。"},
+{c:"Restaurant", e:"No ice, please.", z:"不要冰，谢谢。"},
+{c:"Restaurant", e:"I would like some rice.", z:"我想要一些米饭。"},
+{c:"Restaurant", e:"I would like some noodles.", z:"我想要一些面条。"},
+{c:"Restaurant", e:"I would like some bread.", z:"我想要一些面包。"},
+{c:"Restaurant", e:"I would like some soup.", z:"我想要一些汤。"},
+{c:"Restaurant", e:"I would like some salad.", z:"我想要一些沙拉。"},
+{c:"Restaurant", e:"I would like some chicken.", z:"我想要一些鸡肉。"},
+{c:"Restaurant", e:"I would like some beef.", z:"我想要一些牛肉。"},
+{c:"Restaurant", e:"I would like some fish.", z:"我想要一些鱼。"},
+{c:"Restaurant", e:"I would like some pork.", z:"我想要一些猪肉。"},
+{c:"Restaurant", e:"I would like some vegetables.", z:"我想要一些蔬菜。"},
+{c:"Restaurant", e:"I would like some fruit.", z:"我想要一些水果。"},
+{c:"Restaurant", e:"I don't eat meat.", z:"我不吃肉。"},
+{c:"Restaurant", e:"I'm a vegetarian.", z:"我是素食者。"},
+{c:"Restaurant", e:"I'm allergic to nuts.", z:"我对坚果过敏。"},
+{c:"Restaurant", e:"Not too spicy, please.", z:"不要太辣，谢谢。"},
+{c:"Restaurant", e:"Extra spicy, please.", z:"多加辣，谢谢。"},
+{c:"Restaurant", e:"No sugar, please.", z:"不要糖，谢谢。"},
+{c:"Restaurant", e:"No salt, please.", z:"不要盐，谢谢。"},
+{c:"Restaurant", e:"Less oil, please.", z:"少放油，谢谢。"},
+{c:"Restaurant", e:"Can I have more rice?", z:"可以再给我一些米饭吗？"},
+{c:"Restaurant", e:"Can I have more water?", z:"可以再给我一些水吗？"},
+{c:"Restaurant", e:"Can I have some napkins?", z:"可以给我一些餐巾纸吗？"},
+{c:"Restaurant", e:"Can I have a fork?", z:"可以给我一把叉子吗？"},
+{c:"Restaurant", e:"Can I have a knife?", z:"可以给我一把刀吗？"},
+{c:"Restaurant", e:"Can I have a spoon?", z:"可以给我一把勺子吗？"},
+{c:"Restaurant", e:"Can I have chopsticks?", z:"可以给我一双筷子吗？"},
+{c:"Restaurant", e:"Can I have some sauce?", z:"可以给我一些酱吗？"},
+{c:"Restaurant", e:"Can I have some salt?", z:"可以给我一些盐吗？"},
+{c:"Restaurant", e:"Can I have some pepper?", z:"可以给我一些胡椒吗？"},
+{c:"Restaurant", e:"How long will it take?", z:"要等多久？"},
+{c:"Restaurant", e:"It will take ten minutes.", z:"需要十分钟。"},
+{c:"Restaurant", e:"It's coming soon.", z:"马上就好。"},
+{c:"Restaurant", e:"Here is your food.", z:"您的食物来了。"},
+{c:"Restaurant", e:"Enjoy your meal.", z:"请慢用。"},
+{c:"Restaurant", e:"How is everything?", z:"一切都还好吗？"},
+{c:"Restaurant", e:"Everything is good.", z:"一切都好。"},
+{c:"Restaurant", e:"It's delicious.", z:"很好吃。"},
+{c:"Restaurant", e:"It's very tasty.", z:"味道很好。"},
+{c:"Restaurant", e:"It's too spicy.", z:"太辣了。"},
+{c:"Restaurant", e:"It's too salty.", z:"太咸了。"},
+{c:"Restaurant", e:"It's too sweet.", z:"太甜了。"},
+{c:"Restaurant", e:"It's too sour.", z:"太酸了。"},
+{c:"Restaurant", e:"It's too hot.", z:"太烫了。"},
+{c:"Restaurant", e:"It's too cold.", z:"太凉了。"},
+{c:"Restaurant", e:"It's not fresh.", z:"不新鲜。"},
+{c:"Restaurant", e:"This is not what I ordered.", z:"这不是我点的。"},
+{c:"Restaurant", e:"I didn't order this.", z:"我没点这个。"},
+{c:"Restaurant", e:"I'm still waiting.", z:"我还在等。"},
+{c:"Restaurant", e:"I'm full.", z:"我吃饱了。"},
+{c:"Restaurant", e:"I can't eat anymore.", z:"我吃不下了。"},
+{c:"Restaurant", e:"Can I have the bill?", z:"可以给我账单吗？"},
+{c:"Restaurant", e:"Check, please.", z:"结账。"},
+{c:"Restaurant", e:"How much is it?", z:"多少钱？"},
+{c:"Restaurant", e:"How much in total?", z:"总共多少钱？"},
+{c:"Restaurant", e:"Can I pay by card?", z:"我可以刷卡吗？"},
+{c:"Restaurant", e:"Can I pay in cash?", z:"我可以付现金吗？"},
+{c:"Restaurant", e:"Can we split the bill?", z:"我们可以分开付吗？"},
+{c:"Restaurant", e:"It's on me.", z:"我来付。"},
+{c:"Restaurant", e:"Let me pay.", z:"让我付吧。"},
+{c:"Restaurant", e:"Keep the change.", z:"不用找零。"},
+{c:"Restaurant", e:"Here is your change.", z:"这是您的找零。"},
+{c:"Restaurant", e:"Thank you. Come again.", z:"谢谢，欢迎再来。"},
+{c:"Restaurant", e:"Is there a tip?", z:"需要给小费吗？"},
+{c:"Restaurant", e:"Do you accept tips?", z:"你们收小费吗？"},
+{c:"Restaurant", e:"Where is the restroom?", z:"洗手间在哪里？"},
+{c:"Restaurant", e:"Can I have a takeaway box?", z:"可以给我一个打包盒吗？"},
+{c:"Restaurant", e:"I want to take this away.", z:"我想打包这个。"},
+{c:"Restaurant", e:"Can I have it to go?", z:"可以打包吗？"},
+{c:"Restaurant", e:"I'd like to order delivery.", z:"我想点外卖。"},
+{c:"Restaurant", e:"Do you deliver?", z:"你们送外卖吗？"},
+{c:"Restaurant", e:"What time do you open?", z:"你们几点开门？"},
+{c:"Restaurant", e:"What time do you close?", z:"你们几点关门？"},
+{c:"Restaurant", e:"Are you open now?", z:"你们现在营业吗？"},
+{c:"Restaurant", e:"Are you closed today?", z:"你们今天休息吗？"},
+{c:"Restaurant", e:"Do I need a reservation?", z:"我需要预订吗？"},
+{c:"Restaurant", e:"Is it busy tonight?", z:"今晚人多吗？"},
+{c:"Restaurant", e:"Let's find a place to eat.", z:"我们找个地方吃饭吧。"},
+{c:"Restaurant", e:"I know a good place.", z:"我知道一个好地方。"},
+{c:"Restaurant", e:"Let's try something new.", z:"我们试试新的东西吧。"},
+{c:"Restaurant", e:"I've never tried this.", z:"我从没试过这个。"},
+{c:"Restaurant", e:"I love this food.", z:"我喜欢这个食物。"},
+{c:"Restaurant", e:"This is my favorite.", z:"这是我最喜欢的。"},
+{c:"Restaurant", e:"Let's come back here.", z:"我们再回来这里吧。"},
 
-    {
-        category: "Daily",
-        en: "I want to go home.",
-        zh: "我想回家。"
-    },
+/* ---------- Shopping 购物（591-680） ---------- */
+{c:"Shopping", e:"How much is it?", z:"多少钱？"},
+{c:"Shopping", e:"How much is this?", z:"这个多少钱？"},
+{c:"Shopping", e:"How much are these?", z:"这些多少钱？"},
+{c:"Shopping", e:"That's too expensive.", z:"太贵了。"},
+{c:"Shopping", e:"That's cheap.", z:"很便宜。"},
+{c:"Shopping", e:"Can you give me a discount?", z:"你能给我打个折吗？"},
+{c:"Shopping", e:"Any discount?", z:"有折扣吗？"},
+{c:"Shopping", e:"It's on sale.", z:"在打折。"},
+{c:"Shopping", e:"I want to buy it.", z:"我想买它。"},
+{c:"Shopping", e:"I'll take it.", z:"我要了。"},
+{c:"Shopping", e:"I'll take two.", z:"我要两个。"},
+{c:"Shopping", e:"I'll think about it.", z:"我再考虑一下。"},
+{c:"Shopping", e:"Let me think about it.", z:"让我想想。"},
+{c:"Shopping", e:"Maybe next time.", z:"下次吧。"},
+{c:"Shopping", e:"I don't need it.", z:"我不需要。"},
+{c:"Shopping", e:"I just want to look.", z:"我只是看看。"},
+{c:"Shopping", e:"I'm just looking, thanks.", z:"我只是看看，谢谢。"},
+{c:"Shopping", e:"Can you help me?", z:"你可以帮我吗？"},
+{c:"Shopping", e:"I'm looking for a shirt.", z:"我在找一件衬衫。"},
+{c:"Shopping", e:"I'm looking for shoes.", z:"我在找鞋子。"},
+{c:"Shopping", e:"I'm looking for a gift.", z:"我在找一件礼物。"},
+{c:"Shopping", e:"Do you have this in blue?", z:"这个有蓝色的吗？"},
+{c:"Shopping", e:"Do you have this in red?", z:"这个有红色的吗？"},
+{c:"Shopping", e:"Do you have this in black?", z:"这个有黑色的吗？"},
+{c:"Shopping", e:"Do you have this in white?", z:"这个有白色的吗？"},
+{c:"Shopping", e:"Do you have a bigger size?", z:"有大一点的尺码吗？"},
+{c:"Shopping", e:"Do you have a smaller size?", z:"有小一点的尺码吗？"},
+{c:"Shopping", e:"Do you have this in stock?", z:"这个有货吗？"},
+{c:"Shopping", e:"It's out of stock.", z:"没货了。"},
+{c:"Shopping", e:"Can I try it on?", z:"我可以试穿吗？"},
+{c:"Shopping", e:"Where is the fitting room?", z:"试衣间在哪里？"},
+{c:"Shopping", e:"It fits well.", z:"很合身。"},
+{c:"Shopping", e:"It's too big.", z:"太大了。"},
+{c:"Shopping", e:"It's too small.", z:"太小了。"},
+{c:"Shopping", e:"It's too tight.", z:"太紧了。"},
+{c:"Shopping", e:"It's too loose.", z:"太松了。"},
+{c:"Shopping", e:"It's just right.", z:"刚刚好。"},
+{c:"Shopping", e:"I don't like this color.", z:"我不喜欢这个颜色。"},
+{c:"Shopping", e:"I like this color.", z:"我喜欢这个颜色。"},
+{c:"Shopping", e:"I like this style.", z:"我喜欢这个款式。"},
+{c:"Shopping", e:"It's very nice.", z:"很好看。"},
+{c:"Shopping", e:"It's very ugly.", z:"很丑。"},
+{c:"Shopping", e:"It doesn't look good.", z:"看起来不好看。"},
+{c:"Shopping", e:"I want a different one.", z:"我想要一个不一样的。"},
+{c:"Shopping", e:"Can I see another one?", z:"我可以看看另一个吗？"},
+{c:"Shopping", e:"Show me that one, please.", z:"请给我看看那一个。"},
+{c:"Shopping", e:"What's the price?", z:"价格是多少？"},
+{c:"Shopping", e:"What's the total?", z:"总共多少？"},
+{c:"Shopping", e:"Can I pay by card?", z:"我可以刷卡吗？"},
+{c:"Shopping", e:"Can I pay by phone?", z:"我可以手机支付吗？"},
+{c:"Shopping", e:"Only cash, please.", z:"只能付现金。"},
+{c:"Shopping", e:"Do you accept credit cards?", z:"你们收信用卡吗？"},
+{c:"Shopping", e:"Can I have a receipt?", z:"可以给我一张收据吗？"},
+{c:"Shopping", e:"Can I have a bag?", z:"可以给我一个袋子吗？"},
+{c:"Shopping", e:"Can I exchange this?", z:"我可以换货吗？"},
+{c:"Shopping", e:"Can I return this?", z:"我可以退货吗？"},
+{c:"Shopping", e:"I want a refund.", z:"我想要退款。"},
+{c:"Shopping", e:"This is broken.", z:"这个坏了。"},
+{c:"Shopping", e:"It doesn't work.", z:"它不工作。"},
+{c:"Shopping", e:"It's damaged.", z:"它损坏了。"},
+{c:"Shopping", e:"I bought it yesterday.", z:"我昨天买的。"},
+{c:"Shopping", e:"I have the receipt.", z:"我有收据。"},
+{c:"Shopping", e:"Where can I buy water?", z:"我在哪里可以买到水？"},
+{c:"Shopping", e:"Where is the supermarket?", z:"超市在哪里？"},
+{c:"Shopping", e:"Where is the mall?", z:"购物中心在哪里？"},
+{c:"Shopping", e:"Where is the pharmacy?", z:"药店在哪里？"},
+{c:"Shopping", e:"Where is the bookstore?", z:"书店在哪里？"},
+{c:"Shopping", e:"Where can I buy clothes?", z:"我在哪里可以买到衣服？"},
+{c:"Shopping", e:"What time do you open?", z:"你们几点开门？"},
+{c:"Shopping", e:"What time do you close?", z:"你们几点关门？"},
+{c:"Shopping", e:"Are you open today?", z:"你们今天营业吗？"},
+{c:"Shopping", e:"I need a new phone.", z:"我需要一个新手机。"},
+{c:"Shopping", e:"I need new shoes.", z:"我需要新鞋子。"},
+{c:"Shopping", e:"I need a new bag.", z:"我需要一个新包。"},
+{c:"Shopping", e:"I need some milk.", z:"我需要一些牛奶。"},
+{c:"Shopping", e:"I need some eggs.", z:"我需要一些鸡蛋。"},
+{c:"Shopping", e:"I need some bread.", z:"我需要一些面包。"},
+{c:"Shopping", e:"Just looking around.", z:"只是随便看看。"},
+{c:"Shopping", e:"I'm done shopping.", z:"我买完了。"},
+{c:"Shopping", e:"Let's go shopping.", z:"我们去购物吧。"},
+{c:"Shopping", e:"Let's go to the mall.", z:"我们去购物中心吧。"},
+{c:"Shopping", e:"Let's buy something.", z:"我们买点东西吧。"},
+{c:"Shopping", e:"That's a good deal.", z:"那很划算。"},
+{c:"Shopping", e:"That's a great price.", z:"价格很棒。"},
+{c:"Shopping", e:"I got a good deal.", z:"我买得很划算。"},
 
-    {
-        category: "Daily",
-        en: "I'm going to work.",
-        zh: "我要去上班。"
-    },
+/* ---------- Transport 交通（681-770） ---------- */
+{c:"Transport", e:"Where are you going?", z:"你要去哪里？"},
+{c:"Transport", e:"I'm going to work.", z:"我要去上班。"},
+{c:"Transport", e:"I'm going home.", z:"我要回家。"},
+{c:"Transport", e:"I'm going to the airport.", z:"我要去机场。"},
+{c:"Transport", e:"I'm going to the station.", z:"我要去车站。"},
+{c:"Transport", e:"How do I get to the station?", z:"我怎么去车站？"},
+{c:"Transport", e:"How do I get downtown?", z:"我怎么去市中心？"},
+{c:"Transport", e:"Where is the bus stop?", z:"公交车站在哪里？"},
+{c:"Transport", e:"Where is the subway station?", z:"地铁站在哪里？"},
+{c:"Transport", e:"Where is the taxi stand?", z:"出租车站在哪里？"},
+{c:"Transport", e:"Which bus goes there?", z:"哪路公交车去那里？"},
+{c:"Transport", e:"Which line should I take?", z:"我应该坐哪条线？"},
+{c:"Transport", e:"How much is the ticket?", z:"票价多少钱？"},
+{c:"Transport", e:"One ticket, please.", z:"请给我一张票。"},
+{c:"Transport", e:"Two tickets, please.", z:"请给我两张票。"},
+{c:"Transport", e:"One way or round trip?", z:"单程还是往返？"},
+{c:"Transport", e:"One way, please.", z:"单程，谢谢。"},
+{c:"Transport", e:"Round trip, please.", z:"往返，谢谢。"},
+{c:"Transport", e:"When is the next bus?", z:"下一班公交车什么时候？"},
+{c:"Transport", e:"When is the next train?", z:"下一班火车什么时候？"},
+{c:"Transport", e:"The next bus is in five minutes.", z:"下一班公交车五分钟后到。"},
+{c:"Transport", e:"The train is late.", z:"火车晚点了。"},
+{c:"Transport", e:"The train is on time.", z:"火车准时。"},
+{c:"Transport", e:"Is this seat taken?", z:"这个座位有人吗？"},
+{c:"Transport", e:"Can I sit here?", z:"我可以坐这里吗？"},
+{c:"Transport", e:"Please move over.", z:"请让一下。"},
+{c:"Transport", e:"Excuse me, let me pass.", z:"打扰一下，让我过去。"},
+{c:"Transport", e:"I need to get off.", z:"我要下车。"},
+{c:"Transport", e:"This is my stop.", z:"这是我下的站。"},
+{c:"Transport", e:"Which stop is it?", z:"是哪一站？"},
+{c:"Transport", e:"How many stops?", z:"几站？"},
+{c:"Transport", e:"Three stops.", z:"三站。"},
+{c:"Transport", e:"You need to transfer.", z:"你需要换乘。"},
+{c:"Transport", e:"Where do I transfer?", z:"我在哪里换乘？"},
+{c:"Transport", e:"I missed my stop.", z:"我坐过站了。"},
+{c:"Transport", e:"I missed the bus.", z:"我错过了公交车。"},
+{c:"Transport", e:"I missed the train.", z:"我错过了火车。"},
+{c:"Transport", e:"Taxi!", z:"出租车！"},
+{c:"Transport", e:"Are you free?", z:"你空车吗？"},
+{c:"Transport", e:"Can you take me here?", z:"你能带我去这里吗？"},
+{c:"Transport", e:"Please use the meter.", z:"请打表。"},
+{c:"Transport", e:"How much is the fare?", z:"车费多少？"},
+{c:"Transport", e:"Keep the change.", z:"不用找零。"},
+{c:"Transport", e:"Faster, please.", z:"请开快点。"},
+{c:"Transport", e:"Slower, please.", z:"请开慢点。"},
+{c:"Transport", e:"Stop here, please.", z:"请在这里停。"},
+{c:"Transport", e:"Turn left here.", z:"在这里左转。"},
+{c:"Transport", e:"Turn right here.", z:"在这里右转。"},
+{c:"Transport", e:"I'm in a hurry.", z:"我赶时间。"},
+{c:"Transport", e:"I'm not in a hurry.", z:"我不赶时间。"},
+{c:"Transport", e:"The traffic is heavy.", z:"交通拥堵。"},
+{c:"Transport", e:"The road is closed.", z:"道路封闭。"},
+{c:"Transport", e:"We're stuck in traffic.", z:"我们堵车了。"},
+{c:"Transport", e:"It's rush hour.", z:"现在是高峰期。"},
+{c:"Transport", e:"Let's take the subway.", z:"我们坐地铁吧。"},
+{c:"Transport", e:"Let's take a taxi.", z:"我们坐出租车吧。"},
+{c:"Transport", e:"Let's walk instead.", z:"我们走路吧。"},
+{c:"Transport", e:"Let's take the bus.", z:"我们坐公交车吧。"},
+{c:"Transport", e:"I prefer to walk.", z:"我更喜欢走路。"},
+{c:"Transport", e:"It's faster to walk.", z:"走路更快。"},
+{c:"Transport", e:"It's too far to walk.", z:"走路太远了。"},
+{c:"Transport", e:"It takes about 20 minutes.", z:"大约需要 20 分钟。"},
+{c:"Transport", e:"We'll be there soon.", z:"我们马上就到。"},
+{c:"Transport", e:"We're almost there.", z:"我们快到了。"},
+{c:"Transport", e:"Where can I park?", z:"我在哪里可以停车？"},
+{c:"Transport", e:"Is there parking nearby?", z:"附近有停车场吗？"},
+{c:"Transport", e:"How much is parking?", z:"停车费多少？"},
+{c:"Transport", e:"I need to get gas.", z:"我需要加油。"},
+{c:"Transport", e:"Where is the gas station?", z:"加油站在哪里？"},
+{c:"Transport", e:"Fill it up, please.", z:"请加满。"},
+{c:"Transport", e:"My car broke down.", z:"我的车抛锚了。"},
+{c:"Transport", e:"I have a flat tire.", z:"我的轮胎瘪了。"},
+{c:"Transport", e:"Can you help me?", z:"你能帮我吗？"},
+{c:"Transport", e:"I need a tow truck.", z:"我需要一辆拖车。"},
+{c:"Transport", e:"Call a taxi for me.", z:"帮我叫一辆出租车。"},
+{c:"Transport", e:"Let's share a ride.", z:"我们拼车吧。"},
+{c:"Transport", e:"Can I get a ride?", z:"可以搭个车吗？"},
+{c:"Transport", e:"Thanks for the ride.", z:"谢谢你送我。"},
+{c:"Transport", e:"Drive safely.", z:"开车小心。"},
+{c:"Transport", e:"Have a safe trip.", z:"一路平安。"},
+{c:"Transport", e:"Where is the ticket office?", z:"售票处在哪里？"},
+{c:"Transport", e:"Can I buy a ticket online?", z:"我可以在网上买票吗？"},
+{c:"Transport", e:"Do you have a monthly pass?", z:"你有月票吗？"},
+{c:"Transport", e:"Is there a day pass?", z:"有日票吗？"},
+{c:"Transport", e:"The subway is crowded.", z:"地铁很拥挤。"},
+{c:"Transport", e:"Let's wait for the next one.", z:"我们等下一班吧。"},
+{c:"Transport", e:"This train goes downtown.", z:"这趟火车去市中心。"},
+{c:"Transport", e:"Does this bus go to the airport?", z:"这路公交车去机场吗？"},
+{c:"Transport", e:"Is this the right platform?", z:"这是正确的站台吗？"},
 
-    {
-        category: "Daily",
-        en: "I need some water.",
-        zh: "我需要一些水。"
-    },
+/* ---------- Hotel 酒店（771-850） ---------- */
+{c:"Hotel", e:"I have a reservation.", z:"我有预订。"},
+{c:"Hotel", e:"I'd like to check in.", z:"我想办理入住。"},
+{c:"Hotel", e:"I'd like to check out.", z:"我想退房。"},
+{c:"Hotel", e:"What time is check-in?", z:"几点可以入住？"},
+{c:"Hotel", e:"What time is check-out?", z:"几点退房？"},
+{c:"Hotel", e:"Can I check in early?", z:"我可以提前入住吗？"},
+{c:"Hotel", e:"Can I check out late?", z:"我可以延迟退房吗？"},
+{c:"Hotel", e:"I need a room.", z:"我需要一个房间。"},
+{c:"Hotel", e:"Do you have any rooms?", z:"你们有空房吗？"},
+{c:"Hotel", e:"Do you have a single room?", z:"你们有单人间吗？"},
+{c:"Hotel", e:"Do you have a double room?", z:"你们有双人间吗？"},
+{c:"Hotel", e:"Do you have a suite?", z:"你们有套房吗？"},
+{c:"Hotel", e:"How much per night?", z:"每晚多少钱？"},
+{c:"Hotel", e:"That's too expensive.", z:"太贵了。"},
+{c:"Hotel", e:"Is breakfast included?", z:"包含早餐吗？"},
+{c:"Hotel", e:"Is Wi-Fi included?", z:"包含 Wi-Fi 吗？"},
+{c:"Hotel", e:"Is there a pool?", z:"有游泳池吗？"},
+{c:"Hotel", e:"Is there a gym?", z:"有健身房吗？"},
+{c:"Hotel", e:"Is there parking?", z:"有停车位吗？"},
+{c:"Hotel", e:"I'd like a room with a view.", z:"我想要一个带景观的房间。"},
+{c:"Hotel", e:"I'd like a quiet room.", z:"我想要一个安静的房间。"},
+{c:"Hotel", e:"I'd like a non-smoking room.", z:"我想要一个无烟房间。"},
+{c:"Hotel", e:"I'd like a room on a high floor.", z:"我想要一个高层的房间。"},
+{c:"Hotel", e:"Can I see the room?", z:"我可以看看房间吗？"},
+{c:"Hotel", e:"Here is your key.", z:"这是您的钥匙。"},
+{c:"Hotel", e:"Here is your key card.", z:"这是您的房卡。"},
+{c:"Hotel", e:"What's my room number?", z:"我的房间号是多少？"},
+{c:"Hotel", e:"Your room is 302.", z:"您的房间是 302。"},
+{c:"Hotel", e:"Where is the elevator?", z:"电梯在哪里？"},
+{c:"Hotel", e:"Where is the restaurant?", z:"餐厅在哪里？"},
+{c:"Hotel", e:"Where is the lobby?", z:"大堂在哪里？"},
+{c:"Hotel", e:"Where is the front desk?", z:"前台在哪里？"},
+{c:"Hotel", e:"Can I have a wake-up call?", z:"可以给我一个叫醒服务吗？"},
+{c:"Hotel", e:"Wake me up at seven.", z:"七点叫醒我。"},
+{c:"Hotel", e:"Can I have extra towels?", z:"可以再给我几条毛巾吗？"},
+{c:"Hotel", e:"Can I have some water?", z:"可以给我一些水吗？"},
+{c:"Hotel", e:"Can I have a toothbrush?", z:"可以给我一把牙刷吗？"},
+{c:"Hotel", e:"Can I have some shampoo?", z:"可以给我一些洗发水吗？"},
+{c:"Hotel", e:"The air conditioner doesn't work.", z:"空调坏了。"},
+{c:"Hotel", e:"The heater doesn't work.", z:"暖气坏了。"},
+{c:"Hotel", e:"The TV doesn't work.", z:"电视坏了。"},
+{c:"Hotel", e:"The shower is broken.", z:"淋浴坏了。"},
+{c:"Hotel", e:"The toilet is clogged.", z:"马桶堵了。"},
+{c:"Hotel", e:"Can you fix it?", z:"你能修一下吗？"},
+{c:"Hotel", e:"Can you send someone?", z:"你能派个人来吗？"},
+{c:"Hotel", e:"It's too noisy.", z:"太吵了。"},
+{c:"Hotel", e:"I can't sleep.", z:"我睡不着。"},
+{c:"Hotel", e:"I'd like to change rooms.", z:"我想换房间。"},
+{c:"Hotel", e:"Can I extend my stay?", z:"我可以延住吗？"},
+{c:"Hotel", e:"I'd like to stay one more night.", z:"我想多住一晚。"},
+{c:"Hotel", e:"Can I leave my luggage here?", z:"我可以把行李寄存在这里吗？"},
+{c:"Hotel", e:"Can you call a taxi for me?", z:"你能帮我叫辆出租车吗？"},
+{c:"Hotel", e:"Can you help me with my bags?", z:"你能帮我拿行李吗？"},
+{c:"Hotel", e:"Can I have the bill?", z:"可以给我账单吗？"},
+{c:"Hotel", e:"I'd like to pay now.", z:"我想现在付款。"},
+{c:"Hotel", e:"Can I pay by card?", z:"我可以刷卡吗？"},
+{c:"Hotel", e:"Here is the receipt.", z:"这是收据。"},
+{c:"Hotel", e:"Thanks for your stay.", z:"感谢您的入住。"},
+{c:"Hotel", e:"I enjoyed my stay.", z:"我住得很愉快。"},
+{c:"Hotel", e:"I'll come back again.", z:"我会再来的。"},
+{c:"Hotel", e:"Is there a shuttle bus?", z:"有班车吗？"},
+{c:"Hotel", e:"When is the shuttle?", z:"班车什么时候？"},
+{c:"Hotel", e:"Is it far from the airport?", z:"离机场远吗？"},
+{c:"Hotel", e:"Is it near the beach?", z:"离海边近吗？"},
+{c:"Hotel", e:"Is it near downtown?", z:"离市中心近吗？"},
+{c:"Hotel", e:"Is it easy to get there?", z:"容易到那里吗？"},
+{c:"Hotel", e:"Can I have a map?", z:"可以给我一张地图吗？"},
+{c:"Hotel", e:"What's the Wi-Fi password?", z:"Wi-Fi 密码是什么？"},
+{c:"Hotel", e:"What's the room rate?", z:"房价多少？"},
+{c:"Hotel", e:"Do you have any discounts?", z:"你们有折扣吗？"},
+{c:"Hotel", e:"Do you have a business center?", z:"你们有商务中心吗？"},
+{c:"Hotel", e:"Do you have a laundry service?", z:"你们有洗衣服务吗？"},
+{c:"Hotel", e:"Do you have room service?", z:"你们有客房服务吗？"},
+{c:"Hotel", e:"I need an extra bed.", z:"我需要加一张床。"},
+{c:"Hotel", e:"I need an extra pillow.", z:"我需要多一个枕头。"},
+{c:"Hotel", e:"I need more toilet paper.", z:"我需要更多卫生纸。"},
+{c:"Hotel", e:"The room is clean.", z:"房间很干净。"},
+{c:"Hotel", e:"The room is dirty.", z:"房间很脏。"},
+{c:"Hotel", e:"The bed is comfortable.", z:"床很舒服。"},
 
-    {
-        category: "Daily",
-        en: "Please wait for me.",
-        zh: "请等我。"
-    },
+/* ---------- Work 工作（851-930） ---------- */
+{c:"Work", e:"I have a meeting.", z:"我有一个会议。"},
+{c:"Work", e:"I have a lot of work.", z:"我有很多工作。"},
+{c:"Work", e:"I'm very busy today.", z:"我今天很忙。"},
+{c:"Work", e:"I'm working on a project.", z:"我在做一个项目。"},
+{c:"Work", e:"I'm working from home.", z:"我在家工作。"},
+{c:"Work", e:"I'm in a meeting.", z:"我在开会。"},
+{c:"Work", e:"Can we talk later?", z:"我们能稍后谈吗？"},
+{c:"Work", e:"The meeting starts at nine.", z:"会议九点开始。"},
+{c:"Work", e:"The meeting is postponed.", z:"会议推迟了。"},
+{c:"Work", e:"The meeting is canceled.", z:"会议取消了。"},
+{c:"Work", e:"Where is the meeting room?", z:"会议室在哪里？"},
+{c:"Work", e:"Please come to my office.", z:"请来我办公室。"},
+{c:"Work", e:"I'll send you an email.", z:"我会给你发邮件。"},
+{c:"Work", e:"I got your email.", z:"我收到你的邮件了。"},
+{c:"Work", e:"Please check your email.", z:"请查看你的邮件。"},
+{c:"Work", e:"Can you send me the file?", z:"你能把文件发给我吗？"},
+{c:"Work", e:"I'll send it right away.", z:"我马上发。"},
+{c:"Work", e:"Please sign here.", z:"请在这里签字。"},
+{c:"Work", e:"Can you review this?", z:"你能审阅一下这个吗？"},
+{c:"Work", e:"I need your feedback.", z:"我需要你的反馈。"},
+{c:"Work", e:"Can you help me with this?", z:"你能帮我做这个吗？"},
+{c:"Work", e:"I'll take care of it.", z:"我会处理的。"},
+{c:"Work", e:"I'm on it.", z:"我正在处理。"},
+{c:"Work", e:"It's done.", z:"完成了。"},
+{c:"Work", e:"It's almost done.", z:"快完成了。"},
+{c:"Work", e:"I need more time.", z:"我需要更多时间。"},
+{c:"Work", e:"When is the deadline?", z:"截止日期是什么时候？"},
+{c:"Work", e:"The deadline is Friday.", z:"截止日期是周五。"},
+{c:"Work", e:"Can we extend the deadline?", z:"我们可以延长期限吗？"},
+{c:"Work", e:"Let's discuss this later.", z:"我们稍后再讨论这个。"},
+{c:"Work", e:"Let's schedule a meeting.", z:"我们安排一个会议吧。"},
+{c:"Work", e:"What time works for you?", z:"什么时间对您方便？"},
+{c:"Work", e:"Any time works for me.", z:"什么时间都行。"},
+{c:"Work", e:"I'm available tomorrow.", z:"我明天有空。"},
+{c:"Work", e:"I'm not available today.", z:"我今天没空。"},
+{c:"Work", e:"Can we meet tomorrow?", z:"我们明天可以见面吗？"},
+{c:"Work", e:"Let's meet at the office.", z:"我们在办公室见吧。"},
+{c:"Work", e:"Let's meet online.", z:"我们线上见吧。"},
+{c:"Work", e:"Can you hear me?", z:"你能听到我吗？"},
+{c:"Work", e:"Your screen is frozen.", z:"你的屏幕卡住了。"},
+{c:"Work", e:"You're on mute.", z:"你静音了。"},
+{c:"Work", e:"Can you share your screen?", z:"你能共享屏幕吗？"},
+{c:"Work", e:"I'll share my screen.", z:"我来共享屏幕。"},
+{c:"Work", e:"Let's start the presentation.", z:"我们开始演示吧。"},
+{c:"Work", e:"Any questions?", z:"有什么问题吗？"},
+{c:"Work", e:"That's a good question.", z:"这是个好问题。"},
+{c:"Work", e:"Let me explain.", z:"让我解释一下。"},
+{c:"Work", e:"I agree with you.", z:"我同意你的观点。"},
+{c:"Work", e:"I have a different opinion.", z:"我有不同的意见。"},
+{c:"Work", e:"Let's think about it.", z:"我们考虑一下。"},
+{c:"Work", e:"Let's move on.", z:"我们继续吧。"},
+{c:"Work", e:"Back to the topic.", z:"回到主题。"},
+{c:"Work", e:"Good point.", z:"说得好。"},
+{c:"Work", e:"I'll get back to you.", z:"我会回复你的。"},
+{c:"Work", e:"Let me check.", z:"让我确认一下。"},
+{c:"Work", e:"I'll let you know.", z:"我会通知你的。"},
+{c:"Work", e:"Please keep me updated.", z:"请随时告诉我进展。"},
+{c:"Work", e:"I quit my job.", z:"我辞职了。"},
+{c:"Work", e:"I got a new job.", z:"我找到新工作了。"},
+{c:"Work", e:"I got promoted.", z:"我升职了。"},
+{c:"Work", e:"I got a raise.", z:"我加薪了。"},
+{c:"Work", e:"I'm looking for a job.", z:"我在找工作。"},
+{c:"Work", e:"I have a job interview.", z:"我有一个面试。"},
+{c:"Work", e:"How was the interview?", z:"面试怎么样？"},
+{c:"Work", e:"I'm nervous about the interview.", z:"我对面试感到紧张。"},
+{c:"Work", e:"I'm confident.", z:"我有信心。"},
+{c:"Work", e:"What do you do for work?", z:"你做什么工作？"},
+{c:"Work", e:"I'm an engineer.", z:"我是工程师。"},
+{c:"Work", e:"I'm a teacher.", z:"我是老师。"},
+{c:"Work", e:"I'm a doctor.", z:"我是医生。"},
+{c:"Work", e:"I'm a student.", z:"我是学生。"},
+{c:"Work", e:"I work in a company.", z:"我在一家公司工作。"},
+{c:"Work", e:"I work in IT.", z:"我在 IT 行业工作。"},
+{c:"Work", e:"I work in finance.", z:"我在金融行业工作。"},
+{c:"Work", e:"I'm a freelancer.", z:"我是自由职业者。"},
+{c:"Work", e:"I run my own business.", z:"我经营自己的生意。"},
+{c:"Work", e:"I work from nine to five.", z:"我朝九晚五。"},
+{c:"Work", e:"I work long hours.", z:"我工作时间很长。"},
 
-    {
-        category: "Daily",
-        en: "Come with me.",
-        zh: "跟我来。"
-    },
-
-    {
-        category: "Daily",
-        en: "Follow me.",
-        zh: "跟我来。"
-    },
-
-    {
-        category: "Daily",
-        en: "Let's go home.",
-        zh: "我们回家吧。"
-    },
-
-    {
-        category: "Airport",
-        en: "May I see your passport?",
-        zh: "我可以看看你的护照吗？"
-    },
-
-    {
-        category: "Airport",
-        en: "Sure. Here is my passport.",
-        zh: "当然。这是我的护照。"
-    },
-
-    {
-        category: "Airport",
-        en: "Where are you going?",
-        zh: "你要去哪里？"
-    },
-
-    {
-        category: "Airport",
-        en: "I'm going to China.",
-        zh: "我要去中国。"
-    },
-
-    {
-        category: "Airport",
-        en: "Do you have any bags?",
-        zh: "你有行李吗？"
-    },
-
-    {
-        category: "Airport",
-        en: "Yes, I have one bag.",
-        zh: "是的，我有一个包。"
-    },
-
-    {
-        category: "Airport",
-        en: "Do you want a window seat?",
-        zh: "你想要靠窗的座位吗？"
-    },
-
-    {
-        category: "Airport",
-        en: "Yes, please.",
-        zh: "好的，谢谢。"
-    },
-
-    {
-        category: "Restaurant",
-        en: "I want some food.",
-        zh: "我想要一些食物。"
-    },
-
-    {
-        category: "Restaurant",
-        en: "Can I have some water?",
-        zh: "可以给我一些水吗？"
-    },
-
-    {
-        category: "Restaurant",
-        en: "I would like some rice.",
-        zh: "我想要一些米饭。"
-    },
-
-    {
-        category: "Shopping",
-        en: "How much is it?",
-        zh: "多少钱？"
-    },
-
-    {
-        category: "Shopping",
-        en: "I want to buy it.",
-        zh: "我想买它。"
-    },
-
-    {
-        category: "Shopping",
-        en: "Can you help me?",
-        zh: "你可以帮我吗？"
-    },
-
-    {
-        category: "Transport",
-        en: "Where are you going?",
-        zh: "你要去哪里？"
-    },
-
-    {
-        category: "Transport",
-        en: "I'm going to work.",
-        zh: "我要去上班。"
-    },
-
-    {
-        category: "Basic",
-        en: "The cat sat on the mat.",
-        zh: "猫坐在垫子上。"
-    },
-
-    {
-        category: "Basic",
-        en: "I want to learn English.",
-        zh: "我想学英语。"
-    }
+/* ---------- Health 健康（931-1000） ---------- */
+{c:"Health", e:"I don't feel well.", z:"我感觉不舒服。"},
+{c:"Health", e:"I feel sick.", z:"我生病了。"},
+{c:"Health", e:"I have a cold.", z:"我感冒了。"},
+{c:"Health", e:"I have a fever.", z:"我发烧了。"},
+{c:"Health", e:"I have a cough.", z:"我咳嗽。"},
+{c:"Health", e:"I have a headache.", z:"我头疼。"},
+{c:"Health", e:"I have a stomachache.", z:"我胃疼。"},
+{c:"Health", e:"I have a toothache.", z:"我牙疼。"},
+{c:"Health", e:"I have a sore throat.", z:"我喉咙痛。"},
+{c:"Health", e:"I have a backache.", z:"我背疼。"},
+{c:"Health", e:"My leg hurts.", z:"我腿疼。"},
+{c:"Health", e:"My arm hurts.", z:"我胳膊疼。"},
+{c:"Health", e:"My eyes hurt.", z:"我眼睛疼。"},
+{c:"Health", e:"I feel dizzy.", z:"我感到头晕。"},
+{c:"Health", e:"I feel weak.", z:"我感到虚弱。"},
+{c:"Health", e:"I feel nauseous.", z:"我想吐。"},
+{c:"Health", e:"I can't sleep.", z:"我睡不着。"},
+{c:"Health", e:"I'm allergic to this.", z:"我对这个过敏。"},
+{c:"Health", e:"I need a doctor.", z:"我需要看医生。"},
+{c:"Health", e:"Is there a doctor here?", z:"这里有医生吗？"},
+{c:"Health", e:"Where is the hospital?", z:"医院在哪里？"},
+{c:"Health", e:"Where is the clinic?", z:"诊所在哪里？"},
+{c:"Health", e:"I need an ambulance.", z:"我需要救护车。"},
+{c:"Health", e:"Call an ambulance.", z:"叫救护车。"},
+{c:"Health", e:"It's an emergency.", z:"这是紧急情况。"},
+{c:"Health", e:"I need help now.", z:"我现在需要帮助。"},
+{c:"Health", e:"Please hurry.", z:"请快点。"},
+{c:"Health", e:"It hurts here.", z:"这里疼。"},
+{c:"Health", e:"It hurts a lot.", z:"很疼。"},
+{c:"Health", e:"It hurts a little.", z:"有一点疼。"},
+{c:"Health", e:"It hurts when I move.", z:"一动就疼。"},
+{c:"Health", e:"It started yesterday.", z:"昨天开始的。"},
+{c:"Health", e:"I've had this for three days.", z:"我这个已经三天了。"},
+{c:"Health", e:"I'm taking medicine.", z:"我在吃药。"},
+{c:"Health", e:"I have a prescription.", z:"我有处方。"},
+{c:"Health", e:"I need some medicine.", z:"我需要一些药。"},
+{c:"Health", e:"Where is the pharmacy?", z:"药店在哪里？"},
+{c:"Health", e:"Can I buy this without a prescription?", z:"这个可以不用处方买吗？"},
+{c:"Health", e:"How should I take this?", z:"这个怎么吃？"},
+{c:"Health", e:"Take it twice a day.", z:"一天吃两次。"},
+{c:"Health", e:"Take it after meals.", z:"饭后吃。"},
+{c:"Health", e:"Take it before bed.", z:"睡前吃。"},
+{c:"Health", e:"Are there any side effects?", z:"有副作用吗？"},
+{c:"Health", e:"I feel better now.", z:"我现在好多了。"},
+{c:"Health", e:"I feel worse.", z:"我感觉更糟了。"},
+{c:"Health", e:"I'm getting better.", z:"我在好转。"},
+{c:"Health", e:"I'm recovering.", z:"我在康复中。"},
+{c:"Health", e:"Get well soon.", z:"早日康复。"},
+{c:"Health", e:"Take care of yourself.", z:"照顾好自己。"},
+{c:"Health", e:"You should rest.", z:"你应该休息。"},
+{c:"Health", e:"You should see a doctor.", z:"你应该去看医生。"},
+{c:"Health", e:"You should drink more water.", z:"你应该多喝水。"},
+{c:"Health", e:"You should eat more vegetables.", z:"你应该多吃蔬菜。"},
+{c:"Health", e:"You should exercise more.", z:"你应该多运动。"},
+{c:"Health", e:"I exercise every day.", z:"我每天锻炼。"},
+{c:"Health", e:"I go to the gym.", z:"我去健身房。"},
+{c:"Health", e:"I like jogging.", z:"我喜欢慢跑。"},
+{c:"Health", e:"I like swimming.", z:"我喜欢游泳。"},
+{c:"Health", e:"I like yoga.", z:"我喜欢瑜伽。"},
+{c:"Health", e:"I'm on a diet.", z:"我在节食。"},
+{c:"Health", e:"I'm trying to lose weight.", z:"我在减肥。"},
+{c:"Health", e:"I'm trying to gain weight.", z:"我在增重。"},
+{c:"Health", e:"I gave up smoking.", z:"我戒烟了。"},
+{c:"Health", e:"I don't drink alcohol.", z:"我不喝酒。"},
+{c:"Health", e:"I feel stressed.", z:"我感到有压力。"},
+{c:"Health", e:"I'm under a lot of pressure.", z:"我压力很大。"},
+{c:"Health", e:"I need to relax.", z:"我需要放松。"},
+{c:"Health", e:"I need a vacation.", z:"我需要休假。"},
+{c:"Health", e:"Take a break.", z:"休息一下。"},
+{c:"Health", e:"Get some sleep.", z:"去睡一会儿。"},
+{c:"Health", e:"You need to eat something.", z:"你需要吃点东西。"},
+{c:"Health", e:"Stay hydrated.", z:"保持水分。"},
+{c:"Health", e:"Stay warm.", z:"注意保暖。"},
+{c:"Health", e:"Stay healthy.", z:"保持健康。"}
 
 ];
 
+/* 完整性校验 */
+if (lessons.length !== 1000) {
+    console.warn("课程数据条数不是 1000，当前是：" + lessons.length);
+}
+
 
 /* =========================================================
-   2. 当前状态
+   2. 解密规则库
+   ---------------------------------------------------------
+   把母语者实际发音的变化，用规则从原句推导出来。
+   ========================================================= */
+
+/* 连读/缩略/同化规则：{原样 → 真实语流} */
+const DECODE_RULES = [
+    { re: /\bwant to\b/gi,      to: "wanna",    note: "want to → wanna /ˈwɑːnə/（连读 + 弱读）" },
+    { re: /\bgoing to\b/gi,     to: "gonna",    note: "going to → gonna /ˈɡɔːnə/（连读 + 弱读）" },
+    { re: /\bgot to\b/gi,       to: "gotta",    note: "got to → gotta /ˈɡɑːtə/" },
+    { re: /\bhave to\b/gi,      to: "hafta",    note: "have to → hafta（v 清化为 f）" },
+    { re: /\bhas to\b/gi,       to: "hasta",    note: "has to → hasta" },
+    { re: /\bkind of\b/gi,      to: "kinda",    note: "kind of → kinda /ˈkaɪndə/" },
+    { re: /\bsort of\b/gi,      to: "sorta",    note: "sort of → sorta /ˈsɔːrtə/" },
+    { re: /\blot of\b/gi,       to: "lotta",    note: "lot of → lotta /ˈlɑːtə/" },
+    { re: /\blots of\b/gi,      to: "lotsa",    note: "lots of → lotsa" },
+    { re: /\bdon't know\b/gi,   to: "dunno",    note: "don't know → dunno /dəˈnoʊ/" },
+    { re: /\blet me\b/gi,       to: "lemme",    note: "let me → lemme /ˈlɛmi/" },
+    { re: /\bgive me\b/gi,      to: "gimme",    note: "give me → gimme /ˈɡɪmi/" },
+    { re: /\bwhat do you\b/gi,  to: "whaddaya", note: "what do you → whaddaya" },
+    { re: /\bwhat are you\b/gi, to: "whaddaya", note: "what are you → whaddaya" },
+    { re: /\bdid you\b/gi,      to: "didja",    note: "did you → didja（d + y 同化）" },
+    { re: /\bwould you\b/gi,    to: "wouldja",  note: "would you → wouldja" },
+    { re: /\bcould you\b/gi,    to: "couldja",  note: "could you → couldja" },
+    { re: /\bshould you\b/gi,   to: "shouldja", note: "should you → shouldja" },
+    { re: /\bcan you\b/gi,      to: "canya",    note: "can you → canya" },
+    { re: /\bare you\b/gi,      to: "arya",     note: "are you → arya /ˈɑːrjə/" }
+];
+
+/* 弱读规则（独立提示，不改写句子） */
+const WEAK_FORMS = [
+    { re: /\bto\b/i,   note: "to → /tə/（弱读）" },
+    { re: /\bfor\b/i,  note: "for → /fər/（弱读）" },
+    { re: /\bof\b/i,   note: "of → /əv/ 或 /ə/（弱读）" },
+    { re: /\band\b/i,  note: "and → /ən/ 或 /n/（弱读）" },
+    { re: /\byou\b/i,  note: "you → /jə/（弱读）" },
+    { re: /\byour\b/i, note: "your → /jər/（弱读）" },
+    { re: /\bcan\b/i,  note: "can → /kən/（弱读，比 can't 弱很多）" },
+    { re: /\bfrom\b/i, note: "from → /frəm/（弱读）" },
+    { re: /\bthe\b/i,  note: "the → /ðə/（元音前变 /ði/）" },
+    { re: /\bhim\b/i,  note: "him → /ɪm/（h 常省音）" },
+    { re: /\bher\b/i,  note: "her → /ər/（h 常省音）" },
+    { re: /\bthem\b/i, note: "them → /əm/（th 常省音）" }
+];
+
+/* 只在没有匹配到任何规则时，给出通用提示 */
+const FALLBACK_NOTE =
+    "· 本句语速较慢，没有明显的连读或缩略，注意句子的重音和节奏。";
+
+
+/* =========================================================
+   3. 生成解密提示
+   ========================================================= */
+
+function buildHint(en) {
+
+    let decoded = en;
+    const notes = [];
+
+    /* 第一层：连读 / 缩略 / 同化 */
+    DECODE_RULES.forEach(rule => {
+
+        const before = decoded;
+        decoded = decoded.replace(rule.re, rule.to);
+
+        /* 只有真正替换成功，才记录提示，且不重复 */
+        if (decoded !== before && !notes.includes(rule.note)) {
+            notes.push(rule.note);
+        }
+    });
+
+    /* 第二层：弱读（不改写句子，只追加提示） */
+    WEAK_FORMS.forEach(rule => {
+
+        /* 用没有 g 标志的临时正则，避免 lastIndex 干扰 */
+        const testRe = new RegExp(rule.re.source, "i");
+
+        if (testRe.test(en) && !notes.includes(rule.note)) {
+            notes.push(rule.note);
+        }
+    });
+
+    /* 第三层：兜底 */
+    if (notes.length === 0) {
+        notes.push(FALLBACK_NOTE);
+        return { decoded: null, notes };
+    }
+
+    /* 如果 decoded 没有被任何规则修改过，就不显示“真实语流” */
+    if (decoded === en) {
+        return { decoded: null, notes };
+    }
+
+    return { decoded, notes };
+}
+
+
+/* =========================================================
+   4. 当前状态
    ========================================================= */
 
 let currentIndex = 0;
-
 let currentSpeed = 0.7;
-
 let currentVoice = null;
-
-let isSpeaking = false;
+let speakToken  = 0;
 
 
 /* =========================================================
-   3. 获取页面元素
+   5. 获取页面元素
    ========================================================= */
 
-const category =
-    document.getElementById("category");
+const category       = document.getElementById("category");
+const sentence       = document.getElementById("sentence");
+const translation    = document.getElementById("translation");
+const instruction    = document.getElementById("instruction");
+const progressText   = document.getElementById("progressText");
+const progressBar    = document.getElementById("progressBar");
+const listenBtn      = document.getElementById("listenBtn");
+const repeatBtn      = document.getElementById("repeatBtn");
+const stopBtn        = document.getElementById("stopBtn");
+const nextBtn        = document.getElementById("nextBtn");
+const prevBtn        = document.getElementById("prevBtn");
+const showEnglishBtn = document.getElementById("showEnglishBtn");
+const showChineseBtn = document.getElementById("showChineseBtn");
+const statusEl       = document.getElementById("status");
+const listenIcon     = document.getElementById("listenIcon");
+const jumpInput      = document.getElementById("jumpInput");
+const jumpBtn        = document.getElementById("jumpBtn");
 
-const sentence =
-    document.getElementById("sentence");
-
-const translation =
-    document.getElementById("translation");
-
-const instruction =
-    document.getElementById("instruction");
-
-const progressText =
-    document.getElementById("progressText");
-
-const progressBar =
-    document.getElementById("progressBar");
-
-const listenBtn =
-    document.getElementById("listenBtn");
-
-const repeatBtn =
-    document.getElementById("repeatBtn");
-
-const stopBtn =
-    document.getElementById("stopBtn");
-
-const nextBtn =
-    document.getElementById("nextBtn");
-
-const showEnglishBtn =
-    document.getElementById("showEnglishBtn");
-
-const showChineseBtn =
-    document.getElementById("showChineseBtn");
-
-const status =
-    document.getElementById("status");
-
-const listenIcon =
-    document.getElementById("listenIcon");
+const hintBtn     = document.getElementById("hintBtn");
+const hintPanel   = document.getElementById("hintPanel");
+const hintOriginal = document.getElementById("hintOriginal");
+const hintDecoded  = document.getElementById("hintDecoded");
+const hintNotes    = document.getElementById("hintNotes");
 
 
 /* =========================================================
-   4. 找英语语音
+   6. 找英语语音
    ========================================================= */
 
 function loadVoices() {
 
-    const voices =
-        window.speechSynthesis.getVoices();
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return;
 
-    if (!voices || voices.length === 0) {
-        return;
-    }
-
-    /*
-       优先寻找美式英语
-    */
-
-    currentVoice =
-        voices.find(v =>
-            v.lang &&
-            v.lang.toLowerCase() === "en-us"
-        );
-
-    /*
-       找不到美式，就找任何英语
-    */
+    currentVoice = voices.find(v =>
+        v.lang && v.lang.toLowerCase() === "en-us"
+    );
 
     if (!currentVoice) {
-
-        currentVoice =
-            voices.find(v =>
-                v.lang &&
-                v.lang.toLowerCase().startsWith("en")
-            );
-
+        currentVoice = voices.find(v =>
+            v.lang && v.lang.toLowerCase().startsWith("en")
+        );
     }
 }
 
 
 /* =========================================================
-   5. 页面初始化
+   7. 页面初始化
    ========================================================= */
 
 function init() {
 
     loadVoices();
 
+    try {
+        const saved = parseInt(localStorage.getItem("cw_listen_index"), 10);
+        if (!isNaN(saved) && saved >= 0 && saved < lessons.length) {
+            currentIndex = saved;
+        }
+    } catch (e) { /* 隐私模式忽略 */ }
+
     showLesson();
-
-    status.textContent =
-        "准备好了。先听，不要看英文。";
-
+    statusEl.textContent = "准备好了。先听，不要看英文。";
 }
 
 
 /* =========================================================
-   6. 显示当前句子
+   8. 显示当前句子
    ========================================================= */
 
 function showLesson() {
 
-    const lesson =
-        lessons[currentIndex];
+    const lesson = lessons[currentIndex];
 
-    category.textContent =
-        lesson.category;
+    category.textContent    = lesson.c;
+    sentence.textContent    = lesson.e;
+    translation.textContent = lesson.z;
 
-    sentence.textContent =
-        lesson.en;
-
-    translation.textContent =
-        lesson.zh;
-
-    /*
-       每换一句，重新隐藏英文和中文
-    */
-
-    sentence.style.display = "none";
-
+    /* 每换一句，全部收起 */
+    sentence.style.display    = "none";
     translation.style.display = "none";
+    hideHint();
 
     instruction.innerHTML =
-        "先不要看英文。<br>" +
-        "戴上耳朵，听完整句话。";
+        "先不要看英文。<br>戴上耳朵，听完整句话。";
 
     listenIcon.textContent = "🎧";
+    listenBtn.textContent  = "🎧 听句子";
+
+    showEnglishBtn.textContent = "👀 显示英文";
+    showChineseBtn.textContent = "🇨🇳 显示中文意思";
 
     updateProgress();
 
-    showEnglishBtn.textContent =
-        "👀 显示英文";
-
-    showChineseBtn.textContent =
-        "🇨🇳 显示中文意思";
-
+    try {
+        localStorage.setItem("cw_listen_index", currentIndex);
+    } catch (e) { /* 忽略 */ }
 }
 
 
 /* =========================================================
-   7. 更新进度
+   9. 更新进度
    ========================================================= */
 
 function updateProgress() {
 
-    const total =
-        lessons.length;
+    const total  = lessons.length;
+    const number = currentIndex + 1;
 
-    const number =
-        currentIndex + 1;
-
-    progressText.textContent =
-        `第 ${number} / ${total} 句`;
-
-    const percent =
-        (number / total) * 100;
-
-    progressBar.style.width =
-        percent + "%";
-
+    progressText.textContent = `第 ${number} / ${total} 句`;
+    progressBar.style.width  = ((number / total) * 100) + "%";
 }
 
 
 /* =========================================================
-   8. 播放句子
+   10. 播放句子
    ========================================================= */
 
 function speakCurrent() {
 
-    if (
-        !("speechSynthesis" in window)
-    ) {
-
-        status.textContent =
-            "你的设备暂不支持语音播放。";
-
+    if (!("speechSynthesis" in window)) {
+        statusEl.textContent = "你的设备暂不支持语音播放。";
         return;
-
     }
 
-    /*
-       先彻底停止上一段。
-       解决连续播放时声音重叠、
-       第二句异常等问题。
-    */
+    const token = ++speakToken;
+
+    /* 收起英文/中文/解密面板，回到“先听不看” */
+    sentence.style.display    = "none";
+    translation.style.display = "none";
+    showEnglishBtn.textContent = "👀 显示英文";
+    showChineseBtn.textContent = "🇨🇳 显示中文意思";
+    hideHint();
 
     window.speechSynthesis.cancel();
 
-    const lesson =
-        lessons[currentIndex];
+    const lesson    = lessons[currentIndex];
+    const utterance = new SpeechSynthesisUtterance(lesson.e);
 
-    const utterance =
-        new SpeechSynthesisUtterance(
-            lesson.en
-        );
-
-    utterance.lang = "en-US";
-
-    utterance.rate =
-        currentSpeed;
-
-    utterance.pitch = 1;
-
+    utterance.lang   = "en-US";
+    utterance.rate   = currentSpeed;
+    utterance.pitch  = 1;
     utterance.volume = 1;
 
-    if (currentVoice) {
-        utterance.voice =
-            currentVoice;
-    }
+    if (currentVoice) utterance.voice = currentVoice;
 
-    utterance.onstart = function() {
-
-        isSpeaking = true;
-
-        listenIcon.textContent =
-            "🔊";
-
-        status.textContent =
-            "正在播放……";
-
-        listenBtn.textContent =
-            "🔊 播放中";
-
+    utterance.onstart = function () {
+        if (token !== speakToken) return;
+        listenIcon.textContent = "🔊";
+        statusEl.textContent   = "正在播放……";
+        listenBtn.textContent  = "🔊 播放中";
     };
 
-
-    utterance.onend = function() {
-
-        isSpeaking = false;
-
-        listenIcon.textContent =
-            "🎧";
-
-        status.textContent =
-            "播放完成。现在试着自己说一遍。";
-
-        listenBtn.textContent =
-            "🎧 再听一次";
-
+    utterance.onend = function () {
+        if (token !== speakToken) return;
+        listenIcon.textContent = "🎧";
+        statusEl.textContent   = "播放完成。现在试着自己说一遍。";
+        listenBtn.textContent  = "🎧 再听一次";
     };
 
-
-    utterance.onerror = function(event) {
-
-        isSpeaking = false;
-
-        listenIcon.textContent =
-            "⚠️";
-
-        status.textContent =
-            "语音播放出现问题，请再点一次。";
-
-        listenBtn.textContent =
-            "🎧 听句子";
-
+    utterance.onerror = function () {
+        if (token !== speakToken) return;
+        listenIcon.textContent = "⚠️";
+        statusEl.textContent   = "语音播放出现问题，请再点一次。";
+        listenBtn.textContent  = "🎧 听句子";
     };
 
-
-    /*
-       iPhone / iPad Safari 某些情况下
-       需要延迟一点再 speak，
-       可以减少 cancel 后立即播放的异常。
-    */
-
-    setTimeout(function() {
-
-        window.speechSynthesis
-            .speak(utterance);
-
+    setTimeout(function () {
+        if (token !== speakToken) return;
+        window.speechSynthesis.speak(utterance);
     }, 80);
-
 }
 
 
 /* =========================================================
-   9. 停止播放
+   11. 停止播放
    ========================================================= */
 
 function stopSpeaking() {
 
+    speakToken++;
     window.speechSynthesis.cancel();
 
-    isSpeaking = false;
-
-    listenIcon.textContent =
-        "🎧";
-
-    listenBtn.textContent =
-        "🎧 听句子";
-
-    status.textContent =
-        "已停止。";
-
+    listenIcon.textContent = "🎧";
+    listenBtn.textContent  = "🎧 听句子";
+    statusEl.textContent   = "已停止。";
 }
 
 
 /* =========================================================
-   10. 显示英文
+   12. 显示英文
    ========================================================= */
 
 function showEnglish() {
 
-    const isHidden =
-        sentence.style.display === "none";
+    const isHidden = sentence.style.display === "none";
 
     if (isHidden) {
-
-        sentence.style.display =
-            "block";
-
+        sentence.style.display = "block";
         instruction.innerHTML =
-            "现在看看你刚才听到的声音。<br>" +
-            "不要逐词翻译，先整体看。";
-
-        showEnglishBtn.textContent =
-            "🙈 隐藏英文";
-
+            "现在看看你刚才听到的声音。<br>不要逐词翻译，先整体看。";
+        showEnglishBtn.textContent = "🙈 隐藏英文";
     } else {
-
-        sentence.style.display =
-            "none";
-
-        instruction.innerHTML =
-            "先不要看英文。<br>" +
-            "再听一次。";
-
-        showEnglishBtn.textContent =
-            "👀 显示英文";
-
+        sentence.style.display = "none";
+        instruction.innerHTML = "先不要看英文。<br>再听一次。";
+        showEnglishBtn.textContent = "👀 显示英文";
     }
-
 }
 
 
 /* =========================================================
-   11. 显示中文
+   13. 显示中文
    ========================================================= */
 
 function showChinese() {
 
-    const isHidden =
-        translation.style.display === "none";
+    const isHidden = translation.style.display === "none";
 
     if (isHidden) {
-
-        translation.style.display =
-            "block";
-
-        showChineseBtn.textContent =
-            "🙈 隐藏中文";
-
+        translation.style.display = "block";
+        showChineseBtn.textContent = "🙈 隐藏中文";
     } else {
-
-        translation.style.display =
-            "none";
-
-        showChineseBtn.textContent =
-            "🇨🇳 显示中文意思";
-
+        translation.style.display = "none";
+        showChineseBtn.textContent = "🇨🇳 显示中文意思";
     }
-
 }
 
 
 /* =========================================================
-   12. 下一句
+   14. 解密提示
    ========================================================= */
 
-function nextLesson() {
+function showHint() {
+
+    const lesson = lessons[currentIndex];
+    const hint   = buildHint(lesson.e);
+
+    hintOriginal.textContent = lesson.e;
+
+    if (hint.decoded) {
+        hintDecoded.textContent = hint.decoded;
+        hintDecoded.classList.remove("empty");
+    } else {
+        hintDecoded.textContent = "（和原句一致，没有明显的连读或缩略）";
+        hintDecoded.classList.add("empty");
+    }
+
+    /* 逐条渲染要点 */
+    hintNotes.innerHTML = "";
+
+    hint.notes.forEach(n => {
+        const div = document.createElement("div");
+        div.textContent = n;
+        hintNotes.appendChild(div);
+    });
+
+    hintPanel.classList.add("show");
+    hintBtn.textContent = "🙈 收起解密";
+    hintBtn.classList.add("active");
+}
+
+function hideHint() {
+
+    hintPanel.classList.remove("show");
+    hintBtn.textContent = "🔍 解密提示";
+    hintBtn.classList.remove("active");
+}
+
+function toggleHint() {
+
+    if (hintPanel.classList.contains("show")) {
+        hideHint();
+    } else {
+        showHint();
+    }
+}
+
+
+/* =========================================================
+   15. 上一句 / 下一句 / 跳转
+   ========================================================= */
+
+function goToIndex(index, message) {
 
     stopSpeaking();
 
-    currentIndex++;
+    if (index < 0) index = 0;
+    if (index >= lessons.length) index = lessons.length - 1;
 
-    if (
-        currentIndex >= lessons.length
-    ) {
-
-        currentIndex = 0;
-
-        status.textContent =
-            "🎉 第一轮完成！重新开始。";
-
-    } else {
-
-        status.textContent =
-            "下一句，先听，不要看英文。";
-
-    }
-
+    currentIndex = index;
     showLesson();
 
+    statusEl.textContent = message;
+}
+
+function nextLesson() {
+
+    if (currentIndex + 1 >= lessons.length) {
+        goToIndex(0, "🎉 1000 句全部完成！重新开始。");
+    } else {
+        goToIndex(currentIndex + 1, "下一句，先听，不要看英文。");
+    }
+}
+
+function prevLesson() {
+
+    if (currentIndex === 0) {
+        statusEl.textContent = "已经是第一句了。";
+        return;
+    }
+    goToIndex(currentIndex - 1, "上一句，先听，不要看英文。");
+}
+
+function jumpTo() {
+
+    const n = parseInt(jumpInput.value, 10);
+
+    if (isNaN(n) || n < 1 || n > lessons.length) {
+        statusEl.textContent = `请输入 1 到 ${lessons.length} 之间的数字。`;
+        return;
+    }
+
+    jumpInput.value = "";
+    goToIndex(n - 1, `已跳到第 ${n} 句，先听，不要看英文。`);
 }
 
 
 /* =========================================================
-   13. 语速选择
+   16. 语速选择
    ========================================================= */
 
-const speedButtons =
-    document.querySelectorAll(
-        ".speed-btn"
-    );
+const speedButtons = document.querySelectorAll(".speed-btn");
 
 speedButtons.forEach(button => {
 
-    button.addEventListener(
-        "click",
-        function() {
+    button.addEventListener("click", function () {
 
-            speedButtons.forEach(btn =>
-                btn.classList.remove(
-                    "active"
-                )
-            );
+        speedButtons.forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
 
-            this.classList.add("active");
+        currentSpeed = parseFloat(this.dataset.speed);
+        statusEl.textContent = `语速已调整为 ${currentSpeed}×`;
 
-            currentSpeed =
-                parseFloat(
-                    this.dataset.speed
-                );
-
-            status.textContent =
-                `语速已调整为 ${currentSpeed}×`;
-
+        /* 正在播放时立即用新语速重播 */
+        if (window.speechSynthesis && window.speechSynthesis.speaking) {
+            speakCurrent();
         }
-    );
-
+    });
 });
 
 
 /* =========================================================
-   14. 按钮事件
+   17. 按钮事件
    ========================================================= */
 
-listenBtn.addEventListener(
-    "click",
-    speakCurrent
-);
+listenBtn.addEventListener("click", speakCurrent);
+repeatBtn.addEventListener("click", speakCurrent);
+stopBtn.addEventListener("click", stopSpeaking);
+nextBtn.addEventListener("click", nextLesson);
+prevBtn.addEventListener("click", prevLesson);
+showEnglishBtn.addEventListener("click", showEnglish);
+showChineseBtn.addEventListener("click", showChinese);
+hintBtn.addEventListener("click", toggleHint);
+jumpBtn.addEventListener("click", jumpTo);
 
-repeatBtn.addEventListener(
-    "click",
-    speakCurrent
-);
-
-stopBtn.addEventListener(
-    "click",
-    stopSpeaking
-);
-
-nextBtn.addEventListener(
-    "click",
-    nextLesson
-);
-
-showEnglishBtn.addEventListener(
-    "click",
-    showEnglish
-);
-
-showChineseBtn.addEventListener(
-    "click",
-    showChinese
-);
+jumpInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") jumpTo();
+});
 
 
 /* =========================================================
-   15. 语音加载
+   18. 键盘快捷键
    ========================================================= */
 
-if (
-    "speechSynthesis" in window
-) {
+document.addEventListener("keydown", function (e) {
 
-    window.speechSynthesis
-        .addEventListener(
-            "voiceschanged",
-            loadVoices
-        );
+    const tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
 
+    if (e.code === "Space") {
+        e.preventDefault();
+        speakCurrent();
+    } else if (e.code === "ArrowRight") {
+        nextLesson();
+    } else if (e.code === "ArrowLeft") {
+        prevLesson();
+    } else if (e.key === "h" || e.key === "H") {
+        toggleHint();
+    } else if (e.code === "Escape") {
+        stopSpeaking();
+    }
+});
+
+
+/* =========================================================
+   19. 切到后台时停止
+   ========================================================= */
+
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) stopSpeaking();
+});
+
+
+/* =========================================================
+   20. 语音加载
+   ========================================================= */
+
+if ("speechSynthesis" in window) {
+    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
 }
 
 
 /* =========================================================
-   16. 启动
+   21. 启动
    ========================================================= */
 
 init();
