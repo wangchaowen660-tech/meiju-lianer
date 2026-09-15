@@ -15,421 +15,404 @@
 
 body {
     margin: 0;
-    background: #f5f7fa;
+    background: #f0f2f5;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         Arial,
         sans-serif;
-    color: #18202a;
+    color: #1a202c;
+    min-height: 100vh;
 }
 
-.container {
-    max-width: 600px;
+.app {
+    max-width: 500px;
     margin: 0 auto;
-    min-height: 100vh;
-    padding: 20px 16px 40px;
+    padding: 22px 16px 40px;
 }
+
+/* ---------- 头部 ---------- */
 
 .header {
-    text-align: center;
-    padding: 15px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 .logo {
-    font-size: 30px;
+    font-size: 18px;
     font-weight: 800;
+    letter-spacing: -0.3px;
 }
 
-.brand {
-    margin-top: 5px;
-    color: #53606e;
-    font-size: 14px;
-}
-
-.progress-box {
-    margin-top: 10px;
-}
-
-.progress-text {
-    font-size: 14px;
-    color: #687482;
-    margin-bottom: 8px;
+.counter {
+    font-size: 13px;
+    color: #8895a4;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
 }
 
 .progress {
-    width: 100%;
-    height: 7px;
-    background: #dfe4ea;
-    border-radius: 10px;
+    height: 3px;
+    background: #e2e6eb;
+    border-radius: 3px;
     overflow: hidden;
+    margin-bottom: 22px;
 }
 
 .progress-bar {
     height: 100%;
     width: 0%;
-    background: #18202a;
-    transition: width 0.3s ease;
+    background: #1a202c;
+    border-radius: 3px;
+    transition: width 0.35s ease;
 }
 
+/* ---------- 卡片 ---------- */
+
 .card {
-    background: white;
-    border-radius: 22px;
-    padding: 28px 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-    text-align: center;
-    margin-top: 20px;
+    background: #fff;
+    border-radius: 24px;
+    padding: 30px 22px 20px;
+    box-shadow: 0 4px 24px rgba(20,30,50,0.05);
 }
 
 .category {
-    display: inline-block;
-    background: #eef1f5;
-    color: #53606e;
-    border-radius: 20px;
-    padding: 6px 13px;
-    font-size: 13px;
-    margin-bottom: 25px;
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    color: #a0aab6;
+    text-transform: uppercase;
+    margin-bottom: 22px;
 }
 
-.listen-icon {
-    font-size: 58px;
-    margin: 5px 0 15px;
+/* ---------- 舞台区 ---------- */
+
+.stage {
+    min-height: 120px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stage-icon {
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: 14px;
 }
 
 .instruction {
-    font-size: 15px;
-    color: #697583;
+    font-size: 14px;
+    color: #8895a4;
     line-height: 1.6;
-    min-height: 48px;
 }
 
 .sentence {
     display: none;
-    font-size: 27px;
-    line-height: 1.45;
+    font-size: 26px;
     font-weight: 700;
-    margin: 25px 5px 15px;
+    line-height: 1.35;
+    letter-spacing: -0.3px;
+    color: #1a202c;
 }
+
+.sentence.show { display: block; }
 
 .translation {
     display: none;
-    font-size: 17px;
-    color: #687482;
+    font-size: 15px;
+    color: #6b7684;
     line-height: 1.6;
-    margin-top: 12px;
+    margin-top: 10px;
 }
 
-/* ---------- 解密提示面板 ---------- */
+.translation.show { display: block; }
+
+/* ---------- 解密面板 ---------- */
 
 .hint-panel {
     display: none;
     margin-top: 18px;
-    padding: 18px 16px 16px;
-    background: #fffdf5;
-    border: 1px solid #f0e5c0;
-    border-radius: 16px;
     text-align: left;
+    background: #fffaf0;
+    border-radius: 14px;
+    padding: 16px;
 }
 
-.hint-panel.show {
-    display: block;
-}
-
-.hint-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: #a08a3c;
-    letter-spacing: 0.6px;
-    margin: 14px 0 6px;
-}
-
-.hint-label:first-child {
-    margin-top: 0;
-}
-
-.hint-original {
-    font-size: 16px;
-    color: #18202a;
-    line-height: 1.55;
-}
+.hint-panel.show { display: block; }
 
 .hint-decoded {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
-    color: #c9770a;
-    line-height: 1.55;
-    letter-spacing: 0.2px;
+    color: #b8730a;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f5e6c3;
 }
 
 .hint-decoded.empty {
-    color: #9aa3ad;
-    font-weight: 400;
-    font-size: 14px;
     font-style: italic;
+    font-weight: 400;
+    font-size: 13px;
+    color: #a89974;
 }
 
 .hint-notes {
-    font-size: 14px;
-    color: #5e6673;
-    line-height: 1.85;
+    font-size: 13px;
+    color: #7a6b4a;
+    line-height: 1.9;
 }
 
-.hint-notes div {
-    padding-left: 2px;
-}
-
-.hint-note-title {
+.hint-notes div::before {
+    content: "· ";
+    color: #c9b375;
     font-weight: 700;
-    color: #8a7530;
 }
 
-/* ---------- 按钮 ---------- */
+/* ---------- 状态标签行 ---------- */
 
-button {
-    border: none;
-    border-radius: 15px;
-    font-size: 17px;
-    font-weight: 600;
-    padding: 15px 18px;
-    cursor: pointer;
-    transition: transform 0.08s ease, opacity 0.2s ease;
-    font-family: inherit;
-}
-
-button:active {
-    transform: scale(0.97);
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.main-btn {
-    width: 100%;
-    background: #18202a;
-    color: white;
-    margin-top: 18px;
-}
-
-.secondary-btn {
-    width: 100%;
-    background: #eef1f5;
-    color: #18202a;
-    margin-top: 12px;
-}
-
-.hint-btn {
-    width: 100%;
-    background: #fff6dd;
-    color: #8a6d1a;
-    margin-top: 12px;
-    border: 1px solid #f0e0a8;
-}
-
-.hint-btn.active {
-    background: #f7e9b4;
-}
-
-.controls {
-    margin-top: 20px;
-}
-
-.row {
-    display: flex;
-    gap: 10px;
-}
-
-.row button {
-    flex: 1;
-}
-
-.speed-title {
-    margin-top: 25px;
-    color: #697583;
-    font-size: 14px;
-}
-
-.speed-buttons {
+.chips {
     display: flex;
     gap: 8px;
+    margin-top: 22px;
+    margin-bottom: 12px;
+}
+
+.chip {
+    flex: 1;
+    padding: 11px 6px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #f3f5f8;
+    color: #4a5563;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+}
+
+.chip:active { transform: scale(0.97); }
+
+.chip.active {
+    background: #1a202c;
+    color: #fff;
+}
+
+/* ---------- 播放按钮 ---------- */
+
+.play {
+    width: 100%;
+    padding: 17px;
+    font-size: 17px;
+    font-weight: 700;
+    background: #1a202c;
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 0.2px;
+    transition: all 0.15s ease;
+}
+
+.play:active { transform: scale(0.98); }
+
+.play.playing {
+    background: #2d3748;
+}
+
+/* ---------- 导航 ---------- */
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.nav-btn {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 auto;
+    background: #fff;
+    color: #1a202c;
+    border: none;
+    border-radius: 13px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 2px 8px rgba(20,30,50,0.04);
+    transition: all 0.15s ease;
+}
+
+.nav-btn:active { transform: scale(0.95); }
+
+.speed-group {
+    display: flex;
+    flex: 1;
+    gap: 3px;
+    background: #fff;
+    padding: 4px;
+    border-radius: 13px;
+    box-shadow: 0 2px 8px rgba(20,30,50,0.04);
+}
+
+.speed {
+    flex: 1;
+    padding: 10px 4px;
+    font-size: 13px;
+    font-weight: 600;
+    background: transparent;
+    color: #6b7684;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+}
+
+.speed.active {
+    background: #1a202c;
+    color: #fff;
+}
+
+/* ---------- 跳转行 ---------- */
+
+.jump-row {
+    display: flex;
+    gap: 6px;
     margin-top: 10px;
 }
 
-.speed-btn {
+.jump-row input {
     flex: 1;
-    background: #eef1f5;
-    color: #18202a;
-    padding: 11px 5px;
-    font-size: 14px;
-}
-
-.speed-btn.active {
-    background: #18202a;
-    color: white;
-}
-
-.jump-box {
-    margin-top: 18px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.jump-box input {
-    flex: 1;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid #dfe4ea;
-    font-size: 15px;
+    padding: 11px 14px;
+    font-size: 13px;
+    border: 1px solid #e5e9ee;
+    border-radius: 13px;
+    background: #fff;
     font-family: inherit;
-    color: #18202a;
-    background: #f7f9fb;
+    color: #4a5563;
     outline: none;
     text-align: center;
 }
 
-.jump-box input:focus {
-    border-color: #18202a;
+.jump-row input:focus {
+    border-color: #1a202c;
 }
 
-.jump-box button {
-    flex: 0 0 auto;
-    padding: 12px 18px;
-    font-size: 15px;
-    background: #eef1f5;
-    color: #18202a;
-}
-
-.tip {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 15px;
-    background: #f1f4f7;
-    color: #687482;
+.jump-row button {
+    padding: 11px 20px;
     font-size: 13px;
-    line-height: 1.7;
-    text-align: left;
+    font-weight: 600;
+    background: #fff;
+    color: #4a5563;
+    border: 1px solid #e5e9ee;
+    border-radius: 13px;
+    font-family: inherit;
+    cursor: pointer;
 }
+
+.jump-row button:active { transform: scale(0.97); }
+
+/* ---------- 状态 ---------- */
 
 .status {
-    margin-top: 15px;
-    min-height: 22px;
-    color: #687482;
-    font-size: 14px;
+    margin-top: 14px;
+    text-align: center;
+    font-size: 12.5px;
+    color: #8895a4;
+    min-height: 18px;
+    line-height: 1.5;
 }
 
 .footer {
     text-align: center;
-    color: #9aa3ad;
-    font-size: 12px;
-    margin-top: 30px;
+    font-size: 11px;
+    color: #b8c2ce;
+    margin-top: 28px;
+    letter-spacing: 0.3px;
 }
 
 @media (max-width: 380px) {
-    .sentence { font-size: 23px; }
-    button { font-size: 16px; }
-    .hint-decoded { font-size: 16px; }
+    .sentence { font-size: 22px; }
+    .stage-icon { font-size: 36px; }
+    .chip { font-size: 12px; padding: 10px 4px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-    <div class="header">
+    <header class="header">
         <div class="logo">🎧 每句练耳</div>
-        <div class="brand">Chaowen AI · 真实英语听力训练</div>
+        <div class="counter" id="counter">1 / 1000</div>
+    </header>
 
-        <div class="progress-box">
-            <div class="progress-text" id="progressText">
-                第 1 / 1000 句
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
     </div>
 
     <div class="card">
 
         <div class="category" id="category">Daily</div>
 
-        <div class="listen-icon" id="listenIcon">🎧</div>
+        <div class="stage">
 
-        <div class="instruction" id="instruction">
-            先不要看英文。<br>
-            戴上耳朵，听完整句话。
-        </div>
+            <div class="stage-icon" id="stageIcon">🎧</div>
 
-        <div class="sentence" id="sentence"></div>
-        <div class="translation" id="translation"></div>
+            <div class="instruction" id="instruction">
+                先不要看英文，听完整句话
+            </div>
 
-        <button class="main-btn" id="listenBtn">🎧 听句子</button>
-        <button class="secondary-btn" id="showEnglishBtn">👀 显示英文</button>
-        <button class="secondary-btn" id="showChineseBtn">🇨🇳 显示中文意思</button>
-        <button class="hint-btn" id="hintBtn">🔍 解密提示</button>
+            <div class="sentence" id="sentence"></div>
+            <div class="translation" id="translation"></div>
 
-        <!-- 解密提示面板 -->
-        <div class="hint-panel" id="hintPanel">
-
-            <div class="hint-label">📖 原句</div>
-            <div class="hint-original" id="hintOriginal"></div>
-
-            <div class="hint-label">🎧 真实语流</div>
-            <div class="hint-decoded" id="hintDecoded"></div>
-
-            <div class="hint-label">📝 解密要点</div>
-            <div class="hint-notes" id="hintNotes"></div>
+            <div class="hint-panel" id="hintPanel">
+                <div class="hint-decoded" id="hintDecoded"></div>
+                <div class="hint-notes" id="hintNotes"></div>
+            </div>
 
         </div>
 
-        <div class="controls">
-
-            <div class="row">
-                <button class="secondary-btn" id="prevBtn">← 上一句</button>
-                <button class="secondary-btn" id="repeatBtn">🔁 再听一次</button>
-            </div>
-
-            <div class="row" style="margin-top:10px;">
-                <button class="secondary-btn" id="stopBtn">⏹️ 停止</button>
-            </div>
-
-            <div class="speed-title">语速</div>
-
-            <div class="speed-buttons">
-                <button class="speed-btn active" data-speed="0.7">0.7×</button>
-                <button class="speed-btn" data-speed="0.85">0.85×</button>
-                <button class="speed-btn" data-speed="1">1.0×</button>
-            </div>
-
-            <div class="jump-box">
-                <input type="number" id="jumpInput" min="1" placeholder="跳到第几号">
-                <button id="jumpBtn">跳转</button>
-            </div>
-
-            <button class="main-btn" id="nextBtn">下一句 →</button>
-
+        <div class="chips">
+            <button class="chip" id="englishBtn">👀 英文</button>
+            <button class="chip" id="chineseBtn">🇨🇳 中文</button>
+            <button class="chip" id="hintBtn">🔍 解密</button>
         </div>
 
-        <div class="status" id="status"></div>
-
-        <div class="tip">
-            💡 <strong>训练方法：</strong><br>
-            ① 第一次：不看英文，只听。<br>
-            ② 第二次：再听一遍，尝试抓住整体意思。<br>
-            ③ 卡住了：点「🔍 解密提示」，看看真实语流里发生了哪些变化。<br>
-            ④ 最后：跟着声音说一遍。
-        </div>
+        <button class="play" id="playBtn">🎧 听句子</button>
 
     </div>
 
-    <div class="footer">
-        Chaowen AI · 每一句都是一次听力训练
+    <nav class="nav">
+        <button class="nav-btn" id="prevBtn">←</button>
+        <div class="speed-group">
+            <button class="speed active" data-speed="0.7">0.7×</button>
+            <button class="speed" data-speed="0.85">0.85×</button>
+            <button class="speed" data-speed="1">1.0×</button>
+        </div>
+        <button class="nav-btn" id="nextBtn">→</button>
+    </nav>
+
+    <div class="jump-row">
+        <input type="number" id="jumpInput" min="1" max="1000" placeholder="跳转到第几号">
+        <button id="jumpBtn">跳转</button>
     </div>
+
+    <div class="status" id="status"></div>
+
+    <footer class="footer">Chaowen AI</footer>
 
 </div>
 
@@ -441,7 +424,6 @@ button:disabled {
 
 const lessons = [
 
-/* ---------- Daily Life 日常生活（1-150） ---------- */
 {c:"Daily", e:"Good morning.", z:"早上好。"},
 {c:"Daily", e:"Good afternoon.", z:"下午好。"},
 {c:"Daily", e:"Good evening.", z:"晚上好。"},
@@ -587,7 +569,6 @@ const lessons = [
 {c:"Daily", e:"I'm full.", z:"我吃饱了。"},
 {c:"Daily", e:"I'm still hungry.", z:"我还饿。"},
 
-/* ---------- Social 社交情感（151-280） ---------- */
 {c:"Social", e:"How have you been?", z:"你最近怎么样？"},
 {c:"Social", e:"Long time no see.", z:"好久不见。"},
 {c:"Social", e:"It's been a while.", z:"有一阵子没见了。"},
@@ -718,7 +699,6 @@ const lessons = [
 {c:"Social", e:"Let's have a drink.", z:"我们去喝一杯吧。"},
 {c:"Social", e:"Let's have a coffee.", z:"我们去喝杯咖啡吧。"},
 
-/* ---------- Airport 机场（281-390） ---------- */
 {c:"Airport", e:"May I see your passport?", z:"我可以看看你的护照吗？"},
 {c:"Airport", e:"Sure. Here is my passport.", z:"当然。这是我的护照。"},
 {c:"Airport", e:"Here is my ticket.", z:"这是我的机票。"},
@@ -831,7 +811,6 @@ const lessons = [
 {c:"Airport", e:"My friend is picking me up.", z:"我朋友来接我。"},
 {c:"Airport", e:"Please wait here.", z:"请在这里等。"},
 
-/* ---------- Travel 旅行（391-470） ---------- */
 {c:"Travel", e:"I love traveling.", z:"我喜欢旅行。"},
 {c:"Travel", e:"I travel a lot.", z:"我经常旅行。"},
 {c:"Travel", e:"This is my first trip.", z:"这是我第一次旅行。"},
@@ -913,7 +892,6 @@ const lessons = [
 {c:"Travel", e:"What time does it end?", z:"什么时候结束？"},
 {c:"Travel", e:"I want to buy souvenirs.", z:"我想买些纪念品。"},
 
-/* ---------- Restaurant 餐厅（471-590） ---------- */
 {c:"Restaurant", e:"I want some food.", z:"我想要一些食物。"},
 {c:"Restaurant", e:"I'm hungry.", z:"我饿了。"},
 {c:"Restaurant", e:"Let's eat something.", z:"我们吃点东西吧。"},
@@ -1029,7 +1007,6 @@ const lessons = [
 {c:"Restaurant", e:"This is my favorite.", z:"这是我最喜欢的。"},
 {c:"Restaurant", e:"Let's come back here.", z:"我们再回来这里吧。"},
 
-/* ---------- Shopping 购物（591-680） ---------- */
 {c:"Shopping", e:"How much is it?", z:"多少钱？"},
 {c:"Shopping", e:"How much is this?", z:"这个多少钱？"},
 {c:"Shopping", e:"How much are these?", z:"这些多少钱？"},
@@ -1116,7 +1093,6 @@ const lessons = [
 {c:"Shopping", e:"That's a great price.", z:"价格很棒。"},
 {c:"Shopping", e:"I got a good deal.", z:"我买得很划算。"},
 
-/* ---------- Transport 交通（681-770） ---------- */
 {c:"Transport", e:"Where are you going?", z:"你要去哪里？"},
 {c:"Transport", e:"I'm going to work.", z:"我要去上班。"},
 {c:"Transport", e:"I'm going home.", z:"我要回家。"},
@@ -1207,7 +1183,6 @@ const lessons = [
 {c:"Transport", e:"Does this bus go to the airport?", z:"这路公交车去机场吗？"},
 {c:"Transport", e:"Is this the right platform?", z:"这是正确的站台吗？"},
 
-/* ---------- Hotel 酒店（771-850） ---------- */
 {c:"Hotel", e:"I have a reservation.", z:"我有预订。"},
 {c:"Hotel", e:"I'd like to check in.", z:"我想办理入住。"},
 {c:"Hotel", e:"I'd like to check out.", z:"我想退房。"},
@@ -1288,7 +1263,6 @@ const lessons = [
 {c:"Hotel", e:"The room is dirty.", z:"房间很脏。"},
 {c:"Hotel", e:"The bed is comfortable.", z:"床很舒服。"},
 
-/* ---------- Work 工作（851-930） ---------- */
 {c:"Work", e:"I have a meeting.", z:"我有一个会议。"},
 {c:"Work", e:"I have a lot of work.", z:"我有很多工作。"},
 {c:"Work", e:"I'm very busy today.", z:"我今天很忙。"},
@@ -1368,7 +1342,6 @@ const lessons = [
 {c:"Work", e:"I work from nine to five.", z:"我朝九晚五。"},
 {c:"Work", e:"I work long hours.", z:"我工作时间很长。"},
 
-/* ---------- Health 健康（931-1000） ---------- */
 {c:"Health", e:"I don't feel well.", z:"我感觉不舒服。"},
 {c:"Health", e:"I feel sick.", z:"我生病了。"},
 {c:"Health", e:"I have a cold.", z:"我感冒了。"},
@@ -1446,7 +1419,6 @@ const lessons = [
 
 ];
 
-/* 完整性校验 */
 if (lessons.length !== 1000) {
     console.warn("课程数据条数不是 1000，当前是：" + lessons.length);
 }
@@ -1454,11 +1426,8 @@ if (lessons.length !== 1000) {
 
 /* =========================================================
    2. 解密规则库
-   ---------------------------------------------------------
-   把母语者实际发音的变化，用规则从原句推导出来。
    ========================================================= */
 
-/* 连读/缩略/同化规则：{原样 → 真实语流} */
 const DECODE_RULES = [
     { re: /\bwant to\b/gi,      to: "wanna",    note: "want to → wanna /ˈwɑːnə/（连读 + 弱读）" },
     { re: /\bgoing to\b/gi,     to: "gonna",    note: "going to → gonna /ˈɡɔːnə/（连读 + 弱读）" },
@@ -1482,7 +1451,6 @@ const DECODE_RULES = [
     { re: /\bare you\b/gi,      to: "arya",     note: "are you → arya /ˈɑːrjə/" }
 ];
 
-/* 弱读规则（独立提示，不改写句子） */
 const WEAK_FORMS = [
     { re: /\bto\b/i,   note: "to → /tə/（弱读）" },
     { re: /\bfor\b/i,  note: "for → /fər/（弱读）" },
@@ -1498,9 +1466,8 @@ const WEAK_FORMS = [
     { re: /\bthem\b/i, note: "them → /əm/（th 常省音）" }
 ];
 
-/* 只在没有匹配到任何规则时，给出通用提示 */
 const FALLBACK_NOTE =
-    "· 本句语速较慢，没有明显的连读或缩略，注意句子的重音和节奏。";
+    "本句语速较慢，没有明显的连读或缩略，注意句子的重音和节奏。";
 
 
 /* =========================================================
@@ -1512,477 +1479,12 @@ function buildHint(en) {
     let decoded = en;
     const notes = [];
 
-    /* 第一层：连读 / 缩略 / 同化 */
     DECODE_RULES.forEach(rule => {
-
         const before = decoded;
         decoded = decoded.replace(rule.re, rule.to);
-
-        /* 只有真正替换成功，才记录提示，且不重复 */
         if (decoded !== before && !notes.includes(rule.note)) {
             notes.push(rule.note);
         }
     });
 
-    /* 第二层：弱读（不改写句子，只追加提示） */
-    WEAK_FORMS.forEach(rule => {
-
-        /* 用没有 g 标志的临时正则，避免 lastIndex 干扰 */
-        const testRe = new RegExp(rule.re.source, "i");
-
-        if (testRe.test(en) && !notes.includes(rule.note)) {
-            notes.push(rule.note);
-        }
-    });
-
-    /* 第三层：兜底 */
-    if (notes.length === 0) {
-        notes.push(FALLBACK_NOTE);
-        return { decoded: null, notes };
-    }
-
-    /* 如果 decoded 没有被任何规则修改过，就不显示“真实语流” */
-    if (decoded === en) {
-        return { decoded: null, notes };
-    }
-
-    return { decoded, notes };
-}
-
-
-/* =========================================================
-   4. 当前状态
-   ========================================================= */
-
-let currentIndex = 0;
-let currentSpeed = 0.7;
-let currentVoice = null;
-let speakToken  = 0;
-
-
-/* =========================================================
-   5. 获取页面元素
-   ========================================================= */
-
-const category       = document.getElementById("category");
-const sentence       = document.getElementById("sentence");
-const translation    = document.getElementById("translation");
-const instruction    = document.getElementById("instruction");
-const progressText   = document.getElementById("progressText");
-const progressBar    = document.getElementById("progressBar");
-const listenBtn      = document.getElementById("listenBtn");
-const repeatBtn      = document.getElementById("repeatBtn");
-const stopBtn        = document.getElementById("stopBtn");
-const nextBtn        = document.getElementById("nextBtn");
-const prevBtn        = document.getElementById("prevBtn");
-const showEnglishBtn = document.getElementById("showEnglishBtn");
-const showChineseBtn = document.getElementById("showChineseBtn");
-const statusEl       = document.getElementById("status");
-const listenIcon     = document.getElementById("listenIcon");
-const jumpInput      = document.getElementById("jumpInput");
-const jumpBtn        = document.getElementById("jumpBtn");
-
-const hintBtn     = document.getElementById("hintBtn");
-const hintPanel   = document.getElementById("hintPanel");
-const hintOriginal = document.getElementById("hintOriginal");
-const hintDecoded  = document.getElementById("hintDecoded");
-const hintNotes    = document.getElementById("hintNotes");
-
-
-/* =========================================================
-   6. 找英语语音
-   ========================================================= */
-
-function loadVoices() {
-
-    const voices = window.speechSynthesis.getVoices();
-    if (!voices || voices.length === 0) return;
-
-    currentVoice = voices.find(v =>
-        v.lang && v.lang.toLowerCase() === "en-us"
-    );
-
-    if (!currentVoice) {
-        currentVoice = voices.find(v =>
-            v.lang && v.lang.toLowerCase().startsWith("en")
-        );
-    }
-}
-
-
-/* =========================================================
-   7. 页面初始化
-   ========================================================= */
-
-function init() {
-
-    loadVoices();
-
-    try {
-        const saved = parseInt(localStorage.getItem("cw_listen_index"), 10);
-        if (!isNaN(saved) && saved >= 0 && saved < lessons.length) {
-            currentIndex = saved;
-        }
-    } catch (e) { /* 隐私模式忽略 */ }
-
-    showLesson();
-    statusEl.textContent = "准备好了。先听，不要看英文。";
-}
-
-
-/* =========================================================
-   8. 显示当前句子
-   ========================================================= */
-
-function showLesson() {
-
-    const lesson = lessons[currentIndex];
-
-    category.textContent    = lesson.c;
-    sentence.textContent    = lesson.e;
-    translation.textContent = lesson.z;
-
-    /* 每换一句，全部收起 */
-    sentence.style.display    = "none";
-    translation.style.display = "none";
-    hideHint();
-
-    instruction.innerHTML =
-        "先不要看英文。<br>戴上耳朵，听完整句话。";
-
-    listenIcon.textContent = "🎧";
-    listenBtn.textContent  = "🎧 听句子";
-
-    showEnglishBtn.textContent = "👀 显示英文";
-    showChineseBtn.textContent = "🇨🇳 显示中文意思";
-
-    updateProgress();
-
-    try {
-        localStorage.setItem("cw_listen_index", currentIndex);
-    } catch (e) { /* 忽略 */ }
-}
-
-
-/* =========================================================
-   9. 更新进度
-   ========================================================= */
-
-function updateProgress() {
-
-    const total  = lessons.length;
-    const number = currentIndex + 1;
-
-    progressText.textContent = `第 ${number} / ${total} 句`;
-    progressBar.style.width  = ((number / total) * 100) + "%";
-}
-
-
-/* =========================================================
-   10. 播放句子
-   ========================================================= */
-
-function speakCurrent() {
-
-    if (!("speechSynthesis" in window)) {
-        statusEl.textContent = "你的设备暂不支持语音播放。";
-        return;
-    }
-
-    const token = ++speakToken;
-
-    /* 收起英文/中文/解密面板，回到“先听不看” */
-    sentence.style.display    = "none";
-    translation.style.display = "none";
-    showEnglishBtn.textContent = "👀 显示英文";
-    showChineseBtn.textContent = "🇨🇳 显示中文意思";
-    hideHint();
-
-    window.speechSynthesis.cancel();
-
-    const lesson    = lessons[currentIndex];
-    const utterance = new SpeechSynthesisUtterance(lesson.e);
-
-    utterance.lang   = "en-US";
-    utterance.rate   = currentSpeed;
-    utterance.pitch  = 1;
-    utterance.volume = 1;
-
-    if (currentVoice) utterance.voice = currentVoice;
-
-    utterance.onstart = function () {
-        if (token !== speakToken) return;
-        listenIcon.textContent = "🔊";
-        statusEl.textContent   = "正在播放……";
-        listenBtn.textContent  = "🔊 播放中";
-    };
-
-    utterance.onend = function () {
-        if (token !== speakToken) return;
-        listenIcon.textContent = "🎧";
-        statusEl.textContent   = "播放完成。现在试着自己说一遍。";
-        listenBtn.textContent  = "🎧 再听一次";
-    };
-
-    utterance.onerror = function () {
-        if (token !== speakToken) return;
-        listenIcon.textContent = "⚠️";
-        statusEl.textContent   = "语音播放出现问题，请再点一次。";
-        listenBtn.textContent  = "🎧 听句子";
-    };
-
-    setTimeout(function () {
-        if (token !== speakToken) return;
-        window.speechSynthesis.speak(utterance);
-    }, 80);
-}
-
-
-/* =========================================================
-   11. 停止播放
-   ========================================================= */
-
-function stopSpeaking() {
-
-    speakToken++;
-    window.speechSynthesis.cancel();
-
-    listenIcon.textContent = "🎧";
-    listenBtn.textContent  = "🎧 听句子";
-    statusEl.textContent   = "已停止。";
-}
-
-
-/* =========================================================
-   12. 显示英文
-   ========================================================= */
-
-function showEnglish() {
-
-    const isHidden = sentence.style.display === "none";
-
-    if (isHidden) {
-        sentence.style.display = "block";
-        instruction.innerHTML =
-            "现在看看你刚才听到的声音。<br>不要逐词翻译，先整体看。";
-        showEnglishBtn.textContent = "🙈 隐藏英文";
-    } else {
-        sentence.style.display = "none";
-        instruction.innerHTML = "先不要看英文。<br>再听一次。";
-        showEnglishBtn.textContent = "👀 显示英文";
-    }
-}
-
-
-/* =========================================================
-   13. 显示中文
-   ========================================================= */
-
-function showChinese() {
-
-    const isHidden = translation.style.display === "none";
-
-    if (isHidden) {
-        translation.style.display = "block";
-        showChineseBtn.textContent = "🙈 隐藏中文";
-    } else {
-        translation.style.display = "none";
-        showChineseBtn.textContent = "🇨🇳 显示中文意思";
-    }
-}
-
-
-/* =========================================================
-   14. 解密提示
-   ========================================================= */
-
-function showHint() {
-
-    const lesson = lessons[currentIndex];
-    const hint   = buildHint(lesson.e);
-
-    hintOriginal.textContent = lesson.e;
-
-    if (hint.decoded) {
-        hintDecoded.textContent = hint.decoded;
-        hintDecoded.classList.remove("empty");
-    } else {
-        hintDecoded.textContent = "（和原句一致，没有明显的连读或缩略）";
-        hintDecoded.classList.add("empty");
-    }
-
-    /* 逐条渲染要点 */
-    hintNotes.innerHTML = "";
-
-    hint.notes.forEach(n => {
-        const div = document.createElement("div");
-        div.textContent = n;
-        hintNotes.appendChild(div);
-    });
-
-    hintPanel.classList.add("show");
-    hintBtn.textContent = "🙈 收起解密";
-    hintBtn.classList.add("active");
-}
-
-function hideHint() {
-
-    hintPanel.classList.remove("show");
-    hintBtn.textContent = "🔍 解密提示";
-    hintBtn.classList.remove("active");
-}
-
-function toggleHint() {
-
-    if (hintPanel.classList.contains("show")) {
-        hideHint();
-    } else {
-        showHint();
-    }
-}
-
-
-/* =========================================================
-   15. 上一句 / 下一句 / 跳转
-   ========================================================= */
-
-function goToIndex(index, message) {
-
-    stopSpeaking();
-
-    if (index < 0) index = 0;
-    if (index >= lessons.length) index = lessons.length - 1;
-
-    currentIndex = index;
-    showLesson();
-
-    statusEl.textContent = message;
-}
-
-function nextLesson() {
-
-    if (currentIndex + 1 >= lessons.length) {
-        goToIndex(0, "🎉 1000 句全部完成！重新开始。");
-    } else {
-        goToIndex(currentIndex + 1, "下一句，先听，不要看英文。");
-    }
-}
-
-function prevLesson() {
-
-    if (currentIndex === 0) {
-        statusEl.textContent = "已经是第一句了。";
-        return;
-    }
-    goToIndex(currentIndex - 1, "上一句，先听，不要看英文。");
-}
-
-function jumpTo() {
-
-    const n = parseInt(jumpInput.value, 10);
-
-    if (isNaN(n) || n < 1 || n > lessons.length) {
-        statusEl.textContent = `请输入 1 到 ${lessons.length} 之间的数字。`;
-        return;
-    }
-
-    jumpInput.value = "";
-    goToIndex(n - 1, `已跳到第 ${n} 句，先听，不要看英文。`);
-}
-
-
-/* =========================================================
-   16. 语速选择
-   ========================================================= */
-
-const speedButtons = document.querySelectorAll(".speed-btn");
-
-speedButtons.forEach(button => {
-
-    button.addEventListener("click", function () {
-
-        speedButtons.forEach(b => b.classList.remove("active"));
-        this.classList.add("active");
-
-        currentSpeed = parseFloat(this.dataset.speed);
-        statusEl.textContent = `语速已调整为 ${currentSpeed}×`;
-
-        /* 正在播放时立即用新语速重播 */
-        if (window.speechSynthesis && window.speechSynthesis.speaking) {
-            speakCurrent();
-        }
-    });
-});
-
-
-/* =========================================================
-   17. 按钮事件
-   ========================================================= */
-
-listenBtn.addEventListener("click", speakCurrent);
-repeatBtn.addEventListener("click", speakCurrent);
-stopBtn.addEventListener("click", stopSpeaking);
-nextBtn.addEventListener("click", nextLesson);
-prevBtn.addEventListener("click", prevLesson);
-showEnglishBtn.addEventListener("click", showEnglish);
-showChineseBtn.addEventListener("click", showChinese);
-hintBtn.addEventListener("click", toggleHint);
-jumpBtn.addEventListener("click", jumpTo);
-
-jumpInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") jumpTo();
-});
-
-
-/* =========================================================
-   18. 键盘快捷键
-   ========================================================= */
-
-document.addEventListener("keydown", function (e) {
-
-    const tag = (e.target.tagName || "").toLowerCase();
-    if (tag === "input" || tag === "textarea") return;
-
-    if (e.code === "Space") {
-        e.preventDefault();
-        speakCurrent();
-    } else if (e.code === "ArrowRight") {
-        nextLesson();
-    } else if (e.code === "ArrowLeft") {
-        prevLesson();
-    } else if (e.key === "h" || e.key === "H") {
-        toggleHint();
-    } else if (e.code === "Escape") {
-        stopSpeaking();
-    }
-});
-
-
-/* =========================================================
-   19. 切到后台时停止
-   ========================================================= */
-
-document.addEventListener("visibilitychange", function () {
-    if (document.hidden) stopSpeaking();
-});
-
-
-/* =========================================================
-   20. 语音加载
-   ========================================================= */
-
-if ("speechSynthesis" in window) {
-    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
-}
-
-
-/* =========================================================
-   21. 启动
-   ========================================================= */
-
-init();
-
-</script>
-
-</body>
-</html>
+    WEAK_F
