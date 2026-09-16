@@ -2,2394 +2,558 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Chaowen AI 英语学习器 V1.6</title>
+<title>Chaowen AI 英语拼读训练</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+* {
+  box-sizing: border-box;
 }
 
-body{
-    margin:0;
-    background:#f4f7fb;
-    color:#172033;
-    font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    "PingFang SC",
-    "Microsoft YaHei",
-    Arial,
-    sans-serif;
+body {
+  margin: 0;
+  font-family: Arial, "Microsoft YaHei", sans-serif;
+  background: #f5f7fa;
+  color: #222;
 }
 
-header{
-    background:linear-gradient(135deg,#102a56,#174b8c);
-    color:white;
-    text-align:center;
-    padding:25px 15px;
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
 }
 
-header h1{
-    margin:0;
-    font-size:24px;
+header {
+  text-align: center;
+  padding: 20px 10px;
 }
 
-header p{
-    margin:8px 0 0;
-    font-size:14px;
-    opacity:.9;
+h1 {
+  margin: 0;
+  font-size: 28px;
 }
 
-main{
-    max-width:1000px;
-    margin:auto;
-    padding:14px;
+.subtitle {
+  color: #666;
+  margin-top: 8px;
 }
 
-.tabs{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-    margin-bottom:15px;
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
-.tab{
-    border:0;
-    background:white;
-    padding:12px 6px;
-    border-radius:12px;
-    font-weight:800;
-    box-shadow:0 2px 8px rgba(0,0,0,.06);
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
-.tab.active{
-    background:#174b8c;
-    color:white;
+.sound {
+  font-size: 58px;
+  text-align: center;
+  font-weight: bold;
+  margin: 15px 0;
 }
 
-.panel{
-    display:none;
+.word {
+  font-size: 42px;
+  text-align: center;
+  font-weight: bold;
+  margin: 15px 0;
 }
 
-.panel.active{
-    display:block;
+.chinese {
+  text-align: center;
+  font-size: 22px;
+  color: #555;
+  margin-bottom: 15px;
 }
 
-.card{
-    background:white;
-    border-radius:18px;
-    padding:17px;
-    margin-bottom:14px;
-    box-shadow:0 3px 14px rgba(0,0,0,.06);
+button {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 6px 0;
+  font-size: 18px;
+  cursor: pointer;
+  background: #222;
+  color: white;
 }
 
-.title{
-    font-size:20px;
-    font-weight:800;
+button:active {
+  transform: scale(0.98);
 }
 
-.sub{
-    color:#687385;
-    font-size:13px;
-    line-height:1.7;
-    margin-top:5px;
+.sound-button {
+  background: #1769aa;
 }
 
-.tip{
-    margin-top:12px;
-    background:#fff8e7;
-    border-left:4px solid #e1a52d;
-    padding:11px;
-    border-radius:9px;
-    font-size:13px;
-    line-height:1.7;
+.word-button {
+  background: #198754;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:9px;
+.next-button {
+  background: #6f42c1;
 }
 
-@media(max-width:700px){
-    .grid{
-        grid-template-columns:repeat(3,1fr);
-    }
+.small-button {
+  background: #555;
+  font-size: 16px;
 }
 
-@media(max-width:450px){
-    .grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+.parts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
 }
 
-.sound{
-    background:#f8fafc;
-    border:2px solid #e5eaf0;
-    border-radius:15px;
-    padding:13px 7px;
-    text-align:center;
-    cursor:pointer;
-    transition:.15s;
+.part {
+  font-size: 28px;
+  font-weight: bold;
+  padding: 12px 16px;
+  background: #eef2f7;
+  border-radius: 10px;
 }
 
-.sound:active{
-    transform:scale(.96);
+.arrow {
+  font-size: 24px;
 }
 
-.ipa{
-    font-size:25px;
-    font-weight:900;
-    color:#174b8c;
+.word-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-.kind{
-    font-size:11px;
-    color:#888;
-    margin-top:3px;
+.word-item {
+  padding: 15px;
+  background: #f0f2f5;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
 }
 
-.ex{
-    font-weight:800;
-    margin-top:7px;
+.word-item strong {
+  display: block;
+  font-size: 24px;
 }
 
-.cn{
-    font-size:12px;
-    color:#777;
-    margin-top:3px;
+.word-item span {
+  color: #666;
 }
 
-.mouth{
-    font-size:11px;
-    color:#667085;
-    margin-top:6px;
-    line-height:1.5;
+.status {
+  text-align: center;
+  color: #666;
+  margin-top: 10px;
+  font-size: 14px;
 }
 
-.audioState{
-    font-size:11px;
-    color:#16855b;
-    margin-top:7px;
+.note {
+  background: #fff8e1;
+  padding: 15px;
+  border-radius: 12px;
+  line-height: 1.7;
+  font-size: 15px;
 }
 
-.family{
-    border:1px solid #e1e7ef;
-    border-radius:15px;
-    padding:14px;
-    margin-bottom:12px;
-}
-
-.family h3{
-    margin:0;
-    color:#174b8c;
-}
-
-.blocks{
-    display:flex;
-    flex-wrap:wrap;
-    gap:7px;
-    align-items:center;
-    margin-top:10px;
-}
-
-.block{
-    background:#edf4ff;
-    color:#174b8c;
-    padding:8px 10px;
-    border-radius:9px;
-    font-weight:800;
-    cursor:pointer;
-}
-
-.wordgrid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:9px;
-}
-
-@media(max-width:650px){
-    .wordgrid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-.word{
-    background:white;
-    border:1px solid #e1e7ef;
-    border-radius:12px;
-    padding:12px;
-    text-align:center;
-    cursor:pointer;
-}
-
-.word b{
-    font-size:20px;
-}
-
-.word small{
-    display:block;
-    color:#174b8c;
-    margin-top:3px;
-}
-
-.word em{
-    display:block;
-    color:#777;
-    font-style:normal;
-    font-size:12px;
-    margin-top:3px;
-}
-
-.chunk{
-    background:#f7f9fc;
-    border-left:5px solid #174b8c;
-    border-radius:14px;
-    padding:15px;
-    margin-bottom:11px;
-}
-
-.chunkEn{
-    font-size:21px;
-    font-weight:900;
-    cursor:pointer;
-}
-
-.chunkCn{
-    color:#667085;
-    margin-top:5px;
-}
-
-.parts{
-    display:flex;
-    flex-wrap:wrap;
-    gap:7px;
-    margin-top:9px;
-}
-
-.part{
-    background:white;
-    border:1px solid #dce3ec;
-    padding:7px 9px;
-    border-radius:9px;
-    cursor:pointer;
-}
-
-.btn{
-    border:0;
-    background:#174b8c;
-    color:white;
-    padding:10px 14px;
-    border-radius:10px;
-    font-weight:800;
-}
-
-.btn.gray{
-    background:#eaf0f7;
-    color:#174b8c;
-}
-
-.controls{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:10px;
-}
-
-select{
-    width:100%;
-    padding:11px;
-    border:1px solid #dce3ec;
-    border-radius:10px;
-    background:white;
-    font-size:15px;
-}
-
-.sentence{
-    text-align:center;
-    padding:24px 12px;
-}
-
-.num{
-    font-size:13px;
-    color:#687385;
-}
-
-.progress{
-    height:8px;
-    background:#e5eaf0;
-    border-radius:10px;
-    overflow:hidden;
-    margin:10px 0;
-}
-
-.bar{
-    height:100%;
-    width:0;
-    background:#174b8c;
-}
-
-.sentenceText{
-    font-size:27px;
-    font-weight:900;
-    line-height:1.45;
-    margin:15px 0 6px;
-    cursor:pointer;
-}
-
-.sentenceCn{
-    font-size:16px;
-    color:#687385;
-}
-
-.status{
-    text-align:center;
-    min-height:22px;
-    color:#174b8c;
-    font-size:13px;
-    margin-top:8px;
-}
-
-footer{
-    text-align:center;
-    color:#8b95a5;
-    font-size:12px;
-    padding:28px 10px;
+footer {
+  text-align: center;
+  color: #888;
+  font-size: 12px;
+  padding: 20px;
 }
 </style>
 </head>
 
 <body>
 
+<div class="container">
+
 <header>
-<h1>🎧 Chaowen AI 英语学习器 V1.6</h1>
-<p>
-48音素 × 二块音 × 单词 × 母语语块 × 1000句
-</p>
+  <h1>🎧 Chaowen AI 英语拼读训练</h1>
+  <div class="subtitle">从一个声音开始，把声音拼成单词</div>
 </header>
 
-<main>
 
-<!-- =========================
-     TAB
-========================= -->
-
-<div class="tabs">
-
-<button class="tab active" data-tab="ipa">
-48 音标
-</button>
-
-<button class="tab" data-tab="phonics">
-二块音
-</button>
-
-<button class="tab" data-tab="words">
-单词
-</button>
-
-<button class="tab" data-tab="chunks">
-母语语块
-</button>
-
-<button class="tab" data-tab="sentences">
-1000句
-</button>
-
-<button class="tab" data-tab="practice">
-自由训练
-</button>
-
-</div>
-
-
-<!-- =========================
-     48 IPA
-========================= -->
-
-<section id="ipa" class="panel active">
+<!-- ========================= -->
+<!-- 第一部分：今天的声音 -->
+<!-- ========================= -->
 
 <div class="card">
 
-<div class="title">
-🔊 48个音素
+  <div class="section-title">
+    ① 今天学习一个声音
+  </div>
+
+  <div class="sound">
+    /æ/
+  </div>
+
+  <div class="chinese">
+    这是 cat 里面的 “æ” 音
+  </div>
+
+  <button class="sound-button" onclick="playAE()">
+    🔊 听 /æ/
+  </button>
+
+  <div class="note">
+    👄 嘴巴稍微张开<br>
+    👅 舌头靠前、位置较低<br>
+    🙂 嘴唇不要撅起来<br><br>
+
+    我们现在先不要背理论。<br>
+    <strong>先听 → 再模仿 → 再拼。</strong>
+  </div>
+
 </div>
 
-<div class="sub">
-点击音标，优先播放本地真正音素音频。
-</div>
 
-<div class="tip">
-
-<b>V1.6 音频机制：</b>
-
-网页首先寻找：
-
-<br><br>
-
-<code>
-audio/ipa/i-long.mp3
-</code>
-
-<br><br>
-
-如果没有找到，则自动使用浏览器英语语音作为备用。
-
-</div>
-
-</div>
-
+<!-- ========================= -->
+<!-- 第二部分：拼音块 -->
+<!-- ========================= -->
 
 <div class="card">
 
-<div class="title">
-🟢 元音
+  <div class="section-title">
+    ② 把声音拼起来
+  </div>
+
+  <div class="parts">
+
+    <div class="part">/k/</div>
+
+    <div class="arrow">→</div>
+
+    <div class="part">/æ/</div>
+
+    <div class="arrow">→</div>
+
+    <div class="part">/t/</div>
+
+  </div>
+
+  <button onclick="playAE()">
+    🔊 先听中间的 /æ/
+  </button>
+
+  <div class="word">
+    cat
+  </div>
+
+  <div class="chinese">
+    猫 🐱
+  </div>
+
+  <button class="word-button" onclick="speakWord('cat')">
+    🔊 听 cat
+  </button>
+
 </div>
 
-<div id="vowels" class="grid"></div>
 
-</div>
-
+<!-- ========================= -->
+<!-- 第三部分：-at 词族 -->
+<!-- ========================= -->
 
 <div class="card">
 
-<div class="title">
-🔵 辅音
+  <div class="section-title">
+    ③ -at 词族
+  </div>
+
+  <div class="word-list">
+
+    <div class="word-item" onclick="speakWord('at')">
+      <strong>at</strong>
+      <span>在</span>
+    </div>
+
+    <div class="word-item" onclick="speakWord('bat')">
+      <strong>bat</strong>
+      <span>蝙蝠</span>
+    </div>
+
+    <div class="word-item" onclick="speakWord('cat')">
+      <strong>cat</strong>
+      <span>猫</span>
+    </div>
+
+    <div class="word-item" onclick="speakWord('fat')">
+      <strong>fat</strong>
+      <span>胖的</span>
+    </div>
+
+    <div class="word-item" onclick="speakWord('hat')">
+      <strong>hat</strong>
+      <span>帽子</span>
+    </div>
+
+    <div class="word-item" onclick="speakWord('mat')">
+      <strong>mat</strong>
+      <span>垫子</span>
+    </div>
+
+    <div class="word-item" onclick="speakWord('rat')">
+      <strong>rat</strong>
+      <span>老鼠</span>
+    </div>
+
+    <div class="word-item" onclick="speakWord('sat')">
+      <strong>sat</strong>
+      <span>坐下了</span>
+    </div>
+
+  </div>
+
 </div>
 
-<div id="consonants" class="grid"></div>
 
-</div>
-
-</section>
-
-
-
-<!-- =========================
-     二块音
-========================= -->
-
-<section id="phonics" class="panel">
+<!-- ========================= -->
+<!-- 第四部分：声音连接 -->
+<!-- ========================= -->
 
 <div class="card">
 
-<div class="title">
-🧩 二块音拼读训练
+  <div class="section-title">
+    ④ 前一个音接后一个音
+  </div>
+
+  <div class="word">
+    cat
+  </div>
+
+  <div class="parts">
+
+    <div class="part">k</div>
+
+    <div class="arrow">→</div>
+
+    <div class="part">æ</div>
+
+    <div class="arrow">→</div>
+
+    <div class="part">t</div>
+
+  </div>
+
+  <button onclick="playAE()">
+    ① 听 /æ/
+  </button>
+
+  <button onclick="speakWord('cat')">
+    ② 听完整 cat
+  </button>
+
+  <div class="note">
+
+    🎯 训练目标：<br><br>
+
+    不要一个字母一个字母地念。<br><br>
+
+    我们训练的是：
+
+    <strong>
+      k → æ → t
+    </strong>
+
+    <br><br>
+
+    最后自然地变成：
+
+    <strong>cat</strong>
+
+  </div>
+
 </div>
 
-<div class="sub">
 
-先把声音连接起来，再形成完整单词。
-
-</div>
-
-<div class="tip">
-
-<b>注意：</b>
-
-二块音是零基础学习的声音连接训练方法，
-不是说两个音素真的变成一个新的音素。
-
-<br><br>
-
-<b>cat</b>
-
-<br>
-
-/k/ + /æ/ → /kæ/ → /kæ/ + /t/ → /kæt/
-
-</div>
-
-</div>
-
-
-<div id="families"></div>
-
-</section>
-
-
-
-<!-- =========================
-     单词
-========================= -->
-
-<section id="words" class="panel">
+<!-- ========================= -->
+<!-- 第五部分：句子 -->
+<!-- ========================= -->
 
 <div class="card">
 
-<div class="title">
-🔊 单词本音
+  <div class="section-title">
+    ⑤ 把单词放进句子
+  </div>
+
+  <div class="word">
+    The cat sat on the mat.
+  </div>
+
+  <div class="chinese">
+    猫坐在垫子上。
+  </div>
+
+  <button class="word-button"
+          onclick="speakSentence('The cat sat on the mat.')">
+    🔊 听句子
+  </button>
+
+  <div class="note">
+
+    我们可以注意里面的三个 -at 词：
+
+    <br><br>
+
+    <strong>cat</strong> → 猫<br>
+    <strong>sat</strong> → 坐下了<br>
+    <strong>mat</strong> → 垫子
+
+  </div>
+
 </div>
 
-<div class="sub">
-点击单词，听完整单词。
-</div>
 
-</div>
-
-<div id="wordsGrid" class="card wordgrid"></div>
-
-</section>
-
-
-
-<!-- =========================
-     母语语块
-========================= -->
-
-<section id="chunks" class="panel">
+<!-- ========================= -->
+<!-- 第六部分：下一步 -->
+<!-- ========================= -->
 
 <div class="card">
 
-<div class="title">
-🗣️ 母语语块
-</div>
+  <div class="section-title">
+    ⑥ 下一步
+  </div>
 
-<div class="sub">
+  <button class="next-button" onclick="nextLesson()">
+    ▶ 进入下一组
+  </button>
 
-不要一个词一个词读。
-
-先整块听，再模仿整块说。
-
-</div>
-
-</div>
-
-<div id="chunksList"></div>
-
-</section>
-
-
-
-<!-- =========================
-     1000句
-========================= -->
-
-<section id="sentences" class="panel">
-
-<div class="card">
-
-<div class="title">
-🎯 Chaowen AI 1000句口语系统
-</div>
-
-<div class="sub">
-
-高频生活英语 + 机场 + 酒店 + 餐厅 + 购物 +
-交通 + 工作 + 厨房 + 实用英语
+  <div id="nextMessage" class="status">
+    下一组准备学习新的声音
+  </div>
 
 </div>
-
-<select id="category" style="margin-top:12px">
-
-<option>全部</option>
-<option>日常</option>
-<option>机场</option>
-<option>酒店</option>
-<option>餐厅</option>
-<option>购物</option>
-<option>交通</option>
-<option>工作</option>
-<option>厨房</option>
-<option>实用</option>
-
-</select>
-
-</div>
-
-
-<div class="card sentence">
-
-<div class="num" id="num"></div>
-
-<div class="progress">
-<div id="bar" class="bar"></div>
-</div>
-
-<div id="sentenceText"
-     class="sentenceText">
-</div>
-
-<div id="sentenceCn"
-     class="sentenceCn">
-</div>
-
-
-<div class="controls"
-     style="justify-content:center">
-
-<button class="btn gray" id="prev">
-← 上一句
-</button>
-
-<button class="btn" id="playSentence">
-🔊 听整句
-</button>
-
-<button class="btn gray" id="next">
-下一句 →
-</button>
-
-</div>
-
-
-<div class="controls"
-     style="justify-content:center">
-
-<button class="btn gray"
-        id="slow">
-慢速
-</button>
-
-<button class="btn gray"
-        id="normal">
-正常
-</button>
-
-<button class="btn gray"
-        id="chunkListen">
-听语块
-</button>
-
-</div>
-
-<div id="status"
-     class="status">
-</div>
-
-</div>
-
-</section>
-
-
-
-<!-- =========================
-     自由训练
-========================= -->
-
-<section id="practice"
-         class="panel">
-
-<div class="card">
-
-<div class="title">
-🔄 母句自由替换
-</div>
-
-<div class="sub">
-一个母句，替换不同动作。
-</div>
-
-
-<select id="subj"
-        style="margin-top:12px">
-
-<option>I want to</option>
-<option>I need to</option>
-<option>I'm going to</option>
-<option>I'd like to</option>
-<option>I have to</option>
-<option>I want you to</option>
-
-</select>
-
-
-<select id="verb"
-        style="margin-top:10px">
-
-<option>go home</option>
-<option>learn English</option>
-<option>eat</option>
-<option>drink water</option>
-<option>buy it</option>
-<option>go to work</option>
-<option>take a break</option>
-<option>see him</option>
-
-</select>
-
-
-<div class="card"
-     style="
-     text-align:center;
-     background:#f7faff;
-     margin-top:12px;
-     ">
-
-<div id="practiceSentence"
-     style="
-     font-size:25px;
-     font-weight:900;
-     ">
-</div>
-
-<div id="practiceCn"
-     style="
-     color:#687385;
-     margin-top:7px;
-     ">
-</div>
-
-<div class="controls"
-     style="justify-content:center">
-
-<button class="btn"
-        id="practicePlay">
-🔊 听
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-</main>
 
 
 <footer>
 
-Chaowen AI · English Learning System V1.6
+Chaowen AI · 英语声音学习系统 V1.0<br><br>
 
-<br><br>
-
-慢一点没关系，但每一步都要成为下一步的基础。
+/æ/ 音频来源：Wikimedia Commons<br>
+Near-open front unrounded vowel<br>
+CC BY-SA 3.0 / GFDL
 
 </footer>
 
+</div>
+
+
+<!-- ========================= -->
+<!-- 真正的 /æ/ 音频 -->
+<!-- ========================= -->
+
+<audio id="aeAudio"
+       preload="auto"
+       src="audio/ae.mp3">
+</audio>
 
 
 <script>
 
-/* =====================================================
-   48 音素
-===================================================== */
+/* =========================
+   /æ/ 真音频
+   ========================= */
 
-const sounds = [
+function playAE() {
 
-["i-long","/iː/","see","看见","元音"],
-["i-short","/ɪ/","sit","坐","元音"],
-["e","/e/","bed","床","元音"],
-["ae","/æ/","cat","猫","元音"],
-["a-long","/ɑː/","car","汽车","元音"],
-["o-short","/ɒ/","hot","热的","元音"],
-["aw","/ɔː/","door","门","元音"],
-["u-short","/ʊ/","book","书","元音"],
-["u-long","/uː/","food","食物","元音"],
-["uh","/ʌ/","cup","杯子","元音"],
-["er","/ɜː/","bird","鸟","元音"],
-["schwa","/ə/","about","关于","元音"],
-["ei","/eɪ/","name","名字","元音"],
-["ai","/aɪ/","time","时间","元音"],
-["oi","/ɔɪ/","boy","男孩","元音"],
-["au","/aʊ/","house","房子","元音"],
-["ou","/əʊ/","go","去","元音"],
-["ia","/ɪə/","near","附近","元音"],
-["ea","/eə/","hair","头发","元音"],
-["ua","/ʊə/","tour","旅行","元音"],
+  const audio = document.getElementById("aeAudio");
 
-["p","/p/","pen","笔","辅音"],
-["b","/b/","bat","球棒","辅音"],
-["t","/t/","tea","茶","辅音"],
-["d","/d/","dog","狗","辅音"],
-["k","/k/","cat","猫","辅音"],
-["g","/g/","go","去","辅音"],
-["f","/f/","fish","鱼","辅音"],
-["v","/v/","very","非常","辅音"],
-["th-voiceless","/θ/","think","想","辅音"],
-["th-voiced","/ð/","this","这个","辅音"],
-["s","/s/","see","看见","辅音"],
-["z","/z/","zoo","动物园","辅音"],
-["sh","/ʃ/","ship","船","辅音"],
-["zh","/ʒ/","vision","视觉","辅音"],
-["h","/h/","hat","帽子","辅音"],
-["m","/m/","man","男人","辅音"],
-["n","/n/","name","名字","辅音"],
-["ng","/ŋ/","sing","唱","辅音"],
-["l","/l/","leg","腿","辅音"],
-["r","/r/","red","红色","辅音"],
-["y","/j/","yes","是","辅音"],
-["w","/w/","water","水","辅音"],
-["ch","/tʃ/","chat","聊天","辅音"],
-["j","/dʒ/","job","工作","辅音"],
+  audio.pause();
+  audio.currentTime = 0;
 
-["tr","/tr/","tree","树","组合音"],
-["dr","/dr/","drink","喝","组合音"],
-["ts","/ts/","cats","猫（复数）","组合音"],
-["dz","/dz/","beds","床（复数）","组合音"]
+  audio.play().catch(function(error) {
 
-];
-
-
-/* =====================================================
-   口型
-===================================================== */
-
-const mouth = {
-
-"i-long":"嘴角向两边，舌位较高，声音拉长",
-
-"i-short":"嘴巴放松，短促的 i 音",
-
-"e":"嘴巴自然打开",
-
-"ae":"嘴巴张大，舌头靠前",
-
-"a-long":"嘴巴打开，声音拉长",
-
-"o-short":"嘴唇圆，短 o 音",
-
-"aw":"嘴唇圆，声音拉长",
-
-"u-short":"嘴唇略圆，短促",
-
-"u-long":"嘴唇圆，声音拉长",
-
-"uh":"嘴巴放松",
-
-"er":"舌头居中，声音拉长",
-
-"schwa":"最放松的弱读音",
-
-"ei":"两个元音滑动",
-
-"ai":"两个元音滑动",
-
-"oi":"两个元音滑动",
-
-"au":"两个元音滑动",
-
-"ou":"两个元音滑动"
-
-};
-
-
-/* =====================================================
-   音频控制
-===================================================== */
-
-let currentAudio=null;
-
-
-/* =====================================================
-   本地音素音频
-===================================================== */
-
-function playIPA(item){
-
-    if(currentAudio){
-
-        currentAudio.pause();
-
-        currentAudio.currentTime=0;
-
-    }
-
-
-    const path=
-        "audio/ipa/"
-        +
-        item[0]
-        +
-        ".mp3";
-
-
-    const audio=
-        new Audio(path);
-
-
-    currentAudio=audio;
-
-
-    audio.volume=1;
-
-
-    audio.play()
-    .then(()=>{
-
-        console.log(
-            "本地音素:",
-            item[1]
-        );
-
-    })
-    .catch(()=>{
-
-        /*
-        如果本地音频不存在，
-        自动回退到浏览器英语声音。
-        */
-
-        fallbackSpeak(
-            item[2],
-            .72
-        );
-
-    });
-
-}
-
-
-/* =====================================================
-   浏览器英语语音备用
-===================================================== */
-
-function fallbackSpeak(
-    text,
-    rate=.78
-){
-
-    speechSynthesis.cancel();
-
-    setTimeout(()=>{
-
-        const u=
-            new SpeechSynthesisUtterance(
-                text
-            );
-
-        u.lang="en-US";
-
-        u.rate=rate;
-
-        u.pitch=1;
-
-        const voices=
-            speechSynthesis.getVoices();
-
-        const voice=
-            voices.find(v=>
-                v.lang &&
-                v.lang.toLowerCase()
-                .startsWith("en-us")
-            )
-            ||
-            voices.find(v=>
-                v.lang &&
-                v.lang.toLowerCase()
-                .startsWith("en")
-            );
-
-        if(voice){
-            u.voice=voice;
-        }
-
-        speechSynthesis.speak(u);
-
-    },70);
-
-}
-
-
-/* =====================================================
-   音素卡片
-===================================================== */
-
-function soundCard(item){
-
-    const d=
-        document.createElement(
-            "div"
-        );
-
-    d.className="sound";
-
-
-    d.innerHTML=`
-
-        <div class="ipa">
-            ${item[1]}
-        </div>
-
-        <div class="kind">
-            ${item[4]}
-        </div>
-
-        <div class="ex">
-            ${item[2]}
-        </div>
-
-        <div class="cn">
-            ${item[3]}
-        </div>
-
-        <div class="mouth">
-            👄
-            ${mouth[item[0]]
-            ||
-            "观察口型并模仿"}
-        </div>
-
-        <div class="audioState">
-            🔊 点击听本音
-        </div>
-    `;
-
-
-    d.onclick=()=>
-        playIPA(item);
-
-
-    return d;
-
-}
-
-
-sounds
-.slice(0,20)
-.forEach(
-    x=>
-    vowels.appendChild(
-        soundCard(x)
-    )
-);
-
-
-sounds
-.slice(20)
-.forEach(
-    x=>
-    consonants.appendChild(
-        soundCard(x)
-    )
-);
-
-
-
-/* =====================================================
-   二块音
-===================================================== */
-
-const families=[
-
-[
-"-at",
-"/æ/",
-[
-["c","at","cat","猫"],
-["b","at","bat","球棒"],
-["h","at","hat","帽子"],
-["m","at","mat","垫子"],
-["s","at","sat","坐了"],
-["f","at","fat","胖的"]
-]
-],
-
-[
-"-as",
-"/æ/",
-[
-["g","as","gas","汽油"],
-["h","as","has","有"],
-["w","as","was","是"]
-]
-],
-
-[
-"-an",
-"/æ/",
-[
-["m","an","man","男人"],
-["c","an","can","能够"],
-["f","an","fan","风扇"],
-["p","an","pan","平底锅"]
-]
-],
-
-[
-"-ap",
-"/æ/",
-[
-["c","ap","cap","帽子"],
-["m","ap","map","地图"],
-["t","ap","tap","轻敲"]
-]
-],
-
-[
-"-it",
-"/ɪ/",
-[
-["s","it","sit","坐"],
-["f","it","fit","适合"],
-["h","it","hit","击打"],
-["b","it","bit","咬了"]
-]
-],
-
-[
-"-in",
-"/ɪ/",
-[
-["p","in","pin","别针"],
-["w","in","win","赢"],
-["t","in","tin","锡"]
-]
-],
-
-[
-"-op",
-"/ɒ/",
-[
-["h","op","hop","跳"],
-["m","op","mop","拖把"],
-["t","op","top","顶部"]
-]
-],
-
-[
-"-ug",
-"/ʌ/",
-[
-["b","ug","bug","虫子"],
-["h","ug","hug","拥抱"],
-["m","ug","mug","马克杯"]
-]
-],
-
-[
-"-og",
-"/ɒ/",
-[
-["d","og","dog","狗"],
-["f","og","fog","雾"],
-["l","og","log","木头"]
-]
-],
-
-[
-"-ish",
-"/ɪ/",
-[
-["f","ish","fish","鱼"],
-["d","ish","dish","盘子"],
-["w","ish","wish","希望"]
-]
-],
-
-[
-"-ip",
-"/ɪ/",
-[
-["sh","ip","ship","船"],
-["ch","ip","chip","薯片"],
-["s","ip","sip","小口喝"]
-]
-],
-
-[
-"-at",
-"/æ/",
-[
-["ch","at","chat","聊天"],
-["b","at","bat","球棒"],
-["r","at","rat","老鼠"]
-]
-]
-
-];
-
-
-families.forEach(f=>{
-
-    const d=
-        document.createElement(
-            "div"
-        );
-
-    d.className="card family";
-
-
-    d.innerHTML=`
-
-        <h3>
-            ${f[0]}
-            <span
-            style="
-            font-size:12px;
-            color:#687385;
-            ">
-            主音 ${f[1]}
-            </span>
-        </h3>
-
-        <div class="sub">
-            前辅音 + 主音块
-            →
-            完整单词
-        </div>
-
-        <div class="blocks"></div>
-
-        <div
-        class="wordgrid"
-        style="margin-top:12px">
-        </div>
-
-    `;
-
-
-    const blocks=
-        d.querySelector(
-            ".blocks"
-        );
-
-
-    const wg=
-        d.querySelector(
-            ".wordgrid"
-        );
-
-
-    f[2].forEach(w=>{
-
-        const a=
-            document.createElement(
-                "span"
-            );
-
-        a.className="block";
-
-        a.textContent=w[0];
-
-        a.onclick=()=>
-            fallbackSpeak(
-                w[0],
-                .72
-            );
-
-
-        const plus=
-            document.createElement(
-                "span"
-            );
-
-        plus.textContent="+";
-
-
-        const b=
-            document.createElement(
-                "span"
-            );
-
-        b.className="block";
-
-        b.textContent=w[1];
-
-        b.onclick=()=>
-            fallbackSpeak(
-                w[1],
-                .72
-            );
-
-
-        const arrow=
-            document.createElement(
-                "span"
-            );
-
-        arrow.textContent="→";
-
-
-        const c=
-            document.createElement(
-                "span"
-            );
-
-        c.className="block";
-
-        c.textContent=w[2];
-
-
-        c.onclick=()=>
-            fallbackSpeak(
-                w[2],
-                .72
-            );
-
-
-        blocks.append(
-            a,
-            plus,
-            b,
-            arrow,
-            c
-        );
-
-
-        const card=
-            document.createElement(
-                "div"
-            );
-
-        card.className="word";
-
-
-        card.innerHTML=`
-
-            <b>${w[2]}</b>
-
-            <small>
-                ${w[3]}
-            </small>
-
-        `;
-
-
-        card.onclick=()=>
-            fallbackSpeak(
-                w[2],
-                .76
-            );
-
-
-        wg.appendChild(card);
-
-    });
-
-
-    familiesBox.appendChild(d);
-
-});
-
-
-
-/* =====================================================
-   单词
-===================================================== */
-
-const wordData=[
-
-["cat","/kæt/","猫"],
-["bat","/bæt/","球棒"],
-["hat","/hæt/","帽子"],
-["mat","/mæt/","垫子"],
-["rat","/ræt/","老鼠"],
-["sat","/sæt/","坐了"],
-
-["gas","/ɡæs/","汽油"],
-["man","/mæn/","男人"],
-["can","/kæn/","能够"],
-["map","/mæp/","地图"],
-
-["pen","/pen/","钢笔"],
-["bed","/bed/","床"],
-
-["sit","/sɪt/","坐"],
-["fish","/fɪʃ/","鱼"],
-["ship","/ʃɪp/","船"],
-["chat","/tʃæt/","聊天"],
-["chip","/tʃɪp/","薯片"],
-
-["hot","/hɒt/","热的"],
-["dog","/dɒɡ/","狗"],
-
-["sun","/sʌn/","太阳"],
-["cup","/kʌp/","杯子"],
-
-["water","/ˈwɔːtə/","水"],
-["good","/ɡʊd/","好的"],
-["see","/siː/","看见"],
-["name","/neɪm/","名字"],
-["time","/taɪm/","时间"],
-["boy","/bɔɪ/","男孩"],
-["house","/haʊs/","房子"],
-["food","/fuːd/","食物"],
-["home","/həʊm/","家"]
-
-];
-
-
-wordData.forEach(w=>{
-
-    const d=
-        document.createElement(
-            "div"
-        );
-
-    d.className="word";
-
-
-    d.innerHTML=`
-
-        <b>${w[0]}</b>
-
-        <small>
-            ${w[1]}
-        </small>
-
-        <em>
-            ${w[2]}
-        </em>
-
-    `;
-
-
-    d.onclick=()=>
-        fallbackSpeak(
-            w[0],
-            .76
-        );
-
-
-    wordsGrid.appendChild(d);
-
-});
-
-
-
-/* =====================================================
-   母语语块
-===================================================== */
-
-const chunkData=[
-
-[
-"I want to",
-"我想……",
-["I want to"]
-],
-
-[
-"I want to go home.",
-"我想回家。",
-["I want to","go home"]
-],
-
-[
-"I want to eat.",
-"我想吃东西。",
-["I want to","eat"]
-],
-
-[
-"I want to drink water.",
-"我想喝水。",
-["I want to","drink water"]
-],
-
-[
-"I need to go.",
-"我需要走了。",
-["I need to","go"]
-],
-
-[
-"I'm going to work.",
-"我要去上班。",
-["I'm going to","work"]
-],
-
-[
-"Can you help me?",
-"你能帮我吗？",
-["Can you","help me"]
-],
-
-[
-"Can you follow me?",
-"你能跟着我吗？",
-["Can you","follow me"]
-],
-
-[
-"Please give me some water.",
-"请给我一些水。",
-["Please give me","some water"]
-],
-
-[
-"Let me see.",
-"让我看看。",
-["Let me","see"]
-],
-
-[
-"I don't know.",
-"我不知道。",
-["I don't","know"]
-],
-
-[
-"That's okay.",
-"没关系。",
-["That's","okay"]
-],
-
-[
-"Here you are.",
-"给你。",
-["Here you are"]
-],
-
-[
-"Thank you very much.",
-"非常感谢。",
-["Thank you","very much"]
-]
-
-];
-
-
-chunkData.forEach(x=>{
-
-    const d=
-        document.createElement(
-            "div"
-        );
-
-    d.className="chunk";
-
-
-    d.innerHTML=`
-
-        <div class="chunkEn">
-            ${x[0]}
-        </div>
-
-        <div class="chunkCn">
-            ${x[1]}
-        </div>
-
-        <div class="parts"></div>
-
-        <div class="controls">
-
-            <button class="btn">
-                🔊 连续听
-            </button>
-
-        </div>
-
-    `;
-
-
-    const parts=
-        d.querySelector(
-            ".parts"
-        );
-
-
-    x[2].forEach(p=>{
-
-        const q=
-            document.createElement(
-                "span"
-            );
-
-        q.className="part";
-
-        q.textContent=p;
-
-        q.onclick=()=>
-            fallbackSpeak(
-                p,
-                .76
-            );
-
-
-        parts.appendChild(q);
-
-    });
-
-
-    d.querySelector(
-        ".chunkEn"
-    ).onclick=()=>
-        fallbackSpeak(
-            x[0],
-            .76
-        );
-
-
-    d.querySelector(
-        ".btn"
-    ).onclick=()=>
-        fallbackSpeak(
-            x[0],
-            .72
-        );
-
-
-    chunksList.appendChild(d);
-
-});
-
-
-
-/* =====================================================
-   1000句
-===================================================== */
-
-const base=[
-
-["日常",
-"Good morning.",
-"早上好。"],
-
-["日常",
-"How are you?",
-"你好吗？"],
-
-["日常",
-"I'm fine.",
-"我很好。"],
-
-["日常",
-"Thank you.",
-"谢谢你。"],
-
-["日常",
-"You're welcome.",
-"不客气。"],
-
-["日常",
-"See you later.",
-"待会见。"],
-
-["日常",
-"Wait a moment.",
-"等一下。"],
-
-["日常",
-"Come with me.",
-"跟我来。"],
-
-["日常",
-"Follow me.",
-"跟着我。"],
-
-["日常",
-"I understand.",
-"我明白。"],
-
-["日常",
-"I don't know.",
-"我不知道。"],
-
-["日常",
-"Please speak slowly.",
-"请慢一点说。"],
-
-["日常",
-"Can you help me?",
-"你能帮我吗？"],
-
-["日常",
-"What happened?",
-"发生什么了？"],
-
-
-["机场",
-"May I see your passport?",
-"可以看一下你的护照吗？"],
-
-["机场",
-"Sure. Here is my passport.",
-"当然。这是我的护照。"],
-
-["机场",
-"Where are you going?",
-"你要去哪里？"],
-
-["机场",
-"I'm going to China.",
-"我要去中国。"],
-
-["机场",
-"Do you have any bags?",
-"你有行李吗？"],
-
-["机场",
-"Yes, I have one bag.",
-"是的，我有一个包。"],
-
-["机场",
-"Where is the boarding gate?",
-"登机口在哪里？"],
-
-
-["酒店",
-"I have a reservation.",
-"我有预订。"],
-
-["酒店",
-"I'd like to check in.",
-"我想办理入住。"],
-
-["酒店",
-"What time is breakfast?",
-"早餐几点？"],
-
-["酒店",
-"Where is the restaurant?",
-"餐厅在哪里？"],
-
-["酒店",
-"I need a room.",
-"我需要一个房间。"],
-
-
-["餐厅",
-"A table for two, please.",
-"请给我们一张两人桌。"],
-
-["餐厅",
-"Can I see the menu?",
-"可以看菜单吗？"],
-
-["餐厅",
-"I'd like some water.",
-"我想要一些水。"],
-
-["餐厅",
-"What do you recommend?",
-"你推荐什么？"],
-
-["餐厅",
-"I'll have this one.",
-"我要这个。"],
-
-["餐厅",
-"No spicy food, please.",
-"请不要辣。"],
-
-["餐厅",
-"Can I have the bill?",
-"可以结账吗？"],
-
-
-["购物",
-"How much is this?",
-"这个多少钱？"],
-
-["购物",
-"That's too expensive.",
-"太贵了。"],
-
-["购物",
-"Can you make it cheaper?",
-"可以便宜一点吗？"],
-
-["购物",
-"I'll take it.",
-"我买了。"],
-
-["购物",
-"Can I try it on?",
-"可以试穿吗？"],
-
-["购物",
-"Can I pay by card?",
-"可以刷卡吗？"],
-
-
-["交通",
-"Where is the bus stop?",
-"公交车站在哪里？"],
-
-["交通",
-"Where is the taxi stand?",
-"出租车站在哪里？"],
-
-["交通",
-"How much is it?",
-"多少钱？"],
-
-["交通",
-"Please take me here.",
-"请带我到这里。"],
-
-["交通",
-"How long does it take?",
-"需要多长时间？"],
-
-["交通",
-"Please stop here.",
-"请在这里停。"],
-
-
-["工作",
-"I have to work.",
-"我必须工作。"],
-
-["工作",
-"I'm going to work.",
-"我要去工作。"],
-
-["工作",
-"I'm busy right now.",
-"我现在很忙。"],
-
-["工作",
-"Give me a moment.",
-"给我一点时间。"],
-
-["工作",
-"I'll do it later.",
-"我晚点做。"],
-
-["工作",
-"Let's do it together.",
-"我们一起做吧。"],
-
-["工作",
-"Good job.",
-"做得好。"],
-
-
-["厨房",
-"The food is ready.",
-"饭菜好了。"],
-
-["厨房",
-"Please wash the vegetables.",
-"请洗蔬菜。"],
-
-["厨房",
-"Cut it into pieces.",
-"把它切成块。"],
-
-["厨房",
-"Add some water.",
-"加一点水。"],
-
-["厨房",
-"Turn off the heat.",
-"关火。"],
-
-["厨房",
-"Taste it.",
-"尝一下。"],
-
-["厨房",
-"It's too salty.",
-"太咸了。"],
-
-["厨房",
-"The soup is ready.",
-"汤好了。"],
-
-
-["实用",
-"I want to go home.",
-"我想回家。"],
-
-["实用",
-"I want to eat.",
-"我想吃东西。"],
-
-["实用",
-"I want to drink water.",
-"我想喝水。"],
-
-["实用",
-"I need some help.",
-"我需要一些帮助。"],
-
-["实用",
-"I'm going home.",
-"我要回家。"],
-
-["实用",
-"I'd like some coffee.",
-"我想要一些咖啡。"],
-
-["实用",
-"Let me see.",
-"让我看看。"],
-
-["实用",
-"Let me think.",
-"让我想想。"]
-
-];
-
-
-/*
-扩充到1000句。
-这里保持 V1.5 的结构，
-后面可以继续把真正的1000句
-高频语料逐句精修。
-*/
-
-const subjects=[
-
-"I want to",
-"I need to",
-"I'm going to",
-"I'd like to",
-"I have to"
-
-];
-
-
-const actions=[
-
-["go home","回家"],
-["go to work","去上班"],
-["eat","吃东西"],
-["drink water","喝水"],
-["learn English","学习英语"],
-["buy it","买它"],
-["take a break","休息一下"],
-["see him","见他"],
-["call him","给他打电话"],
-["wait here","在这里等"],
-["go outside","出去"],
-["sit down","坐下"],
-["stand up","站起来"],
-["take a shower","洗澡"],
-["go to bed","去睡觉"],
-["practice English","练习英语"]
-
-];
-
-
-const sentences=[...base];
-
-
-let gi=0;
-
-
-while(
-    sentences.length<1000
-){
-
-    const s=
-        subjects[
-            gi%subjects.length
-        ];
-
-    const a=
-        actions[
-            gi%actions.length
-        ];
-
-
-    let cn="";
-
-
-    if(
-        s==="I want to"
-    ){
-        cn="我想";
-    }
-    else if(
-        s==="I need to"
-    ){
-        cn="我需要";
-    }
-    else if(
-        s==="I'm going to"
-    ){
-        cn="我要";
-    }
-    else if(
-        s==="I'd like to"
-    ){
-        cn="我想";
-    }
-    else{
-        cn="我必须";
-    }
-
-
-    sentences.push([
-
-        "实用",
-
-        s+" "+a[0]+"." ,
-
-        cn+" "+a[1]+"。"
-
-    ]);
-
-
-    gi++;
-
-}
-
-
-
-/* =====================================================
-   句子控制
-===================================================== */
-
-let filtered=[
-    ...sentences
-];
-
-
-let idx=0;
-
-
-function renderSentence(){
-
-    const x=
-        filtered[idx];
-
-
-    if(!x){
-        return;
-    }
-
-
-    sentenceText.textContent=
-        x[1];
-
-
-    sentenceCn.textContent=
-        x[2];
-
-
-    num.textContent=
-        `第 ${idx+1} / ${filtered.length} 句`;
-
-
-    bar.style.width=
-        (
-            (idx+1)
-            /
-            filtered.length
-            *
-            100
-        )
-        +
-        "%";
-
-}
-
-
-function sentenceSpeak(
-    rate=.8
-){
-
-    const x=
-        filtered[idx];
-
-
-    if(!x){
-        return;
-    }
-
-
-    status.textContent=
-        "🔊 正在播放……";
-
-
-    fallbackSpeak(
-        x[1],
-        rate
+    alert(
+      "声音没有播放成功。\n\n" +
+      "请确认：\n" +
+      "1. audio 文件夹已经建立\n" +
+      "2. 文件名是 ae.mp3\n" +
+      "3. ae.mp3 和 index.html 在正确位置"
     );
 
+    console.log(error);
 
-    setTimeout(()=>{
-
-        status.textContent=
-            "听完后自己说一遍。";
-
-    },1200);
+  });
 
 }
 
 
-playSentence.onclick=
-    ()=>
-    sentenceSpeak(.8);
+/* =========================
+   英文单词播放
+   ========================= */
 
+function speakWord(word) {
 
-slow.onclick=
-    ()=>
-    sentenceSpeak(.58);
+  if (!("speechSynthesis" in window)) {
 
+    alert("这个浏览器不支持英文语音播放。");
 
-normal.onclick=
-    ()=>
-    sentenceSpeak(.82);
+    return;
+  }
 
+  window.speechSynthesis.cancel();
 
-sentenceText.onclick=
-    ()=>
-    sentenceSpeak(.78);
+  const utterance =
+    new SpeechSynthesisUtterance(word);
 
+  utterance.lang = "en-US";
 
-prev.onclick=()=>{
+  utterance.rate = 0.75;
 
-    idx=
-        Math.max(
-            0,
-            idx-1
-        );
+  utterance.pitch = 1;
 
-    renderSentence();
-
-};
-
-
-next.onclick=()=>{
-
-    idx=
-        Math.min(
-            filtered.length-1,
-            idx+1
-        );
-
-    renderSentence();
-
-};
-
-
-chunkListen.onclick=()=>{
-
-    const text=
-        filtered[idx][1]
-        .replace(
-            /[?.!]/g,
-            ""
-        );
-
-
-    const parts=
-        text.split(" ");
-
-
-    let i=0;
-
-
-    speechSynthesis.cancel();
-
-
-    function go(){
-
-        if(
-            i>=parts.length
-        ){
-            return;
-        }
-
-
-        const u=
-            new SpeechSynthesisUtterance(
-                parts[i++]
-            );
-
-
-        u.lang="en-US";
-
-        u.rate=.72;
-
-
-        u.onend=()=>{
-
-            setTimeout(
-                go,
-                60
-            );
-
-        };
-
-
-        speechSynthesis.speak(u);
-
-    }
-
-
-    go();
-
-};
-
-
-category.onchange=()=>{
-
-    filtered=
-        category.value==="全部"
-
-        ?
-
-        [...sentences]
-
-        :
-
-        sentences.filter(
-            x=>
-            x[0]===category.value
-        );
-
-
-    idx=0;
-
-    renderSentence();
-
-};
-
-
-
-/* =====================================================
-   自由训练
-===================================================== */
-
-const cnMap={
-
-"I want to":"我想",
-
-"I need to":"我需要",
-
-"I'm going to":"我要",
-
-"I'd like to":"我想",
-
-"I have to":"我必须",
-
-"I want you to":"我想让你"
-
-};
-
-
-const verbMap={
-
-"go home":"回家",
-
-"learn English":"学习英语",
-
-"eat":"吃东西",
-
-"drink water":"喝水",
-
-"buy it":"买它",
-
-"go to work":"去上班",
-
-"take a break":"休息一下",
-
-"see him":"见他"
-
-};
-
-
-function updatePractice(){
-
-    practiceSentence.textContent=
-        subj.value
-        +
-        " "
-        +
-        verb.value
-        +
-        ".";
-
-
-    practiceCn.textContent=
-        (
-            cnMap[subj.value]
-            ||
-            ""
-        )
-        +
-        (
-            verbMap[verb.value]
-            ||
-            ""
-        )
-        +
-        "。";
-
+  window.speechSynthesis.speak(utterance);
 }
 
 
-subj.onchange=
-    updatePractice;
+/* =========================
+   英文句子播放
+   ========================= */
+
+function speakSentence(sentence) {
+
+  if (!("speechSynthesis" in window)) {
+
+    alert("这个浏览器不支持英文语音播放。");
+
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance =
+    new SpeechSynthesisUtterance(sentence);
+
+  utterance.lang = "en-US";
+
+  utterance.rate = 0.72;
+
+  utterance.pitch = 1;
+
+  window.speechSynthesis.speak(utterance);
+}
 
 
-verb.onchange=
-    updatePractice;
+/* =========================
+   下一课
+   ========================= */
 
+function nextLesson() {
 
-practicePlay.onclick=
-    ()=>
-    fallbackSpeak(
-        practiceSentence.textContent,
-        .78
-    );
-
-
-
-/* =====================================================
-   TAB
-===================================================== */
-
-document
-.querySelectorAll(".tab")
-.forEach(t=>{
-
-    t.onclick=()=>{
-
-        document
-        .querySelectorAll(".tab")
-        .forEach(
-            x=>
-            x.classList.remove(
-                "active"
-            )
-        );
-
-
-        document
-        .querySelectorAll(".panel")
-        .forEach(
-            x=>
-            x.classList.remove(
-                "active"
-            )
-        );
-
-
-        t.classList.add(
-            "active"
-        );
-
-
-        document
-        .getElementById(
-            t.dataset.tab
-        )
-        .classList.add(
-            "active"
-        );
-
-    };
-
-});
-
-
-/* =====================================================
-   初始化
-===================================================== */
-
-renderSentence();
-
-updatePractice();
-
-
-/*
-iPhone / iPad Safari
-第一次加载声音列表
-*/
-
-if(
-    "speechSynthesis"
-    in window
-){
-
-    speechSynthesis
-    .getVoices();
+  document.getElementById("nextMessage").innerHTML =
+    "下一步：继续增加 /æ/ 相关的声音拼读训练。";
 
 }
 
