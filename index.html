@@ -3047,4 +3047,510 @@ words:[
 
 in:{
 title:"-in",
-subtitle:"共同声音：/ɪn
+subtitle:"共同声音：/ɪn/",
+words:[
+{word:"in",cn:"在……里面",parts:[["in","元音"]],explain:"核心音块 in。",sentence:"Come in."},
+{word:"bin",cn:"箱；垃圾桶",parts:[["b","辅音"],["in","元音"]],explain:"b + in。",sentence:"Put it in the bin."},
+{word:"fin",cn:"鳍",parts:[["f","辅音"],["in","元音"]],explain:"f + in。",sentence:"The fish has a fin."},
+{word:"pin",cn:"别针",parts:[["p","辅音"],["in","元音"]],explain:"p + in。",sentence:"I need a pin."},
+{word:"win",cn:"赢",parts:[["w","辅音"],["in","元音"]],explain:"w + in。",sentence:"We can win."}
+]
+},
+
+it:{
+title:"-it",
+subtitle:"共同声音：/ɪt/",
+words:[
+{word:"it",cn:"它",parts:[["it","元音"]],explain:"核心音块 it。",sentence:"I like it."},
+{word:"bit",cn:"一点；咬",parts:[["b","辅音"],["it","元音"]],explain:"b + it。",sentence:"A little bit."},
+{word:"fit",cn:"适合；健康的",parts:[["f","辅音"],["it","元音"]],explain:"f + it。",sentence:"It will fit."},
+{word:"hit",cn:"击打",parts:[["h","辅音"],["it","元音"]],explain:"h + it。",sentence:"Don't hit it."},
+{word:"sit",cn:"坐",parts:[["s","辅音"],["it","元音"]],explain:"s + it。",sentence:"Sit here."}
+]
+},
+
+ig:{
+title:"-ig",
+subtitle:"共同声音：/ɪg/",
+words:[
+{word:"big",cn:"大的",parts:[["b","辅音"],["ig","元音"]],explain:"b + ig。",sentence:"It is big."},
+{word:"dig",cn:"挖",parts:[["d","辅音"],["ig","元音"]],explain:"d + ig。",sentence:"Dig here."},
+{word:"fig",cn:"无花果",parts:[["f","辅音"],["ig","元音"]],explain:"f + ig。",sentence:"I like figs."},
+{word:"pig",cn:"猪",parts:[["p","辅音"],["ig","元音"]],explain:"p + ig。",sentence:"The pig is big."},
+{word:"wig",cn:"假发",parts:[["w","辅音"],["ig","元音"]],explain:"w + ig。",sentence:"It is a wig."}
+]
+},
+
+as:{
+title:"-as",
+subtitle:"核心音块：as",
+words:[
+{word:"as",cn:"作为；像……一样",parts:[["as","元音"]],explain:"先把 as 当成一个整体音块来认识。",sentence:"As you know."},
+{word:"gas",cn:"气体；汽油",parts:[["g","辅音"],["as","音块"]],explain:"这就是我们训练的多块音：g + as → gas。不要把 g、a、s 三个字母机械分开，而是训练音块之间的连接。",sentence:"The gas is low."},
+{word:"has",cn:"有",parts:[["h","辅音"],["as","音块"]],explain:"h + as。注意这里的 as 是一个整体音块。",sentence:"He has a car."},
+{word:"was",cn:"是；曾经是",parts:[["w","辅音"],["as","音块"]],explain:"w + as。这里继续训练音块连接。",sentence:"It was good."}
+]
+
+}
+
+};
+
+
+let currentFamily="at";
+let familyIndex=0;
+
+
+function selectFamily(key,button){
+
+    currentFamily=key;
+    familyIndex=0;
+
+    document
+    .querySelectorAll(".family-tabs button")
+    .forEach(b=>
+        b.classList.remove("active")
+    );
+
+    button.classList.add("active");
+
+    renderFamily();
+
+}
+
+
+function renderFamily(){
+
+    const family=
+        familyData[currentFamily];
+
+    const item=
+        family.words[familyIndex];
+
+    document.getElementById("familyTitle")
+        .textContent=family.title;
+
+    document.getElementById("familySubtitle")
+        .textContent=family.subtitle;
+
+    document.getElementById("familyBigWord")
+        .textContent=item.word;
+
+    document.getElementById("familyCN")
+        .textContent="🇨🇳 "+item.cn;
+
+
+    const route=
+        document.getElementById("familyRoute");
+
+    route.innerHTML="";
+
+
+    item.parts.forEach((part,index)=>{
+
+        const div=
+            document.createElement("div");
+
+        div.className=
+            "family-piece "+
+            (part[1].includes("元音") ||
+             part[1].includes("音块")
+             ?"vowel"
+             :"");
+
+        div.textContent=part[0];
+
+        route.appendChild(div);
+
+
+        if(index<item.parts.length-1){
+
+            const arrow=
+                document.createElement("div");
+
+            arrow.className="family-arrow";
+
+            arrow.textContent="→";
+
+            route.appendChild(arrow);
+
+        }
+
+    });
+
+
+    const final=
+        document.createElement("div");
+
+    final.className="family-final";
+
+    final.textContent=item.word;
+
+    route.appendChild(final);
+
+
+    document.getElementById("familyExplain")
+        .innerHTML=`
+
+        <strong>🧩 拼读路线：</strong>
+
+        ${item.parts.map(p=>p[0]).join(" + ")}
+
+        → <strong>${item.word}</strong>
+
+        <br><br>
+
+        ${item.explain}
+
+        <div class="family-sentence">
+
+        🗣️ <strong>例句：</strong>
+
+        ${item.sentence}
+
+        <br>
+
+        🇨🇳 点击「听例句」，先听英语，再看意思。
+
+        </div>
+
+        `;
+
+
+    document.getElementById("familyProgress")
+        .style.width=
+        ((familyIndex+1)/family.words.length*100)+"%";
+
+
+    renderFamilyList();
+
+}
+
+
+function renderFamilyList(){
+
+    const family=
+        familyData[currentFamily];
+
+    const list=
+        document.getElementById("familyWordList");
+
+    list.innerHTML="";
+
+    family.words.forEach((item,index)=>{
+
+        const btn=
+            document.createElement("button");
+
+        btn.className=
+            "family-word-button "+
+            (index===familyIndex
+            ?"active"
+            :"");
+
+        btn.innerHTML=`
+
+            <div class="en">
+                ${item.word}
+            </div>
+
+            <div class="cn">
+                ${item.cn}
+            </div>
+
+        `;
+
+        btn.onclick=()=>{
+
+            familyIndex=index;
+
+            renderFamily();
+
+        };
+
+        list.appendChild(btn);
+
+    });
+
+}
+
+
+function speakFamilyWord(){
+
+    const item=
+        familyData[currentFamily]
+        .words[familyIndex];
+
+    speak(item.word,0.64);
+
+}
+
+
+function playFamilyParts(){
+
+    const item=
+        familyData[currentFamily]
+        .words[familyIndex];
+
+    speechSynthesis.cancel();
+
+    let i=0;
+
+    function play(){
+
+        if(i>=item.parts.length){
+
+            setTimeout(()=>{
+
+                speak(item.word,0.62);
+
+            },400);
+
+            return;
+
+        }
+
+        const part=item.parts[i][0];
+
+        let spoken=part;
+
+        if(part==="sh") spoken="ship";
+        if(part==="ch") spoken="chair";
+
+        speak(spoken,0.58);
+
+        i++;
+
+        setTimeout(play,800);
+
+    }
+
+    play();
+
+}
+
+
+function playFamilySentence(){
+
+    const item=
+        familyData[currentFamily]
+        .words[familyIndex];
+
+    speak(item.sentence,0.70);
+
+}
+
+
+function nextFamilyWord(){
+
+    const family=
+        familyData[currentFamily];
+
+    familyIndex++;
+
+    if(familyIndex>=family.words.length){
+
+        familyIndex=0;
+
+    }
+
+    renderFamily();
+
+}
+
+
+function randomFamilyWord(){
+
+    const family=
+        familyData[currentFamily];
+
+    familyIndex=
+        Math.floor(
+            Math.random()*family.words.length
+        );
+
+    renderFamily();
+
+}
+
+
+function playWholeFamily(){
+
+    const family=
+        familyData[currentFamily];
+
+    speechSynthesis.cancel();
+
+    let i=0;
+
+    function play(){
+
+        if(i>=family.words.length){
+
+            return;
+
+        }
+
+        const word=
+            family.words[i].word;
+
+        speak(word,0.62);
+
+        i++;
+
+        setTimeout(play,1000);
+
+    }
+
+    play();
+
+}
+
+
+renderFamily();
+
+
+/* =====================================================
+   词族快速测试
+===================================================== */
+
+const quizData=[
+
+{
+question:"c + at",
+answer:"cat",
+cn:"猫"
+},
+
+{
+question:"b + at",
+answer:"bat",
+cn:"蝙蝠"
+},
+
+{
+question:"m + at",
+answer:"mat",
+cn:"垫子"
+},
+
+{
+question:"s + at",
+answer:"sat",
+cn:"坐下了"
+},
+
+{
+question:"g + as",
+answer:"gas",
+cn:"气体；汽油"
+},
+
+{
+question:"sh + ip",
+answer:"ship",
+cn:"船"
+},
+
+{
+question:"ch + at",
+answer:"chat",
+cn:"聊天"
+},
+
+{
+question:"p + in",
+answer:"pin",
+cn:"别针"
+},
+
+{
+question:"b + ig",
+answer:"big",
+cn:"大的"
+}
+
+];
+
+let quizIndex=0;
+
+
+function renderQuiz(){
+
+    const item=
+        quizData[quizIndex];
+
+    document.getElementById("quizQuestion")
+        .textContent=item.question;
+
+    document.getElementById("quizAnswer")
+        .textContent=
+        item.answer+" — "+item.cn;
+
+    document.getElementById("quizAnswer")
+        .style.display="none";
+
+}
+
+
+function speakQuizQuestion(){
+
+    const item=
+        quizData[quizIndex];
+
+    /*
+    用单词本身播放，
+    让学习者先听声音再猜。
+    */
+
+    speak(item.answer,0.62);
+
+}
+
+
+function showQuizAnswer(){
+
+    document.getElementById("quizAnswer")
+        .style.display="block";
+
+}
+
+
+function nextQuiz(){
+
+    quizIndex++;
+
+    if(quizIndex>=quizData.length){
+
+        quizIndex=0;
+
+    }
+
+    renderQuiz();
+
+}
+
+
+renderQuiz();
+
+
+/* =====================================================
+   页面隐藏停止语音
+===================================================== */
+
+document.addEventListener(
+    "visibilitychange",
+    ()=>{
+
+        if(document.hidden){
+
+            speechSynthesis.cancel();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
