@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>词块学习 · 拼读复习版</title>
+<title>词块学习 · 拼读缩读版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#f0f4f8 0%,#e2e8f0 100%);color:#1e293b;min-height:100vh;}
@@ -30,6 +30,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .icon-btn{padding:7px 12px;border:0;border-radius:20px;background:#fff;color:#0f172a;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
 .icon-btn.fav{color:#f59e0b;}
 .icon-btn.fav.on{background:#f59e0b;color:#fff;}
+.icon-btn.contraction{color:#6366f1;}
 .pattern-list{background:#fff;border-radius:16px;padding:8px;margin-bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,0.06);max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;}
 .pattern-list.open{max-height:400px;overflow-y:auto;padding:8px;}
 .pattern-list-item{padding:10px 12px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;border-bottom:1px solid #f1f5f9;}
@@ -50,14 +51,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .sentence-line{font-size:26px;font-weight:800;line-height:1.5;word-break:break-word;letter-spacing:0.3px;}
 .sentence-line .part-pattern{color:#0f172a;cursor:pointer;padding:2px 2px;border-radius:6px;transition:background .15s;}
 .sentence-line .part-pattern:hover{background:#e2e8f0;}
-.sentence-line .part-pattern:active{background:#cbd5e1;}
 .sentence-line .part-chunk{color:#e94560;cursor:pointer;padding:2px 2px;border-radius:6px;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);transition:background .15s;}
 .sentence-line .part-chunk:hover{background:rgba(233,69,96,0.15);}
-.sentence-line .part-chunk:active{background:rgba(233,69,96,0.28);}
 .sentence-cn{font-size:15px;color:#64748b;line-height:1.5;margin-top:12px;}
 .sentence-ph{margin-top:12px;padding:8px 12px;background:#fffbeb;border-radius:10px;font-size:12px;color:#92400e;font-style:italic;letter-spacing:0.3px;border-left:3px solid #f59e0b;line-height:1.5;}
 .sentence-ph::before{content:"🎵 ";font-style:normal;font-weight:700;}
-.hint-row{display:flex;gap:14px;margin-top:12px;font-size:11px;color:#94a3b8;flex-wrap:wrap;}
+/* 缩读卡片 */
+.contraction-card{margin-top:10px;padding:10px 12px;background:#eef2ff;border-radius:12px;border-left:3px solid #6366f1;display:none;}
+.contraction-card.show{display:block;}
+.contraction-label{font-size:11px;font-weight:700;color:#4f46e5;margin-bottom:6px;letter-spacing:0.5px;}
+.contraction-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.contraction-full{font-size:13px;color:#94a3b8;text-decoration:line-through;text-decoration-color:#cbd5e1;}
+.contraction-arrow{color:#6366f1;font-weight:800;font-size:14px;}
+.contraction-short{font-size:17px;font-weight:800;color:#4f46e5;cursor:pointer;padding:2px 6px;border-radius:6px;transition:background .15s;}
+.contraction-short:hover{background:#e0e7ff;}
+.contraction-short:active{background:#c7d2fe;}
+.contraction-speak{margin-left:auto;background:#6366f1;color:#fff;border:0;padding:5px 12px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;}
+.contraction-speak:active{transform:scale(0.96);}
+.hint-row{display:flex;gap:14px;margin-top:10px;font-size:11px;color:#94a3b8;flex-wrap:wrap;}
 .hint-row span{display:flex;align-items:center;gap:4px;}
 .hint-row .dot-black{width:8px;height:8px;border-radius:50%;background:#0f172a;}
 .hint-row .dot-red{width:8px;height:8px;border-radius:50%;background:#e94560;}
@@ -102,6 +113,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .modal-price{color:#e94560;font-weight:800;font-size:22px;margin-top:6px;}
 .modal-desc-en{font-size:15px;color:#0f172a;line-height:1.5;margin-top:14px;}
 .modal-desc-cn{font-size:13px;color:#64748b;line-height:1.5;margin-top:6px;}
+/* 缩读表样式 */
+.contraction-list-item{display:flex;align-items:center;gap:8px;padding:10px 4px;border-bottom:1px solid #f1f5f9;}
+.contraction-list-item:last-child{border-bottom:0;}
+.contraction-list-full{color:#94a3b8;font-size:13px;min-width:100px;}
+.contraction-list-arrow{color:#6366f1;font-weight:800;}
+.contraction-list-short{color:#4f46e5;font-weight:800;font-size:15px;flex:1;}
+.contraction-list-btn{background:#eef2ff;border:0;padding:5px 12px;border-radius:10px;color:#4f46e5;font-size:11px;font-weight:700;cursor:pointer;}
+.contraction-list-btn:active{transform:scale(0.95);}
 @media(max-width:480px){
   .sentence-line{font-size:22px;}
   .chunk-grid{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px;}
@@ -109,6 +128,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   .chunk .en{font-size:12px;}
   .chunk .ph{font-size:8px;}
   .sentence-actions button{font-size:12px;padding:10px;}
+  .contraction-short{font-size:15px;}
 }
 </style>
 </head>
@@ -139,7 +159,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       </div>
       <button class="icon-btn" id="listToggle" onclick="toggleList()">📋 母句</button>
       <button class="icon-btn fav" id="favToggle" onclick="toggleFavMode()">⭐ 收藏</button>
-      <button class="icon-btn" id="reviewBtn" onclick="startReview()">🔁 复习</button>
+      <button class="icon-btn" onclick="startReview()">🔁 复习</button>
+      <button class="icon-btn contraction" onclick="openContractionList()">🗣️ 缩读表</button>
     </div>
 
     <div class="pattern-list" id="patternList"></div>
@@ -156,6 +177,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <div class="sentence-line" id="sentenceLine"></div>
       <div class="sentence-cn" id="sentenceCn"></div>
       <div class="sentence-ph" id="sentencePh"></div>
+
+      <!-- 🗣️ 口语缩读对照 -->
+      <div class="contraction-card" id="contractionCard">
+        <div class="contraction-label">🗣️ 日常口语中常说</div>
+        <div class="contraction-row">
+          <span class="contraction-full" id="contractionFull"></span>
+          <span class="contraction-arrow">→</span>
+          <span class="contraction-short" id="contractionShort" onclick="speakContraction()"></span>
+          <button class="contraction-speak" onclick="speakContraction()">🔊 听</button>
+        </div>
+      </div>
 
       <div class="hint-row">
         <span><span class="dot-black"></span>点黑色读母句</span>
@@ -195,12 +227,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <div class="modal" id="productModal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <button class="modal-close" onclick="closeModal('productModal')">&times;</button>
     <div class="modal-img" id="mImg"></div>
     <div class="modal-name" id="mName"></div>
     <div class="modal-price" id="mPrice"></div>
     <div class="modal-desc-en" id="mDescEn"></div>
     <div class="modal-desc-cn" id="mDescCn"></div>
+  </div>
+</div>
+
+<!-- 缩读表弹窗 -->
+<div class="modal" id="contractionModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('contractionModal')">&times;</button>
+    <h3 style="font-size:19px;font-weight:800;">🗣️ 常用口语缩读</h3>
+    <p style="font-size:12px;color:#94a3b8;margin-top:4px;margin-bottom:10px;">点 🔊 听发音 · 日常交流中这样说更自然</p>
+    <div id="contractionListBody"></div>
   </div>
 </div>
 
@@ -292,6 +334,70 @@ function getPhonics(text) {
     const punct = w.slice(clean.length);
     return (PHONICS_DICT[clean] || clean) + punct;
   }).join(" ");
+}
+
+// ================================================================
+// 🗣️ 口语缩读词典
+// 说明：大小写敏感，避免误替换（比如 "I have no idea" 不缩）
+// ================================================================
+const CONTRACTIONS = [
+  { full: "I am", short: "I'm" },
+  { full: "You are", short: "You're" },
+  { full: "He is", short: "He's" },
+  { full: "She is", short: "She's" },
+  { full: "It is", short: "It's" },
+  { full: "We are", short: "We're" },
+  { full: "They are", short: "They're" },
+  { full: "That is", short: "That's" },
+  { full: "There is", short: "There's" },
+  { full: "do not", short: "don't" },
+  { full: "does not", short: "doesn't" },
+  { full: "did not", short: "didn't" },
+  { full: "is not", short: "isn't" },
+  { full: "are not", short: "aren't" },
+  { full: "was not", short: "wasn't" },
+  { full: "were not", short: "weren't" },
+  { full: "cannot", short: "can't" },
+  { full: "can not", short: "can't" },
+  { full: "could not", short: "couldn't" },
+  { full: "will not", short: "won't" },
+  { full: "would not", short: "wouldn't" },
+  { full: "should not", short: "shouldn't" },
+  { full: "must not", short: "mustn't" },
+  { full: "I will", short: "I'll" },
+  { full: "You will", short: "You'll" },
+  { full: "He will", short: "He'll" },
+  { full: "She will", short: "She'll" },
+  { full: "We will", short: "We'll" },
+  { full: "They will", short: "They'll" },
+  { full: "I would", short: "I'd" },
+  { full: "You would", short: "You'd" },
+  { full: "He would", short: "He'd" },
+  { full: "She would", short: "She'd" },
+  { full: "Let us", short: "Let's" },
+  { full: "going to", short: "gonna" },
+  { full: "want to", short: "wanna" },
+  { full: "got to", short: "gotta" },
+  { full: "give me", short: "gimme" },
+  { full: "let me", short: "lemme" },
+  { full: "kind of", short: "kinda" },
+  { full: "sort of", short: "sorta" },
+  { full: "What are you", short: "Whatcha" },
+  { full: "See you", short: "Seeya" }
+];
+
+// 把原句应用缩读规则（大小写敏感，只替换明确匹配）
+function applyContractions(text) {
+  let result = text;
+  // 按长度排序，长的先匹配，避免短规则先吃掉
+  const sorted = [...CONTRACTIONS].sort((a, b) => b.full.length - a.full.length);
+  sorted.forEach(c => {
+    // 用词边界匹配，避免 "I am" 匹配到 "I amaze" 这种
+    const escaped = c.full.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp("\\b" + escaped + "\\b", "g");
+    result = result.replace(re, c.short);
+  });
+  return result;
 }
 
 // ================================================================
@@ -557,8 +663,6 @@ let currentChunkIndex = 0;
 let isSpeaking = false;
 let showFavOnly = false;
 let favorites = JSON.parse(localStorage.getItem("wordblock_favs") || "[]");
-
-// 🔁 复习模式状态
 let learnedSet = JSON.parse(localStorage.getItem("wordblock_learned") || "[]");
 let reviewMode = false;
 let reviewPatterns = [];
@@ -692,6 +796,7 @@ function updateFilteredPatterns() {
     chunkGrid.innerHTML = "";
     patternNav.textContent = "0 / 0";
     chunkCount.textContent = "0 个词块";
+    $("contractionCard").classList.remove("show");
     return;
   }
   renderPattern();
@@ -719,6 +824,9 @@ function renderPattern() {
   sentenceCn.textContent = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
   sentencePh.textContent = getPhonics(fullEn);
 
+  // 缩读检测
+  updateContractionCard(fullEn);
+
   chunkGrid.innerHTML = "";
   const learnedKeys = new Set(learnedSet.map(x => x.key));
   p.chunks.forEach((ch, i) => {
@@ -743,6 +851,54 @@ function renderPattern() {
 }
 
 // ================================================================
+// 缩读卡片
+// ================================================================
+function updateContractionCard(fullEn) {
+  const contracted = applyContractions(fullEn);
+  const card = $("contractionCard");
+  if (contracted !== fullEn) {
+    card.classList.add("show");
+    $("contractionFull").textContent = fullEn;
+    $("contractionShort").textContent = contracted;
+  } else {
+    card.classList.remove("show");
+  }
+}
+
+function speakContraction() {
+  const text = $("contractionShort").textContent;
+  if (!text) return;
+  statusEl.textContent = "🗣️ " + text;
+  statusEl.className = "status speaking";
+  speak(text, "en-US", () => {
+    statusEl.textContent = "✅ 缩读播放完成";
+    statusEl.className = "status";
+  });
+}
+
+// ================================================================
+// 缩读表
+// ================================================================
+function openContractionList() {
+  const body = $("contractionListBody");
+  body.innerHTML = CONTRACTIONS.map((c, i) =>
+    '<div class="contraction-list-item">' +
+      '<span class="contraction-list-full">' + c.full + '</span>' +
+      '<span class="contraction-list-arrow">→</span>' +
+      '<span class="contraction-list-short">' + c.short + '</span>' +
+      '<button class="contraction-list-btn" onclick="speakOneContraction(' + i + ')">🔊</button>' +
+    '</div>'
+  ).join("");
+  $("contractionModal").classList.add("open");
+}
+
+function speakOneContraction(i) {
+  const c = CONTRACTIONS[i];
+  if (!c) return;
+  speak(c.short, "en-US");
+}
+
+// ================================================================
 // 点击主句黑/红
 // ================================================================
 sentenceLine.addEventListener("click", function(e) {
@@ -755,296 +911,4 @@ function speakPattern() {
   const p = filteredPatterns[currentPatternIndex];
   if (!p) return;
   const { skeleton } = splitPattern(p.en);
-  statusEl.textContent = "🖤 母句：" + skeleton;
-  statusEl.className = "status speaking";
-  speak(skeleton, "en-US", () => {
-    statusEl.textContent = "✅ 母句播放完成";
-    statusEl.className = "status";
-  });
-}
-
-function speakChunk() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return;
-  const c = p.chunks[currentChunkIndex];
-  statusEl.textContent = "❤️ 词块：" + c.en;
-  statusEl.className = "status speaking";
-  speak(c.en, "en-US", () => {
-    statusEl.textContent = "✅ 词块播放完成";
-    statusEl.className = "status";
-  });
-}
-
-// ================================================================
-// 整句 / 中文
-// ================================================================
-function playFull() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return;
-  const c = p.chunks[currentChunkIndex];
-  const { skeleton, punctuation } = splitPattern(p.en);
-  const fullEn = skeleton + " " + c.en + punctuation;
-  statusEl.textContent = "🔊 整句：" + fullEn;
-  statusEl.className = "status speaking";
-  speak(fullEn, "en-US", () => {
-    statusEl.textContent = "✅ 播放完成";
-    statusEl.className = "status";
-  });
-}
-
-function playChinese() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return;
-  const c = p.chunks[currentChunkIndex];
-  const fullCn = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
-  statusEl.textContent = "🔊 " + fullCn;
-  statusEl.className = "status speaking";
-  speak(fullCn, "zh-CN", () => {
-    statusEl.textContent = "✅ 中文播放完成";
-    statusEl.className = "status";
-  });
-}
-
-// ================================================================
-// 选词块
-// ================================================================
-function selectChunk(index) {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return;
-  markLearned(p, p.chunks[index]);
-
-  currentChunkIndex = index;
-  const c = p.chunks[index];
-  const { skeleton, punctuation } = splitPattern(p.en);
-  const fullEn = skeleton + " " + c.en + punctuation;
-
-  sentenceLine.innerHTML =
-    '<span class="part-pattern" data-role="pattern">' + skeleton + '</span>' +
-    ' <span class="part-chunk" data-role="chunk">' + c.en + '</span>' +
-    punctuation;
-  sentenceCn.textContent = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
-  sentencePh.textContent = getPhonics(fullEn);
-
-  // 更新高亮 + 绿点
-  const learnedKeys = new Set(learnedSet.map(x => x.key));
-  chunkGrid.querySelectorAll(".chunk").forEach((el, i) => {
-    el.classList.toggle("active", i === index);
-    const ch = p.chunks[i];
-    const isLearned = learnedKeys.has(p.scene + "|" + p.en + "|" + ch.en);
-    let dot = el.querySelector(".learned-dot");
-    if (isLearned && !dot) {
-      dot = document.createElement("div");
-      dot.className = "learned-dot";
-      el.appendChild(dot);
-    } else if (!isLearned && dot) {
-      dot.remove();
-    }
-  });
-
-  updateFavButton();
-
-  statusEl.textContent = "🔊 " + fullEn;
-  statusEl.className = "status speaking";
-  speak(fullEn, "en-US", () => {
-    statusEl.textContent = "✅ 点黑读母句 · 点红读词块";
-    statusEl.className = "status";
-  });
-}
-
-// ================================================================
-// 上下句
-// ================================================================
-function prevPattern() {
-  if (!filteredPatterns.length) return;
-  currentPatternIndex = (currentPatternIndex - 1 + filteredPatterns.length) % filteredPatterns.length;
-  currentChunkIndex = 0;
-  renderPattern();
-}
-function nextPattern() {
-  if (!filteredPatterns.length) return;
-  currentPatternIndex = (currentPatternIndex + 1) % filteredPatterns.length;
-  currentChunkIndex = 0;
-  renderPattern();
-  if (reviewMode && currentPatternIndex === 0) {
-    statusEl.textContent = "🎉 完成一轮复习！共 " + reviewPatterns.length + " 句";
-  }
-}
-
-// ================================================================
-// 场景 / 类型
-// ================================================================
-function initCategoryTabs() {
-  const scenes = ["全部", ...new Set(PATTERNS.map(p => p.scene))];
-  categoryTabs.innerHTML = scenes.map(s =>
-    '<button class="cat-tab' + (s === "全部" ? " active" : "") + '" data-scene="' + s + '">' + s + '</button>'
-  ).join("");
-  categoryTabs.querySelectorAll(".cat-tab").forEach(btn => {
-    btn.onclick = () => {
-      if (reviewMode) exitReview();
-      categoryTabs.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentScene = btn.dataset.scene;
-      currentPatternIndex = 0;
-      currentChunkIndex = 0;
-      updateFilteredPatterns();
-    };
-  });
-}
-
-function setType(type, btn) {
-  if (reviewMode) exitReview();
-  document.querySelectorAll(".type-btn").forEach(b => { b.classList.remove("active"); b.classList.remove("q"); });
-  btn.classList.add("active");
-  if (type === "q") btn.classList.add("q");
-  currentType = type;
-  currentPatternIndex = 0; currentChunkIndex = 0;
-  updateFilteredPatterns();
-}
-
-// ================================================================
-// 母句列表
-// ================================================================
-let listOpen = false;
-function toggleList() {
-  listOpen = !listOpen;
-  if (listOpen) { patternList.classList.add("open"); renderPatternList(); }
-  else patternList.classList.remove("open");
-}
-
-function renderPatternList() {
-  if (!listOpen) return;
-  if (!filteredPatterns.length) { patternList.innerHTML = '<div class="pattern-list-empty">暂无内容</div>'; return; }
-  patternList.innerHTML = filteredPatterns.map((p, i) =>
-    '<div class="pattern-list-item' + (i === currentPatternIndex ? ' active' : '') + '" onclick="jumpToPattern(' + i + ')">' +
-      '<span>' + p.en.replace(/___/g, '____') + '</span>' +
-      '<span class="item-type ' + p.type + '">' + (p.type === 'q' ? '问' : '述') + '</span>' +
-    '</div>'
-  ).join("");
-}
-
-function jumpToPattern(i) {
-  currentPatternIndex = i;
-  currentChunkIndex = 0;
-  renderPattern();
-  listOpen = false;
-  patternList.classList.remove("open");
-}
-
-// ================================================================
-// 收藏
-// ================================================================
-function isCurrentFav() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return false;
-  const c = p.chunks[currentChunkIndex];
-  return favorites.some(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
-}
-function updateFavButton() {
-  if (isCurrentFav()) { favBtn.classList.add("active"); favBtn.textContent = "★"; }
-  else { favBtn.classList.remove("active"); favBtn.textContent = "☆"; }
-}
-function toggleFavSentence() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return;
-  const c = p.chunks[currentChunkIndex];
-  const idx = favorites.findIndex(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
-  if (idx >= 0) {
-    favorites.splice(idx, 1);
-    statusEl.textContent = "已取消收藏"; statusEl.className = "status";
-  } else {
-    favorites.push({ scene: p.scene, patternEn: p.en, patternCn: p.cn, chunkEn: c.en, chunkCn: c.cn, type: p.type });
-    statusEl.textContent = "⭐ 已收藏"; statusEl.className = "status";
-  }
-  localStorage.setItem("wordblock_favs", JSON.stringify(favorites));
-  updateFavButton();
-}
-function toggleFavMode() {
-  if (reviewMode) exitReview();
-  showFavOnly = !showFavOnly;
-  favToggle.classList.toggle("on", showFavOnly);
-  currentPatternIndex = 0; currentChunkIndex = 0;
-  statusEl.textContent = showFavOnly ? ("⭐ 只显示收藏（共 " + favorites.length + " 条）") : "显示全部";
-  updateFilteredPatterns();
-}
-
-// ================================================================
-// 商城
-// ================================================================
-function renderShop() {
-  const grid = document.getElementById("shopGrid");
-  grid.innerHTML = PRODUCTS.map(p =>
-    '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
-      '<div class="product-img">' + p.emoji + '</div>' +
-      '<div class="product-body">' +
-        '<div class="product-name">' + p.name + '</div>' +
-        '<div class="product-name-en">' + p.nameEn + '</div>' +
-        '<div class="product-price">¥' + p.price + '</div>' +
-      '</div>' +
-    '</div>'
-  ).join("");
-}
-
-function openProduct(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  if (!p) return;
-  document.getElementById("mImg").innerHTML = p.emoji;
-  document.getElementById("mName").textContent = p.name + " · " + p.nameEn;
-  document.getElementById("mPrice").textContent = "¥" + p.price;
-  document.getElementById("mDescEn").textContent = p.descEn;
-  document.getElementById("mDescCn").textContent = p.descCn;
-  document.getElementById("productModal").classList.add("open");
-  speak(p.descEn, "en-US");
-}
-
-function closeModal() {
-  document.getElementById("productModal").classList.remove("open");
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-}
-
-// ================================================================
-// Tab
-// ================================================================
-function switchTab(tab, btn) {
-  document.querySelectorAll(".tab-mini button").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("learnModule").style.display = tab === "learn" ? "block" : "none";
-  document.getElementById("shopModule").style.display = tab === "shop" ? "block" : "none";
-  if (tab === "shop") renderShop();
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-// ================================================================
-// 初始化
-// ================================================================
-function init() {
-  initCategoryTabs();
-  updateFilteredPatterns();
-
-  const warm = () => { warmUp(); document.removeEventListener("click", warm); document.removeEventListener("touchstart", warm); };
-  document.addEventListener("click", warm);
-  document.addEventListener("touchstart", warm, { passive: true });
-
-  if (window.speechSynthesis) {
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-  }
-
-  console.log("✅ 已启动 · 母句", PATTERNS.length, "· 词块", PATTERNS.reduce((s,p)=>s+p.chunks.length,0), "· 已学", learnedSet.length);
-}
-
-document.getElementById("productModal").addEventListener("click", function(e) {
-  if (e.target === this) closeModal();
-});
-
-document.addEventListener("keydown", e => {
-  if (e.target.tagName === "INPUT") return;
-  if (e.key === "ArrowLeft") prevPattern();
-  if (e.key === "ArrowRight") nextPattern();
-  if (e.key === " ") { e.preventDefault(); playFull(); }
-});
-
-init();
-</script>
-</body>
-</html>
+  status
