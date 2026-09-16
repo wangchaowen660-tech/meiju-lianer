@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Chaowen AI 英语48音标拼读训练器 V1.1</title>
+<title>Chaowen AI 英语48音标拼读训练器 V1.2</title>
 
 <style>
 
@@ -306,6 +306,16 @@ header p{
     color:#243852;
 }
 
+.action.green{
+    background:#27855d;
+    color:white;
+}
+
+.action.red{
+    background:#df3e58;
+    color:white;
+}
+
 .progress{
     height:8px;
     background:#e4e8ee;
@@ -429,6 +439,230 @@ select{
     margin-top:4px;
 }
 
+/* =========================
+   ⑤ 词族
+========================= */
+
+.family-tabs{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding-bottom:8px;
+    margin-bottom:16px;
+}
+
+.family-tabs button{
+    flex:none;
+    border:1px solid #dce4ef;
+    background:white;
+    padding:10px 15px;
+    border-radius:10px;
+    font-size:14px;
+}
+
+.family-tabs button.active{
+    background:#174b91;
+    color:white;
+}
+
+.family-hero{
+    background:linear-gradient(135deg,#eef5ff,#f8fbff);
+    border-radius:16px;
+    padding:20px;
+    text-align:center;
+    margin-bottom:18px;
+}
+
+.family-title{
+    font-size:36px;
+    font-weight:850;
+    color:#174b91;
+}
+
+.family-subtitle{
+    color:#667085;
+    margin-top:5px;
+}
+
+.family-word{
+    text-align:center;
+    margin-top:20px;
+}
+
+.family-big-word{
+    font-size:58px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+
+.family-cn{
+    color:#667085;
+    font-size:19px;
+    margin:8px 0 20px;
+}
+
+.family-route{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:20px 0;
+}
+
+.family-piece{
+    background:#edf7ff;
+    color:#1769aa;
+    border-radius:12px;
+    padding:12px 18px;
+    font-size:24px;
+    font-weight:850;
+}
+
+.family-piece.vowel{
+    background:#fff0f3;
+    color:#df3e58;
+}
+
+.family-arrow{
+    font-size:22px;
+    color:#8895a7;
+}
+
+.family-final{
+    background:#174b91;
+    color:white;
+    padding:12px 20px;
+    border-radius:12px;
+    font-size:24px;
+    font-weight:850;
+}
+
+.family-explain{
+    background:#f8fafc;
+    border-radius:13px;
+    padding:15px;
+    text-align:left;
+    line-height:1.8;
+    margin-top:16px;
+}
+
+.family-sentence{
+    background:#fffaf0;
+    border-left:4px solid #e2a52b;
+    border-radius:10px;
+    padding:13px;
+    margin-top:14px;
+    line-height:1.7;
+}
+
+.family-list{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fill,minmax(130px,1fr));
+    gap:10px;
+}
+
+.family-word-button{
+    border:1px solid #dce4ef;
+    background:white;
+    border-radius:12px;
+    padding:14px 8px;
+    text-align:center;
+    cursor:pointer;
+}
+
+.family-word-button.active{
+    background:#edf5ff;
+    border-color:#174b91;
+}
+
+.family-word-button .en{
+    font-size:22px;
+    font-weight:800;
+}
+
+.family-word-button .cn{
+    color:#667085;
+    font-size:13px;
+    margin-top:4px;
+}
+
+.family-method{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+}
+
+.method-step{
+    background:#f8fafc;
+    border-radius:13px;
+    padding:15px;
+    line-height:1.6;
+}
+
+.method-number{
+    font-size:22px;
+    font-weight:800;
+    color:#174b91;
+}
+
+.block-demo{
+    text-align:center;
+    background:#f8fafc;
+    border-radius:15px;
+    padding:20px;
+    margin-top:15px;
+}
+
+.block-line{
+    font-size:30px;
+    font-weight:850;
+    margin:8px 0;
+}
+
+.block-part{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:9px;
+}
+
+.block-part.blue{
+    color:#1769aa;
+    background:#edf7ff;
+}
+
+.block-part.red{
+    color:#df3e58;
+    background:#fff0f3;
+}
+
+.block-part.green{
+    color:#27855d;
+    background:#edf9f3;
+}
+
+.quiz-box{
+    text-align:center;
+    background:#eef5ff;
+    border-radius:15px;
+    padding:20px;
+}
+
+.quiz-question{
+    font-size:30px;
+    font-weight:850;
+    margin:15px 0;
+}
+
+.quiz-answer{
+    font-size:24px;
+    font-weight:800;
+    margin:15px 0;
+    display:none;
+}
+
 footer{
     text-align:center;
     color:#8b95a5;
@@ -462,11 +696,18 @@ footer{
         font-size:23px;
     }
 
+    .family-big-word{
+        font-size:48px;
+    }
+
+    .family-title{
+        font-size:30px;
+    }
+
 }
 
 </style>
 </head>
-
 
 <body>
 
@@ -475,18 +716,12 @@ footer{
 <h1>🎧 Chaowen AI 英语48音标拼读训练器</h1>
 
 <p>
-IPA 音标 → 口型 → 单词 → 拼读 → 母句 → 自由表达
+IPA 音标 → 口型 → 单词 → 拼读 → 词族 → 母句 → 自由表达
 </p>
 
 </header>
 
-
 <div class="container">
-
-
-<!-- =========================
-导航
-========================= -->
 
 <div class="nav">
 
@@ -510,12 +745,16 @@ onclick="showPanel('transform',this)">
 ④ 自由转换
 </button>
 
+<button
+onclick="showPanel('families',this)">
+⑤ 词族学习
+</button>
+
 </div>
 
 
-
 <!-- =================================================
-① 48 IPA
+① IPA
 ================================================= -->
 
 <section id="ipa" class="panel active">
@@ -534,16 +773,15 @@ onclick="showPanel('transform',this)">
 
 <br><br>
 
-🔴 红色：元音  
+🔴 红色：元音　
 🔵 蓝色：辅音
 
 <br><br>
 
-中文的作用只是帮助你理解“这个词是什么意思”，
-真正的训练核心仍然是<strong>听英语声音</strong>。
+中文只是帮助你理解意思，
+真正训练核心仍然是<strong>英语声音</strong>。
 
 </div>
-
 
 <div class="legend">
 
@@ -558,7 +796,6 @@ onclick="showPanel('transform',this)">
 </span>
 
 </div>
-
 
 <div class="filter">
 
@@ -579,7 +816,6 @@ onclick="filterIPA('consonant',this)">
 
 </div>
 
-
 <div id="ipaGrid"
 class="ipa-grid">
 </div>
@@ -587,7 +823,6 @@ class="ipa-grid">
 </div>
 
 </section>
-
 
 
 <!-- =================================================
@@ -606,7 +841,7 @@ class="ipa-grid">
 
 <br><br>
 
-我们训练：
+训练：
 
 <strong>
 前面的辅音 → 中间的元音 → 后面的辅音 → 整体连接
@@ -619,7 +854,6 @@ class="ipa-grid">
 <strong>c → /æ/ → t → cat</strong>
 
 </div>
-
 
 <div class="word-box">
 
@@ -638,7 +872,6 @@ class="sound-route">
 <div id="wordExplain"
 class="word-explain">
 </div>
-
 
 <div class="actions">
 
@@ -659,7 +892,6 @@ onclick="nextWord()">
 
 </div>
 
-
 <div class="progress">
 
 <div id="wordProgress"
@@ -675,7 +907,6 @@ class="progress-bar">
 </section>
 
 
-
 <!-- =================================================
 ③ 母句
 ================================================= -->
@@ -688,20 +919,15 @@ class="progress-bar">
 
 <div class="tip">
 
-我们不把一句英语切成很多孤立的单词。
+不要把一句英语切成很多孤立单词。
 
 <br><br>
 
-而是学习：
+学习：
 
 <strong>语块 → 语块 → 整句</strong>
 
-<br><br>
-
-同时观察英文里面的元音位置。
-
 </div>
-
 
 <div class="sentence-box">
 
@@ -712,7 +938,6 @@ class="sentence">
 <div id="sentenceCN"
 class="sentence-cn">
 </div>
-
 
 <div class="actions">
 
@@ -737,7 +962,6 @@ onclick="nextSentence()">
 
 </div>
 
-
 <div class="card">
 
 <h3>点击语块单独听</h3>
@@ -749,7 +973,6 @@ class="chunk-list">
 </div>
 
 </section>
-
 
 
 <!-- =================================================
@@ -765,13 +988,9 @@ class="chunk-list">
 <div class="tip">
 
 掌握一个母句之后，
-我们开始替换里面的关键语块。
+替换里面的关键语块。
 
 <br><br>
-
-例如：
-
-<br>
 
 I want to <strong>go home.</strong>
 
@@ -784,7 +1003,6 @@ I want to <strong>drink water.</strong>
 I want to <strong>learn English.</strong>
 
 </div>
-
 
 <div class="select-grid">
 
@@ -806,7 +1024,6 @@ onchange="buildTransform()">
 
 </div>
 
-
 <div class="select-box">
 
 <label>② 动作</label>
@@ -826,7 +1043,6 @@ onchange="buildTransform()">
 </select>
 
 </div>
-
 
 <div class="select-box">
 
@@ -850,11 +1066,9 @@ onchange="buildTransform()">
 
 </div>
 
-
 <div id="transformOutput"
 class="output">
 </div>
-
 
 <div class="actions">
 
@@ -872,7 +1086,6 @@ onclick="randomTransform()">
 
 </div>
 
-
 <div class="card">
 
 <h2>更多母句练习</h2>
@@ -885,16 +1098,430 @@ onclick="randomTransform()">
 </section>
 
 
+<!-- =================================================
+⑤ 词族学习
+================================================= -->
+
+<section id="families" class="panel">
+
+<div class="card">
+
+<h2>⑤ 词族学习</h2>
+
+<div class="tip">
+
+<strong>零基础阶段，词族法不是先学词根词缀。</strong>
+
+<br><br>
+
+我们先学习：
+
+<strong>
+押韵词族 + 高频单词 + 音块拼读 + 高频短句
+</strong>
+
+<br><br>
+
+一个共同的声音，带出一组单词。
+
+<br><br>
+
+例如：
+
+<strong>-at → bat → cat → fat → hat → mat → rat → sat</strong>
+
+</div>
+
+<div class="family-tabs">
+
+<button class="active"
+onclick="selectFamily('at',this)">
+-at
+</button>
+
+<button
+onclick="selectFamily('an',this)">
+-an
+</button>
+
+<button
+onclick="selectFamily('ap',this)">
+-ap
+</button>
+
+<button
+onclick="selectFamily('in',this)">
+-in
+</button>
+
+<button
+onclick="selectFamily('it',this)">
+-it
+</button>
+
+<button
+onclick="selectFamily('ig',this)">
+-ig
+</button>
+
+<button
+onclick="selectFamily('as',this)">
+-as
+</button>
+
+</div>
+
+<div class="family-hero">
+
+<div class="family-title"
+id="familyTitle">
+-at
+</div>
+
+<div class="family-subtitle"
+id="familySubtitle">
+共同声音：/æt/
+</div>
+
+</div>
+
+<div class="family-word">
+
+<div id="familyBigWord"
+class="family-big-word">
+cat
+</div>
+
+<div id="familyCN"
+class="family-cn">
+🇨🇳 猫
+</div>
+
+<div id="familyRoute"
+class="family-route">
+</div>
+
+<div id="familyExplain"
+class="family-explain">
+</div>
+
+<div class="actions">
+
+<button class="action"
+onclick="speakFamilyWord()">
+🔊 听整词
+</button>
+
+<button class="action secondary"
+onclick="playFamilyParts()">
+▶️ 一块一块听
+</button>
+
+<button class="action green"
+onclick="playFamilySentence()">
+🗣️ 听例句
+</button>
+
+<button class="action secondary"
+onclick="nextFamilyWord()">
+➡️ 下一个
+</button>
+
+<button class="action secondary"
+onclick="randomFamilyWord()">
+🎲 随机
+</button>
+
+</div>
+
+<div class="progress">
+
+<div id="familyProgress"
+class="progress-bar">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>🧩 当前词族全部成员</h3>
+
+<div id="familyWordList"
+class="family-list">
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>🔊 词族连续听音</h3>
+
+<div class="tip">
+
+先不要看中文。
+
+<br><br>
+
+让耳朵先听：
+
+<strong>
+bat → cat → fat → hat → mat → rat → sat
+</strong>
+
+<br><br>
+
+听完以后，再看中文确认意思。
+
+</div>
+
+<div class="actions">
+
+<button class="action"
+onclick="playWholeFamily()">
+▶️ 连续听整个词族
+</button>
+
+<button class="action secondary"
+onclick="stopSpeech()">
+⏹ 停止
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>🔗 词族学习方法</h3>
+
+<div class="family-method">
+
+<div class="method-step">
+
+<div class="method-number">01</div>
+
+<strong>先听</strong>
+
+<br>
+
+先听共同声音，
+不要急着看中文。
+
+</div>
+
+<div class="method-step">
+
+<div class="method-number">02</div>
+
+<strong>拆音块</strong>
+
+<br>
+
+例如：
+
+c + at
+
+</div>
+
+<div class="method-step">
+
+<div class="method-number">03</div>
+
+<strong>连接</strong>
+
+<br>
+
+c → at → cat
+
+</div>
+
+<div class="method-step">
+
+<div class="method-number">04</div>
+
+<strong>扩大词族</strong>
+
+<br>
+
+bat → cat → fat → hat
+
+</div>
+
+<div class="method-step">
+
+<div class="method-number">05</div>
+
+<strong>进入句子</strong>
+
+<br>
+
+The cat sat on the mat.
+
+</div>
+
+<div class="method-step">
+
+<div class="method-number">06</div>
+
+<strong>开口使用</strong>
+
+<br>
+
+看到词就读，
+听到音就能反应。
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>🧱 多块音组合训练</h3>
+
+<div class="tip">
+
+有些单词不是简单的：
+
+<strong>一个字母 + 一个字母。</strong>
+
+<br><br>
+
+我们开始训练：
+
+<strong>音块 + 音块 → 单词</strong>
+
+</div>
+
+<div class="block-demo">
+
+<div class="block-line">
+
+<span class="block-part blue">g</span>
+
+<span> + </span>
+
+<span class="block-part red">as</span>
+
+<span> → </span>
+
+<strong>gas</strong>
+
+</div>
+
+<div class="block-line">
+
+<span class="block-part blue">sh</span>
+
+<span> + </span>
+
+<span class="block-part red">ip</span>
+
+<span> → </span>
+
+<strong>ship</strong>
+
+</div>
+
+<div class="block-line">
+
+<span class="block-part blue">ch</span>
+
+<span> + </span>
+
+<span class="block-part red">at</span>
+
+<span> → </span>
+
+<strong>chat</strong>
+
+</div>
+
+<div class="actions">
+
+<button class="action"
+onclick="speak('gas',0.62)">
+🔊 gas
+</button>
+
+<button class="action"
+onclick="speak('ship',0.62)">
+🔊 ship
+</button>
+
+<button class="action"
+onclick="speak('chat',0.62)">
+🔊 chat
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>🎯 词族快速测试</h3>
+
+<div class="quiz-box">
+
+<div>
+听到这个词，
+你能不能自己拼出来？
+</div>
+
+<div id="quizQuestion"
+class="quiz-question">
+c + at
+</div>
+
+<button class="action"
+onclick="speakQuizQuestion()">
+🔊 听声音
+</button>
+
+<button class="action green"
+onclick="showQuizAnswer()">
+👀 看答案
+</button>
+
+<div id="quizAnswer"
+class="quiz-answer">
+cat — 猫
+</div>
+
+<button class="action secondary"
+onclick="nextQuiz()">
+➡️ 下一题
+</button>
+
+</div>
+
+</div>
+
+</section>
+
 </div>
 
 
 <footer>
 
-Chaowen AI 英语学习工具 V1.1<br>
-听音不是背音标，拼读不是背单词，母句不是背句子。
+Chaowen AI 英语学习工具 V1.2<br>
+
+听音不是背音标，拼读不是背单词，词族不是死记单词，母句不是背句子。
 
 </footer>
-
 
 
 <script>
@@ -961,11 +1588,20 @@ function speak(text,rate=0.72){
 }
 
 
+function stopSpeech(){
+
+    speechSynthesis.cancel();
+
+}
+
+
 /* =====================================================
    页面切换
 ===================================================== */
 
 function showPanel(id,button){
+
+    speechSynthesis.cancel();
 
     document
     .querySelectorAll(".panel")
@@ -993,8 +1629,6 @@ function showPanel(id,button){
 ===================================================== */
 
 const ipaData=[
-
-/* ===== 元音 ===== */
 
 {
 sound:"/iː/",
@@ -1195,9 +1829,6 @@ word:"tour",
 cn:"旅行",
 sentence:"The tour is good."
 },
-
-
-/* ===== 辅音 ===== */
 
 {
 sound:"/p/",
@@ -1482,14 +2113,6 @@ sentence:"The beds are clean."
 ];
 
 
-/*
-说明：
-
-这里采用“英语学习中常见的48音标教学体系”。
-不同教材可能把某些音合并、拆分，
-尤其是英式 /əʊ/ 与美式 /oʊ/ 等存在教材差异。
-*/
-
 function renderIPA(filter="all"){
 
     const grid=
@@ -1497,7 +2120,7 @@ function renderIPA(filter="all"){
 
     grid.innerHTML="";
 
-    ipaData.forEach((item,index)=>{
+    ipaData.forEach(item=>{
 
         if(filter!=="all" &&
            item.type!==filter){
@@ -1749,12 +2372,10 @@ function renderWord(){
     document.getElementById("wordCN")
         .textContent="🇨🇳 "+data.cn;
 
-
     const route=
         document.getElementById("soundRoute");
 
     route.innerHTML="";
-
 
     data.parts.forEach((part,index)=>{
 
@@ -1771,7 +2392,6 @@ function renderWord(){
 
         route.appendChild(div);
 
-
         if(index<data.parts.length-1){
 
             const arrow=
@@ -1786,7 +2406,6 @@ function renderWord(){
         }
 
     });
-
 
     document.getElementById("wordExplain")
         .innerHTML=`
@@ -1812,7 +2431,6 @@ function renderWord(){
         <strong>${data.cn}</strong>
 
         `;
-
 
     document.getElementById("wordProgress")
         .style.width=
@@ -1850,19 +2468,9 @@ function playWordParts(){
 
         }
 
-        /*
-        组合音如 sh、ch、
-        这里整体播放
-        */
-
         const part=data.parts[i][0];
 
         let text=part;
-
-        /*
-        单字母直接播放，
-        组合则用例词帮助耳朵建立声音。
-        */
 
         if(part==="sh") text="ship";
         if(part==="ch") text="chair";
@@ -1871,7 +2479,7 @@ function playWordParts(){
 
         i++;
 
-        setTimeout(next,700);
+        setTimeout(next,750);
 
     }
 
@@ -1993,7 +2601,6 @@ function renderSentence(){
 
     display.innerHTML="";
 
-
     data.chunks.forEach((chunk,index)=>{
 
         const span=
@@ -2023,18 +2630,15 @@ function renderSentence(){
 
     });
 
-
     document.getElementById("sentenceCN")
         .textContent="🇨🇳 "+data.cn;
-
 
     const list=
         document.getElementById("chunkList");
 
     list.innerHTML="";
 
-
-    data.chunks.forEach((chunk,index)=>{
+    data.chunks.forEach(chunk=>{
 
         const btn=
             document.createElement("button");
@@ -2162,10 +2766,8 @@ function buildTransform(){
 
     const obj=getObject();
 
-
     const sentence=
         subject+" "+verb+" "+obj.en;
-
 
     const cn=
         subjectCN(subject)
@@ -2173,7 +2775,6 @@ function buildTransform(){
         +cnMap[verb]
         +" "
         +obj.cn;
-
 
     document.getElementById("transformOutput")
         .innerHTML=`
@@ -2187,7 +2788,6 @@ function buildTransform(){
         </div>
 
         `;
-
 
     renderPractice();
 
@@ -2214,13 +2814,16 @@ function subjectCN(subject){
 
 function speakTransform(){
 
-    const text=
+    const el=
         document
         .getElementById("transformOutput")
-        .querySelector(".output-en")
-        .innerText;
+        .querySelector(".output-en");
 
-    speak(text,0.74);
+    if(el){
+
+        speak(el.innerText,0.74);
+
+    }
 
 }
 
@@ -2258,7 +2861,6 @@ function randomTransform(){
         "to work|去上班"
     ];
 
-
     document.getElementById("subject")
         .value=
         subjects[
@@ -2266,7 +2868,6 @@ function randomTransform(){
                 Math.random()*subjects.length
             )
         ];
-
 
     document.getElementById("verb")
         .value=
@@ -2276,7 +2877,6 @@ function randomTransform(){
             )
         ];
 
-
     document.getElementById("object")
         .value=
         objects[
@@ -2284,7 +2884,6 @@ function randomTransform(){
                 Math.random()*objects.length
             )
         ];
-
 
     buildTransform();
 
@@ -2297,7 +2896,6 @@ function renderPractice(){
         document.getElementById("practiceList");
 
     container.innerHTML="";
-
 
     const data=[
 
@@ -2314,13 +2912,15 @@ function renderPractice(){
 
     ];
 
-
     data.forEach(item=>{
 
         const row=
             document.createElement("div");
 
         row.className="practice-row";
+
+        const en=item[0]
+            .replace(/'/g,"\\'");
 
         row.innerHTML=`
 
@@ -2329,7 +2929,7 @@ function renderPractice(){
 
                 <button
                     class="action secondary"
-                    onclick="speak('${item[0]}',0.72)">
+                    onclick="speak('${en}',0.72)">
                     🔊
                 </button>
 
@@ -2352,23 +2952,99 @@ buildTransform();
 
 
 /* =====================================================
-   页面隐藏时停止声音
+   ⑤ 词族学习
 ===================================================== */
 
-document.addEventListener(
-    "visibilitychange",
-    ()=>{
+const familyData={
 
-        if(document.hidden){
+at:{
+title:"-at",
+subtitle:"共同声音：/æt/",
+words:[
+{
+word:"at",
+cn:"在……",
+parts:[["at","元音"]],
+explain:"这是词族核心音块。先整体认识 at 的声音。",
+sentence:"I am at home."
+},
+{
+word:"bat",
+cn:"蝙蝠",
+parts:[["b","辅音"],["at","元音"]],
+explain:"b + at。先发 b，再马上进入 at。不要把声音切断。",
+sentence:"I see a bat."
+},
+{
+word:"cat",
+cn:"猫",
+parts:[["c","辅音"],["at","元音"]],
+explain:"c + at。c 进入 /k/，at 保持共同声音。",
+sentence:"The cat is here."
+},
+{
+word:"fat",
+cn:"胖的",
+parts:[["f","辅音"],["at","元音"]],
+explain:"f + at。f 是持续摩擦音，接着进入 at。",
+sentence:"The cat is fat."
+},
+{
+word:"hat",
+cn:"帽子",
+parts:[["h","辅音"],["at","元音"]],
+explain:"h + at。h 先送气，然后马上进入 /æt/。",
+sentence:"This is my hat."
+},
+{
+word:"mat",
+cn:"垫子",
+parts:[["m","辅音"],["at","元音"]],
+explain:"m + at。m 可以保持声音，然后平滑进入 at。",
+sentence:"The cat is on the mat."
+},
+{
+word:"rat",
+cn:"老鼠",
+parts:[["r","辅音"],["at","元音"]],
+explain:"r + at。r 后面马上进入共同的 at。",
+sentence:"I see a rat."
+},
+{
+word:"sat",
+cn:"坐下了",
+parts:[["s","辅音"],["at","元音"]],
+explain:"s + at。s 后面不要停顿，直接进入 at。",
+sentence:"The cat sat."
+}
+]
+},
 
-            speechSynthesis.cancel();
+an:{
+title:"-an",
+subtitle:"共同声音：/æn/",
+words:[
+{word:"an",cn:"一个（元音前）",parts:[["an","元音"]],explain:"先认识核心音块 an。",sentence:"I have an apple."},
+{word:"can",cn:"能；可以",parts:[["c","辅音"],["an","元音"]],explain:"c + an。",sentence:"I can help."},
+{word:"fan",cn:"风扇",parts:[["f","辅音"],["an","元音"]],explain:"f + an。",sentence:"Turn on the fan."},
+{word:"man",cn:"男人",parts:[["m","辅音"],["an","元音"]],explain:"m + an。",sentence:"The man is here."},
+{word:"pan",cn:"平底锅",parts:[["p","辅音"],["an","元音"]],explain:"p + an。",sentence:"This is a pan."},
+{word:"ran",cn:"跑了",parts:[["r","辅音"],["an","元音"]],explain:"r + an。",sentence:"He ran home."}
+]
+},
 
-        }
+ap:{
+title:"-ap",
+subtitle:"共同声音：/æp/",
+words:[
+{word:"cap",cn:"帽子",parts:[["c","辅音"],["ap","元音"]],explain:"c + ap。",sentence:"This is my cap."},
+{word:"map",cn:"地图",parts:[["m","辅音"],["ap","元音"]],explain:"m + ap。",sentence:"I have a map."},
+{word:"nap",cn:"小睡",parts:[["n","辅音"],["ap","元音"]],explain:"n + ap。",sentence:"I need a nap."},
+{word:"tap",cn:"轻敲；水龙头",parts:[["t","辅音"],["ap","元音"]],explain:"t + ap。",sentence:"Tap the screen."},
+{word:"gap",cn:"间隙",parts:[["g","辅音"],["ap","元音"]],explain:"g + ap。",sentence:"There is a gap."}
+]
+},
 
-    }
-);
-
-</script>
-
-</body>
-</html>
+in:{
+title:"-in",
+subtitle:"共同声音：/ɪn
