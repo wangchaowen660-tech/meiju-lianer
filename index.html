@@ -26,6 +26,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .type-btn.active{background:#e94560;color:#fff;}
 .type-btn.active.q{background:#3b82f6;}
 .icon-btn{padding:7px 12px;border:0;border-radius:20px;background:#fff;color:#0f172a;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+.pattern-stat{margin-left:auto;background:linear-gradient(135deg,#e94560,#f97316);color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(233,69,96,0.28);white-space:nowrap;}
 .main-card{background:#fff;border-radius:24px;padding:22px 20px;box-shadow:0 8px 24px rgba(0,0,0,0.06);margin-bottom:12px;position:relative;}
 .main-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
 .main-card-header .meta{font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;}
@@ -191,6 +192,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   .ipa-cell .ipa-sym{font-size:16px;}
   .wf-words{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:5px;}
   .wf-formula{font-size:12px;}
+  .pattern-stat{font-size:10px;padding:5px 9px;}
 }
 </style>
 </head>
@@ -219,6 +221,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
         <button class="type-btn" data-type="q" onclick="setType('q', this)">疑问句</button>
       </div>
       <button class="icon-btn" onclick="openContractionList()">🗣️ 缩读表</button>
+      <span class="pattern-stat" id="patternStat">0 母句 · 0 组</span>
     </div>
 
     <div class="main-card">
@@ -266,7 +269,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
     <div class="nav-bar">
       <button class="nav-btn" onclick="prevPattern()">⏮ 上一句</button>
-      <div class="nav-center" id="patternNav">1 / 15</div>
+      <div class="nav-center" id="patternNav">1 / 45</div>
       <button class="nav-btn" onclick="nextPattern()">下一句 ⏭</button>
     </div>
 
@@ -740,8 +743,11 @@ const PHONICS_DATA = {
   ]
 };
 
-// ============ 母句库（15 个） ============
+// ============================================================
+// 📚 母句库 · 45 个母句 × 8 词块 = 360 组
+// ============================================================
 const PATTERNS = [
+  // ========== 困惑 (5) ==========
   { scene:"困惑", type:"s", en:"I have no idea how to ___.", cn:"我不知道该怎么 ______。", chunks:[
     {en:"order this",cn:"点这个"},{en:"get to the hotel",cn:"去酒店"},{en:"use this machine",cn:"用这台机器"},{en:"find the way",cn:"找路"},{en:"cook this dish",cn:"做这道菜"},{en:"pay the bill",cn:"付账"},{en:"fix this",cn:"修这个"},{en:"get there",cn:"到那里"}]},
   { scene:"困惑", type:"s", en:"I have no idea where to ___.", cn:"我不知道该去哪 ______。", chunks:[
@@ -752,6 +758,8 @@ const PATTERNS = [
     {en:"ask",cn:"问"},{en:"call",cn:"打电话给"},{en:"contact",cn:"联系"},{en:"follow",cn:"跟着"},{en:"believe",cn:"相信"},{en:"trust",cn:"信任"},{en:"invite",cn:"邀请"},{en:"thank",cn:"感谢"}]},
   { scene:"困惑", type:"q", en:"Do you know how to ___?", cn:"你知道怎么 ______ 吗？", chunks:[
     {en:"get there",cn:"到那里"},{en:"use this",cn:"用这个"},{en:"open it",cn:"打开它"},{en:"say it in English",cn:"用英语说"},{en:"book a ticket",cn:"订票"},{en:"fix this",cn:"修这个"},{en:"find the hotel",cn:"找酒店"},{en:"change my flight",cn:"改签"}]},
+
+  // ========== 日常 (5) ==========
   { scene:"日常", type:"s", en:"I want to ___.", cn:"我想 ______。", chunks:[
     {en:"eat something",cn:"吃点东西"},{en:"drink water",cn:"喝水"},{en:"sleep early",cn:"早点睡"},{en:"go home",cn:"回家"},{en:"learn English",cn:"学英语"},{en:"take a break",cn:"休息一下"},{en:"buy some food",cn:"买点吃的"},{en:"see a movie",cn:"看电影"}]},
   { scene:"日常", type:"s", en:"I need to ___.", cn:"我需要 ______。", chunks:[
@@ -760,18 +768,114 @@ const PATTERNS = [
     {en:"go now",cn:"现在就走"},{en:"finish this",cn:"完成这个"},{en:"work overtime",cn:"加班"},{en:"catch the bus",cn:"赶公交"},{en:"see a doctor",cn:"去看医生"},{en:"do my homework",cn:"做作业"},{en:"pay the bill",cn:"付账单"},{en:"leave early",cn:"早点走"}]},
   { scene:"日常", type:"q", en:"What do you want to ___?", cn:"你想要 ______ 什么？", chunks:[
     {en:"do",cn:"做"},{en:"eat",cn:"吃"},{en:"drink",cn:"喝"},{en:"buy",cn:"买"},{en:"say",cn:"说"},{en:"watch",cn:"看"},{en:"learn",cn:"学"},{en:"try",cn:"试"}]},
-  { scene:"厨师", type:"s", en:"I need to ___.", cn:"我需要 ______。", chunks:[
-    {en:"chop vegetables",cn:"切菜"},{en:"slice onions",cn:"切洋葱"},{en:"boil water",cn:"烧水"},{en:"fry an egg",cn:"煎蛋"},{en:"wash the dishes",cn:"洗碗"},{en:"set the table",cn:"摆餐具"},{en:"prepare the sauce",cn:"准备酱汁"},{en:"clean the kitchen",cn:"打扫厨房"}]},
-  { scene:"社交", type:"s", en:"Do you want to ___?", cn:"你想 ______ 吗？", chunks:[
+  { scene:"日常", type:"s", en:"I'm going to ___.", cn:"我打算 ______。", chunks:[
+    {en:"take a shower",cn:"洗澡"},{en:"have breakfast",cn:"吃早饭"},{en:"walk the dog",cn:"遛狗"},{en:"clean my room",cn:"收拾房间"},{en:"call my mom",cn:"给妈妈打电话"},{en:"study English",cn:"学英语"},{en:"watch TV",cn:"看电视"},{en:"go to bed",cn:"睡觉"}]},
+
+  // ========== 社交 (3) ==========
+  { scene:"社交", type:"q", en:"Do you want to ___?", cn:"你想 ______ 吗？", chunks:[
     {en:"hang out",cn:"一起玩"},{en:"grab coffee",cn:"喝咖啡"},{en:"see a movie",cn:"看电影"},{en:"go shopping",cn:"去购物"},{en:"have dinner",cn:"吃晚饭"},{en:"join us",cn:"加入我们"},{en:"take a walk",cn:"去散步"},{en:"come over",cn:"来我家"}]},
+  { scene:"社交", type:"s", en:"Let's ___ together.", cn:"我们一起 ______ 吧。", chunks:[
+    {en:"have lunch",cn:"吃午饭"},{en:"play basketball",cn:"打篮球"},{en:"study English",cn:"学英语"},{en:"go shopping",cn:"去购物"},{en:"watch a movie",cn:"看电影"},{en:"take a walk",cn:"散步"},{en:"cook dinner",cn:"做晚饭"},{en:"clean up",cn:"打扫"}]},
+  { scene:"社交", type:"q", en:"Would you like to ___?", cn:"你愿意 ______ 吗？", chunks:[
+    {en:"come to my party",cn:"来我的派对"},{en:"try this dish",cn:"尝尝这道菜"},{en:"join us",cn:"加入我们"},{en:"have some coffee",cn:"喝点咖啡"},{en:"see my new house",cn:"看看我的新家"},{en:"meet my family",cn:"见见我家人"},{en:"go for a walk",cn:"去散步"},{en:"stay for dinner",cn:"留下来吃晚饭"}]},
+
+  // ========== 旅行 (3) ==========
   { scene:"旅行", type:"s", en:"Where is ___?", cn:"______ 在哪里？", chunks:[
     {en:"the station",cn:"车站"},{en:"the airport",cn:"机场"},{en:"the hotel",cn:"酒店"},{en:"the restroom",cn:"洗手间"},{en:"the bank",cn:"银行"},{en:"the bus stop",cn:"公交站"},{en:"the exit",cn:"出口"},{en:"the entrance",cn:"入口"}]},
   { scene:"旅行", type:"q", en:"How can I ___?", cn:"我怎么 ______？", chunks:[
     {en:"get to the airport",cn:"去机场"},{en:"find the hotel",cn:"找酒店"},{en:"buy a ticket",cn:"买票"},{en:"take the subway",cn:"坐地铁"},{en:"change my flight",cn:"改签"},{en:"call a taxi",cn:"叫出租车"},{en:"use the Wi-Fi",cn:"用Wi-Fi"},{en:"get to the train station",cn:"去火车站"}]},
+  { scene:"旅行", type:"q", en:"How long does it take to ___?", cn:"去 ______ 要多久？", chunks:[
+    {en:"get there",cn:"到那里"},{en:"walk to the station",cn:"走到车站"},{en:"finish this",cn:"完成这个"},{en:"drive to the airport",cn:"开车去机场"},{en:"cook dinner",cn:"做晚饭"},{en:"learn English",cn:"学英语"},{en:"fly to London",cn:"飞伦敦"},{en:"get to the hotel",cn:"到酒店"}]},
+
+  // ========== 购物 (2) ==========
   { scene:"购物", type:"s", en:"How much ___?", cn:"______ 多少钱？", chunks:[
     {en:"is this",cn:"这个"},{en:"does it cost",cn:"这个"},{en:"is the total",cn:"总共"},{en:"is a ticket",cn:"一张票"},{en:"is that one",cn:"那个"},{en:"for two",cn:"两个"},{en:"is the cheapest one",cn:"最便宜那个"},{en:"is the discount",cn:"折扣"}]},
+  { scene:"购物", type:"q", en:"Can I pay by ___?", cn:"我可以用 ______ 付款吗？", chunks:[
+    {en:"credit card",cn:"信用卡"},{en:"cash",cn:"现金"},{en:"mobile phone",cn:"手机"},{en:"WeChat Pay",cn:"微信支付"},{en:"Alipay",cn:"支付宝"},{en:"check",cn:"支票"},{en:"bank transfer",cn:"银行转账"},{en:"debit card",cn:"储蓄卡"}]},
+
+  // ========== 餐厅 (2) ==========
   { scene:"餐厅", type:"s", en:"I'd like to ___.", cn:"我想 ______。", chunks:[
-    {en:"order now",cn:"现在点餐"},{en:"see the menu",cn:"看菜单"},{en:"have the bill",cn:"买单"},{en:"try this dish",cn:"尝这道菜"},{en:"book a table",cn:"订位"},{en:"have some water",cn:"要点水"},{en:"get a coffee",cn:"要杯咖啡"},{en:"order dessert",cn:"点甜点"}]}
+    {en:"order now",cn:"现在点餐"},{en:"see the menu",cn:"看菜单"},{en:"have the bill",cn:"买单"},{en:"try this dish",cn:"尝这道菜"},{en:"book a table",cn:"订位"},{en:"have some water",cn:"要点水"},{en:"get a coffee",cn:"要杯咖啡"},{en:"order dessert",cn:"点甜点"}]},
+  { scene:"餐厅", type:"q", en:"Could I have ___?", cn:"可以给我 ______ 吗？", chunks:[
+    {en:"the menu",cn:"菜单"},{en:"a glass of water",cn:"一杯水"},{en:"the bill",cn:"账单"},{en:"some more bread",cn:"再来点面包"},{en:"a cup of tea",cn:"一杯茶"},{en:"the special",cn:"今日特餐"},{en:"another fork",cn:"另一把叉子"},{en:"some ketchup",cn:"一些番茄酱"}]},
+
+  // ========== 工作 (4) ==========
+  { scene:"工作", type:"s", en:"I'm working on ___.", cn:"我正在做 ______。", chunks:[
+    {en:"a new project",cn:"一个新项目"},{en:"a report",cn:"一份报告"},{en:"my presentation",cn:"我的演示"},{en:"a design",cn:"一个设计"},{en:"a proposal",cn:"一份提案"},{en:"my English",cn:"我的英语"},{en:"a video",cn:"一个视频"},{en:"a website",cn:"一个网站"}]},
+  { scene:"工作", type:"q", en:"Can you help me with ___?", cn:"你能帮我 ______ 吗？", chunks:[
+    {en:"this report",cn:"这份报告"},{en:"the meeting",cn:"这个会议"},{en:"my computer",cn:"我的电脑"},{en:"this task",cn:"这个任务"},{en:"the translation",cn:"这个翻译"},{en:"my presentation",cn:"我的演讲"},{en:"the design",cn:"这个设计"},{en:"this problem",cn:"这个问题"}]},
+  { scene:"工作", type:"s", en:"I have a meeting with ___.", cn:"我和 ______ 有个会议。", chunks:[
+    {en:"my boss",cn:"我的老板"},{en:"the client",cn:"客户"},{en:"the team",cn:"团队"},{en:"my manager",cn:"我的经理"},{en:"the designer",cn:"设计师"},{en:"the engineer",cn:"工程师"},{en:"the marketing team",cn:"市场部"},{en:"HR",cn:"人事部"}]},
+  { scene:"工作", type:"s", en:"Let me check ___.", cn:"让我查一下 ______。", chunks:[
+    {en:"my schedule",cn:"我的日程"},{en:"the email",cn:"邮件"},{en:"the file",cn:"文件"},{en:"the calendar",cn:"日历"},{en:"that for you",cn:"那个"},{en:"the details",cn:"细节"},{en:"the report",cn:"报告"},{en:"the system",cn:"系统"}]},
+
+  // ========== 学习 (3) ==========
+  { scene:"学习", type:"s", en:"I'm learning how to ___.", cn:"我在学怎么 ______。", chunks:[
+    {en:"speak English",cn:"说英语"},{en:"play the piano",cn:"弹钢琴"},{en:"cook",cn:"做饭"},{en:"drive",cn:"开车"},{en:"code",cn:"编程"},{en:"swim",cn:"游泳"},{en:"dance",cn:"跳舞"},{en:"take photos",cn:"拍照"}]},
+  { scene:"学习", type:"q", en:"Can you explain ___?", cn:"你能解释一下 ______ 吗？", chunks:[
+    {en:"this word",cn:"这个单词"},{en:"this rule",cn:"这个规则"},{en:"this sentence",cn:"这个句子"},{en:"this grammar",cn:"这个语法"},{en:"the meaning",cn:"意思"},{en:"this phrase",cn:"这个短语"},{en:"that again",cn:"那个"},{en:"it in English",cn:"用英语"}]},
+  { scene:"学习", type:"s", en:"I don't understand ___.", cn:"我不懂 ______。", chunks:[
+    {en:"this word",cn:"这个单词"},{en:"this sentence",cn:"这个句子"},{en:"the question",cn:"这个问题"},{en:"the grammar",cn:"这个语法"},{en:"what you mean",cn:"你的意思"},{en:"this part",cn:"这部分"},{en:"the lesson",cn:"这节课"},{en:"your accent",cn:"你的口音"}]},
+
+  // ========== 情感 (3) ==========
+  { scene:"情感", type:"s", en:"I'm so happy about ___.", cn:"我为 ______ 感到很开心。", chunks:[
+    {en:"this news",cn:"这个消息"},{en:"my new job",cn:"我的新工作"},{en:"the result",cn:"这个结果"},{en:"my vacation",cn:"我的假期"},{en:"the gift",cn:"这份礼物"},{en:"my progress",cn:"我的进步"},{en:"the party",cn:"这个派对"},{en:"seeing you",cn:"见到你"}]},
+  { scene:"情感", type:"s", en:"I'm worried about ___.", cn:"我担心 ______。", chunks:[
+    {en:"the exam",cn:"考试"},{en:"my health",cn:"我的健康"},{en:"the weather",cn:"天气"},{en:"my job",cn:"我的工作"},{en:"the future",cn:"未来"},{en:"my family",cn:"我的家人"},{en:"the money",cn:"钱"},{en:"the flight",cn:"航班"}]},
+  { scene:"情感", type:"s", en:"I feel like ___.", cn:"我想 ______。", chunks:[
+    {en:"eating pizza",cn:"吃披萨"},{en:"going out",cn:"出去"},{en:"staying home",cn:"待在家"},{en:"taking a break",cn:"休息一下"},{en:"dancing",cn:"跳舞"},{en:"crying",cn:"哭一场"},{en:"sleeping",cn:"睡觉"},{en:"reading a book",cn:"看书"}]},
+
+  // ========== 健康 (2) ==========
+  { scene:"健康", type:"s", en:"I have a pain in ___.", cn:"我的 ______ 疼。", chunks:[
+    {en:"my head",cn:"头"},{en:"my stomach",cn:"胃"},{en:"my back",cn:"背"},{en:"my throat",cn:"喉咙"},{en:"my leg",cn:"腿"},{en:"my chest",cn:"胸"},{en:"my arm",cn:"胳膊"},{en:"my tooth",cn:"牙"}]},
+  { scene:"健康", type:"s", en:"I need to see a doctor about ___.", cn:"我需要看医生，关于 ______。", chunks:[
+    {en:"my cough",cn:"我的咳嗽"},{en:"my fever",cn:"我的发烧"},{en:"my headache",cn:"我的头痛"},{en:"my back pain",cn:"我的背痛"},{en:"my allergy",cn:"我的过敏"},{en:"my eyes",cn:"我的眼睛"},{en:"my stomach",cn:"我的胃"},{en:"my skin",cn:"我的皮肤"}]},
+
+  // ========== 交通 (2) ==========
+  { scene:"交通", type:"q", en:"Is this the right way to ___?", cn:"这是去 ______ 的正确方向吗？", chunks:[
+    {en:"the station",cn:"车站"},{en:"the airport",cn:"机场"},{en:"downtown",cn:"市中心"},{en:"the museum",cn:"博物馆"},{en:"the hotel",cn:"酒店"},{en:"the park",cn:"公园"},{en:"the beach",cn:"海滩"},{en:"the city center",cn:"市中心"}]},
+  { scene:"交通", type:"s", en:"I'd like to ___ a taxi.", cn:"我想 ______ 出租车。", chunks:[
+    {en:"call",cn:"叫"},{en:"take",cn:"坐"},{en:"share",cn:"拼"},{en:"order",cn:"叫"},{en:"book",cn:"预订"},{en:"stop",cn:"拦"},{en:"get",cn:"拦"},{en:"wait for",cn:"等"}]},
+
+  // ========== 天气 (1) ==========
+  { scene:"天气", type:"s", en:"It looks like it's going to ___.", cn:"看起来要 ______ 了。", chunks:[
+    {en:"rain",cn:"下雨"},{en:"snow",cn:"下雪"},{en:"be sunny",cn:"晴天"},{en:"be hot",cn:"变热"},{en:"be cold",cn:"变冷"},{en:"storm",cn:"下暴雨"},{en:"clear up",cn:"放晴"},{en:"be windy",cn:"起风"}]},
+
+  // ========== 时间 (1) ==========
+  { scene:"时间", type:"q", en:"What time do you ___?", cn:"你几点 ______？", chunks:[
+    {en:"get up",cn:"起床"},{en:"have lunch",cn:"吃午饭"},{en:"finish work",cn:"下班"},{en:"go to bed",cn:"睡觉"},{en:"start",cn:"开始"},{en:"arrive",cn:"到"},{en:"leave",cn:"离开"},{en:"come home",cn:"到家"}]},
+
+  // ========== 家庭 (1) ==========
+  { scene:"家庭", type:"s", en:"My family likes to ___.", cn:"我家人喜欢 ______。", chunks:[
+    {en:"travel",cn:"旅行"},{en:"cook together",cn:"一起做饭"},{en:"watch movies",cn:"看电影"},{en:"play games",cn:"玩游戏"},{en:"eat out",cn:"出去吃"},{en:"go hiking",cn:"去爬山"},{en:"take photos",cn:"拍照"},{en:"stay home",cn:"待在家"}]},
+
+  // ========== 电话 (1) ==========
+  { scene:"电话", type:"q", en:"Can I speak to ___?", cn:"我可以和 ______ 通话吗？", chunks:[
+    {en:"Mr. Smith",cn:"史密斯先生"},{en:"the manager",cn:"经理"},{en:"your boss",cn:"你的老板"},{en:"John",cn:"约翰"},{en:"the doctor",cn:"医生"},{en:"the teacher",cn:"老师"},{en:"customer service",cn:"客服"},{en:"the front desk",cn:"前台"}]},
+
+  // ========== 酒店 (1) ==========
+  { scene:"酒店", type:"s", en:"I'd like to book ___.", cn:"我想预订 ______。", chunks:[
+    {en:"a room",cn:"一个房间"},{en:"a double room",cn:"大床房"},{en:"a single room",cn:"单人间"},{en:"a table",cn:"一张桌子"},{en:"a ticket",cn:"一张票"},{en:"a tour",cn:"一个旅行团"},{en:"a meeting room",cn:"会议室"},{en:"a car",cn:"一辆车"}]},
+
+  // ========== 请求 (1) ==========
+  { scene:"请求", type:"q", en:"Could you please ___?", cn:"你能 ______ 吗？", chunks:[
+    {en:"help me",cn:"帮我一下"},{en:"wait a moment",cn:"等一会儿"},{en:"speak slowly",cn:"说慢一点"},{en:"say that again",cn:"再说一遍"},{en:"open the door",cn:"开门"},{en:"close the window",cn:"关窗"},{en:"turn it down",cn:"调小一点"},{en:"give me a hand",cn:"搭把手"}]},
+
+  // ========== 建议 (1) ==========
+  { scene:"建议", type:"q", en:"Why don't we ___?", cn:"我们为什么不 ______ 呢？", chunks:[
+    {en:"take a break",cn:"休息一下"},{en:"go out",cn:"出去"},{en:"eat first",cn:"先吃饭"},{en:"try again",cn:"再试一次"},{en:"ask for help",cn:"找人帮忙"},{en:"go together",cn:"一起去"},{en:"call them",cn:"给他们打电话"},{en:"wait a bit",cn:"再等等"}]},
+
+  // ========== 道歉 (1) ==========
+  { scene:"道歉", type:"s", en:"I'm sorry for ___.", cn:"我为 ______ 感到抱歉。", chunks:[
+    {en:"being late",cn:"迟到"},{en:"the mistake",cn:"这个错误"},{en:"the trouble",cn:"这个麻烦"},{en:"interrupting",cn:"打断"},{en:"forgetting",cn:"忘记"},{en:"missing it",cn:"错过"},{en:"what I said",cn:"我说的话"},{en:"the delay",cn:"延迟"}]},
+
+  // ========== 感谢 (1) ==========
+  { scene:"感谢", type:"s", en:"Thank you for ___.", cn:"感谢你的 ______。", chunks:[
+    {en:"your help",cn:"帮助"},{en:"your time",cn:"时间"},{en:"coming",cn:"到来"},{en:"the gift",cn:"礼物"},{en:"your support",cn:"支持"},{en:"everything",cn:"一切"},{en:"being here",cn:"在这里"},{en:"the advice",cn:"建议"}]},
+
+  // ========== 安慰 (1) ==========
+  { scene:"安慰", type:"s", en:"Don't worry about ___.", cn:"别担心 ______。", chunks:[
+    {en:"it",cn:"这个"},{en:"the money",cn:"钱"},{en:"the exam",cn:"考试"},{en:"tomorrow",cn:"明天"},{en:"the result",cn:"结果"},{en:"me",cn:"我"},{en:"the weather",cn:"天气"},{en:"the details",cn:"细节"}]}
 ];
 
 const PRODUCTS = [
@@ -791,8 +895,6 @@ const PRODUCTS = [
 
 // ============================================================
 // 🧩 词族数据（80 个词族 / 544 个单词）
-// 结构： { r: 韵脚, w: [[单词, 中文], ...] }
-// 拆分规则：onset = word - r  →  c + at = cat
 // ============================================================
 const WORD_FAMILIES = [
 {r:"at",w:[["cat","猫"],["bat","蝙蝠"],["hat","帽子"],["rat","老鼠"],["mat","垫子"],["sat","坐下(过去式)"],["fat","胖的"],["pat","轻拍"],["that","那个"]]},
@@ -877,7 +979,6 @@ const WORD_FAMILIES = [
 {r:"oy",w:[["boy","男孩"],["joy","欢乐"],["toy","玩具"],["coy","害羞的"],["enjoy","享受"],["annoy","惹恼"]]}
 ];
 
-// 单字母/辅音丛的近似发音文本（TTS 读字母名会错，用近音拼写替代）
 const ONSET_SAY = {
   b:"buh", c:"kuh", d:"duh", f:"fuh", g:"guh", h:"huh", j:"juh", k:"kuh",
   l:"luh", m:"muh", n:"nuh", p:"puh", q:"kwuh", r:"ruh", s:"suh", t:"tuh",
@@ -1008,7 +1109,6 @@ function wfSpeakFamily(family) {
   });
 }
 
-// 整词三段式：辅音 → 韵脚 → 整词
 function wfPlayWhole(family, word) {
   const onset = wfOnset(word, family);
   if (!onset) { wfSpeakWord(word); return; }
@@ -1498,6 +1598,12 @@ function init() {
   renderPhonics();
   renderWordFamily();
 
+  // 统计母句 + 词块组
+  let totalGroups = 0;
+  PATTERNS.forEach(p => totalGroups += p.chunks.length);
+  const stat = $("patternStat");
+  if (stat) stat.textContent = PATTERNS.length + " 母句 · " + totalGroups + " 组";
+
   const warm = () => { warmUp(); document.removeEventListener("click", warm); document.removeEventListener("touchstart", warm); };
   document.addEventListener("click", warm);
   document.addEventListener("touchstart", warm, { passive: true });
@@ -1510,7 +1616,7 @@ function init() {
   let totalWords = 0;
   WORD_FAMILIES.forEach(f => totalWords += f.w.length);
   console.log("✅ 已启动");
-  console.log("📐 母句:", PATTERNS.length);
+  console.log("📐 母句:", PATTERNS.length, "个 /", totalGroups, "组词块");
   console.log("🧩 词族:", WORD_FAMILIES.length, "个 /", totalWords, "个单词");
   console.log("🎯 音标:", 7 + 5 + 8 + 6 + 9 + 6 + 3 + 4, "个");
 }
