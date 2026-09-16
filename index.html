@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>词块学习 · 拼读缩读版</title>
+<title>词块学习 · 完整版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#f0f4f8 0%,#e2e8f0 100%);color:#1e293b;min-height:100vh;}
@@ -51,8 +51,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .sentence-line{font-size:26px;font-weight:800;line-height:1.5;word-break:break-word;letter-spacing:0.3px;}
 .sentence-line .part-pattern{color:#0f172a;cursor:pointer;padding:2px 2px;border-radius:6px;transition:background .15s;}
 .sentence-line .part-pattern:hover{background:#e2e8f0;}
+.sentence-line .part-pattern.speaking{background:#0f172a;color:#fff;}
 .sentence-line .part-chunk{color:#e94560;cursor:pointer;padding:2px 2px;border-radius:6px;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);transition:background .15s;}
 .sentence-line .part-chunk:hover{background:rgba(233,69,96,0.15);}
+.sentence-line .part-chunk.speaking{background:#e94560;color:#fff;}
 .sentence-cn{font-size:15px;color:#64748b;line-height:1.5;margin-top:12px;}
 .sentence-ph{margin-top:12px;padding:8px 12px;background:#fffbeb;border-radius:10px;font-size:12px;color:#92400e;font-style:italic;letter-spacing:0.3px;border-left:3px solid #f59e0b;line-height:1.5;}
 .sentence-ph::before{content:"🎵 ";font-style:normal;font-weight:700;}
@@ -64,17 +66,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .contraction-arrow{color:#6366f1;font-weight:800;font-size:14px;}
 .contraction-short{font-size:17px;font-weight:800;color:#4f46e5;cursor:pointer;padding:2px 6px;border-radius:6px;transition:background .15s;}
 .contraction-short:hover{background:#e0e7ff;}
-.contraction-short:active{background:#c7d2fe;}
 .contraction-speak{margin-left:auto;background:#6366f1;color:#fff;border:0;padding:5px 12px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;}
-.contraction-speak:active{transform:scale(0.96);}
 .hint-row{display:flex;gap:14px;margin-top:10px;font-size:11px;color:#94a3b8;flex-wrap:wrap;}
 .hint-row span{display:flex;align-items:center;gap:4px;}
 .hint-row .dot-black{width:8px;height:8px;border-radius:50%;background:#0f172a;}
 .hint-row .dot-red{width:8px;height:8px;border-radius:50%;background:#e94560;}
-.sentence-actions{display:flex;gap:8px;margin-top:14px;}
-.sentence-actions button{flex:1;padding:11px;border:0;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;}
+.sentence-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.sentence-actions button{flex:1;min-width:90px;padding:11px;border:0;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;}
 .sentence-actions button:active{transform:scale(0.97);}
-.btn-all{background:#e94560;color:#fff;box-shadow:0 4px 12px rgba(233,69,96,0.28);}
+.btn-three{background:linear-gradient(135deg,#e94560,#f97316);color:#fff;box-shadow:0 4px 12px rgba(233,69,96,0.28);}
+.btn-all{background:#e94560;color:#fff;}
 .btn-cn{background:#f1f5f9;color:#0f172a;}
 .chunk-section{background:#fff;border-radius:20px;padding:14px 14px 10px;box-shadow:0 4px 14px rgba(0,0,0,0.05);margin-bottom:12px;}
 .chunk-section-title{font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
@@ -118,7 +119,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .contraction-list-arrow{color:#6366f1;font-weight:800;}
 .contraction-list-short{color:#4f46e5;font-weight:800;font-size:15px;flex:1;}
 .contraction-list-btn{background:#eef2ff;border:0;padding:5px 12px;border-radius:10px;color:#4f46e5;font-size:11px;font-weight:700;cursor:pointer;}
-.contraction-list-btn:active{transform:scale(0.95);}
 @media(max-width:480px){
   .sentence-line{font-size:22px;}
   .chunk-grid{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px;}
@@ -134,7 +134,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <div class="container">
   <div class="header">
-    <div class="logo">词块<span>·</span>拼读</div>
+    <div class="logo">词块<span>·</span>学习</div>
     <div class="tab-mini">
       <button class="active" onclick="switchTab('learn', this)">📚 学习</button>
       <button onclick="switchTab('shop', this)">🛍️ 商城</button>
@@ -192,14 +192,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       </div>
 
       <div class="sentence-actions">
-        <button class="btn-all" onclick="playFull()">🔊 整句朗读</button>
+        <button class="btn-three" onclick="playThreeStage()">🎧 三段式</button>
+        <button class="btn-all" onclick="playFull()">🔊 整句</button>
         <button class="btn-cn" onclick="playChinese()">🇨🇳 中文</button>
       </div>
     </div>
 
     <div class="chunk-section">
       <div class="chunk-section-title">
-        <span>🧱 替换词块</span>
+        <span>🧱 替换词块（点击试听）</span>
         <span class="count" id="chunkCount">0</span>
       </div>
       <div class="chunk-grid" id="chunkGrid"></div>
@@ -333,52 +334,30 @@ function getPhonics(text) {
 }
 
 // ================================================================
-// 🗣️ 口语缩读词典
+// 🗣️ 缩读词典
 // ================================================================
 const CONTRACTIONS = [
-  { full: "I am", short: "I'm" },
-  { full: "You are", short: "You're" },
-  { full: "He is", short: "He's" },
-  { full: "She is", short: "She's" },
-  { full: "It is", short: "It's" },
-  { full: "We are", short: "We're" },
-  { full: "They are", short: "They're" },
-  { full: "That is", short: "That's" },
-  { full: "There is", short: "There's" },
-  { full: "do not", short: "don't" },
-  { full: "does not", short: "doesn't" },
-  { full: "did not", short: "didn't" },
-  { full: "is not", short: "isn't" },
-  { full: "are not", short: "aren't" },
-  { full: "was not", short: "wasn't" },
-  { full: "were not", short: "weren't" },
-  { full: "cannot", short: "can't" },
-  { full: "can not", short: "can't" },
-  { full: "could not", short: "couldn't" },
-  { full: "will not", short: "won't" },
-  { full: "would not", short: "wouldn't" },
-  { full: "should not", short: "shouldn't" },
-  { full: "must not", short: "mustn't" },
-  { full: "I will", short: "I'll" },
-  { full: "You will", short: "You'll" },
-  { full: "He will", short: "He'll" },
-  { full: "She will", short: "She'll" },
-  { full: "We will", short: "We'll" },
-  { full: "They will", short: "They'll" },
-  { full: "I would", short: "I'd" },
-  { full: "You would", short: "You'd" },
-  { full: "He would", short: "He'd" },
-  { full: "She would", short: "She'd" },
-  { full: "Let us", short: "Let's" },
-  { full: "going to", short: "gonna" },
-  { full: "want to", short: "wanna" },
-  { full: "got to", short: "gotta" },
-  { full: "give me", short: "gimme" },
-  { full: "let me", short: "lemme" },
-  { full: "kind of", short: "kinda" },
-  { full: "sort of", short: "sorta" },
-  { full: "What are you", short: "Whatcha" },
-  { full: "See you", short: "Seeya" }
+  { full: "I am", short: "I'm" },{ full: "You are", short: "You're" },
+  { full: "He is", short: "He's" },{ full: "She is", short: "She's" },
+  { full: "It is", short: "It's" },{ full: "We are", short: "We're" },
+  { full: "They are", short: "They're" },{ full: "That is", short: "That's" },
+  { full: "There is", short: "There's" },{ full: "do not", short: "don't" },
+  { full: "does not", short: "doesn't" },{ full: "did not", short: "didn't" },
+  { full: "is not", short: "isn't" },{ full: "are not", short: "aren't" },
+  { full: "was not", short: "wasn't" },{ full: "were not", short: "weren't" },
+  { full: "cannot", short: "can't" },{ full: "can not", short: "can't" },
+  { full: "could not", short: "couldn't" },{ full: "will not", short: "won't" },
+  { full: "would not", short: "wouldn't" },{ full: "should not", short: "shouldn't" },
+  { full: "must not", short: "mustn't" },{ full: "I will", short: "I'll" },
+  { full: "You will", short: "You'll" },{ full: "He will", short: "He'll" },
+  { full: "She will", short: "She'll" },{ full: "We will", short: "We'll" },
+  { full: "They will", short: "They'll" },{ full: "I would", short: "I'd" },
+  { full: "You would", short: "You'd" },{ full: "He would", short: "He'd" },
+  { full: "She would", short: "She'd" },{ full: "Let us", short: "Let's" },
+  { full: "going to", short: "gonna" },{ full: "want to", short: "wanna" },
+  { full: "got to", short: "gotta" },{ full: "give me", short: "gimme" },
+  { full: "let me", short: "lemme" },{ full: "kind of", short: "kinda" },
+  { full: "sort of", short: "sorta" },{ full: "See you", short: "Seeya" }
 ];
 
 function applyContractions(text) {
@@ -393,7 +372,7 @@ function applyContractions(text) {
 }
 
 // ================================================================
-// 母句库（130个母句 × 10词块 = 1300句）
+// 母句库
 // ================================================================
 const PATTERNS = [
   { scene:"困惑", type:"s", en:"I have no idea how to ___.", cn:"我不知道该怎么 ______。", chunks:[
@@ -894,14 +873,18 @@ function speakOneContraction(i) {
 // ================================================================
 sentenceLine.addEventListener("click", function(e) {
   const role = e.target.dataset.role;
-  if (role === "pattern") speakPattern();
-  else if (role === "chunk") speakChunk();
+  if (role === "pattern") speakPattern(e.target);
+  else if (role === "chunk") speakChunk(e.target);
 });
 
-function speakPattern() {
+function speakPattern(el) {
   const p = filteredPatterns[currentPatternIndex];
   if (!p) return;
   const { skeleton } = splitPattern(p.en);
+  if (el) {
+    el.classList.add("speaking");
+    setTimeout(() => el.classList.remove("speaking"), 1500);
+  }
   statusEl.textContent = "🖤 母句：" + skeleton;
   statusEl.className = "status speaking";
   speak(skeleton, "en-US", () => {
@@ -910,10 +893,14 @@ function speakPattern() {
   });
 }
 
-function speakChunk() {
+function speakChunk(el) {
   const p = filteredPatterns[currentPatternIndex];
   if (!p) return;
   const c = p.chunks[currentChunkIndex];
+  if (el) {
+    el.classList.add("speaking");
+    setTimeout(() => el.classList.remove("speaking"), 1500);
+  }
   statusEl.textContent = "❤️ 词块：" + c.en;
   statusEl.className = "status speaking";
   speak(c.en, "en-US", () => {
@@ -923,8 +910,33 @@ function speakChunk() {
 }
 
 // ================================================================
-// 整句 / 中文
+// 三段式 / 整句 / 中文
 // ================================================================
+function playThreeStage() {
+  const p = filteredPatterns[currentPatternIndex];
+  if (!p) return;
+  const c = p.chunks[currentChunkIndex];
+  const { skeleton, punctuation } = splitPattern(p.en);
+  const fullEn = skeleton + " " + c.en + punctuation;
+
+  statusEl.textContent = "① 母句：" + skeleton;
+  statusEl.className = "status speaking";
+  speak(skeleton, "en-US", () => {
+    setTimeout(() => {
+      statusEl.textContent = "② 词块：" + c.en;
+      speak(c.en, "en-US", () => {
+        setTimeout(() => {
+          statusEl.textContent = "③ 整句：" + fullEn;
+          speak(fullEn, "en-US", () => {
+            statusEl.textContent = "✅ 三段完成 · " + fullEn;
+            statusEl.className = "status";
+          });
+        }, 320);
+      });
+    }, 320);
+  });
+}
+
 function playFull() {
   const p = filteredPatterns[currentPatternIndex];
   if (!p) return;
@@ -953,7 +965,7 @@ function playChinese() {
 }
 
 // ================================================================
-// 选词块
+// 选词块：自动三段式
 // ================================================================
 function selectChunk(index) {
   const p = filteredPatterns[currentPatternIndex];
@@ -991,12 +1003,8 @@ function selectChunk(index) {
 
   updateFavButton();
 
-  statusEl.textContent = "🔊 " + fullEn;
-  statusEl.className = "status speaking";
-  speak(fullEn, "en-US", () => {
-    statusEl.textContent = "✅ 点黑读母句 · 点红读词块";
-    statusEl.className = "status";
-  });
+  // 自动三段式
+  playThreeStage();
 }
 
 // ================================================================
@@ -1178,7 +1186,12 @@ function init() {
     window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
   }
 
-  console.log("✅ 已启动 · 母句", PATTERNS.length, "· 词块", PATTERNS.reduce((s,p)=>s+p.chunks.length,0), "· 已学", learnedSet.length, "· 缩读规则", CONTRACTIONS.length);
+  console.log("✅ 已启动");
+  console.log("📐 母句:", PATTERNS.length);
+  console.log("🧱 词块:", PATTERNS.reduce((s,p)=>s+p.chunks.length,0));
+  console.log("⭐ 收藏:", favorites.length);
+  console.log("📚 已学:", learnedSet.length);
+  console.log("🗣️ 缩读规则:", CONTRACTIONS.length);
 }
 
 document.getElementById("productModal").addEventListener("click", function(e) {
