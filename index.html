@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>词块学习 · 中国人友好发音版</title>
+<title>词块学习 · 方法版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#f0f4f8 0%,#e2e8f0 100%);color:#1e293b;min-height:100vh;}
@@ -12,8 +12,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .logo{font-size:20px;font-weight:800;color:#0f172a;}
 .logo span{color:#e94560;}
-.tab-mini{display:flex;gap:4px;background:#fff;border-radius:30px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
-.tab-mini button{padding:5px 10px;border:0;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;}
+.tab-mini{display:flex;gap:4px;background:#fff;border-radius:30px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,0.06);overflow-x:auto;}
+.tab-mini::-webkit-scrollbar{display:none;}
+.tab-mini button{padding:5px 10px;border:0;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;white-space:nowrap;}
 .tab-mini button.active{background:#0f172a;color:#fff;}
 .review-banner{display:none;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;padding:10px 14px;border-radius:14px;margin-bottom:10px;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(59,130,246,0.28);}
 .review-banner b{font-weight:800;}
@@ -55,11 +56,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .sentence-line .part-chunk{color:#e94560;cursor:pointer;padding:2px 2px;border-radius:6px;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);}
 .sentence-line .part-chunk.speaking{background:#e94560;color:#fff;}
 .sentence-cn{font-size:15px;color:#64748b;line-height:1.5;margin-top:12px;}
-.sentence-ph{margin-top:12px;padding:8px 12px;background:#fffbeb;border-radius:10px;font-size:12px;color:#92400e;font-style:italic;letter-spacing:0.3px;border-left:3px solid #f59e0b;line-height:1.5;}
+.sentence-ph{margin-top:12px;padding:8px 12px;background:#fffbeb;border-radius:10px;font-size:12px;color:#92400e;font-style:italic;border-left:3px solid #f59e0b;line-height:1.5;}
 .sentence-ph::before{content:"🎵 ";font-style:normal;font-weight:700;}
 .contraction-card{margin-top:10px;padding:10px 12px;background:#eef2ff;border-radius:12px;border-left:3px solid #6366f1;display:none;}
 .contraction-card.show{display:block;}
-.contraction-label{font-size:11px;font-weight:700;color:#4f46e5;margin-bottom:6px;letter-spacing:0.5px;}
+.contraction-label{font-size:11px;font-weight:700;color:#4f46e5;margin-bottom:6px;}
 .contraction-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .contraction-full{font-size:13px;color:#94a3b8;text-decoration:line-through;}
 .contraction-arrow{color:#6366f1;font-weight:800;font-size:14px;}
@@ -120,17 +121,56 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .phonics-wrong{font-size:12px;color:#c2410c;margin-top:6px;line-height:1.5;padding:6px 10px;background:#fff7ed;border-radius:8px;border-left:3px solid #f97316;}
 .phonics-wrong::before{content:"⚠️ ";font-weight:700;}
 .phonics-words{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;}
-.phonics-word{background:#f1f5f9;color:#0f172a;padding:5px 12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;}
+.phonics-word{background:#f1f5f9;color:#0f172a;padding:5px 12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;}
 .phonics-word:hover{background:#e2e8f0;}
 .phonics-word .ipa{color:#6366f1;font-size:11px;font-weight:500;margin-left:4px;}
 .phonics-card.pairs .phonics-wrong::before{content:"";}
 .phonics-card.pairs .phonics-wrong{background:#fef2f2;border-left-color:#ef4444;color:#991b1b;font-weight:500;}
 .pinyin-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9;}
 .pinyin-row:last-child{border-bottom:0;}
-.pinyin-cn{font-size:18px;font-weight:800;color:#8b5cf6;min-width:36px;font-family:"PingFang SC",sans-serif;}
+.pinyin-cn{font-size:18px;font-weight:800;color:#8b5cf6;min-width:36px;}
 .pinyin-arrow{color:#94a3b8;font-weight:700;}
 .pinyin-en{font-size:16px;font-weight:800;color:#0f172a;min-width:60px;}
-.pinyin-note{font-size:12px;color:#64748b;flex:1;line-height:1.5;}
+/* 📖 学习方法模块 */
+.method-intro{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:18px;padding:18px 20px;margin-bottom:14px;box-shadow:0 8px 20px rgba(99,102,241,0.28);}
+.method-intro h2{font-size:18px;font-weight:800;margin-bottom:6px;}
+.method-intro p{font-size:13px;opacity:0.9;line-height:1.6;}
+.method-section{background:#fff;border-radius:18px;padding:0;margin-bottom:12px;box-shadow:0 4px 14px rgba(0,0,0,0.05);overflow:hidden;}
+.method-header{padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;user-select:none;}
+.method-header:hover{background:#f8fafc;}
+.method-header .title{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;color:#0f172a;}
+.method-header .title .icon{font-size:20px;}
+.method-header .title .badge{background:#eef2ff;color:#4f46e5;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;}
+.method-header .arrow{color:#94a3b8;font-size:12px;transition:transform .2s;}
+.method-section.open .method-header{background:#f8fafc;}
+.method-section.open .method-header .arrow{transform:rotate(180deg);}
+.method-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.method-section.open .method-body{max-height:2000px;}
+.method-content{padding:4px 18px 18px;}
+.method-card{background:#f8fafc;border-radius:12px;padding:12px 14px;margin-bottom:10px;border-left:3px solid #6366f1;}
+.method-card:last-child{margin-bottom:0;}
+.method-card h4{font-size:13px;font-weight:800;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.method-card h4 .num{background:#6366f1;color:#fff;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;}
+.method-card p{font-size:13px;color:#475569;line-height:1.65;margin-bottom:6px;}
+.method-card p:last-child{margin-bottom:0;}
+.method-card ul{list-style:none;padding-left:0;}
+.method-card li{font-size:13px;color:#475569;line-height:1.7;padding-left:18px;position:relative;}
+.method-card li::before{content:"·";position:absolute;left:6px;color:#6366f1;font-weight:800;font-size:18px;line-height:1;}
+.method-card .example{background:#fff;border-radius:8px;padding:8px 12px;margin-top:6px;font-size:12px;color:#64748b;border:1px dashed #e2e8f0;}
+.method-card .example b{color:#0f172a;}
+.method-card .warning{background:#fff7ed;border-left:3px solid #f97316;padding:8px 12px;border-radius:8px;margin-top:6px;font-size:12px;color:#c2410c;}
+.method-card .go-practice{background:#e94560;color:#fff;border:0;padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;}
+.method-card .go-practice:active{transform:scale(0.96);}
+.method-card.blue{border-left-color:#3b82f6;}
+.method-card.blue h4 .num{background:#3b82f6;}
+.method-card.green{border-left-color:#10b981;}
+.method-card.green h4 .num{background:#10b981;}
+.method-card.orange{border-left-color:#f59e0b;}
+.method-card.orange h4 .num{background:#f59e0b;}
+.method-card.red{border-left-color:#ef4444;}
+.method-card.red h4 .num{background:#ef4444;}
+.method-card.purple{border-left-color:#8b5cf6;}
+.method-card.purple h4 .num{background:#8b5cf6;}
 /* 商城 */
 .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
 .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.05);cursor:pointer;}
@@ -161,10 +201,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   .chunk .en{font-size:12px;}
   .chunk .ph{font-size:8px;}
   .sentence-actions button{font-size:12px;padding:10px;}
-  .contraction-short{font-size:15px;}
   .phonics-symbol{font-size:22px;}
-  .phonics-cn{font-size:13px;}
-  .pinyin-en{font-size:14px;}
+  .method-header .title{font-size:14px;}
 }
 </style>
 </head>
@@ -176,6 +214,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="tab-mini">
       <button class="active" onclick="switchTab('learn', this)">📚 学习</button>
       <button onclick="switchTab('phonics', this)">🔤 发音</button>
+      <button onclick="switchTab('method', this)">📖 方法</button>
       <button onclick="switchTab('shop', this)">🛍️ 商城</button>
     </div>
   </div>
@@ -269,6 +308,336 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="phonicsStatus">点卡片听发音</div>
   </div>
 
+  <!-- ============ 📖 学习方法模块 ============ -->
+  <div id="methodModule" style="display:none;">
+    <div class="method-intro">
+      <h2>🎯 英语学习方法指南</h2>
+      <p>不是学不会，而是方法不对。下面 7 大板块，从路径到技巧，一步步带你走对路。</p>
+    </div>
+
+    <div class="method-section open" data-key="path">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="title"><span class="icon">🗺️</span>学习路径 <span class="badge">零基础必看</span></div>
+        <div class="arrow">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-content">
+          <div class="method-card blue">
+            <h4><span class="num">1</span>阶段一：建立语音基础（1-2 周）</h4>
+            <p>先把发音学会，否则后面学再多也是错的。重点搞定 20 个元音 + 24 个辅音。</p>
+            <ul>
+              <li>先练元音（短元音 → 长元音 → 双元音）</li>
+              <li>再练辅音（重点 /θ/ /ð/ /r/ /v/ /w/）</li>
+              <li>每天 15 分钟，跟读发音卡片</li>
+            </ul>
+            <button class="go-practice" onclick="switchTab('phonics', document.querySelectorAll('.tab-mini button')[1])">👉 去练发音</button>
+          </div>
+          <div class="method-card green">
+            <h4><span class="num">2</span>阶段二：学母句型 + 词块（1-2 个月）</h4>
+            <p>不要背单个单词，要背"母句 + 可替换词块"。一个母句能滚动出 10 句话。</p>
+            <ul>
+              <li>每天学 1 个母句 + 10 个词块</li>
+              <li>先听三段式（母句 → 词块 → 整句）</li>
+              <li>再点黑红分段跟读</li>
+            </ul>
+            <button class="go-practice" onclick="switchTab('learn', document.querySelectorAll('.tab-mini button')[0])">👉 去学句型</button>
+          </div>
+          <div class="method-card orange">
+            <h4><span class="num">3</span>阶段三：真实场景练习（2-3 个月）</h4>
+            <p>把学过的句子用出去，才算真的会。先从购物、餐厅这些高频场景开始。</p>
+            <ul>
+              <li>按场景筛选，一次专注一个场景</li>
+              <li>用"复习模式"每天过一遍学过的句子</li>
+              <li>收藏最常用的 50 句，反复练</li>
+            </ul>
+            <button class="go-practice" onclick="startReview()">👉 开始复习</button>
+          </div>
+          <div class="method-card purple">
+            <h4><span class="num">4</span>阶段四：进阶口语表达（长期）</h4>
+            <p>从"能说"到"说得好"。学会缩读、连读、语调，听起来才地道。</p>
+            <ul>
+              <li>掌握 38 组常用缩读（gonna / wanna / kinda）</li>
+              <li>注意单词重音和句子语调</li>
+              <li>每天听一段英语播客或剧集</li>
+            </ul>
+            <button class="go-practice" onclick="openContractionList()">👉 看缩读表</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-section" data-key="words">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="title"><span class="icon">🧠</span>单词记忆 <span class="badge">效率翻倍</span></div>
+        <div class="arrow">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-content">
+          <div class="method-card blue">
+            <h4><span class="num">1</span>核心原则：不要孤立背单词</h4>
+            <p>孤立背单词 = 背了忘，忘了背。要把单词放进<b>句子、场景、画面</b>里记。</p>
+            <div class="example">
+              ❌ 错：apple = 苹果<br>
+              ✅ 对：<b>I want to eat an apple.</b>（在句子里记 apple）
+            </div>
+          </div>
+          <div class="method-card green">
+            <h4><span class="num">2</span>词根词缀法（进阶）</h4>
+            <p>掌握常用词根词缀，一个词根能衍生出十几个单词。</p>
+            <ul>
+              <li><b>-er / -or</b>：teach → teacher（做...的人）</li>
+              <li><b>-ful</b>：care → careful（充满...的）</li>
+              <li><b>-less</b>：hope → hopeless（没有...的）</li>
+              <li><b>un-</b>：happy → unhappy（不...的）</li>
+              <li><b>re-</b>：do → redo（重新）</li>
+            </ul>
+          </div>
+          <div class="method-card orange">
+            <h4><span class="num">3</span>艾宾浩斯复习法（最重要）</h4>
+            <p>记住一个单词需要至少 6 次见面。间隔时间：<b>5 分钟 → 30 分钟 → 12 小时 → 1 天 → 2 天 → 4 天 → 7 天</b>。</p>
+            <p>👉 这就是为什么工具里加了"🔁 复习"功能——每天花 5 分钟过一遍学过的句子，比新学 10 句还值。</p>
+            <button class="go-practice" onclick="startReview()">👉 复习我学过的</button>
+          </div>
+          <div class="method-card purple">
+            <h4><span class="num">4</span>场景联想法</h4>
+            <p>把单词和具体场景绑定。看到厨房就想 kitchen, knife, chop, boil；看到机场就想 airport, ticket, gate, boarding。</p>
+            <ul>
+              <li>按"场景"分类学，而不是按字母顺序</li>
+              <li>用本工具的"场景筛选"功能</li>
+              <li>每个场景建一个记忆钩子（如"机场 = 检票 → 登机 → 找座位"）</li>
+            </ul>
+          </div>
+          <div class="method-card red">
+            <h4><span class="num">5</span>常见误区</h4>
+            <div class="warning">❌ 一次背 100 个单词——明天忘 90 个<br>
+            ✅ 每天认真记 10 个，第二天复习，一周记牢 50 个</div>
+            <div class="warning">❌ 只背拼写不记发音——听得懂才说得出口<br>
+            ✅ 每个单词都跟读，让耳朵和嘴巴都记住</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-section" data-key="listening">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="title"><span class="icon">🎧</span>听力训练 <span class="badge">哑巴英语的解药</span></div>
+        <div class="arrow">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-content">
+          <div class="method-card blue">
+            <h4><span class="num">1</span>精听法（每天 15 分钟）</h4>
+            <p>选一句 10 秒的句子，反复听 5 遍，再逐词写下来。听不懂的地方再听，最后看原文对照。</p>
+            <ul>
+              <li>第 1 遍：听大意</li>
+              <li>第 2-3 遍：记关键词</li>
+              <li>第 4-5 遍：逐词听写</li>
+              <li>最后：对照原文，找出漏听的词</li>
+            </ul>
+            <p>👉 本工具的"🎧 三段式"最适合精听：母句 → 词块 → 整句。</p>
+          </div>
+          <div class="method-card green">
+            <h4><span class="num">2</span>泛听法（随时随地）</h4>
+            <p>不需要 100% 听懂，重点让耳朵熟悉英语的<b>节奏、语调、连读</b>。</p>
+            <ul>
+              <li>走路、通勤、做家务时放英语播客</li>
+              <li>看英语动画片（Peppa Pig / 老友记）</li>
+              <li>不用强迫自己听每个词，习惯英语声音即可</li>
+            </ul>
+          </div>
+          <div class="method-card orange">
+            <h4><span class="num">3</span>影子跟读法（最有效）</h4>
+            <p>听一句，紧跟一句，像影子一样模仿说话人的<b>语音、语调、速度</b>。</p>
+            <ul>
+              <li>先听原声 → 暂停 → 跟读一遍</li>
+              <li>再听原声 → 同步跟读（不暂停）</li>
+              <li>每天 10 分钟，坚持 1 个月听力暴涨</li>
+            </ul>
+            <button class="go-practice" onclick="playThreeStage()">👉 三段式跟读</button>
+          </div>
+          <div class="method-card red">
+            <h4><span class="num">4</span>常见误区</h4>
+            <div class="warning">❌ 只听不说——听和说是连体的，必须跟读<br>
+            ❌ 一开始就听 BBC 新闻——太难了，先听后慢速英语</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-section" data-key="speaking">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="title"><span class="icon">🗣️</span>口语训练 <span class="badge">开口是关键</span></div>
+        <div class="arrow">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-content">
+          <div class="method-card blue">
+            <h4><span class="num">1</span>自言自语法（零成本）</h4>
+            <p>一个人在家也可以练。看到什么就说什么：</p>
+            <div class="example">
+              早上起床："I need to get up. I want to drink some water."<br>
+              做饭时："I need to chop vegetables. I want to cook dinner."<br>
+              坐地铁："Where am I going? I'm going to work."
+            </div>
+            <p>👉 把工具里的句子变成你每天要说的话，说一句就记住一句。</p>
+          </div>
+          <div class="method-card green">
+            <h4><span class="num">2</span>跟读法（效率最高）</h4>
+            <p>听一句跟一句，重点模仿三件事：<b>重音位置、连读节奏、语调起伏</b>。</p>
+            <ul>
+              <li>不要一个词一个词地读，要整句滑出去</li>
+              <li>注意黑色部分（母句）的重音</li>
+              <li>红色部分（词块）读得快一点、轻一点</li>
+            </ul>
+          </div>
+          <div class="method-card orange">
+            <h4><span class="num">3</span>用缩读让口语更地道</h4>
+            <p>英语母语者不会一字一字念，日常交流大量使用缩读：</p>
+            <ul>
+              <li>I am → I'm</li>
+              <li>going to → gonna</li>
+              <li>want to → wanna</li>
+              <li>kind of → kinda</li>
+            </ul>
+            <p>学会缩读，口语立刻自然 5 倍。</p>
+            <button class="go-practice" onclick="openContractionList()">👉 看缩读表</button>
+          </div>
+          <div class="method-card red">
+            <h4><span class="num">4</span>常见误区</h4>
+            <div class="warning">❌ 怕说错所以不说——说错才有进步，不说永远错<br>
+            ❌ 只跟自己说，不跟真人说——每周至少找 1 次真人对话（APP 上找语伴也行）<br>
+            ❌ 一次想说完美——先用简单句表达，慢慢再丰富</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-section" data-key="reading">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="title"><span class="icon">📚</span>阅读与写作 <span class="badge">输入的源头</span></div>
+        <div class="arrow">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-content">
+          <div class="method-card blue">
+            <h4><span class="num">1</span>分级阅读（从易到难）</h4>
+            <p>不要一上来读原著，会挫败。选难度刚好的材料：<b>能读懂 80% 就合适</b>。</p>
+            <ul>
+              <li>初级：新概念 1、儿童绘本</li>
+              <li>中级：新概念 2、Reader's Digest</li>
+              <li>高级：英文新闻、原著小说</li>
+            </ul>
+          </div>
+          <div class="method-card green">
+            <h4><span class="num">2</span>读写结合法（最有效）</h4>
+            <p>读到好句子，抄下来、改成自己的。一周学 5 句，一个月 20 句，就能应对大部分场景。</p>
+            <div class="example">
+              原句：<b>I have no idea how to order this.</b><br>
+              改写：I have no idea how to cook this.<br>
+              再改：I have no idea how to fix this.
+            </div>
+            <p>👉 这就是本工具的"母句 + 词块"思路——一个母句换词块就能写出 10 句话。</p>
+          </div>
+          <div class="method-card orange">
+            <h4><span class="num">3</span>每天 5 句日记</h4>
+            <p>用英语写今天做了什么，句式越简单越好。养成用英语思考的习惯。</p>
+            <div class="example">
+              Today I went to work.<br>
+              I ate lunch with my friend.<br>
+              I felt tired but happy.<br>
+              I need to sleep early tonight.<br>
+              Tomorrow I'm going to study English.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-section" data-key="habit">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="title"><span class="icon">⏰</span>学习习惯 <span class="badge">坚持比努力更重要</span></div>
+        <div class="arrow">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-content">
+          <div class="method-card blue">
+            <h4><span class="num">1</span>每天 15 分钟 > 周末 3 小时</h4>
+            <p>语言学习靠<b>频率</b>不靠时长。每天 15 分钟，比一周一次 3 小时的效果好 5 倍。</p>
+            <ul>
+              <li>早上起床：跟读 5 分钟</li>
+              <li>午休：复习 5 分钟</li>
+              <li>睡前：听 5 分钟</li>
+            </ul>
+          </div>
+          <div class="method-card green">
+            <h4><span class="num">2</span>固定时间 + 固定地点</h4>
+            <p>把英语学习变成习惯，不靠意志力。比如"每天早饭后在沙发上练 10 分钟"。</p>
+            <ul>
+              <li>刷牙后 → 打开工具练 3 分钟</li>
+              <li>通勤地铁 → 听英语 10 分钟</li>
+              <li>睡前 → 复习 5 分钟</li>
+            </ul>
+          </div>
+          <div class="method-card orange">
+            <h4><span class="num">3</span>量化进度，看到成长</h4>
+            <p>人需要看到进步才有动力。工具里"已学 X 句"和"绿点"就是你的进度条。</p>
+            <ul>
+              <li>目标：每天至少学 5 句</li>
+              <li>收藏夹里放 20 句"必会说"的句子</li>
+              <li>每周回顾一次收藏夹，看是否都能脱口而出</li>
+            </ul>
+          </div>
+          <div class="method-card purple">
+            <h4><span class="num">4</span>不追求完美，追求持续</h4>
+            <p>学了 30 天，有 5 天没学？没关系。关键是第 31 天继续学。</p>
+            <div class="example">💡 一句话：<b>持续 100 天，胜过突击 10 天。</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-section" data-key="mistakes">
+      <div class="method-header" onclick="toggleMethod(this)">
+        <div class="title"><span class="icon">⚠️</span>常见误区 <span class="badge">避坑指南</span></div>
+        <div class="arrow">▼</div>
+      </div>
+      <div class="method-body">
+        <div class="method-content">
+          <div class="method-card red">
+            <h4><span class="num">1</span>误区：只背单词，不学句子</h4>
+            <p>单词是砖，句子才是房子。只会单词 = 一堆砖，说不了话。</p>
+            <div class="warning">正确做法：每学 1 个新词，就造 1 个句子。</div>
+          </div>
+          <div class="method-card red">
+            <h4><span class="num">2</span>误区：死磕语法</h4>
+            <p>语法是"总结"不是"入门"。先会说，再学语法，事半功倍。</p>
+            <div class="warning">正确做法：先练听口，语法在用的过程中自然掌握。</div>
+          </div>
+          <div class="method-card red">
+            <h4><span class="num">3</span>误区：只读不写，只听不说</h4>
+            <p>输入和输出必须结合。光学不练 = 学了个寂寞。</p>
+            <div class="warning">正确做法：每天听 → 跟读 → 自己说 → 写出来。</div>
+          </div>
+          <div class="method-card red">
+            <h4><span class="num">4</span>误区：追求"完美"发音</h4>
+            <p>发音不需要完美，能听懂就行。印度、日本、德国人都有口音，都能交流。</p>
+            <div class="warning">正确做法：重点练"清晰"和"节奏"，不追求"纯正"。</div>
+          </div>
+          <div class="method-card red">
+            <h4><span class="num">5</span>误区：三天打鱼两天晒网</h4>
+            <p>语言学习最忌间断。停 1 周，忘 1 半。停 1 月，几乎归零。</p>
+            <div class="warning">正确做法：每天 15 分钟，雷打不动。哪怕今天只学 1 句。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="method-intro" style="background:linear-gradient(135deg,#10b981,#06b6d4);margin-top:16px;">
+      <h2>🌟 一句话总结</h2>
+      <p>英语不是"学"会的，是"用"会的。打开工具，每天练 15 分钟，坚持 100 天，你会发现——原来英语没那么难。</p>
+    </div>
+  </div>
+
   <!-- ============ 商城 ============ -->
   <div id="shopModule" style="display:none;">
     <div class="chunk-section">
@@ -299,254 +668,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 </div>
 
 <script>
-// ================================================================
-// 🔤 发音数据（中国人友好版：中文近似音 + 易错提示）
-// ================================================================
-const PHONICS_DATA = {
-  vowel: [
-    { symbol:"/iː/", type:"长元音", cn:"近似“衣”（长）", tip:"嘴角向两边拉开，像微笑一样，声音拉长",
-      wrong:"别读成短促的“一”，要持续 2 秒，如 see 不要读成“细”",
-      words:[{w:"see",ipa:"/siː/"},{w:"eat",ipa:"/iːt/"},{w:"tea",ipa:"/tiː/"},{w:"meet",ipa:"/miːt/"}]},
-    { symbol:"/ɪ/", type:"短元音", cn:"介于“衣”和“诶”之间", tip:"舌位比 /iː/ 低，嘴巴放松，短促",
-      wrong:"别读成“衣”，别拉长，如 sit 不要读成 seat",
-      words:[{w:"sit",ipa:"/sɪt/"},{w:"big",ipa:"/bɪɡ/"},{w:"this",ipa:"/ðɪs/"},{w:"fish",ipa:"/fɪʃ/"}]},
-    { symbol:"/e/", type:"短元音", cn:"近似“诶”（短）", tip:"嘴巴微张，比 /ɪ/ 低一点",
-      wrong:"不要读成“爱”，如 bed 不要读成 bad",
-      words:[{w:"bed",ipa:"/bed/"},{w:"get",ipa:"/ɡet/"},{w:"ten",ipa:"/ten/"},{w:"said",ipa:"/sed/"}]},
-    { symbol:"/æ/", type:"短元音", cn:"介于“诶”和“啊”之间", tip:"嘴巴张大，像医生看喉咙，舌尖抵下齿",
-      wrong:"不是“爱”，不是“诶”，是扁平的“啊”，如 cat 别读成“卡特”",
-      words:[{w:"cat",ipa:"/kæt/"},{w:"bad",ipa:"/bæd/"},{w:"hat",ipa:"/hæt/"},{w:"apple",ipa:"/ˈæpl/"}]},
-    { symbol:"/ʌ/", type:"短元音", cn:"近似“啊”和“呃”之间", tip:"口型放松，短促，像被吓到一声“啊”",
-      wrong:"别读成“啊”（太长），如 cup 别读成“卡普”",
-      words:[{w:"cup",ipa:"/kʌp/"},{w:"bus",ipa:"/bʌs/"},{w:"love",ipa:"/lʌv/"},{w:"come",ipa:"/kʌm/"}]},
-    { symbol:"/ɒ/", type:"短元音", cn:"近似“哦”（短）", tip:"嘴巴圆开，短促有力",
-      wrong:"不是“欧”，不是“啊”，如 hot 别读成“哈特”",
-      words:[{w:"hot",ipa:"/hɒt/"},{w:"not",ipa:"/nɒt/"},{w:"box",ipa:"/bɒks/"},{w:"job",ipa:"/dʒɒb/"}]},
-    { symbol:"/ʊ/", type:"短元音", cn:"近似“乌”（短）", tip:"嘴巴略圆，短促，别拉长",
-      wrong:"别读成 /uː/，如 book 别读成“布克”",
-      words:[{w:"book",ipa:"/bʊk/"},{w:"good",ipa:"/ɡʊd/"},{w:"look",ipa:"/lʊk/"},{w:"put",ipa:"/pʊt/"}]},
-    { symbol:"/ə/", type:"短元音", cn:"近似轻声“呃”", tip:"最放松的音，嘴巴完全放松，常出现在弱读音节",
-      wrong:"中文没有对应音，注意放松，别读重",
-      words:[{w:"about",ipa:"/əˈbaʊt/"},{w:"sofa",ipa:"/ˈsəʊfə/"},{w:"ago",ipa:"/əˈɡəʊ/"},{w:"teacher",ipa:"/ˈtiːtʃə/"}]},
-    { symbol:"/ɑː/", type:"长元音", cn:"近似“啊”（长）", tip:"嘴巴张大，像医生看喉咙，声音拉长",
-      wrong:"不要加卷舌，如 car 别读成“卡儿”",
-      words:[{w:"car",ipa:"/kɑː/"},{w:"far",ipa:"/fɑː/"},{w:"park",ipa:"/pɑːk/"},{w:"start",ipa:"/stɑːt/"}]},
-    { symbol:"/ɔː/", type:"长元音", cn:"近似“哦”（长）", tip:"嘴唇收圆前突，声音拉长",
-      wrong:"别读成 /ɒ/，如 door 别读成“朵”",
-      words:[{w:"door",ipa:"/dɔː/"},{w:"four",ipa:"/fɔː/"},{w:"more",ipa:"/mɔː/"},{w:"talk",ipa:"/tɔːk/"}]},
-    { symbol:"/uː/", type:"长元音", cn:"近似“乌”（长）", tip:"嘴巴收圆前突，声音拉长",
-      wrong:"别读成 /ʊ/，如 food 别读成“夫德”",
-      words:[{w:"food",ipa:"/fuːd/"},{w:"moon",ipa:"/muːn/"},{w:"blue",ipa:"/bluː/"},{w:"school",ipa:"/skuːl/"}]},
-    { symbol:"/ɜː/", type:"长元音", cn:"近似“呃”（长）", tip:"嘴巴放松，舌中部抬起，声音拉长",
-      wrong:"不要卷舌（美音会卷），如 bird 别读成“伯德”",
-      words:[{w:"bird",ipa:"/bɜːd/"},{w:"word",ipa:"/wɜːd/"},{w:"girl",ipa:"/ɡɜːl/"},{w:"first",ipa:"/fɜːst/"}]},
-    { symbol:"/eɪ/", type:"双元音", cn:"近似“诶”+“衣”", tip:"从 /e/ 滑到 /ɪ/，前半重后半轻",
-      wrong:"别读成单元音，要滑动，如 day 别读成“呆”",
-      words:[{w:"day",ipa:"/deɪ/"},{w:"name",ipa:"/neɪm/"},{w:"cake",ipa:"/keɪk/"},{w:"play",ipa:"/pleɪ/"}]},
-    { symbol:"/aɪ/", type:"双元音", cn:"近似“啊”+“衣”", tip:"从 /a/ 滑到 /ɪ/，类似中文“爱”",
-      wrong:"别读成“哎”太快，要滑动，如 my 就是“买”",
-      words:[{w:"my",ipa:"/maɪ/"},{w:"time",ipa:"/taɪm/"},{w:"bike",ipa:"/baɪk/"},{w:"night",ipa:"/naɪt/"}]},
-    { symbol:"/ɔɪ/", type:"双元音", cn:"近似“哦”+“衣”", tip:"从 /ɔ/ 滑到 /ɪ/",
-      wrong:"别读成“哦衣”分开读，要连起来",
-      words:[{w:"boy",ipa:"/bɔɪ/"},{w:"toy",ipa:"/tɔɪ/"},{w:"coin",ipa:"/kɔɪn/"},{w:"enjoy",ipa:"/ɪnˈdʒɔɪ/"}]},
-    { symbol:"/aʊ/", type:"双元音", cn:"近似“啊”+“乌”", tip:"从 /a/ 滑到 /ʊ/，类似中文“奥”",
-      wrong:"别读成“啊呜”分开，要滑动",
-      words:[{w:"now",ipa:"/naʊ/"},{w:"how",ipa:"/haʊ/"},{w:"out",ipa:"/aʊt/"},{w:"house",ipa:"/haʊs/"}]},
-    { symbol:"/əʊ/", type:"双元音", cn:"近似“呃”+“乌”", tip:"从 /ə/ 滑到 /ʊ/，类似中文“欧”",
-      wrong:"美音常读 /oʊ/，都行，如 go 别读成“够”",
-      words:[{w:"go",ipa:"/ɡəʊ/"},{w:"no",ipa:"/nəʊ/"},{w:"home",ipa:"/həʊm/"},{w:"know",ipa:"/nəʊ/"}]},
-    { symbol:"/ɪə/", type:"双元音", cn:"近似“衣”+“呃”", tip:"从 /ɪ/ 滑到 /ə/",
-      wrong:"英音多用，美音常读 /ɪr/",
-      words:[{w:"here",ipa:"/hɪə/"},{w:"near",ipa:"/nɪə/"},{w:"dear",ipa:"/dɪə/"},{w:"ear",ipa:"/ɪə/"}]},
-    { symbol:"/eə/", type:"双元音", cn:"近似“诶”+“呃”", tip:"从 /e/ 滑到 /ə/",
-      wrong:"英音多用，美音常读 /er/",
-      words:[{w:"hair",ipa:"/heə/"},{w:"care",ipa:"/keə/"},{w:"there",ipa:"/ðeə/"},{w:"wear",ipa:"/weə/"}]},
-    { symbol:"/ʊə/", type:"双元音", cn:"近似“乌”+“呃”", tip:"从 /ʊ/ 滑到 /ə/",
-      wrong:"现在英语里常读成 /ɔː/",
-      words:[{w:"tour",ipa:"/tʊə/"},{w:"poor",ipa:"/pʊə/"},{w:"sure",ipa:"/ʃʊə/"},{w:"cure",ipa:"/kjʊə/"}]}
-  ],
-  consonant: [
-    { symbol:"/p/", type:"清辅音", cn:"近似“泼”（轻声）", tip:"双唇紧闭，气流爆破而出，声带不振动",
-      wrong:"中文“泼”有元音，英语 /p/ 要短促、干净，如 pen 别读成“喷”",
-      words:[{w:"pen",ipa:"/pen/"},{w:"happy",ipa:"/ˈhæpi/"},{w:"stop",ipa:"/stɒp/"}]},
-    { symbol:"/b/", type:"浊辅音", cn:"近似“波”（轻声）", tip:"同 /p/，但声带振动",
-      wrong:"词尾 /b/ 别加“ə”，如 job 别读成“觉布”",
-      words:[{w:"book",ipa:"/bʊk/"},{w:"job",ipa:"/dʒɒb/"},{w:"baby",ipa:"/ˈbeɪbi/"}]},
-    { symbol:"/t/", type:"清辅音", cn:"近似“特”（轻声）", tip:"舌尖抵上齿龈，气流爆破",
-      wrong:"词尾别加元音，如 cat 别读成“卡特”",
-      words:[{w:"tea",ipa:"/tiː/"},{w:"sit",ipa:"/sɪt/"},{w:"water",ipa:"/ˈwɔːtə/"}]},
-    { symbol:"/d/", type:"浊辅音", cn:"近似“得”（轻声）", tip:"同 /t/，但声带振动",
-      wrong:"词尾别加元音，如 red 别读成“瑞德”",
-      words:[{w:"dog",ipa:"/dɒɡ/"},{w:"red",ipa:"/red/"},{w:"ladder",ipa:"/ˈlædə/"}]},
-    { symbol:"/k/", type:"清辅音", cn:"近似“克”（轻声）", tip:"舌后部抵软腭，气流爆破",
-      wrong:"词尾别加元音，如 back 别读成“拜克”",
-      words:[{w:"cat",ipa:"/kæt/"},{w:"back",ipa:"/bæk/"},{w:"school",ipa:"/skuːl/"}]},
-    { symbol:"/g/", type:"浊辅音", cn:"近似“格”（轻声）", tip:"同 /k/，但声带振动",
-      wrong:"词尾别加元音，如 big 别读成“比格”",
-      words:[{w:"go",ipa:"/ɡəʊ/"},{w:"big",ipa:"/bɪɡ/"},{w:"bag",ipa:"/bæɡ/"}]},
-    { symbol:"/f/", type:"清辅音", cn:"近似“夫”（轻声）", tip:"上齿轻咬下唇，气流摩擦而出",
-      wrong:"别读成 /h/，要咬唇，如 fish 别读成“嗨嘘”",
-      words:[{w:"fish",ipa:"/fɪʃ/"},{w:"coffee",ipa:"/ˈkɒfi/"},{w:"laugh",ipa:"/lɑːf/"}]},
-    { symbol:"/v/", type:"浊辅音", cn:"近似“夫”但声带振动", tip:"同 /f/，但声带振动，上齿咬下唇",
-      wrong:"别读成 /w/，如 very 别读成“歪瑞”",
-      words:[{w:"very",ipa:"/ˈveri/"},{w:"love",ipa:"/lʌv/"},{w:"give",ipa:"/ɡɪv/"}]},
-    { symbol:"/θ/", type:"清辅音", cn:"咬舌送气（中文没有）", tip:"舌尖伸出，轻触上齿，气流从齿缝出",
-      wrong:"别读成 /s/，如 think 别读成“辛克”；要伸舌尖",
-      words:[{w:"think",ipa:"/θɪŋk/"},{w:"three",ipa:"/θriː/"},{w:"mouth",ipa:"/maʊθ/"}]},
-    { symbol:"/ð/", type:"浊辅音", cn:"咬舌出声（中文没有）", tip:"同 /θ/，但声带振动",
-      wrong:"别读成 /z/，如 this 别读成“贼斯”；舌尖要伸出",
-      words:[{w:"this",ipa:"/ðɪs/"},{w:"mother",ipa:"/ˈmʌðə/"},{w:"breathe",ipa:"/briːð/"}]},
-    { symbol:"/s/", type:"清辅音", cn:"近似“斯”", tip:"舌尖靠近上齿龈，气流从缝隙出",
-      wrong:"词尾别加元音，如 bus 别读成“巴斯”",
-      words:[{w:"see",ipa:"/siː/"},{w:"bus",ipa:"/bʌs/"},{w:"kiss",ipa:"/kɪs/"}]},
-    { symbol:"/z/", type:"浊辅音", cn:"近似“兹”", tip:"同 /s/，但声带振动",
-      wrong:"别读成 /s/，如 zoo 别读成“苏”",
-      words:[{w:"zoo",ipa:"/zuː/"},{w:"is",ipa:"/ɪz/"},{w:"easy",ipa:"/ˈiːzi/"}]},
-    { symbol:"/ʃ/", type:"清辅音", cn:"近似“嘘”", tip:"舌尖抬向硬腭前部，嘴唇略圆",
-      wrong:"别读成 /s/，如 ship 别读成“细普”",
-      words:[{w:"ship",ipa:"/ʃɪp/"},{w:"fish",ipa:"/fɪʃ/"},{w:"sure",ipa:"/ʃʊə/"}]},
-    { symbol:"/ʒ/", type:"浊辅音", cn:"近似“日”但更轻", tip:"同 /ʃ/，但声带振动",
-      wrong:"中文没有，类似“日”去掉摩擦感，如 measure",
-      words:[{w:"measure",ipa:"/ˈmeʒə/"},{w:"vision",ipa:"/ˈvɪʒn/"},{w:"usual",ipa:"/ˈjuːʒuəl/"}]},
-    { symbol:"/h/", type:"清辅音", cn:"近似“喝”（轻声）", tip:"气流从声门摩擦而出",
-      wrong:"别太用力，如 hello 别读成“哈喽”（太重）",
-      words:[{w:"hat",ipa:"/hæt/"},{w:"hello",ipa:"/həˈləʊ/"},{w:"behind",ipa:"/bɪˈhaɪnd/"}]},
-    { symbol:"/tʃ/", type:"清辅音", cn:"近似“吃”（轻声）", tip:"/t/ + /ʃ/ 连读",
-      wrong:"别读成 /ʃ/，如 chair 别读成“谢尔”",
-      words:[{w:"chair",ipa:"/tʃeə/"},{w:"teacher",ipa:"/ˈtiːtʃə/"},{w:"catch",ipa:"/kætʃ/"}]},
-    { symbol:"/dʒ/", type:"浊辅音", cn:"近似“知”（轻声）", tip:"/d/ + /ʒ/ 连读",
-      wrong:"别读成 /tʃ/，如 job 别读成“乔布”",
-      words:[{w:"job",ipa:"/dʒɒb/"},{w:"bridge",ipa:"/brɪdʒ/"},{w:"orange",ipa:"/ˈɒrɪndʒ/"}]},
-    { symbol:"/m/", type:"鼻音", cn:"近似“母”", tip:"双唇闭合，气流从鼻腔出",
-      wrong:"结尾别加“ə”，如 come 别读成“康姆”",
-      words:[{w:"man",ipa:"/mæn/"},{w:"come",ipa:"/kʌm/"},{w:"summer",ipa:"/ˈsʌmə/"}]},
-    { symbol:"/n/", type:"鼻音", cn:"近似“呢”", tip:"舌尖抵上齿龈，气流从鼻腔出",
-      wrong:"结尾别加元音，如 sun 别读成“桑”",
-      words:[{w:"no",ipa:"/nəʊ/"},{w:"sun",ipa:"/sʌn/"},{w:"dinner",ipa:"/ˈdɪnə/"}]},
-    { symbol:"/ŋ/", type:"鼻音", cn:"近似“嗯”的后鼻音", tip:"舌后部抵软腭，气流从鼻腔出",
-      wrong:"别读成 /n/ 加 /g/，如 sing 别读成“辛格”",
-      words:[{w:"sing",ipa:"/sɪŋ/"},{w:"long",ipa:"/lɒŋ/"},{w:"English",ipa:"/ˈɪŋɡlɪʃ/"}]},
-    { symbol:"/l/", type:"舌侧音", cn:"近似“了”", tip:"舌尖抵上齿龈，气流从舌两侧出",
-      wrong:"中文“了”有元音，英语 /l/ 舌尖要贴住，如 like",
-      words:[{w:"like",ipa:"/laɪk/"},{w:"feel",ipa:"/fiːl/"},{w:"hello",ipa:"/həˈləʊ/"}]},
-    { symbol:"/r/", type:"半元音", cn:"近似“若”但不卷", tip:"舌尖卷起但不碰上腭，嘴唇略圆",
-      wrong:"别读成中文“日”，英语 /r/ 舌尖悬空；如 red 别读成“瑞德”",
-      words:[{w:"red",ipa:"/red/"},{w:"car",ipa:"/kɑː/"},{w:"sorry",ipa:"/ˈsɒri/"}]},
-    { symbol:"/j/", type:"半元音", cn:"近似“耶”", tip:"舌前部抬向硬腭，类似 /iː/ 快速滑出",
-      wrong:"别读成 /dʒ/，如 yes 别读成“杰斯”",
-      words:[{w:"yes",ipa:"/jes/"},{w:"you",ipa:"/juː/"},{w:"new",ipa:"/njuː/"}]},
-    { symbol:"/w/", type:"半元音", cn:"近似“乌”滑出", tip:"双唇收圆，类似 /uː/ 快速滑出",
-      wrong:"别读成 /v/（咬唇），如 we 别读成“维”",
-      words:[{w:"we",ipa:"/wiː/"},{w:"what",ipa:"/wɒt/"},{w:"away",ipa:"/əˈweɪ/"}]}
-  ],
-  combo: [
-    { symbol:"ee", type:"字母组合", cn:"读 /iː/", tip:"双 e 几乎总读长音 /iː/",
-      wrong:"不读“诶诶”，如 see 别读成“斯诶”",
-      words:[{w:"see",ipa:"/siː/"},{w:"tree",ipa:"/triː/"},{w:"free",ipa:"/friː/"},{w:"week",ipa:"/wiːk/"}]},
-    { symbol:"ea", type:"字母组合", cn:"多数读 /iː/，少数读 /e/", tip:"eat /iːt/ 但 bread /bred/",
-      wrong:"别一律读 /iː/，bread 里读 /e/",
-      words:[{w:"eat",ipa:"/iːt/"},{w:"tea",ipa:"/tiː/"},{w:"bread",ipa:"/bred/"},{w:"head",ipa:"/hed/"}]},
-    { symbol:"oo", type:"字母组合", cn:"读 /uː/ 或 /ʊ/", tip:"长短两类，food /uː/，book /ʊ/",
-      wrong:"别一律读长音，book 要短",
-      words:[{w:"food",ipa:"/fuːd/"},{w:"moon",ipa:"/muːn/"},{w:"book",ipa:"/bʊk/"},{w:"good",ipa:"/ɡʊd/"}]},
-    { symbol:"ai / ay", type:"字母组合", cn:"读 /eɪ/", tip:"读字母 A 的音",
-      wrong:"别读成 /aɪ/，如 rain 别读成“瑞恩”",
-      words:[{w:"rain",ipa:"/reɪn/"},{w:"train",ipa:"/treɪn/"},{w:"day",ipa:"/deɪ/"},{w:"play",ipa:"/pleɪ/"}]},
-    { symbol:"oa / ow", type:"字母组合", cn:"读 /əʊ/", tip:"读字母 O 的音",
-      wrong:"ow 也可能读 /aʊ/，如 now /naʊ/",
-      words:[{w:"boat",ipa:"/bəʊt/"},{w:"road",ipa:"/rəʊd/"},{w:"know",ipa:"/nəʊ/"},{w:"slow",ipa:"/sləʊ/"}]},
-    { symbol:"ou / ow", type:"字母组合", cn:"读 /aʊ/", tip:"像“嗷”音",
-      wrong:"ou 有时读 /uː/，如 soup /suːp/",
-      words:[{w:"out",ipa:"/aʊt/"},{w:"house",ipa:"/haʊs/"},{w:"now",ipa:"/naʊ/"},{w:"how",ipa:"/haʊ/"}]},
-    { symbol:"igh", type:"字母组合", cn:"读 /aɪ/", tip:"gh 不发音，读字母 I 的音",
-      wrong:"gh 不发音，别读出来，high 读“嗨”",
-      words:[{w:"high",ipa:"/haɪ/"},{w:"night",ipa:"/naɪt/"},{w:"light",ipa:"/laɪt/"},{w:"right",ipa:"/raɪt/"}]},
-    { symbol:"th", type:"字母组合", cn:"读 /θ/ 或 /ð/", tip:"清音 /θ/ 咬舌送气，浊音 /ð/ 咬舌出声",
-      wrong:"中文没有，要伸舌尖，别读成 /s/ 或 /z/",
-      words:[{w:"think",ipa:"/θɪŋk/"},{w:"three",ipa:"/θriː/"},{w:"this",ipa:"/ðɪs/"},{w:"mother",ipa:"/ˈmʌðə/"}]},
-    { symbol:"sh", type:"字母组合", cn:"读 /ʃ/", tip:"像“嘘”的口型",
-      wrong:"别读成 /s/，如 ship 别读成“细普”",
-      words:[{w:"ship",ipa:"/ʃɪp/"},{w:"fish",ipa:"/fɪʃ/"},{w:"shop",ipa:"/ʃɒp/"},{w:"wash",ipa:"/wɒʃ/"}]},
-    { symbol:"ch", type:"字母组合", cn:"读 /tʃ/", tip:"像“吃”的轻声",
-      wrong:"别读成 /ʃ/ 或 /k/，如 chair 别读成“谢尔”",
-      words:[{w:"chair",ipa:"/tʃeə/"},{w:"teacher",ipa:"/ˈtiːtʃə/"},{w:"child",ipa:"/tʃaɪld/"},{w:"much",ipa:"/mʌtʃ/"}]},
-    { symbol:"ph", type:"字母组合", cn:"读 /f/", tip:"常出现在希腊词源单词",
-      wrong:"ph 要读 /f/，不是 /p/+/h/，如 phone",
-      words:[{w:"phone",ipa:"/fəʊn/"},{w:"photo",ipa:"/ˈfəʊtəʊ/"},{w:"graph",ipa:"/ɡrɑːf/"}]},
-    { symbol:"wh", type:"字母组合", cn:"读 /w/", tip:"多数读 /w/，h 不发音",
-      wrong:"别读成 /v/，如 what 别读成“维特”",
-      words:[{w:"what",ipa:"/wɒt/"},{w:"where",ipa:"/weə/"},{w:"white",ipa:"/waɪt/"},{w:"when",ipa:"/wen/"}]},
-    { symbol:"ck", type:"字母组合", cn:"读 /k/", tip:"短元音后常写 ck",
-      wrong:"ck 读一个 /k/，别读两个，如 back",
-      words:[{w:"back",ipa:"/bæk/"},{w:"duck",ipa:"/dʌk/"},{w:"pick",ipa:"/pɪk/"},{w:"sock",ipa:"/sɒk/"}]},
-    { symbol:"ng", type:"字母组合", cn:"读 /ŋ/", tip:"词尾鼻音，像“嗯”",
-      wrong:"别读成 /n/+/g/，如 sing 别读成“辛格”",
-      words:[{w:"sing",ipa:"/sɪŋ/"},{w:"long",ipa:"/lɒŋ/"},{w:"morning",ipa:"/ˈmɔːnɪŋ/"}]},
-    { symbol:"kn", type:"字母组合", cn:"读 /n/", tip:"k 不发音",
-      wrong:"k 不发音，如 know 别读成“克诺”",
-      words:[{w:"know",ipa:"/nəʊ/"},{w:"knee",ipa:"/niː/"},{w:"knife",ipa:"/naɪf/"}]},
-    { symbol:"wr", type:"字母组合", cn:"读 /r/", tip:"w 不发音",
-      wrong:"w 不发音，如 write 别读成“瑞特”（w 别读）",
-      words:[{w:"write",ipa:"/raɪt/"},{w:"wrong",ipa:"/rɒŋ/"},{w:"wrap",ipa:"/ræp/"}]}
-  ],
-  pinyin: [
-    { cn:"b", en:"/b/", note:"汉语 b 不送气，英语 /b/ 更浊、更轻，词尾要闭合双唇" },
-    { cn:"p", en:"/p/", note:"汉语 p 送气强，英语 /p/ 送气更轻，别读成“泼”那么重" },
-    { cn:"d", en:"/d/", note:"汉语 d 不送气，英语 /d/ 更浊，词尾别加“ə”" },
-    { cn:"t", en:"/t/", note:"汉语 t 送气强，英语 /t/ 送气更轻" },
-    { cn:"g", en:"/g/", note:"汉语 g 不送气，英语 /g/ 更浊" },
-    { cn:"k", en:"/k/", note:"汉语 k 送气强，英语 /k/ 送气更轻" },
-    { cn:"m", en:"/m/", note:"基本相同，但英语词尾 /m/ 要闭合双唇收住" },
-    { cn:"n", en:"/n/", note:"基本相同，词尾别拖长" },
-    { cn:"l", en:"/l/", note:"汉语“了”带元音，英语 /l/ 舌尖要贴住上齿龈" },
-    { cn:"f", en:"/f/", note:"汉语 f 用上齿+下唇，英语 /f/ 一样，但词尾要轻" },
-    { cn:"s", en:"/s/", note:"基本相同，英语 /s/ 舌尖更靠上齿龈" },
-    { cn:"z", en:"/z/", note:"中文没有真正的 /z/（“兹”带元音），英语 /z/ 声带振动、无元音" },
-    { cn:"h", en:"/h/", note:"汉语 h 摩擦更强（如“喝”），英语 /h/ 更轻" },
-    { cn:"w", en:"/w/", note:"汉语 w 类似，但英语 /w/ 嘴唇更圆、更紧" },
-    { cn:"y", en:"/j/", note:"汉语 y 类似，但英语 /j/ 更滑" },
-    { cn:"r", en:"/r/", note:"❌ 大坑：中文 r 是摩擦音（如“日”），英语 /r/ 舌尖悬空不摩擦" },
-    { cn:"无", en:"/θ/", note:"❌ 中文没有：舌尖伸出，轻触上齿，气流从缝出（think）" },
-    { cn:"无", en:"/ð/", note:"❌ 中文没有：同 /θ/ 但声带振动（this）" },
-    { cn:"无", en:"/ʃ/", note:"接近“嘘”，嘴唇略圆，舌尖抬向硬腭前部" },
-    { cn:"无", en:"/ʒ/", note:"❌ 中文没有：类似 /ʃ/ 但声带振动（measure）" },
-    { cn:"无", en:"/æ/", note:"❌ 中文没有：嘴巴张大、扁平，介于“诶”和“啊”之间（cat）" },
-    { cn:"无", en:"/ə/", note:"❌ 中文没有：最放松的元音，常出现在弱读音节（about 的 a）" }
-  ],
-  pairs: [
-    { symbol:"/iː/ vs /ɪ/", type:"易混音对比", cn:"长音 vs 短音", tip:"长音 /iː/ 拉长 2 秒；短音 /ɪ/ 短促，舌位低一点",
-      wrong:"seat /siːt/ ≠ sit /sɪt/ ·  sheep /ʃiːp/ ≠ ship /ʃɪp/",
-      words:[{w:"seat",ipa:"/siːt/"},{w:"sit",ipa:"/sɪt/"},{w:"sheep",ipa:"/ʃiːp/"},{w:"ship",ipa:"/ʃɪp/"}]},
-    { symbol:"/uː/ vs /ʊ/", type:"易混音对比", cn:"长音 vs 短音", tip:"/uː/ 拉长；/ʊ/ 短促，嘴巴略松",
-      wrong:"food /fuːd/ ≠ foot /fʊt/ · pool /puːl/ ≠ pull /pʊl/",
-      words:[{w:"food",ipa:"/fuːd/"},{w:"foot",ipa:"/fʊt/"},{w:"pool",ipa:"/puːl/"},{w:"pull",ipa:"/pʊl/"}]},
-    { symbol:"/θ/ vs /s/", type:"易混音对比", cn:"咬舌 vs 不咬舌", tip:"/θ/ 舌尖伸出；/s/ 舌尖在上齿龈后",
-      wrong:"think /θɪŋk/ ≠ sink /sɪŋk/ · thick /θɪk/ ≠ sick /sɪk/",
-      words:[{w:"think",ipa:"/θɪŋk/"},{w:"sink",ipa:"/sɪŋk/"},{w:"thick",ipa:"/θɪk/"},{w:"sick",ipa:"/sɪk/"}]},
-    { symbol:"/ð/ vs /z/", type:"易混音对比", cn:"咬舌 vs 不咬舌", tip:"/ð/ 舌尖伸出；/z/ 舌尖在上齿龈后",
-      wrong:"they /ðeɪ/ ≠ zay ·  breathe /briːð/ ≠ breeze /briːz/",
-      words:[{w:"they",ipa:"/ðeɪ/"},{w:"this",ipa:"/ðɪs/"},{w:"breathe",ipa:"/briːð/"},{w:"breeze",ipa:"/briːz/"}]},
-    { symbol:"/v/ vs /w/", type:"易混音对比", cn:"咬唇 vs 圆唇", tip:"/v/ 上齿咬下唇；/w/ 双唇收圆不咬",
-      wrong:"very /ˈveri/ ≠ wary /ˈweəri/ ·  vine /vaɪn/ ≠ wine /waɪn/",
-      words:[{w:"very",ipa:"/ˈveri/"},{w:"wary",ipa:"/ˈweəri/"},{w:"vine",ipa:"/vaɪn/"},{w:"wine",ipa:"/waɪn/"}]},
-    { symbol:"/l/ vs /r/", type:"易混音对比", cn:"舌尖贴 vs 舌尖悬", tip:"/l/ 舌尖贴上齿龈；/r/ 舌尖悬空卷起",
-      wrong:"light /laɪt/ ≠ right /raɪt/ ·  lice /laɪs/ ≠ rice /raɪs/",
-      words:[{w:"light",ipa:"/laɪt/"},{w:"right",ipa:"/raɪt/"},{w:"lice",ipa:"/laɪs/"},{w:"rice",ipa:"/raɪs/"}]},
-    { symbol:"/n/ vs /ŋ/", type:"易混音对比", cn:"前鼻音 vs 后鼻音", tip:"/n/ 舌尖抵上齿龈；/ŋ/ 舌后部抵软腭",
-      wrong:"sin /sɪn/ ≠ sing /sɪŋ/ ·  ban /bæn/ ≠ bang /bæŋ/",
-      words:[{w:"sin",ipa:"/sɪn/"},{w:"sing",ipa:"/sɪŋ/"},{w:"ban",ipa:"/bæn/"},{w:"bang",ipa:"/bæŋ/"}]},
-    { symbol:"/æ/ vs /e/", type:"易混音对比", cn:"大张口 vs 小张口", tip:"/æ/ 嘴巴张大；/e/ 嘴巴微张",
-      wrong:"bad /bæd/ ≠ bed /bed/ ·  man /mæn/ ≠ men /men/",
-      words:[{w:"bad",ipa:"/bæd/"},{w:"bed",ipa:"/bed/"},{w:"man",ipa:"/mæn/"},{w:"men",ipa:"/men/"}]},
-    { symbol:"/ɑː/ vs /ʌ/", type:"易混音对比", cn:"长音 vs 短音", tip:"/ɑː/ 嘴巴张大、拉长；/ʌ/ 短促放松",
-      wrong:"cart /kɑːt/ ≠ cut /kʌt/ ·  heart /hɑːt/ ≠ hut /hʌt/",
-      words:[{w:"cart",ipa:"/kɑːt/"},{w:"cut",ipa:"/kʌt/"},{w:"heart",ipa:"/hɑːt/"},{w:"hut",ipa:"/hʌt/"}]},
-    { symbol:"词尾辅音", type:"易混音对比", cn:"别加“ə”", tip:"中文习惯加元音，英语词尾辅音要干净收住",
-      wrong:"cat 别读“卡特” ·  dog 别读“多格” ·  like 别读“赖克”",
-      words:[{w:"cat",ipa:"/kæt/"},{w:"dog",ipa:"/dɒɡ/"},{w:"like",ipa:"/laɪk/"},{w:"stop",ipa:"/stɒp/"}]}
-  ]
-};
-
 // ================================================================
 // 🎵 拼读词典
 // ================================================================
@@ -616,7 +737,255 @@ function applyContractions(text) {
 }
 
 // ================================================================
-// 母句库（保留核心 30 个句型）
+// 🔤 发音数据（中国人友好版）
+// ================================================================
+const PHONICS_DATA = {
+  vowel: [
+    { symbol:"/iː/", type:"长元音", cn:"近似“衣”（长）", tip:"嘴角向两边拉开，像微笑一样，声音拉长",
+      wrong:"别读成短促的“一”，要持续 2 秒",
+      words:[{w:"see",ipa:"/siː/"},{w:"eat",ipa:"/iːt/"},{w:"tea",ipa:"/tiː/"},{w:"meet",ipa:"/miːt/"}]},
+    { symbol:"/ɪ/", type:"短元音", cn:"介于“衣”和“诶”之间", tip:"舌位比 /iː/ 低，嘴巴放松，短促",
+      wrong:"别读成“衣”，别拉长",
+      words:[{w:"sit",ipa:"/sɪt/"},{w:"big",ipa:"/bɪɡ/"},{w:"this",ipa:"/ðɪs/"},{w:"fish",ipa:"/fɪʃ/"}]},
+    { symbol:"/e/", type:"短元音", cn:"近似“诶”（短）", tip:"嘴巴微张，比 /ɪ/ 低一点",
+      wrong:"不要读成“爱”",
+      words:[{w:"bed",ipa:"/bed/"},{w:"get",ipa:"/ɡet/"},{w:"ten",ipa:"/ten/"},{w:"said",ipa:"/sed/"}]},
+    { symbol:"/æ/", type:"短元音", cn:"介于“诶”和“啊”之间", tip:"嘴巴张大，像医生看喉咙",
+      wrong:"不是“爱”，是扁平的“啊”",
+      words:[{w:"cat",ipa:"/kæt/"},{w:"bad",ipa:"/bæd/"},{w:"hat",ipa:"/hæt/"},{w:"apple",ipa:"/ˈæpl/"}]},
+    { symbol:"/ʌ/", type:"短元音", cn:"近似“啊”和“呃”之间", tip:"口型放松，短促",
+      wrong:"别读成“啊”（太长）",
+      words:[{w:"cup",ipa:"/kʌp/"},{w:"bus",ipa:"/bʌs/"},{w:"love",ipa:"/lʌv/"},{w:"come",ipa:"/kʌm/"}]},
+    { symbol:"/ɒ/", type:"短元音", cn:"近似“哦”（短）", tip:"嘴巴圆开，短促有力",
+      wrong:"不是“欧”，不是“啊”",
+      words:[{w:"hot",ipa:"/hɒt/"},{w:"not",ipa:"/nɒt/"},{w:"box",ipa:"/bɒks/"},{w:"job",ipa:"/dʒɒb/"}]},
+    { symbol:"/ʊ/", type:"短元音", cn:"近似“乌”（短）", tip:"嘴巴略圆，短促",
+      wrong:"别读成 /uː/",
+      words:[{w:"book",ipa:"/bʊk/"},{w:"good",ipa:"/ɡʊd/"},{w:"look",ipa:"/lʊk/"},{w:"put",ipa:"/pʊt/"}]},
+    { symbol:"/ə/", type:"短元音", cn:"近似轻声“呃”", tip:"最放松的音，常出现在弱读音节",
+      wrong:"中文没有对应音",
+      words:[{w:"about",ipa:"/əˈbaʊt/"},{w:"sofa",ipa:"/ˈsəʊfə/"},{w:"ago",ipa:"/əˈɡəʊ/"},{w:"teacher",ipa:"/ˈtiːtʃə/"}]},
+    { symbol:"/ɑː/", type:"长元音", cn:"近似“啊”（长）", tip:"嘴巴张大，声音拉长",
+      wrong:"不要加卷舌",
+      words:[{w:"car",ipa:"/kɑː/"},{w:"far",ipa:"/fɑː/"},{w:"park",ipa:"/pɑːk/"},{w:"start",ipa:"/stɑːt/"}]},
+    { symbol:"/ɔː/", type:"长元音", cn:"近似“哦”（长）", tip:"嘴唇收圆前突，声音拉长",
+      wrong:"别读成 /ɒ/",
+      words:[{w:"door",ipa:"/dɔː/"},{w:"four",ipa:"/fɔː/"},{w:"more",ipa:"/mɔː/"},{w:"talk",ipa:"/tɔːk/"}]},
+    { symbol:"/uː/", type:"长元音", cn:"近似“乌”（长）", tip:"嘴巴收圆前突，声音拉长",
+      wrong:"别读成 /ʊ/",
+      words:[{w:"food",ipa:"/fuːd/"},{w:"moon",ipa:"/muːn/"},{w:"blue",ipa:"/bluː/"},{w:"school",ipa:"/skuːl/"}]},
+    { symbol:"/ɜː/", type:"长元音", cn:"近似“呃”（长）", tip:"嘴巴放松，舌中部抬起",
+      wrong:"不要卷舌（美音卷）",
+      words:[{w:"bird",ipa:"/bɜːd/"},{w:"word",ipa:"/wɜːd/"},{w:"girl",ipa:"/ɡɜːl/"},{w:"first",ipa:"/fɜːst/"}]},
+    { symbol:"/eɪ/", type:"双元音", cn:"近似“诶”+“衣”", tip:"从 /e/ 滑到 /ɪ/",
+      wrong:"别读成单元音",
+      words:[{w:"day",ipa:"/deɪ/"},{w:"name",ipa:"/neɪm/"},{w:"cake",ipa:"/keɪk/"},{w:"play",ipa:"/pleɪ/"}]},
+    { symbol:"/aɪ/", type:"双元音", cn:"近似“啊”+“衣”", tip:"从 /a/ 滑到 /ɪ/",
+      wrong:"别读太快",
+      words:[{w:"my",ipa:"/maɪ/"},{w:"time",ipa:"/taɪm/"},{w:"bike",ipa:"/baɪk/"},{w:"night",ipa:"/naɪt/"}]},
+    { symbol:"/ɔɪ/", type:"双元音", cn:"近似“哦”+“衣”", tip:"从 /ɔ/ 滑到 /ɪ/",
+      wrong:"别分开读",
+      words:[{w:"boy",ipa:"/bɔɪ/"},{w:"toy",ipa:"/tɔɪ/"},{w:"coin",ipa:"/kɔɪn/"},{w:"enjoy",ipa:"/ɪnˈdʒɔɪ/"}]},
+    { symbol:"/aʊ/", type:"双元音", cn:"近似“啊”+“乌”", tip:"从 /a/ 滑到 /ʊ/",
+      wrong:"别分开读",
+      words:[{w:"now",ipa:"/naʊ/"},{w:"how",ipa:"/haʊ/"},{w:"out",ipa:"/aʊt/"},{w:"house",ipa:"/haʊs/"}]},
+    { symbol:"/əʊ/", type:"双元音", cn:"近似“呃”+“乌”", tip:"从 /ə/ 滑到 /ʊ/",
+      wrong:"美音常读 /oʊ/",
+      words:[{w:"go",ipa:"/ɡəʊ/"},{w:"no",ipa:"/nəʊ/"},{w:"home",ipa:"/həʊm/"},{w:"know",ipa:"/nəʊ/"}]},
+    { symbol:"/ɪə/", type:"双元音", cn:"近似“衣”+“呃”", tip:"从 /ɪ/ 滑到 /ə/",
+      wrong:"英音多用",
+      words:[{w:"here",ipa:"/hɪə/"},{w:"near",ipa:"/nɪə/"},{w:"dear",ipa:"/dɪə/"},{w:"ear",ipa:"/ɪə/"}]},
+    { symbol:"/eə/", type:"双元音", cn:"近似“诶”+“呃”", tip:"从 /e/ 滑到 /ə/",
+      wrong:"英音多用",
+      words:[{w:"hair",ipa:"/heə/"},{w:"care",ipa:"/keə/"},{w:"there",ipa:"/ðeə/"},{w:"wear",ipa:"/weə/"}]},
+    { symbol:"/ʊə/", type:"双元音", cn:"近似“乌”+“呃”", tip:"从 /ʊ/ 滑到 /ə/",
+      wrong:"现在英语里常读 /ɔː/",
+      words:[{w:"tour",ipa:"/tʊə/"},{w:"poor",ipa:"/pʊə/"},{w:"sure",ipa:"/ʃʊə/"},{w:"cure",ipa:"/kjʊə/"}]}
+  ],
+  consonant: [
+    { symbol:"/p/", type:"清辅音", cn:"近似“泼”（轻声）", tip:"双唇紧闭，气流爆破",
+      wrong:"词尾别加元音，如 pen 别读成“喷”",
+      words:[{w:"pen",ipa:"/pen/"},{w:"happy",ipa:"/ˈhæpi/"},{w:"stop",ipa:"/stɒp/"}]},
+    { symbol:"/b/", type:"浊辅音", cn:"近似“波”（轻声）", tip:"同 /p/，声带振动",
+      wrong:"词尾别加“ə”，如 job 别读“觉布”",
+      words:[{w:"book",ipa:"/bʊk/"},{w:"job",ipa:"/dʒɒb/"},{w:"baby",ipa:"/ˈbeɪbi/"}]},
+    { symbol:"/t/", type:"清辅音", cn:"近似“特”（轻声）", tip:"舌尖抵上齿龈，气流爆破",
+      wrong:"词尾别加元音，如 cat 别读“卡特”",
+      words:[{w:"tea",ipa:"/tiː/"},{w:"sit",ipa:"/sɪt/"},{w:"water",ipa:"/ˈwɔːtə/"}]},
+    { symbol:"/d/", type:"浊辅音", cn:"近似“得”（轻声）", tip:"同 /t/，声带振动",
+      wrong:"词尾别加元音",
+      words:[{w:"dog",ipa:"/dɒɡ/"},{w:"red",ipa:"/red/"},{w:"ladder",ipa:"/ˈlædə/"}]},
+    { symbol:"/k/", type:"清辅音", cn:"近似“克”（轻声）", tip:"舌后部抵软腭，气流爆破",
+      wrong:"词尾别加元音",
+      words:[{w:"cat",ipa:"/kæt/"},{w:"back",ipa:"/bæk/"},{w:"school",ipa:"/skuːl/"}]},
+    { symbol:"/g/", type:"浊辅音", cn:"近似“格”（轻声）", tip:"同 /k/，声带振动",
+      wrong:"词尾别加元音",
+      words:[{w:"go",ipa:"/ɡəʊ/"},{w:"big",ipa:"/bɪɡ/"},{w:"bag",ipa:"/bæɡ/"}]},
+    { symbol:"/f/", type:"清辅音", cn:"近似“夫”（轻声）", tip:"上齿轻咬下唇，气流摩擦",
+      wrong:"别读成 /h/，要咬唇",
+      words:[{w:"fish",ipa:"/fɪʃ/"},{w:"coffee",ipa:"/ˈkɒfi/"},{w:"laugh",ipa:"/lɑːf/"}]},
+    { symbol:"/v/", type:"浊辅音", cn:"近似“夫”但声带振动", tip:"上齿咬下唇，声带振动",
+      wrong:"别读成 /w/",
+      words:[{w:"very",ipa:"/ˈveri/"},{w:"love",ipa:"/lʌv/"},{w:"give",ipa:"/ɡɪv/"}]},
+    { symbol:"/θ/", type:"清辅音", cn:"咬舌送气（中文没有）", tip:"舌尖伸出，轻触上齿，气流从齿缝出",
+      wrong:"别读成 /s/，要伸舌尖",
+      words:[{w:"think",ipa:"/θɪŋk/"},{w:"three",ipa:"/θriː/"},{w:"mouth",ipa:"/maʊθ/"}]},
+    { symbol:"/ð/", type:"浊辅音", cn:"咬舌出声（中文没有）", tip:"同 /θ/，声带振动",
+      wrong:"别读成 /z/，舌尖要伸出",
+      words:[{w:"this",ipa:"/ðɪs/"},{w:"mother",ipa:"/ˈmʌðə/"},{w:"breathe",ipa:"/briːð/"}]},
+    { symbol:"/s/", type:"清辅音", cn:"近似“斯”", tip:"舌尖靠近上齿龈，气流从缝隙出",
+      wrong:"词尾别加元音",
+      words:[{w:"see",ipa:"/siː/"},{w:"bus",ipa:"/bʌs/"},{w:"kiss",ipa:"/kɪs/"}]},
+    { symbol:"/z/", type:"浊辅音", cn:"近似“兹”", tip:"同 /s/，声带振动",
+      wrong:"别读成 /s/",
+      words:[{w:"zoo",ipa:"/zuː/"},{w:"is",ipa:"/ɪz/"},{w:"easy",ipa:"/ˈiːzi/"}]},
+    { symbol:"/ʃ/", type:"清辅音", cn:"近似“嘘”", tip:"舌尖抬向硬腭前部，嘴唇略圆",
+      wrong:"别读成 /s/",
+      words:[{w:"ship",ipa:"/ʃɪp/"},{w:"fish",ipa:"/fɪʃ/"},{w:"sure",ipa:"/ʃʊə/"}]},
+    { symbol:"/ʒ/", type:"浊辅音", cn:"近似“日”但更轻", tip:"同 /ʃ/，声带振动",
+      wrong:"中文没有",
+      words:[{w:"measure",ipa:"/ˈmeʒə/"},{w:"vision",ipa:"/ˈvɪʒn/"},{w:"usual",ipa:"/ˈjuːʒuəl/"}]},
+    { symbol:"/h/", type:"清辅音", cn:"近似“喝”（轻声）", tip:"气流从声门摩擦而出",
+      wrong:"别太用力",
+      words:[{w:"hat",ipa:"/hæt/"},{w:"hello",ipa:"/həˈləʊ/"},{w:"behind",ipa:"/bɪˈhaɪnd/"}]},
+    { symbol:"/tʃ/", type:"清辅音", cn:"近似“吃”（轻声）", tip:"/t/ + /ʃ/ 连读",
+      wrong:"别读成 /ʃ/",
+      words:[{w:"chair",ipa:"/tʃeə/"},{w:"teacher",ipa:"/ˈtiːtʃə/"},{w:"catch",ipa:"/kætʃ/"}]},
+    { symbol:"/dʒ/", type:"浊辅音", cn:"近似“知”（轻声）", tip:"/d/ + /ʒ/ 连读",
+      wrong:"别读成 /tʃ/",
+      words:[{w:"job",ipa:"/dʒɒb/"},{w:"bridge",ipa:"/brɪdʒ/"},{w:"orange",ipa:"/ˈɒrɪndʒ/"}]},
+    { symbol:"/m/", type:"鼻音", cn:"近似“母”", tip:"双唇闭合，气流从鼻腔出",
+      wrong:"结尾别加“ə”",
+      words:[{w:"man",ipa:"/mæn/"},{w:"come",ipa:"/kʌm/"},{w:"summer",ipa:"/ˈsʌmə/"}]},
+    { symbol:"/n/", type:"鼻音", cn:"近似“呢”", tip:"舌尖抵上齿龈，气流从鼻腔出",
+      wrong:"结尾别加元音",
+      words:[{w:"no",ipa:"/nəʊ/"},{w:"sun",ipa:"/sʌn/"},{w:"dinner",ipa:"/ˈdɪnə/"}]},
+    { symbol:"/ŋ/", type:"鼻音", cn:"近似“嗯”的后鼻音", tip:"舌后部抵软腭，气流从鼻腔出",
+      wrong:"别读成 /n/+/g/",
+      words:[{w:"sing",ipa:"/sɪŋ/"},{w:"long",ipa:"/lɒŋ/"},{w:"English",ipa:"/ˈɪŋɡlɪʃ/"}]},
+    { symbol:"/l/", type:"舌侧音", cn:"近似“了”", tip:"舌尖抵上齿龈，气流从舌两侧出",
+      wrong:"中文“了”带元音",
+      words:[{w:"like",ipa:"/laɪk/"},{w:"feel",ipa:"/fiːl/"},{w:"hello",ipa:"/həˈləʊ/"}]},
+    { symbol:"/r/", type:"半元音", cn:"近似“若”但不卷", tip:"舌尖卷起但不碰上腭",
+      wrong:"别读成中文“日”",
+      words:[{w:"red",ipa:"/red/"},{w:"car",ipa:"/kɑː/"},{w:"sorry",ipa:"/ˈsɒri/"}]},
+    { symbol:"/j/", type:"半元音", cn:"近似“耶”", tip:"舌前部抬向硬腭",
+      wrong:"别读成 /dʒ/",
+      words:[{w:"yes",ipa:"/jes/"},{w:"you",ipa:"/juː/"},{w:"new",ipa:"/njuː/"}]},
+    { symbol:"/w/", type:"半元音", cn:"近似“乌”滑出", tip:"双唇收圆",
+      wrong:"别读成 /v/",
+      words:[{w:"we",ipa:"/wiː/"},{w:"what",ipa:"/wɒt/"},{w:"away",ipa:"/əˈweɪ/"}]}
+  ],
+  combo: [
+    { symbol:"ee", type:"字母组合", cn:"读 /iː/", tip:"双 e 常读长音 /iː/",
+      wrong:"不读“诶诶”",
+      words:[{w:"see",ipa:"/siː/"},{w:"tree",ipa:"/triː/"},{w:"free",ipa:"/friː/"},{w:"week",ipa:"/wiːk/"}]},
+    { symbol:"ea", type:"字母组合", cn:"多数 /iː/，少数 /e/", tip:"eat /iːt/ 但 bread /bred/",
+      wrong:"别一律读 /iː/",
+      words:[{w:"eat",ipa:"/iːt/"},{w:"tea",ipa:"/tiː/"},{w:"bread",ipa:"/bred/"},{w:"head",ipa:"/hed/"}]},
+    { symbol:"oo", type:"字母组合", cn:"读 /uː/ 或 /ʊ/", tip:"food /uː/，book /ʊ/",
+      wrong:"别一律读长音",
+      words:[{w:"food",ipa:"/fuːd/"},{w:"moon",ipa:"/muːn/"},{w:"book",ipa:"/bʊk/"},{w:"good",ipa:"/ɡʊd/"}]},
+    { symbol:"ai / ay", type:"字母组合", cn:"读 /eɪ/", tip:"读字母 A 的音",
+      wrong:"别读成 /aɪ/",
+      words:[{w:"rain",ipa:"/reɪn/"},{w:"train",ipa:"/treɪn/"},{w:"day",ipa:"/deɪ/"},{w:"play",ipa:"/pleɪ/"}]},
+    { symbol:"oa / ow", type:"字母组合", cn:"读 /əʊ/", tip:"读字母 O 的音",
+      wrong:"ow 也可能读 /aʊ/",
+      words:[{w:"boat",ipa:"/bəʊt/"},{w:"road",ipa:"/rəʊd/"},{w:"know",ipa:"/nəʊ/"},{w:"slow",ipa:"/sləʊ/"}]},
+    { symbol:"ou / ow", type:"字母组合", cn:"读 /aʊ/", tip:"像“嗷”音",
+      wrong:"ou 有时读 /uː/",
+      words:[{w:"out",ipa:"/aʊt/"},{w:"house",ipa:"/haʊs/"},{w:"now",ipa:"/naʊ/"},{w:"how",ipa:"/haʊ/"}]},
+    { symbol:"igh", type:"字母组合", cn:"读 /aɪ/", tip:"gh 不发音",
+      wrong:"gh 别读出来",
+      words:[{w:"high",ipa:"/haɪ/"},{w:"night",ipa:"/naɪt/"},{w:"light",ipa:"/laɪt/"},{w:"right",ipa:"/raɪt/"}]},
+    { symbol:"th", type:"字母组合", cn:"读 /θ/ 或 /ð/", tip:"清音 /θ/ 咬舌送气，浊音 /ð/ 咬舌出声",
+      wrong:"中文没有，要伸舌尖",
+      words:[{w:"think",ipa:"/θɪŋk/"},{w:"three",ipa:"/θriː/"},{w:"this",ipa:"/ðɪs/"},{w:"mother",ipa:"/ˈmʌðə/"}]},
+    { symbol:"sh", type:"字母组合", cn:"读 /ʃ/", tip:"像“嘘”的口型",
+      wrong:"别读成 /s/",
+      words:[{w:"ship",ipa:"/ʃɪp/"},{w:"fish",ipa:"/fɪʃ/"},{w:"shop",ipa:"/ʃɒp/"},{w:"wash",ipa:"/wɒʃ/"}]},
+    { symbol:"ch", type:"字母组合", cn:"读 /tʃ/", tip:"像“吃”的轻声",
+      wrong:"别读成 /ʃ/",
+      words:[{w:"chair",ipa:"/tʃeə/"},{w:"teacher",ipa:"/ˈtiːtʃə/"},{w:"child",ipa:"/tʃaɪld/"},{w:"much",ipa:"/mʌtʃ/"}]},
+    { symbol:"ph", type:"字母组合", cn:"读 /f/", tip:"常出现在希腊词源单词",
+      wrong:"不是 /p/+/h/",
+      words:[{w:"phone",ipa:"/fəʊn/"},{w:"photo",ipa:"/ˈfəʊtəʊ/"},{w:"graph",ipa:"/ɡrɑːf/"}]},
+    { symbol:"wh", type:"字母组合", cn:"读 /w/", tip:"h 不发音",
+      wrong:"别读成 /v/",
+      words:[{w:"what",ipa:"/wɒt/"},{w:"where",ipa:"/weə/"},{w:"white",ipa:"/waɪt/"},{w:"when",ipa:"/wen/"}]},
+    { symbol:"ck", type:"字母组合", cn:"读 /k/", tip:"短元音后常写 ck",
+      wrong:"只读一个 /k/",
+      words:[{w:"back",ipa:"/bæk/"},{w:"duck",ipa:"/dʌk/"},{w:"pick",ipa:"/pɪk/"},{w:"sock",ipa:"/sɒk/"}]},
+    { symbol:"ng", type:"字母组合", cn:"读 /ŋ/", tip:"词尾鼻音",
+      wrong:"别读成 /n/+/g/",
+      words:[{w:"sing",ipa:"/sɪŋ/"},{w:"long",ipa:"/lɒŋ/"},{w:"morning",ipa:"/ˈmɔːnɪŋ/"}]},
+    { symbol:"kn", type:"字母组合", cn:"读 /n/", tip:"k 不发音",
+      wrong:"k 别读出来",
+      words:[{w:"know",ipa:"/nəʊ/"},{w:"knee",ipa:"/niː/"},{w:"knife",ipa:"/naɪf/"}]},
+    { symbol:"wr", type:"字母组合", cn:"读 /r/", tip:"w 不发音",
+      wrong:"w 别读出来",
+      words:[{w:"write",ipa:"/raɪt/"},{w:"wrong",ipa:"/rɒŋ/"},{w:"wrap",ipa:"/ræp/"}]}
+  ],
+  pinyin: [
+    { cn:"b", en:"/b/", note:"汉语 b 不送气，英语 /b/ 更浊、更轻，词尾要闭合双唇" },
+    { cn:"p", en:"/p/", note:"汉语 p 送气强，英语 /p/ 送气更轻" },
+    { cn:"d", en:"/d/", note:"汉语 d 不送气，英语 /d/ 更浊" },
+    { cn:"t", en:"/t/", note:"汉语 t 送气强，英语 /t/ 送气更轻" },
+    { cn:"g", en:"/g/", note:"汉语 g 不送气，英语 /g/ 更浊" },
+    { cn:"k", en:"/k/", note:"汉语 k 送气强，英语 /k/ 送气更轻" },
+    { cn:"m", en:"/m/", note:"基本相同，但英语词尾 /m/ 要闭合双唇收住" },
+    { cn:"n", en:"/n/", note:"基本相同，词尾别拖长" },
+    { cn:"l", en:"/l/", note:"汉语“了”带元音，英语 /l/ 舌尖要贴住上齿龈" },
+    { cn:"f", en:"/f/", note:"汉语 f 用上齿+下唇，英语 /f/ 一样，但词尾要轻" },
+    { cn:"s", en:"/s/", note:"基本相同，英语 /s/ 舌尖更靠上齿龈" },
+    { cn:"z", en:"/z/", note:"中文没有真正的 /z/，英语 /z/ 声带振动、无元音" },
+    { cn:"h", en:"/h/", note:"汉语 h 摩擦更强，英语 /h/ 更轻" },
+    { cn:"w", en:"/w/", note:"汉语 w 类似，但英语 /w/ 嘴唇更圆、更紧" },
+    { cn:"y", en:"/j/", note:"汉语 y 类似，但英语 /j/ 更滑" },
+    { cn:"r", en:"/r/", note:"❌ 大坑：中文 r 是摩擦音，英语 /r/ 舌尖悬空不摩擦" },
+    { cn:"无", en:"/θ/", note:"❌ 中文没有：舌尖伸出，轻触上齿，气流从缝出（think）" },
+    { cn:"无", en:"/ð/", note:"❌ 中文没有：同 /θ/ 但声带振动（this）" },
+    { cn:"无", en:"/ʃ/", note:"接近“嘘”，嘴唇略圆，舌尖抬向硬腭前部" },
+    { cn:"无", en:"/ʒ/", note:"❌ 中文没有：类似 /ʃ/ 但声带振动（measure）" },
+    { cn:"无", en:"/æ/", note:"❌ 中文没有：嘴巴张大、扁平（cat）" },
+    { cn:"无", en:"/ə/", note:"❌ 中文没有：最放松的元音，弱读音节（about 的 a）" }
+  ],
+  pairs: [
+    { symbol:"/iː/ vs /ɪ/", type:"易混音对比", cn:"长音 vs 短音", tip:"长音 /iː/ 拉长 2 秒；短音 /ɪ/ 短促",
+      wrong:"seat /siːt/ ≠ sit /sɪt/ · sheep /ʃiːp/ ≠ ship /ʃɪp/",
+      words:[{w:"seat",ipa:"/siːt/"},{w:"sit",ipa:"/sɪt/"},{w:"sheep",ipa:"/ʃiːp/"},{w:"ship",ipa:"/ʃɪp/"}]},
+    { symbol:"/uː/ vs /ʊ/", type:"易混音对比", cn:"长音 vs 短音", tip:"/uː/ 拉长；/ʊ/ 短促",
+      wrong:"food /fuːd/ ≠ foot /fʊt/ · pool /puːl/ ≠ pull /pʊl/",
+      words:[{w:"food",ipa:"/fuːd/"},{w:"foot",ipa:"/fʊt/"},{w:"pool",ipa:"/puːl/"},{w:"pull",ipa:"/pʊl/"}]},
+    { symbol:"/θ/ vs /s/", type:"易混音对比", cn:"咬舌 vs 不咬舌", tip:"/θ/ 舌尖伸出；/s/ 舌尖在上齿龈后",
+      wrong:"think /θɪŋk/ ≠ sink /sɪŋk/ · thick /θɪk/ ≠ sick /sɪk/",
+      words:[{w:"think",ipa:"/θɪŋk/"},{w:"sink",ipa:"/sɪŋk/"},{w:"thick",ipa:"/θɪk/"},{w:"sick",ipa:"/sɪk/"}]},
+    { symbol:"/ð/ vs /z/", type:"易混音对比", cn:"咬舌 vs 不咬舌", tip:"/ð/ 舌尖伸出；/z/ 舌尖在上齿龈后",
+      wrong:"breathe /briːð/ ≠ breeze /briːz/",
+      words:[{w:"they",ipa:"/ðeɪ/"},{w:"this",ipa:"/ðɪs/"},{w:"breathe",ipa:"/briːð/"},{w:"breeze",ipa:"/briːz/"}]},
+    { symbol:"/v/ vs /w/", type:"易混音对比", cn:"咬唇 vs 圆唇", tip:"/v/ 上齿咬下唇；/w/ 双唇收圆",
+      wrong:"vine /vaɪn/ ≠ wine /waɪn/ · very ≠ wary",
+      words:[{w:"very",ipa:"/ˈveri/"},{w:"wary",ipa:"/ˈweəri/"},{w:"vine",ipa:"/vaɪn/"},{w:"wine",ipa:"/waɪn/"}]},
+    { symbol:"/l/ vs /r/", type:"易混音对比", cn:"舌尖贴 vs 舌尖悬", tip:"/l/ 舌尖贴上齿龈；/r/ 舌尖悬空卷起",
+      wrong:"light /laɪt/ ≠ right /raɪt/ · lice /laɪs/ ≠ rice /raɪs/",
+      words:[{w:"light",ipa:"/laɪt/"},{w:"right",ipa:"/raɪt/"},{w:"lice",ipa:"/laɪs/"},{w:"rice",ipa:"/raɪs/"}]},
+    { symbol:"/n/ vs /ŋ/", type:"易混音对比", cn:"前鼻音 vs 后鼻音", tip:"/n/ 舌尖抵上齿龈；/ŋ/ 舌后部抵软腭",
+      wrong:"sin /sɪn/ ≠ sing /sɪŋ/ · ban /bæn/ ≠ bang /bæŋ/",
+      words:[{w:"sin",ipa:"/sɪn/"},{w:"sing",ipa:"/sɪŋ/"},{w:"ban",ipa:"/bæn/"},{w:"bang",ipa:"/bæŋ/"}]},
+    { symbol:"/æ/ vs /e/", type:"易混音对比", cn:"大张口 vs 小张口", tip:"/æ/ 嘴巴张大；/e/ 嘴巴微张",
+      wrong:"bad /bæd/ ≠ bed /bed/ · man /mæn/ ≠ men /men/",
+      words:[{w:"bad",ipa:"/bæd/"},{w:"bed",ipa:"/bed/"},{w:"man",ipa:"/mæn/"},{w:"men",ipa:"/men/"}]},
+    { symbol:"/ɑː/ vs /ʌ/", type:"易混音对比", cn:"长音 vs 短音", tip:"/ɑː/ 嘴巴张大、拉长；/ʌ/ 短促放松",
+      wrong:"cart /kɑːt/ ≠ cut /kʌt/ · heart /hɑːt/ ≠ hut /hʌt/",
+      words:[{w:"cart",ipa:"/kɑːt/"},{w:"cut",ipa:"/kʌt/"},{w:"heart",ipa:"/hɑːt/"},{w:"hut",ipa:"/hʌt/"}]},
+    { symbol:"词尾辅音", type:"易混音对比", cn:"别加“ə”", tip:"中文习惯加元音，英语词尾辅音要干净收住",
+      wrong:"cat 别读“卡特” · dog 别读“多格” · like 别读“赖克”",
+      words:[{w:"cat",ipa:"/kæt/"},{w:"dog",ipa:"/dɒɡ/"},{w:"like",ipa:"/laɪk/"},{w:"stop",ipa:"/stɒp/"}]}
+  ]
+};
+
+// ================================================================
+// 母句库
 // ================================================================
 const PATTERNS = [
   { scene:"困惑", type:"s", en:"I have no idea how to ___.", cn:"我不知道该怎么 ______。", chunks:[
@@ -792,7 +1161,15 @@ function splitPattern(pattern) {
 }
 
 // ================================================================
-// 🔤 发音模块渲染
+// 📖 学习方法展开/收起
+// ================================================================
+function toggleMethod(header) {
+  const section = header.parentElement;
+  section.classList.toggle("open");
+}
+
+// ================================================================
+// 🔤 发音模块
 // ================================================================
 function setPhonicsCat(cat, btn) {
   document.querySelectorAll(".phonics-tab").forEach(b => b.classList.remove("active"));
@@ -804,21 +1181,19 @@ function setPhonicsCat(cat, btn) {
 function renderPhonics() {
   const data = PHONICS_DATA[currentPhonicsCat] || [];
 
-  // 提示文案
   const intros = {
     vowel: '<b>元音</b>：口腔气流不受阻，是音节的核心。每个音都标了<b style="color:#e94560">汉字近似音</b>和<b style="color:#f97316">易错提示</b>。<br>👉 <b>点卡片</b>朗读整组例词，<b>点单词</b>朗读单个。',
     consonant: '<b>辅音</b>：分<b>清辅音</b>（声带不振动）和<b>浊辅音</b>（声带振动）。中国人最难的是 /θ/ /ð/ /v/ /r/ 这几个。<br>👉 <b>点卡片</b>朗读整组例词，<b>点单词</b>朗读单个。',
-    combo: '<b>字母组合</b>：看到组合就能读出音，是"见词能读"的关键。同一组合可能有多种读法，都已标注。<br>👉 <b>点卡片</b>朗读整组例词，<b>点单词</b>朗读单个。',
+    combo: '<b>字母组合</b>：看到组合就能读出音，是"见词能读"的关键。<br>👉 <b>点卡片</b>朗读整组例词，<b>点单词</b>朗读单个。',
     pinyin: '<b>拼音对照</b>：用汉语拼音思维快速定位英语音素。⚠️ 标红的条目是<b>中国人最容易踩的坑</b>。<br>👉 对比记忆，别用中文拼音替代英语发音。',
-    pairs: '<b>易混音对比</b>：中国学习者最容易混淆的几组音。<br>👉 每组都配了对比例词，<b>点卡片</b>连读两组，感受差异；<b>点单词</b>单读。'
+    pairs: '<b>易混音对比</b>：中国学习者最容易混淆的几组音。<br>👉 每组都配了对比例词，<b>点卡片</b>连读两组，感受差异。'
   };
   phonicsIntro.innerHTML = intros[currentPhonicsCat] || '';
 
-  // 拼音对照 Tab 特殊渲染（表格形式）
   if (currentPhonicsCat === "pinyin") {
     phonicsGrid.innerHTML = data.map(item => {
-      const isWarning = item.note.includes("❌") || item.note.includes("大坑");
-      return '<div class="phonics-card pinyin' + (isWarning ? ' warning' : '') + '">' +
+      const isWarning = item.note.includes("❌");
+      return '<div class="phonics-card pinyin">' +
         '<div class="pinyin-row">' +
           '<span class="pinyin-cn">' + item.cn + '</span>' +
           '<span class="pinyin-arrow">→</span>' +
@@ -831,7 +1206,6 @@ function renderPhonics() {
     return;
   }
 
-  // 常规卡片渲染
   phonicsGrid.innerHTML = data.map((item, i) =>
     '<div class="phonics-card ' + currentPhonicsCat + '" onclick="speakPhonicsGroup(' + i + ')">' +
       '<div class="phonics-head">' +
@@ -878,7 +1252,6 @@ function speakPhonicsWord(i, j) {
 }
 
 function speakPinyinExample(symbol) {
-  // 用一个代表单词读出来
   const samples = {
     "/b/": "book", "/p/": "pen", "/d/": "dog", "/t/": "tea", "/g/": "go", "/k/": "cat",
     "/m/": "man", "/n/": "no", "/l/": "like", "/f/": "fish", "/s/": "see", "/z/": "zoo",
@@ -922,12 +1295,13 @@ function startReview() {
   if (!reviewPatterns.length) { statusEl.textContent = "复习内容已失效"; return; }
   for (let i = reviewPatterns.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [reviewPatterns[i], reviewPatterns[j]] = [reviewPatterns[j], reviewPatterns[i]];
-  }
+    [reviewPatterns[i], reviewPatterns[jPattern]]s = [review.lengthPatterns[j], reviewPatterns[i]];
+)  }
   reviewMode = true;
-  filteredPatterns = reviewPatterns;
+  filteredPatterns = {
+ reviewPatterns;
   currentPatternIndex = 0;
-  currentChunkIndex = 0;
+     currentChunkIndex = 0;
   $("reviewBanner").style.display = "flex";
   $("reviewTotal").textContent = reviewPatterns.length;
   $("reviewProgress").textContent = 1;
@@ -956,8 +1330,7 @@ function updateFilteredPatterns() {
   if (showFavOnly) list = list.filter(p => favorites.some(f => f.patternEn === p.en && f.scene === p.scene));
   filteredPatterns = list;
   if (currentPatternIndex >= filteredPatterns.length) { currentPatternIndex = 0; currentChunkIndex = 0; }
-  if (!filteredPatterns.length) {
-    sentenceLine.innerHTML = '<span style="color:#94a3b8;font-size:18px;">' + (showFavOnly ? "还没有收藏" : "该筛选暂无内容") + '</span>';
+  if (!filtered sentenceLine.innerHTML = '<span style="color:#94a3b8;font-size:18px;">' + (showFavOnly ? "还没有收藏" : "该筛选暂无内容") + '</span>';
     sentenceCn.textContent = "";
     sentencePh.textContent = "";
     chunkGrid.innerHTML = "";
@@ -1206,202 +1579,3 @@ function selectChunk(index) {
 function prevPattern() {
   if (!filteredPatterns.length) return;
   currentPatternIndex = (currentPatternIndex - 1 + filteredPatterns.length) % filteredPatterns.length;
-  currentChunkIndex = 0;
-  renderPattern();
-}
-function nextPattern() {
-  if (!filteredPatterns.length) return;
-  currentPatternIndex = (currentPatternIndex + 1) % filteredPatterns.length;
-  currentChunkIndex = 0;
-  renderPattern();
-  if (reviewMode && currentPatternIndex === 0) {
-    statusEl.textContent = "🎉 完成一轮复习！共 " + reviewPatterns.length + " 句";
-  }
-}
-
-// ================================================================
-// 场景 / 类型
-// ================================================================
-function initCategoryTabs() {
-  const scenes = ["全部", ...new Set(PATTERNS.map(p => p.scene))];
-  categoryTabs.innerHTML = scenes.map(s =>
-    '<button class="cat-tab' + (s === "全部" ? " active" : "") + '" data-scene="' + s + '">' + s + '</button>'
-  ).join("");
-  categoryTabs.querySelectorAll(".cat-tab").forEach(btn => {
-    btn.onclick = () => {
-      if (reviewMode) exitReview();
-      categoryTabs.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentScene = btn.dataset.scene;
-      currentPatternIndex = 0;
-      currentChunkIndex = 0;
-      updateFilteredPatterns();
-    };
-  });
-}
-
-function setType(type, btn) {
-  if (reviewMode) exitReview();
-  document.querySelectorAll(".type-btn").forEach(b => { b.classList.remove("active"); b.classList.remove("q"); });
-  btn.classList.add("active");
-  if (type === "q") btn.classList.add("q");
-  currentType = type;
-  currentPatternIndex = 0; currentChunkIndex = 0;
-  updateFilteredPatterns();
-}
-
-// ================================================================
-// 母句列表
-// ================================================================
-let listOpen = false;
-function toggleList() {
-  listOpen = !listOpen;
-  if (listOpen) { patternList.classList.add("open"); renderPatternList(); }
-  else patternList.classList.remove("open");
-}
-
-function renderPatternList() {
-  if (!listOpen) return;
-  if (!filteredPatterns.length) { patternList.innerHTML = '<div class="pattern-list-empty">暂无内容</div>'; return; }
-  patternList.innerHTML = filteredPatterns.map((p, i) =>
-    '<div class="pattern-list-item' + (i === currentPatternIndex ? ' active' : '') + '" onclick="jumpToPattern(' + i + ')">' +
-      '<span>' + p.en.replace(/___/g, '____') + '</span>' +
-      '<span class="item-type ' + p.type + '">' + (p.type === 'q' ? '问' : '述') + '</span>' +
-    '</div>'
-  ).join("");
-}
-
-function jumpToPattern(i) {
-  currentPatternIndex = i;
-  currentChunkIndex = 0;
-  renderPattern();
-  listOpen = false;
-  patternList.classList.remove("open");
-}
-
-// ================================================================
-// 收藏
-// ================================================================
-function isCurrentFav() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return false;
-  const c = p.chunks[currentChunkIndex];
-  return favorites.some(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
-}
-function updateFavButton() {
-  if (isCurrentFav()) { favBtn.classList.add("active"); favBtn.textContent = "★"; }
-  else { favBtn.classList.remove("active"); favBtn.textContent = "☆"; }
-}
-function toggleFavSentence() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return;
-  const c = p.chunks[currentChunkIndex];
-  const idx = favorites.findIndex(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
-  if (idx >= 0) {
-    favorites.splice(idx, 1);
-    statusEl.textContent = "已取消收藏"; statusEl.className = "status";
-  } else {
-    favorites.push({ scene: p.scene, patternEn: p.en, patternCn: p.cn, chunkEn: c.en, chunkCn: c.cn, type: p.type });
-    statusEl.textContent = "⭐ 已收藏"; statusEl.className = "status";
-  }
-  localStorage.setItem("wordblock_favs", JSON.stringify(favorites));
-  updateFavButton();
-}
-function toggleFavMode() {
-  if (reviewMode) exitReview();
-  showFavOnly = !showFavOnly;
-  favToggle.classList.toggle("on", showFavOnly);
-  currentPatternIndex = 0; currentChunkIndex = 0;
-  statusEl.textContent = showFavOnly ? ("⭐ 只显示收藏（共 " + favorites.length + " 条）") : "显示全部";
-  updateFilteredPatterns();
-}
-
-// ================================================================
-// 商城
-// ================================================================
-function renderShop() {
-  const grid = document.getElementById("shopGrid");
-  grid.innerHTML = PRODUCTS.map(p =>
-    '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
-      '<div class="product-img">' + p.emoji + '</div>' +
-      '<div class="product-body">' +
-        '<div class="product-name">' + p.name + '</div>' +
-        '<div class="product-name-en">' + p.nameEn + '</div>' +
-        '<div class="product-price">¥' + p.price + '</div>' +
-      '</div>' +
-    '</div>'
-  ).join("");
-}
-
-function openProduct(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  if (!p) return;
-  document.getElementById("mImg").innerHTML = p.emoji;
-  document.getElementById("mName").textContent = p.name + " · " + p.nameEn;
-  document.getElementById("mPrice").textContent = "¥" + p.price;
-  document.getElementById("mDescEn").textContent = p.descEn;
-  document.getElementById("mDescCn").textContent = p.descCn;
-  document.getElementById("productModal").classList.add("open");
-  speak(p.descEn, "en-US");
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove("open");
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-}
-
-// ================================================================
-// Tab 切换
-// ================================================================
-function switchTab(tab, btn) {
-  document.querySelectorAll(".tab-mini button").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("learnModule").style.display = tab === "learn" ? "block" : "none";
-  document.getElementById("phonicsModule").style.display = tab === "phonics" ? "block" : "none";
-  document.getElementById("shopModule").style.display = tab === "shop" ? "block" : "none";
-  if (tab === "shop") renderShop();
-  if (tab === "phonics" && !phonicsGrid.innerHTML) renderPhonics();
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-// ================================================================
-// 初始化
-// ================================================================
-function init() {
-  initCategoryTabs();
-  updateFilteredPatterns();
-  renderPhonics();
-
-  const warm = () => { warmUp(); document.removeEventListener("click", warm); document.removeEventListener("touchstart", warm); };
-  document.addEventListener("click", warm);
-  document.addEventListener("touchstart", warm, { passive: true });
-
-  if (window.speechSynthesis) {
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-  }
-
-  console.log("✅ 已启动");
-  console.log("📐 母句:", PATTERNS.length, "· 🧱 词块:", PATTERNS.reduce((s,p)=>s+p.chunks.length,0));
-  console.log("🔤 元音:", PHONICS_DATA.vowel.length, "· 辅音:", PHONICS_DATA.consonant.length, "· 组合:", PHONICS_DATA.combo.length, "· 拼音对照:", PHONICS_DATA.pinyin.length, "· 易混音:", PHONICS_DATA.pairs.length);
-}
-
-document.getElementById("productModal").addEventListener("click", function(e) {
-  if (e.target === this) closeModal("productModal");
-});
-document.getElementById("contractionModal").addEventListener("click", function(e) {
-  if (e.target === this) closeModal("contractionModal");
-});
-
-document.addEventListener("keydown", e => {
-  if (e.target.tagName === "INPUT") return;
-  if (e.key === "ArrowLeft") prevPattern();
-  if (e.key === "ArrowRight") nextPattern();
-  if (e.key === " ") { e.preventDefault(); playFull(); }
-});
-
-init();
-</script>
-</body>
-</html>
