@@ -53,16 +53,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .sentence-cn{font-size:15px;color:#64748b;line-height:1.5;}
 .fav-btn-sentence{position:absolute;top:14px;right:14px;width:36px;height:36px;border:0;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:18px;cursor:pointer;color:#cbd5e1;transition:0.2s;}
 .fav-btn-sentence.active{color:#f59e0b;transform:scale(1.1);}
-.big-actions{display:flex;gap:10px;margin-bottom:14px;}
-.big-btn{flex:1;padding:15px;border:0;border-radius:20px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:0.15s;}
+.big-actions{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.big-btn{flex:1;min-width:100px;padding:14px 12px;border:0;border-radius:18px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:0.15s;}
 .big-btn:active{transform:scale(0.97);}
+.big-btn.play3{background:linear-gradient(135deg,#e94560,#f97316);color:#fff;box-shadow:0 6px 16px rgba(233,69,96,0.30);}
 .big-btn.play{background:#e94560;color:#fff;box-shadow:0 6px 16px rgba(233,69,96,0.30);}
 .big-btn.cn{background:#fff;color:#0f172a;box-shadow:0 4px 12px rgba(0,0,0,0.06);}
 .chunk-section{background:#fff;border-radius:24px;padding:18px 16px;box-shadow:0 8px 24px rgba(0,0,0,0.06);margin-bottom:14px;}
 .chunk-section-title{font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
 .chunk-section-title .count{background:#f1f5f9;color:#475569;padding:2px 10px;border-radius:20px;font-size:11px;}
 .chunk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(95px,1fr));gap:8px;}
-.chunk{padding:11px 6px;border-radius:14px;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center;cursor:pointer;transition:0.15s;user-select:none;}
+.chunk{padding:11px 6px;border-radius:14px;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center;cursor:pointer;transition:0.15s;user-select:none;position:relative;}
 .chunk:active{transform:scale(0.95);}
 .chunk.active{background:#e94560;border-color:#e94560;color:#fff;box-shadow:0 4px 12px rgba(233,69,96,0.25);}
 .chunk .en{font-size:13px;font-weight:700;line-height:1.25;word-break:break-word;}
@@ -97,6 +98,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   .chunk-grid{grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:6px;}
   .chunk{padding:9px 5px;}
   .chunk .en{font-size:12px;}
+  .big-btn{font-size:13px;padding:12px 8px;}
 }
 </style>
 </head>
@@ -145,13 +147,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     </div>
 
     <div class="big-actions">
-      <button class="big-btn play" onclick="playCurrent()">🔊 朗读英文</button>
-      <button class="big-btn cn" onclick="playChinese()">🇨🇳 读中文</button>
+      <button class="big-btn play3" onclick="playThreeStage()">🎧 三段式</button>
+      <button class="big-btn play" onclick="playCurrent()">🔊 整句</button>
+      <button class="big-btn cn" onclick="playChinese()">🇨🇳 中文</button>
     </div>
 
     <div class="chunk-section">
       <div class="chunk-section-title">
-        <span>🧱 点词块，换一个说法</span>
+        <span>🧱 点词块，听三段</span>
         <span class="count" id="chunkCount">0</span>
       </div>
       <div class="chunk-grid" id="chunkGrid"></div>
@@ -163,7 +166,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <button class="nav-btn" onclick="nextPattern()">下一句型 ⏭</button>
     </div>
 
-    <div class="status" id="status">点词块开始学习</div>
+    <div class="status" id="status">点词块 → 先听母句，再听词块，最后听整句</div>
   </div>
 
   <div id="shopModule" style="display:none;">
@@ -187,15 +190,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <script>
 // ================================================================
-// 母句库 PATTERNS
-// 130个母句 × 10词块 = 1300句
-// 新增："😕 困惑求助"场景 + 各场景 "I have no idea how/where/which/whom to..." 结构
+// 母句库（130个母句 × 10词块 = 1300句）
 // ================================================================
 const PATTERNS = [
-  // ============================================================
-  // 🌟 新增场景：困惑求助（16个母句）
-  // 核心：I have no idea + 疑问词 + to do
-  // ============================================================
+  // ============ 困惑求助（18个） ============
   { scene: "困惑", type: "s", en: "I have no idea how to ___.", cn: "我不知道该怎么 ______。",
     chunks: [
       { en: "order this", cn: "点这个" }, { en: "get to the hotel", cn: "去酒店" },
@@ -359,9 +357,7 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 一、日常（14个，含新增困惑类）
-  // ============================================================
+  // ============ 日常（14个） ============
   { scene: "日常", type: "s", en: "I want to ___.", cn: "我想 ______。",
     chunks: [
       { en: "eat something", cn: "吃点东西" }, { en: "drink water", cn: "喝水" },
@@ -489,9 +485,7 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 二、厨师（14个）
-  // ============================================================
+  // ============ 厨师（14个） ============
   { scene: "厨师", type: "s", en: "I need to ___.", cn: "我需要 ______。",
     chunks: [
       { en: "chop vegetables", cn: "切菜" }, { en: "slice onions", cn: "切洋葱" },
@@ -619,9 +613,7 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 三、社交（14个）
-  // ============================================================
+  // ============ 社交（14个） ============
   { scene: "社交", type: "s", en: "Do you want to ___?", cn: "你想 ______ 吗？",
     chunks: [
       { en: "hang out", cn: "一起玩" }, { en: "grab coffee", cn: "喝咖啡" },
@@ -749,9 +741,7 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 四、旅行（14个）
-  // ============================================================
+  // ============ 旅行（14个） ============
   { scene: "旅行", type: "s", en: "Where is ___?", cn: "______ 在哪里？",
     chunks: [
       { en: "the station", cn: "车站" }, { en: "the airport", cn: "机场" },
@@ -879,9 +869,7 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 五、购物（14个）
-  // ============================================================
+  // ============ 购物（14个） ============
   { scene: "购物", type: "s", en: "How much ___?", cn: "______ 多少钱？",
     chunks: [
       { en: "is this", cn: "这个" }, { en: "does it cost", cn: "这个" },
@@ -1009,9 +997,7 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 六、紧急（12个）
-  // ============================================================
+  // ============ 紧急（12个） ============
   { scene: "紧急", type: "s", en: "I need help ___.", cn: "我需要帮助 ______。",
     chunks: [
       { en: "right now", cn: "马上" }, { en: "with this", cn: "帮这个" },
@@ -1121,9 +1107,7 @@ const PATTERNS = [
     ]
   },
 
-  // ============================================================
-  // 七、餐厅（12个）
-  // ============================================================
+  // ============ 餐厅（12个） ============
   { scene: "餐厅", type: "s", en: "I'd like to ___.", cn: "我想 ______。",
     chunks: [
       { en: "order now", cn: "现在点餐" }, { en: "see the menu", cn: "看菜单" },
@@ -1391,6 +1375,10 @@ function showSentence() {
   sentenceCn.textContent = fullCn;
 }
 
+// ================================================================
+// 🌟 核心：三段式播放
+// 母句骨架 → 词块 → 整句
+// ================================================================
 function selectChunk(index) {
   currentChunkIndex = index;
   chunkGrid.querySelectorAll(".chunk").forEach((el, i) => {
@@ -1399,14 +1387,39 @@ function selectChunk(index) {
   showSentence();
   updateFavButton();
 
+  // 自动三段式播放
+  playThreeStage();
+}
+
+function playThreeStage() {
   const p = filteredPatterns[currentPatternIndex];
-  const c = p.chunks[index];
+  if (!p) return;
+  const c = p.chunks[currentChunkIndex];
   const fullEn = p.en.replace(/___/g, c.en);
-  statusEl.textContent = "🔊 " + fullEn;
+
+  // 母句骨架：去掉 ___ 及其后紧跟的标点
+  const patternSkeleton = p.en
+    .replace(/\s*___\s*[.,?!]?/g, "")
+    .trim();
+
+  // 第 1 段：母句骨架
+  statusEl.textContent = "① 母句：" + patternSkeleton;
   statusEl.className = "status speaking";
-  speak(fullEn, "en-US", () => {
-    statusEl.textContent = "✅ 播放完成 · 点其他词块试试";
-    statusEl.className = "status";
+  speak(patternSkeleton, "en-US", () => {
+    setTimeout(() => {
+      // 第 2 段：词块
+      statusEl.textContent = "② 词块：" + c.en;
+      speak(c.en, "en-US", () => {
+        setTimeout(() => {
+          // 第 3 段：完整句
+          statusEl.textContent = "③ 整句：" + fullEn;
+          speak(fullEn, "en-US", () => {
+            statusEl.textContent = "✅ 三段完成 · " + fullEn;
+            statusEl.className = "status";
+          });
+        }, 320);
+      });
+    }, 320);
   });
 }
 
@@ -1414,7 +1427,7 @@ function playCurrent() {
   const p = filteredPatterns[currentPatternIndex];
   const c = p.chunks[currentChunkIndex];
   const fullEn = p.en.replace(/___/g, c.en);
-  statusEl.textContent = "🔊 " + fullEn;
+  statusEl.textContent = "🔊 整句：" + fullEn;
   statusEl.className = "status speaking";
   speak(fullEn, "en-US", () => {
     statusEl.textContent = "✅ 播放完成";
@@ -1640,6 +1653,7 @@ function init() {
   const qCount = PATTERNS.filter(p => p.type === "q").length;
   console.log("✅ 已启动 · 母句", PATTERNS.length, "（述", sCount, "+问", qCount, "）· 词块", totalChunks);
   console.log("📖 场景:", [...new Set(PATTERNS.map(p => p.scene))].join(" / "));
+  console.log("🎧 三段式播放：母句 → 词块 → 整句");
 }
 
 document.getElementById("productModal").addEventListener("click", function(e) {
@@ -1650,7 +1664,7 @@ document.addEventListener("keydown", e => {
   if (e.target.tagName === "INPUT") return;
   if (e.key === "ArrowLeft") prevPattern();
   if (e.key === "ArrowRight") nextPattern();
-  if (e.key === " ") { e.preventDefault(); playCurrent(); }
+  if (e.key === " ") { e.preventDefault(); playThreeStage(); }
 });
 
 init();
