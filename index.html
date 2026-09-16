@@ -2,25 +2,18 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1,maximum-scale=1">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>🎧 每句练耳 · Chaowen AI</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 body{
   margin:0;
   background:#f5f6f8;
   color:#222;
-  font-family:
-    -apple-system,BlinkMacSystemFont,
-    "Segoe UI","PingFang SC",
-    "Microsoft YaHei",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
 }
 
 .app{
@@ -80,36 +73,35 @@ body{
   border-radius:9px;
   padding:0 13px;
   background:#222;
-  color:#fff;
+  color:white;
 }
 
-/* 词族 */
-.familyBar{
+/* 分类 */
+.filters{
   display:flex;
   gap:6px;
   overflow-x:auto;
-  padding-bottom:2px;
+  margin-bottom:8px;
 }
 
-.familyBar button{
+.filters button{
   flex:0 0 auto;
   border:0;
-  background:#f0f1f3;
+  background:#eef0f2;
   border-radius:8px;
   padding:7px 10px;
   font-size:12px;
 }
 
-.familyBar button.active{
+.filters button.active{
   background:#222;
   color:#fff;
 }
 
-/* 单词 */
+/* 词 */
 .wordGrid{
   display:grid;
-  grid-template-columns:
-    repeat(5,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:5px;
 }
 
@@ -126,15 +118,15 @@ body{
   color:#fff;
 }
 
-/* 当前 */
+/* 当前词 */
 .current{
   text-align:center;
 }
 
 .bigWord{
   font-size:38px;
-  font-weight:850;
   line-height:1.1;
+  font-weight:850;
 }
 
 .meaning{
@@ -143,10 +135,20 @@ body{
   margin-top:3px;
 }
 
+.pos{
+  display:inline-block;
+  margin-top:5px;
+  background:#f0f1f3;
+  border-radius:7px;
+  padding:4px 8px;
+  font-size:11px;
+  color:#666;
+}
+
 .mainPlay{
   border:0;
   background:#222;
-  color:#fff;
+  color:white;
   border-radius:9px;
   padding:9px 17px;
   margin-top:8px;
@@ -156,9 +158,9 @@ body{
 /* 拼读 */
 .blend{
   display:flex;
-  align-items:center;
   justify-content:center;
-  gap:5px;
+  align-items:center;
+  gap:6px;
   margin-top:9px;
 }
 
@@ -185,20 +187,13 @@ body{
   font-size:13px;
 }
 
-/* 母句 */
-.pattern{
-  font-size:20px;
-  font-weight:750;
-  text-align:center;
-}
-
-.patternCN{
-  text-align:center;
+.chunkCN{
+  font-size:11px;
   color:#888;
-  font-size:12px;
-  margin-top:2px;
+  margin-left:4px;
 }
 
+/* 母句 */
 .sentence{
   border-top:1px solid #eee;
   padding:8px 0;
@@ -209,7 +204,7 @@ body{
 
 .sentenceText{
   font-size:14px;
-  line-height:1.35;
+  line-height:1.4;
 }
 
 .sentenceCN{
@@ -244,7 +239,21 @@ body{
   font-size:12px;
 }
 
-/* 底部 */
+.listenBtns{
+  display:flex;
+  gap:6px;
+  justify-content:center;
+  margin-top:7px;
+}
+
+.listenBtns button{
+  border:0;
+  background:#eef0f2;
+  border-radius:8px;
+  padding:7px 11px;
+}
+
+/* 控制 */
 .controls{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -278,9 +287,26 @@ body{
   font-size:11px;
 }
 
-.speed .active{
+.speed button.active{
   background:#222;
   color:#fff;
+}
+
+.empty{
+  text-align:center;
+  color:#999;
+  padding:12px;
+  font-size:13px;
+}
+
+@media(max-width:380px){
+  .wordGrid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .bigWord{
+    font-size:34px;
+  }
 }
 </style>
 </head>
@@ -289,31 +315,31 @@ body{
 
 <div class="app">
 
-<!-- 顶部 -->
+<!-- ================= 顶部 ================= -->
+
 <div class="header">
 
   <div>
     <div class="logo">🎧 每句练耳</div>
     <div class="sub">
-      Chaowen AI · 词族 × 词块 × 母句
+      Chaowen AI · 2000词 × 母句语块
     </div>
   </div>
 
-  <div id="progress">
-    1 / 2000
-  </div>
+  <div id="progress">1 / 2000</div>
 
 </div>
 
 
-<!-- 搜索 -->
+<!-- ================= 搜索 ================= -->
+
 <div class="card">
 
   <div class="search">
 
     <input
       id="searchInput"
-      placeholder="搜索单词，例如 make / home">
+      placeholder="搜索：make / home / happy">
 
     <button onclick="searchWord()">
       搜索
@@ -324,44 +350,36 @@ body{
 </div>
 
 
-<!-- 词族 -->
+<!-- ================= 筛选 ================= -->
+
 <div class="card">
 
-  <div class="label">
-    📚 词族
-  </div>
+  <div class="filters" id="filters"></div>
 
-  <div
-    class="familyBar"
-    id="familyBar">
-  </div>
-
-  <div style="height:7px"></div>
-
-  <div
-    class="wordGrid"
-    id="wordGrid">
-  </div>
+  <div class="wordGrid" id="wordGrid"></div>
 
 </div>
 
 
-<!-- 当前单词 -->
+<!-- ================= 当前单词 ================= -->
+
 <div class="card">
 
   <div class="current">
 
-    <div
-      class="bigWord"
-      id="bigWord">
-      make
+    <div class="bigWord" id="bigWord">
+      cat
     </div>
 
-    <div
-      class="meaning"
-      id="meaning">
-      制作；使
+    <div class="meaning" id="meaning">
+      猫
     </div>
+
+    <div class="pos" id="pos">
+      noun · 名词
+    </div>
+
+    <br>
 
     <button
       class="mainPlay"
@@ -379,11 +397,12 @@ body{
 </div>
 
 
-<!-- 词块 -->
+<!-- ================= 正确词块 ================= -->
+
 <div class="card">
 
   <div class="label">
-    🧩 高频词块
+    🧩 正确词块
   </div>
 
   <div
@@ -394,37 +413,25 @@ body{
 </div>
 
 
-<!-- 母句型 -->
+<!-- ================= 母句 ================= -->
+
 <div class="card">
 
   <div class="label">
-    🗣 母句型
+    🗣 母句
   </div>
 
-  <div
-    class="pattern"
-    id="pattern">
-    I want to ...
-  </div>
-
-  <div
-    class="patternCN"
-    id="patternCN">
-    我想……
-  </div>
-
-  <div
-    id="sentences">
-  </div>
+  <div id="sentences"></div>
 
 </div>
 
 
-<!-- 听力 -->
+<!-- ================= 听力 ================= -->
+
 <div class="card">
 
   <div class="label">
-    🎧 先听英语
+    🎧 听力训练
   </div>
 
   <div class="listen">
@@ -432,7 +439,7 @@ body{
     <button
       class="mainPlay"
       onclick="listenFirst()">
-      🔊 听句子
+      🔊 先听英语
     </button>
 
     <div
@@ -445,12 +452,25 @@ body{
       id="listenCN">
     </div>
 
+    <div class="listenBtns">
+
+      <button onclick="showEnglish()">
+        显示英文
+      </button>
+
+      <button onclick="showChinese()">
+        显示中文
+      </button>
+
+    </div>
+
   </div>
 
 </div>
 
 
-<!-- 控制 -->
+<!-- ================= 控制 ================= -->
+
 <div class="card">
 
   <div class="controls">
@@ -466,7 +486,7 @@ body{
     </button>
 
     <button onclick="repeatSentence()">
-      🔁 重复
+      🔁 重复句子
     </button>
 
     <button onclick="stopSpeech()">
@@ -479,7 +499,7 @@ body{
 
     <button
       onclick="setSpeed(.68,this)">
-      🐢 慢
+      🐢 慢速
     </button>
 
     <button
@@ -503,421 +523,412 @@ body{
 <script>
 
 /* =========================================================
-   核心数据
+   2000词数据库结构
+=========================================================
+
+每个词：
+
+word
+cn
+pos
+family
+phonics
+chunks
+sentences
+
 ========================================================= */
-
-/*
-  这里以后可以直接放入 2000 个词。
-
-  目前先建立完整的数据结构。
-
-  格式：
-
-  word:
-  [
-    英文,
-    中文,
-    词族
-  ]
-*/
 
 const WORDS = [
 
-/* -at */
-["at","在","-at"],
-["bat","蝙蝠；球棒","-at"],
-["cat","猫","-at"],
-["fat","胖的","-at"],
-["hat","帽子","-at"],
-["mat","垫子","-at"],
-["rat","老鼠","-at"],
-["sat","坐着","-at"],
-["pat","轻拍","-at"],
-["flat","平的","-at"],
-
-/* -an */
-["an","一个","-an"],
-["can","能；可以","-an"],
-["fan","风扇；粉丝","-an"],
-["man","男人","-an"],
-["pan","平底锅","-an"],
-["ran","跑","-an"],
-["van","货车","-an"],
-["plan","计划","-an"],
-["than","比","-an"],
-["scan","扫描","-an"],
-
-/* -ap */
-["cap","帽子","-ap"],
-["gap","间隙","-ap"],
-["lap","膝盖","-ap"],
-["map","地图","-ap"],
-["nap","小睡","-ap"],
-["tap","轻敲","-ap"],
-["rap","敲击","-ap"],
-["clap","拍手","-ap"],
-["snap","啪的一声","-ap"],
-["trap","陷阱","-ap"],
-
-/* -am */
-["am","是","-am"],
-["ham","火腿","-am"],
-["jam","果酱","-am"],
-["ram","公羊","-am"],
-["dam","水坝","-am"],
-["yam","山药","-am"],
-["camp","营地","-am"],
-["lamp","灯","-am"],
-["stamp","邮票","-am"],
-
-/* -it */
-["it","它","-it"],
-["bit","一点；咬","-it"],
-["fit","适合","-it"],
-["hit","打；击中","-it"],
-["kit","工具包","-it"],
-["sit","坐","-it"],
-["lit","点燃","-it"],
-["quit","停止","-it"],
-["split","分开","-it"],
-
-/* -in */
-["in","在里面","-in"],
-["bin","箱子","-in"],
-["fin","鳍","-in"],
-["pin","别针","-in"],
-["win","赢","-in"],
-["tin","锡；罐头","-in"],
-["thin","瘦的","-in"],
-["chin","下巴","-in"],
-["skin","皮肤","-in"],
-
-/* -ig */
-["big","大的","-ig"],
-["dig","挖","-ig"],
-["fig","无花果","-ig"],
-["pig","猪","-ig"],
-["wig","假发","-ig"],
-["twig","小树枝","-ig"],
-
-/* -og */
-["dog","狗","-og"],
-["fog","雾","-og"],
-["log","木头","-og"],
-["jog","慢跑","-og"],
-["hog","猪","-og"],
-["frog","青蛙","-og"],
-
-/* -op */
-["cop","警察","-op"],
-["hop","跳","-op"],
-["mop","拖把","-op"],
-["pop","流行；爸爸","-op"],
-["top","顶部","-op"],
-["stop","停止","-op"],
-["shop","商店","-op"],
-["drop","掉落","-op"],
-["chop","砍","-op"],
-
-/* -un */
-["fun","乐趣","-un"],
-["run","跑","-un"],
-["sun","太阳","-un"],
-["bun","小圆面包","-un"],
-["gun","枪","-un"],
-["nun","修女","-un"],
-
-/* =====================================================
-   高频实用词
-===================================================== */
-
-["I","我","核心"],
-["you","你；你们","核心"],
-["he","他","核心"],
-["she","她","核心"],
-["we","我们","核心"],
-["they","他们","核心"],
-["it","它","核心"],
-
-["want","想要","核心"],
-["need","需要","核心"],
-["like","喜欢","核心"],
-["love","爱；喜欢","核心"],
-["have","有","核心"],
-["get","得到","核心"],
-["give","给","核心"],
-["go","去","核心"],
-["come","来","核心"],
-["see","看见","核心"],
-["look","看","核心"],
-["know","知道","核心"],
-["think","想；认为","核心"],
-["say","说","核心"],
-["tell","告诉","核心"],
-["ask","问","核心"],
-["help","帮助","核心"],
-["use","使用","核心"],
-["make","制作；使","核心"],
-["take","拿；带","核心"],
-["put","放","核心"],
-["keep","保持","核心"],
-["find","找到","核心"],
-["work","工作","核心"],
-["try","尝试","核心"],
-["call","打电话；叫","核心"],
-["feel","感觉","核心"],
-["leave","离开","核心"],
-["move","移动","核心"],
-["live","生活；居住","核心"],
-["bring","带来","核心"],
-["start","开始","核心"],
-["stop","停止","核心"],
-["show","展示","核心"],
-["hear","听见","核心"],
-["play","玩；播放","核心"],
-["run","跑；运行","核心"],
-["walk","走路","核心"],
-["eat","吃","核心"],
-["drink","喝","核心"],
-["sleep","睡觉","核心"],
-["learn","学习","核心"],
-["study","学习","核心"],
-["buy","买","核心"],
-["pay","付款","核心"],
-["wait","等待","核心"],
-["stay","停留","核心"],
-["read","读","核心"],
-["write","写","核心"],
-["speak","说话","核心"],
-["listen","听","核心"],
-["understand","理解","核心"],
-["remember","记住","核心"],
-["forget","忘记","核心"],
-
-["home","家","核心"],
-["house","房子","核心"],
-["room","房间","核心"],
-["door","门","核心"],
-["table","桌子","核心"],
-["chair","椅子","核心"],
-["bed","床","核心"],
-["water","水","核心"],
-["food","食物","核心"],
-["rice","米饭","核心"],
-["bread","面包","核心"],
-["meat","肉","核心"],
-["fish","鱼","核心"],
-["chicken","鸡肉；鸡","核心"],
-["coffee","咖啡","核心"],
-["tea","茶","核心"],
-["car","汽车","核心"],
-["bus","公共汽车","核心"],
-["train","火车","核心"],
-["airport","机场","核心"],
-["hotel","酒店","核心"],
-["restaurant","餐厅","核心"],
-["shop","商店","核心"],
-["school","学校","核心"],
-["work","工作","核心"],
-["money","钱","核心"],
-["time","时间","核心"],
-["day","天","核心"],
-["night","晚上","核心"],
-["morning","早上","核心"],
-["today","今天","核心"],
-["tomorrow","明天","核心"],
-["yesterday","昨天","核心"],
-
-["good","好的","核心"],
-["bad","坏的","核心"],
-["big","大的","核心"],
-["small","小的","核心"],
-["long","长的","核心"],
-["short","短的","核心"],
-["easy","容易的","核心"],
-["hard","困难的","核心"],
-["hot","热的","核心"],
-["cold","冷的","核心"],
-["new","新的","核心"],
-["old","旧的；老的","核心"],
-["right","正确的；右边","核心"],
-["wrong","错误的","核心"],
-["early","早的","核心"],
-["late","晚的","核心"],
-["ready","准备好的","核心"],
-["busy","忙的","核心"],
-["free","空闲的；免费的","核心"],
-["happy","开心的","核心"],
-["sorry","抱歉的","核心"],
-["sure","确定的","核心"]
-
-];
-
-
-/* =========================================================
-   大量母句型
-========================================================= */
-
-const PATTERNS = [
+/* =========================
+   名词 noun
+========================= */
 
 {
- en:"I want to ...",
- cn:"我想……",
- build:w=>`I want to ${w}.`
+ word:"cat",
+ cn:"猫",
+ pos:"noun · 名词",
+ family:"-at",
+ phonics:["c","at"],
+
+ chunks:[
+  ["the cat","这只猫"],
+  ["my cat","我的猫"],
+  ["a black cat","一只黑猫"],
+  ["see the cat","看见这只猫"],
+  ["feed the cat","喂猫"],
+  ["with the cat","和这只猫一起"]
+ ],
+
+ sentences:[
+  ["I have a cat.","我有一只猫。"],
+  ["I like my cat.","我喜欢我的猫。"],
+  ["I see the cat.","我看到这只猫。"],
+  ["The cat is on the mat.","猫在垫子上。"]
+ ]
+
 },
 
 {
- en:"I need to ...",
- cn:"我需要……",
- build:w=>`I need to ${w}.`
+ word:"dog",
+ cn:"狗",
+ pos:"noun · 名词",
+ family:"-og",
+ phonics:["d","og"],
+
+ chunks:[
+  ["the dog","这只狗"],
+  ["my dog","我的狗"],
+  ["a big dog","一只大狗"],
+  ["feed the dog","喂狗"],
+  ["walk the dog","遛狗"],
+  ["with my dog","和我的狗一起"]
+ ],
+
+ sentences:[
+  ["I have a dog.","我有一只狗。"],
+  ["My dog is big.","我的狗很大。"],
+  ["I walk my dog every day.","我每天遛我的狗。"],
+  ["The dog is outside.","狗在外面。"]
+ ]
+
 },
 
 {
- en:"I like to ...",
- cn:"我喜欢……",
- build:w=>`I like to ${w}.`
+ word:"home",
+ cn:"家",
+ pos:"noun · 名词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["at home","在家"],
+  ["go home","回家"],
+  ["come home","回家来"],
+  ["my home","我的家"],
+  ["stay home","待在家里"],
+  ["back home","回到家"]
+ ],
+
+ sentences:[
+  ["I want to go home.","我想回家。"],
+  ["I am at home.","我在家。"],
+  ["I will go home later.","我晚一点回家。"],
+  ["Come home early.","早点回家。"]
+ ]
+
 },
 
 {
- en:"I want ...",
- cn:"我想要……",
- build:w=>`I want ${w}.`
+ word:"water",
+ cn:"水",
+ pos:"noun · 名词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["drink water","喝水"],
+  ["some water","一些水"],
+  ["cold water","冷水"],
+  ["hot water","热水"],
+  ["a glass of water","一杯水"],
+  ["drink some water","喝点水"]
+ ],
+
+ sentences:[
+  ["I want some water.","我想要一些水。"],
+  ["I need a glass of water.","我需要一杯水。"],
+  ["Please drink some water.","请喝点水。"],
+  ["The water is cold.","水是冷的。"]
+ ]
+
+},
+
+/* =========================
+   动词 verb
+========================= */
+
+{
+ word:"make",
+ cn:"制作；做",
+ pos:"verb · 动词",
+ family:"-ake",
+ phonics:["m","ake"],
+
+ chunks:[
+  ["make food","做饭"],
+  ["make dinner","做晚饭"],
+  ["make a plan","制定计划"],
+  ["make money","赚钱"],
+  ["make a decision","做决定"],
+  ["make a mistake","犯错误"]
+ ],
+
+ sentences:[
+  ["I want to make dinner.","我想做晚饭。"],
+  ["I need to make a plan.","我需要制定计划。"],
+  ["Let's make some food.","我们做点吃的吧。"],
+  ["I made a mistake.","我犯了一个错误。"]
+ ]
+
 },
 
 {
- en:"I have ...",
- cn:"我有……",
- build:w=>`I have ${w}.`
+ word:"take",
+ cn:"拿；带",
+ pos:"verb · 动词",
+ family:"-ake",
+ phonics:["t","ake"],
+
+ chunks:[
+  ["take it","拿走它"],
+  ["take this","拿这个"],
+  ["take a seat","坐下"],
+  ["take a break","休息一下"],
+  ["take your time","慢慢来"],
+  ["take me home","带我回家"]
+ ],
+
+ sentences:[
+  ["Take your time.","慢慢来。"],
+  ["Please take a seat.","请坐。"],
+  ["Take me home.","带我回家。"],
+  ["I need to take a break.","我需要休息一下。"]
+ ]
+
 },
 
 {
- en:"I need ...",
- cn:"我需要……",
- build:w=>`I need ${w}.`
+ word:"go",
+ cn:"去",
+ pos:"verb · 动词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["go home","回家"],
+  ["go outside","出去"],
+  ["go back","回去"],
+  ["go there","去那里"],
+  ["go with me","跟我去"],
+  ["go to work","去上班"],
+  ["go to school","去上学"]
+ ],
+
+ sentences:[
+  ["I want to go home.","我想回家。"],
+  ["Let's go outside.","我们出去吧。"],
+  ["I need to go to work.","我需要去上班。"],
+  ["Do you want to go with me?","你想和我一起去吗？"]
+ ]
+
 },
 
 {
- en:"I can ...",
- cn:"我可以……",
- build:w=>`I can ${w}.`
+ word:"eat",
+ cn:"吃",
+ pos:"verb · 动词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["eat food","吃食物"],
+  ["eat dinner","吃晚饭"],
+  ["eat breakfast","吃早餐"],
+  ["eat together","一起吃"],
+  ["eat more","多吃一点"],
+  ["eat slowly","慢慢吃"]
+ ],
+
+ sentences:[
+  ["I want to eat.","我想吃东西。"],
+  ["Let's eat together.","我们一起吃吧。"],
+  ["I want to eat dinner.","我想吃晚饭。"],
+  ["Please eat slowly.","请慢慢吃。"]
+ ]
+
 },
 
 {
- en:"I can't ...",
- cn:"我不能……",
- build:w=>`I can't ${w}.`
+ word:"drink",
+ cn:"喝",
+ pos:"verb · 动词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["drink water","喝水"],
+  ["drink coffee","喝咖啡"],
+  ["drink tea","喝茶"],
+  ["drink slowly","慢慢喝"],
+  ["drink more water","多喝水"]
+ ],
+
+ sentences:[
+  ["I want to drink water.","我想喝水。"],
+  ["I like to drink coffee.","我喜欢喝咖啡。"],
+  ["Please drink some water.","请喝点水。"],
+  ["I need to drink more water.","我需要多喝水。"]
+ ]
+
 },
 
 {
- en:"Can you ...?",
- cn:"你可以……吗？",
- build:w=>`Can you ${w}?`
+ word:"learn",
+ cn:"学习",
+ pos:"verb · 动词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["learn English","学英语"],
+  ["learn something","学点东西"],
+  ["learn more","学更多"],
+  ["learn to speak","学习说话"],
+  ["learn from you","向你学习"]
+ ],
+
+ sentences:[
+  ["I want to learn English.","我想学英语。"],
+  ["I want to learn more.","我想学更多。"],
+  ["I am learning English.","我正在学习英语。"],
+  ["I want to learn to speak English.","我想学会说英语。"]
+ ]
+
+},
+
+/* =========================
+   形容词 adjective
+========================= */
+
+{
+ word:"happy",
+ cn:"开心的",
+ pos:"adjective · 形容词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["very happy","非常开心"],
+  ["so happy","如此开心"],
+  ["feel happy","感到开心"],
+  ["make me happy","让我开心"],
+  ["happy today","今天很开心"]
+ ],
+
+ sentences:[
+  ["I am very happy.","我非常开心。"],
+  ["I feel happy today.","我今天感觉很开心。"],
+  ["You make me happy.","你让我开心。"],
+  ["I am happy to see you.","见到你我很开心。"]
+ ]
+
 },
 
 {
- en:"Do you want to ...?",
- cn:"你想……吗？",
- build:w=>`Do you want to ${w}?`
+ word:"busy",
+ cn:"忙的",
+ pos:"adjective · 形容词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["very busy","非常忙"],
+  ["so busy","很忙"],
+  ["busy today","今天很忙"],
+  ["busy at work","工作很忙"],
+  ["too busy","太忙"]
+ ],
+
+ sentences:[
+  ["I am very busy.","我很忙。"],
+  ["I am busy today.","我今天很忙。"],
+  ["I am too busy now.","我现在太忙了。"],
+  ["Are you busy?","你忙吗？"]
+ ]
+
 },
 
 {
- en:"I am ...",
- cn:"我是……；我正在……",
- build:w=>`I am ${w}.`
+ word:"ready",
+ cn:"准备好的",
+ pos:"adjective · 形容词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["be ready","准备好"],
+  ["get ready","准备"],
+  ["ready now","现在准备好了"],
+  ["ready to go","准备出发"],
+  ["are you ready","你准备好了吗"]
+ ],
+
+ sentences:[
+  ["I am ready.","我准备好了。"],
+  ["Are you ready?","你准备好了吗？"],
+  ["I am ready to go.","我准备出发了。"],
+  ["Let's get ready.","我们准备吧。"]
+ ]
+
 },
 
-{
- en:"I am going to ...",
- cn:"我要去……；我准备……",
- build:w=>`I am going to ${w}.`
-},
+/* =========================
+   高频代词
+========================= */
 
 {
- en:"I have to ...",
- cn:"我必须……",
- build:w=>`I have to ${w}.`
+ word:"you",
+ cn:"你；你们",
+ pos:"pronoun · 代词",
+ family:"core",
+ phonics:[],
+
+ chunks:[
+  ["you and me","你和我"],
+  ["with you","和你一起"],
+  ["for you","给你"],
+  ["help you","帮助你"],
+  ["see you","见到你"]
+ ],
+
+ sentences:[
+  ["I want to help you.","我想帮助你。"],
+  ["I want to see you.","我想见你。"],
+  ["I am with you.","我和你在一起。"],
+  ["Can I help you?","我可以帮助你吗？"]
+ ]
+
 },
 
-{
- en:"I would like to ...",
- cn:"我想……",
- build:w=>`I would like to ${w}.`
-},
+/* =========================
+   副词 adverb
+========================= */
 
 {
- en:"Let me ...",
- cn:"让我……",
- build:w=>`Let me ${w}.`
-},
+ word:"today",
+ cn:"今天",
+ pos:"adverb · 副词",
+ family:"core",
+ phonics:[],
 
-{
- en:"Let's ...",
- cn:"我们……吧",
- build:w=>`Let's ${w}.`
-},
+ chunks:[
+  ["today","今天"],
+  ["today morning","今天早上"],
+  ["today at work","今天在工作"],
+  ["today only","只有今天"],
+  ["not today","不是今天"]
+ ],
 
-{
- en:"I am trying to ...",
- cn:"我正在尝试……",
- build:w=>`I am trying to ${w}.`
-},
+ sentences:[
+  ["I am busy today.","我今天很忙。"],
+  ["I want to stay home today.","我今天想待在家里。"],
+  ["I need to work today.","我今天需要工作。"]
+ ]
 
-{
- en:"I don't want to ...",
- cn:"我不想……",
- build:w=>`I don't want to ${w}.`
-},
-
-{
- en:"I don't know how to ...",
- cn:"我不知道怎么……",
- build:w=>`I don't know how to ${w}.`
-},
-
-{
- en:"I know how to ...",
- cn:"我知道怎么……",
- build:w=>`I know how to ${w}.`
 }
 
 ];
-
-
-/* =========================================================
-   高频词块生成
-========================================================= */
-
-function makeChunks(word){
-
-  return [
-
-    word,
-
-    `the ${word}`,
-
-    `my ${word}`,
-
-    `your ${word}`,
-
-    `a ${word}`,
-
-    `this ${word}`,
-
-    `that ${word}`,
-
-    `one ${word}`,
-
-    `I need ${word}`,
-
-    `I want ${word}`,
-
-    `I like ${word}`,
-
-    `I have ${word}`
-
-  ];
-
-}
 
 
 /* =========================================================
@@ -927,49 +938,124 @@ function makeChunks(word){
 let currentIndex=0;
 let speed=.85;
 let speechToken=0;
+let currentSentenceIndex=0;
 
 
 /* =========================================================
-   词族
+   渲染筛选
 ========================================================= */
 
-function getFamilies(){
-
-  const set=[...new Set(
-    WORDS.map(x=>x[2])
-  )];
-
-  return set;
-
-}
-
-
-function renderFamilies(){
+function renderFilters(){
 
   const box=
-    document.getElementById("familyBar");
+    document.getElementById("filters");
 
   box.innerHTML="";
 
-  getFamilies().forEach(family=>{
+  const types=[
+    ["all","全部"],
+    ["noun","名词"],
+    ["verb","动词"],
+    ["adjective","形容词"],
+    ["pronoun","代词"],
+    ["adverb","副词"]
+  ];
+
+  types.forEach(type=>{
 
     const b=
       document.createElement("button");
 
-    b.textContent=family;
+    b.textContent=type[1];
 
     b.onclick=()=>{
 
-      const i=
-        WORDS.findIndex(x=>x[2]===family);
+      if(type[0]==="all"){
 
-      if(i>=0){
+        currentIndex=0;
 
-        currentIndex=i;
+      }else{
 
-        render();
+        const i=
+          WORDS.findIndex(
+            x=>x.pos.startsWith(type[0])
+          );
+
+        if(i>=0) currentIndex=i;
 
       }
+
+      render();
+
+    };
+
+    box.appendChild(b);
+
+  });
+
+}
+
+
+/* =========================================================
+   词族 / 词列表
+========================================================= */
+
+function renderWords(){
+
+  const box=
+    document.getElementById("wordGrid");
+
+  box.innerHTML="";
+
+  const family=
+    current().family;
+
+  let list=
+    WORDS.map((x,i)=>[x,i])
+    .filter(x=>x[0].family===family);
+
+  /*
+    如果当前词族只有一个词，
+    显示全部核心词，方便继续学习。
+  */
+
+  if(list.length<=1){
+
+    list=
+      WORDS.map((x,i)=>[x,i])
+      .filter(x=>x[0].family==="core")
+      .slice(0,20);
+
+  }
+
+  list.forEach(pair=>{
+
+    const item=pair[0];
+    const index=pair[1];
+
+    const b=
+      document.createElement("button");
+
+    b.className="wordBtn";
+
+    if(index===currentIndex){
+      b.classList.add("active");
+    }
+
+    b.textContent=item.word;
+
+    b.onclick=()=>{
+
+      stopSpeech();
+
+      currentIndex=index;
+
+      render();
+
+      setTimeout(
+        speakCurrent,
+        100
+      );
 
     };
 
@@ -991,75 +1077,22 @@ function current(){
 }
 
 
-/* =========================================================
-   单词网格
-========================================================= */
-
-function renderWords(){
-
-  const box=
-    document.getElementById("wordGrid");
-
-  box.innerHTML="";
-
-  const family=
-    current()[2];
-
-  const list=
-    WORDS
-      .map((x,i)=>[x,i])
-      .filter(x=>x[0][2]===family);
-
-  list.forEach(pair=>{
-
-    const item=pair[0];
-    const index=pair[1];
-
-    const b=
-      document.createElement("button");
-
-    b.className="wordBtn";
-
-    if(index===currentIndex){
-      b.classList.add("active");
-    }
-
-    b.textContent=item[0];
-
-    b.onclick=()=>{
-
-      currentIndex=index;
-
-      render();
-
-      speakCurrent();
-
-    };
-
-    box.appendChild(b);
-
-  });
-
-}
-
-
-/* =========================================================
-   当前单词
-========================================================= */
-
 function renderCurrent(){
 
   const item=current();
 
   document.getElementById("bigWord")
-    .textContent=item[0];
+    .textContent=item.word;
 
   document.getElementById("meaning")
-    .textContent=item[1];
+    .textContent=item.cn;
+
+  document.getElementById("pos")
+    .textContent=item.pos;
 
   document.getElementById("progress")
     .textContent=
-      `${currentIndex+1} / ${WORDS.length}`;
+      `${currentIndex+1} / 2000`;
 
 }
 
@@ -1070,16 +1103,13 @@ function renderCurrent(){
 
 function renderBlend(){
 
-  const item=current();
-
-  const word=item[0];
-
-  const family=item[2];
-
   const box=
     document.getElementById("blend");
 
-  if(family==="核心"){
+  const item=current();
+
+  if(!item.phonics ||
+     item.phonics.length!==2){
 
     box.innerHTML="";
 
@@ -1087,44 +1117,25 @@ function renderBlend(){
 
   }
 
-  const ending=
-    family.substring(1);
-
-  const start=
-    word.endsWith(ending)
-      ? word.slice(
-          0,
-          word.length-ending.length
-        )
-      : "";
-
-  if(!start){
-
-    box.innerHTML="";
-
-    return;
-
-  }
+  const a=item.phonics[0];
+  const b=item.phonics[1];
 
   box.innerHTML=`
 
-    <button
-      onclick="speak('${start}')">
-      ${start}
+    <button onclick="speak('${a}')">
+      ${a}
     </button>
 
     <span>+</span>
 
-    <button
-      onclick="speak('${ending}')">
-      ${ending}
+    <button onclick="speak('${b}')">
+      ${b}
     </button>
 
     <span>→</span>
 
-    <button
-      onclick="speak('${word}')">
-      ${word}
+    <button onclick="speak('${item.word}')">
+      ${item.word}
     </button>
 
   `;
@@ -1133,7 +1144,7 @@ function renderBlend(){
 
 
 /* =========================================================
-   词块
+   正确词块
 ========================================================= */
 
 function renderChunks(){
@@ -1143,102 +1154,93 @@ function renderChunks(){
 
   box.innerHTML="";
 
-  makeChunks(current()[0])
-    .forEach(text=>{
+  current().chunks.forEach(item=>{
 
-      const b=
-        document.createElement("button");
+    const b=
+      document.createElement("button");
 
-      b.className="chunk";
+    b.className="chunk";
 
-      b.textContent=text;
+    b.innerHTML=
+      `${item[0]}
+       <span class="chunkCN">
+       ${item[1]}
+       </span>`;
 
-      b.onclick=()=>{
-        speak(text);
-      };
+    b.onclick=()=>{
+      speak(item[0]);
+    };
 
-      box.appendChild(b);
+    box.appendChild(b);
 
-    });
+  });
 
 }
 
 
 /* =========================================================
-   母句
+   正确母句
 ========================================================= */
 
 function renderSentences(){
-
-  const word=current()[0];
 
   const box=
     document.getElementById("sentences");
 
   box.innerHTML="";
 
-  /*
-    一个词直接生成20种母句结构。
-    这样每个词不是1句话，而是一整组练习。
-  */
+  current().sentences.forEach(
+    (item,index)=>{
 
-  PATTERNS.forEach(pattern=>{
+      const row=
+        document.createElement("div");
 
-    const sentence=
-      pattern.build(word);
+      row.className="sentence";
 
-    const row=
-      document.createElement("div");
+      row.innerHTML=`
 
-    row.className="sentence";
+        <div>
 
-    row.innerHTML=`
+          <div class="sentenceText">
+            ${item[0]}
+          </div>
 
-      <div>
+          <div class="sentenceCN">
+            ${item[1]}
+          </div>
 
-        <div class="sentenceText">
-          ${sentence}
         </div>
 
-        <div class="sentenceCN">
-          ${pattern.cn}
-        </div>
+        <button class="speak">
+          🔊
+        </button>
 
-      </div>
+      `;
 
-      <button class="speak">
-        🔊
-      </button>
+      row.querySelector(".speak")
+        .onclick=()=>{
 
-    `;
+          currentSentenceIndex=index;
 
-    row.querySelector(".speak")
-      .onclick=()=>{
-        speak(sentence);
-      };
+          speak(item[0]);
 
-    box.appendChild(row);
+        };
 
-  });
+      box.appendChild(row);
 
-  document.getElementById("pattern")
-    .textContent=
-      "20种母句型 × 当前词";
-
-  document.getElementById("patternCN")
-    .textContent=
-      "一个词，进入大量真实句子";
+    }
+  );
 
 }
 
 
 /* =========================================================
-   全部刷新
+   总刷新
 ========================================================= */
 
 function render(){
 
-  renderFamilies();
+  renderFilters();
 
   renderWords();
 
@@ -1293,11 +1295,8 @@ function speak(text,rate=speed){
       new SpeechSynthesisUtterance(text);
 
     u.lang="en-US";
-
     u.rate=rate;
-
     u.pitch=1;
-
     u.volume=1;
 
     speechSynthesis.speak(u);
@@ -1313,24 +1312,25 @@ function speak(text,rate=speed){
 
 function speakCurrent(){
 
-  speak(current()[0]);
+  speak(current().word);
 
 }
 
 
 /* =========================================================
-   听力
+   听力训练
 ========================================================= */
 
 function listenFirst(){
 
-  const word=current()[0];
+  const item=current();
 
-  const pattern=
-    PATTERNS[0];
+  if(!item.sentences.length) return;
+
+  currentSentenceIndex=0;
 
   const sentence=
-    pattern.build(word);
+    item.sentences[0];
 
   document.getElementById("listenText")
     .textContent="••••••••••";
@@ -1338,17 +1338,45 @@ function listenFirst(){
   document.getElementById("listenCN")
     .textContent="";
 
-  speak(sentence,.68);
+  speak(sentence[0],.68);
 
-  setTimeout(()=>{
+}
 
-    document.getElementById("listenText")
-      .textContent=sentence;
 
-    document.getElementById("listenCN")
-      .textContent=pattern.cn;
+/* =========================================================
+   显示英文
+========================================================= */
 
-  },1800);
+function showEnglish(){
+
+  const item=current();
+
+  if(!item.sentences.length) return;
+
+  const sentence=
+    item.sentences[currentSentenceIndex];
+
+  document.getElementById("listenText")
+    .textContent=sentence[0];
+
+}
+
+
+/* =========================================================
+   显示中文
+========================================================= */
+
+function showChinese(){
+
+  const item=current();
+
+  if(!item.sentences.length) return;
+
+  const sentence=
+    item.sentences[currentSentenceIndex];
+
+  document.getElementById("listenCN")
+    .textContent=sentence[1];
 
 }
 
@@ -1359,10 +1387,12 @@ function listenFirst(){
 
 function repeatSentence(){
 
-  const word=current()[0];
+  const item=current();
+
+  if(!item.sentences.length) return;
 
   speak(
-    PATTERNS[0].build(word)
+    item.sentences[currentSentenceIndex][0]
   );
 
 }
@@ -1379,10 +1409,7 @@ function previousWord(){
   currentIndex--;
 
   if(currentIndex<0){
-
-    currentIndex=
-      WORDS.length-1;
-
+    currentIndex=WORDS.length-1;
   }
 
   render();
@@ -1406,9 +1433,7 @@ function nextWord(){
   currentIndex++;
 
   if(currentIndex>=WORDS.length){
-
     currentIndex=0;
-
   }
 
   render();
@@ -1428,9 +1453,8 @@ function nextWord(){
 function searchWord(){
 
   const value=
-    document.getElementById(
-      "searchInput"
-    ).value
+    document.getElementById("searchInput")
+    .value
     .trim()
     .toLowerCase();
 
@@ -1438,16 +1462,26 @@ function searchWord(){
 
   const index=
     WORDS.findIndex(
-      x=>x[0].toLowerCase()===value
+      item=>
+        item.word.toLowerCase()===value
     );
 
   if(index>=0){
+
+    stopSpeech();
 
     currentIndex=index;
 
     render();
 
-    speakCurrent();
+    setTimeout(
+      speakCurrent,
+      100
+    );
+
+  }else{
+
+    alert("暂时没有找到这个词。");
 
   }
 
@@ -1459,15 +1493,17 @@ function searchWord(){
 ========================================================= */
 
 document
-  .getElementById("searchInput")
-  .addEventListener(
-    "keydown",
-    e=>{
-      if(e.key==="Enter"){
-        searchWord();
-      }
+.getElementById("searchInput")
+.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.key==="Enter"){
+      searchWord();
     }
-  );
+
+  }
+);
 
 
 /* =========================================================
@@ -1490,7 +1526,7 @@ function setSpeed(value,button){
 
 
 /* =========================================================
-   页面离开停止声音
+   页面离开
 ========================================================= */
 
 document.addEventListener(
@@ -1498,9 +1534,7 @@ document.addEventListener(
   ()=>{
 
     if(document.hidden){
-
       stopSpeech();
-
     }
 
   }
