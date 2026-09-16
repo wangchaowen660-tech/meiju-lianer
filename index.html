@@ -2,9 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ffffff">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f6f7f9">
 <title>🎧 每句练耳 · Chaowen AI</title>
 
 <style>
@@ -17,18 +16,11 @@ body{
   margin:0;
   background:#f5f6f8;
   color:#222;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    "PingFang SC",
-    "Microsoft YaHei",
-    Arial,
-    sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
 }
 
-button,
-input{
+button,input{
   font:inherit;
 }
 
@@ -38,63 +30,53 @@ button{
 
 .app{
   width:100%;
-  max-width:620px;
+  max-width:600px;
   margin:auto;
-  padding:10px;
+  padding:9px;
 }
 
-/* =========================
-   顶部
-========================= */
-
+/* 顶部 */
 .header{
   text-align:center;
-  padding:7px 0 11px;
+  padding:5px 0 10px;
 }
 
 .logo{
-  font-size:22px;
+  font-size:21px;
   font-weight:800;
 }
 
-.subtitle{
-  margin-top:3px;
+.sub{
   color:#999;
-  font-size:12px;
+  font-size:11px;
+  margin-top:3px;
 }
 
-/* =========================
-   搜索
-========================= */
-
+/* 搜索 */
 .search{
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 
 .search input{
   width:100%;
-  height:43px;
-  padding:0 13px;
+  height:42px;
   border:1px solid #ddd;
-  border-radius:12px;
+  border-radius:11px;
+  padding:0 12px;
   outline:none;
   background:#fff;
   font-size:14px;
 }
 
-.search input:focus{
-  border-color:#999;
-}
-
 .search-results{
   margin-top:5px;
   background:#fff;
-  border-radius:12px;
+  border-radius:11px;
   overflow:hidden;
 }
 
 .result{
-  padding:9px 12px;
+  padding:8px 11px;
   border-bottom:1px solid #eee;
 }
 
@@ -109,107 +91,88 @@ button{
 .result-info{
   margin-top:2px;
   color:#888;
-  font-size:12px;
+  font-size:11px;
 }
 
-/* =========================
-   通用卡片
-========================= */
-
+/* 通用卡片 */
 .card{
   background:#fff;
-  border-radius:15px;
-  padding:13px;
-  margin-bottom:10px;
-  box-shadow:0 1px 7px rgba(0,0,0,.035);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:8px;
+  box-shadow:0 1px 6px rgba(0,0,0,.035);
 }
 
-/* =========================
-   声音状态
-========================= */
-
-.sound-row{
+/* 声音状态 */
+.status-row{
   display:flex;
   align-items:center;
   justify-content:space-between;
 }
 
-.sound-status{
-  color:#888;
-  font-size:12px;
+.status{
+  color:#999;
+  font-size:11px;
 }
 
-.sound-status.ok{
+.status.ok{
   color:#16833a;
 }
 
-.sound-status.warn{
-  color:#a86a00;
-}
-
-.test-btn{
+.test{
   border:1px solid #ddd;
   background:#fff;
   border-radius:8px;
-  padding:5px 9px;
-  font-size:12px;
+  padding:5px 8px;
+  font-size:11px;
 }
 
-/* =========================
-   词族 + 当前单词
-========================= */
-
-.learning-card{
-  padding:13px;
-}
-
-.family-head{
+/* 词族 */
+.family-top{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:7px;
 }
 
-.family-arrow{
-  width:34px;
-  height:34px;
-  flex:none;
+.arrow{
+  width:33px;
+  height:33px;
   border:0;
   border-radius:9px;
-  background:#f1f2f4;
+  background:#f0f1f3;
   font-size:20px;
 }
 
-.family-title{
+.family-center{
   flex:1;
   text-align:center;
 }
 
 .family-name{
-  font-size:18px;
+  font-size:17px;
   font-weight:800;
 }
 
-.family-type{
-  margin-top:2px;
+.family-info{
   color:#999;
-  font-size:11px;
+  font-size:10px;
+  margin-top:2px;
 }
 
 .word-list{
   display:flex;
   flex-wrap:wrap;
-  gap:6px;
-  padding:10px 0;
+  gap:5px;
+  padding:9px 0;
   border-bottom:1px solid #eee;
 }
 
 .word-chip{
-  border:1px solid #e2e2e2;
+  border:1px solid #e1e1e1;
   background:#fafafa;
-  color:#333;
-  border-radius:9px;
-  padding:6px 9px;
-  font-size:14px;
+  border-radius:8px;
+  padding:5px 8px;
+  font-size:13px;
 }
 
 .word-chip.active{
@@ -220,167 +183,213 @@ button{
 
 .current{
   text-align:center;
-  padding:15px 4px 9px;
+  padding:13px 0 9px;
 }
 
 .current-word{
-  font-size:39px;
-  line-height:1.05;
+  font-size:40px;
+  line-height:1;
   font-weight:800;
+  cursor:pointer;
 }
 
 .current-pos{
   display:inline-block;
-  margin-top:7px;
-  color:#888;
-  font-size:12px;
+  margin-top:6px;
+  color:#999;
+  font-size:11px;
 }
 
 .current-zh{
   margin-top:3px;
-  font-size:18px;
+  font-size:17px;
   font-weight:600;
 }
 
-.listen-word{
-  margin-top:11px;
-  padding:9px 17px;
+/* 极简播放区 */
+.player{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-top:9px;
+}
+
+.play-main{
+  min-width:120px;
+  height:39px;
   border:0;
-  border-radius:10px;
+  border-radius:20px;
   background:#222;
   color:#fff;
-  font-size:14px;
+  padding:0 18px;
+  font-size:13px;
+  font-weight:700;
 }
 
-.word-nav{
-  display:flex;
-  gap:7px;
-}
-
-.word-nav button{
-  flex:1;
+.replay{
+  width:39px;
+  height:39px;
   border:1px solid #ddd;
+  border-radius:50%;
   background:#fff;
-  border-radius:9px;
-  padding:9px;
+  font-size:15px;
+}
+
+/* 当前学习链 */
+.chain{
+  padding:12px;
+}
+
+.chain-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-bottom:9px;
+  border-bottom:1px solid #eee;
+}
+
+.chain-title strong{
+  font-size:15px;
+}
+
+.chain-title span{
+  color:#aaa;
+  font-size:10px;
+}
+
+/* 每一步 */
+.step{
+  padding:11px 0;
+  border-bottom:1px solid #eee;
+}
+
+.step:last-child{
+  border-bottom:0;
+  padding-bottom:1px;
+}
+
+.step-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:7px;
+}
+
+.step-name{
+  font-size:13px;
+  font-weight:800;
+}
+
+.step-tip{
+  color:#aaa;
+  font-size:10px;
+}
+
+/* 二块音 */
+.blend-box{
+  background:#f7f7f8;
+  border-radius:10px;
+  padding:10px;
+  text-align:center;
+}
+
+.blend-parts{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+
+.sound-part{
+  border:0;
+  background:#fff;
+  border-radius:8px;
+  padding:6px 11px;
+  font-size:17px;
+  font-weight:800;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+
+.plus{
+  color:#aaa;
+  font-size:15px;
+}
+
+.blend-result{
+  margin-top:7px;
+  font-size:17px;
+  font-weight:800;
+}
+
+.blend-arrow{
+  color:#aaa;
+  margin:0 4px;
+}
+
+.blend-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.blend-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+
+.blend-mini{
+  border:1px solid #e2e2e2;
+  background:#fff;
+  border-radius:7px;
+  padding:5px 8px;
+  font-weight:700;
   font-size:13px;
 }
 
-/* =========================
-   核心一体化模块
-========================= */
-
-.language-module{
-  padding:13px;
+.blend-word{
+  border:0;
+  background:#222;
+  color:#fff;
+  border-radius:7px;
+  padding:5px 9px;
+  font-weight:700;
+  font-size:13px;
 }
 
-.module-head{
+/* 词块 */
+.chunk-list{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding-bottom:10px;
-  border-bottom:1px solid #eee;
-}
-
-.module-title{
-  font-size:16px;
-  font-weight:800;
-}
-
-.module-tip{
-  color:#aaa;
-  font-size:11px;
-}
-
-/* 学习层级 */
-
-.learning-step{
-  padding:12px 0;
-  border-bottom:1px solid #eee;
-}
-
-.learning-step:last-child{
-  border-bottom:0;
-  padding-bottom:2px;
-}
-
-.step-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:8px;
-}
-
-.step-title-left{
-  font-size:14px;
-  font-weight:800;
-}
-
-.step-title-right{
-  color:#aaa;
-  font-size:11px;
-}
-
-/* =========================
-   声音块
-========================= */
-
-.sound-blocks{
-  display:flex;
-  justify-content:center;
   flex-wrap:wrap;
   gap:6px;
 }
 
-.sound-block{
-  border:0;
-  background:#f1f2f4;
-  border-radius:9px;
-  padding:8px 12px;
-  font-size:16px;
-  font-weight:700;
-}
-
-.sound-block:active{
-  background:#ddd;
-}
-
-/* =========================
-   高频词块
-========================= */
-
-.chunk-list{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-}
-
 .chunk{
-  border:1px solid #e2e2e2;
+  border:1px solid #e1e1e1;
   background:#fafafa;
-  border-radius:9px;
-  padding:7px 9px;
+  border-radius:8px;
+  padding:6px 9px;
   text-align:left;
 }
 
 .chunk-en{
-  font-size:14px;
+  font-size:13px;
   font-weight:700;
 }
 
 .chunk-zh{
-  margin-top:2px;
   color:#888;
-  font-size:11px;
+  font-size:10px;
+  margin-top:2px;
 }
 
-/* =========================
-   母句
-========================= */
-
+/* 母句 */
 .sentence{
-  padding:8px 0;
+  padding:7px 0;
   border-bottom:1px solid #f0f0f0;
+  cursor:pointer;
 }
 
 .sentence:last-child{
@@ -388,134 +397,144 @@ button{
 }
 
 .sentence-en{
-  font-size:16px;
-  line-height:1.45;
+  font-size:15px;
   font-weight:700;
+  line-height:1.4;
 }
 
 .sentence-zh{
-  margin-top:3px;
   color:#777;
-  font-size:13px;
-}
-
-.sentence-play{
-  margin-top:5px;
-  border:1px solid #ddd;
-  background:#fff;
-  border-radius:8px;
-  padding:5px 9px;
   font-size:12px;
+  margin-top:2px;
 }
 
-/* =========================
-   听力
-========================= */
+.sentence-hint{
+  color:#aaa;
+  font-size:10px;
+  margin-top:3px;
+}
 
-.listen-box{
-  text-align:center;
+/* 听力 */
+.listen-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.listen-title strong{
+  font-size:15px;
+}
+
+.listen-title span{
+  color:#aaa;
+  font-size:10px;
 }
 
 .listen-display{
-  min-height:64px;
+  min-height:58px;
   display:flex;
-  justify-content:center;
   align-items:center;
-  padding:10px;
-  border-radius:11px;
-  background:#f5f6f8;
-  font-size:18px;
+  justify-content:center;
+  text-align:center;
+  padding:8px;
+  border-radius:10px;
+  background:#f6f7f8;
+  font-size:16px;
   font-weight:700;
-  line-height:1.5;
 }
 
 .listen-meaning{
-  min-height:22px;
-  margin-top:6px;
+  text-align:center;
   color:#777;
-  font-size:13px;
+  font-size:12px;
+  min-height:18px;
+  margin-top:5px;
 }
 
-.listen-buttons{
+.listen-actions{
   display:flex;
-  gap:7px;
-  margin-top:9px;
+  gap:6px;
+  margin-top:8px;
 }
 
-.listen-buttons button{
+.listen-actions button{
   flex:1;
+  height:36px;
   border:1px solid #ddd;
-  background:#fff;
   border-radius:9px;
-  padding:9px;
-  font-size:13px;
-}
-
-.listen-buttons .primary{
-  background:#222;
-  color:#fff;
-  border-color:#222;
-}
-
-/* =========================
-   语速
-========================= */
-
-.speed-list{
-  display:flex;
-  gap:7px;
-}
-
-.speed-list button{
-  flex:1;
-  border:1px solid #ddd;
   background:#fff;
-  border-radius:9px;
-  padding:8px;
   font-size:12px;
 }
 
-.speed-list button.active{
+.listen-actions .primary{
   background:#222;
   color:#fff;
   border-color:#222;
 }
 
-.data-info{
-  text-align:center;
-  padding:2px 0 15px;
-  color:#aaa;
+/* 语速 */
+.speed{
+  display:flex;
+  gap:6px;
+}
+
+.speed button{
+  flex:1;
+  border:1px solid #ddd;
+  background:#fff;
+  border-radius:8px;
+  height:34px;
   font-size:11px;
+}
+
+.speed button.active{
+  background:#222;
+  color:#fff;
+  border-color:#222;
+}
+
+/* 上下一个 */
+.nav{
+  display:flex;
+  gap:6px;
+}
+
+.nav button{
+  flex:1;
+  height:36px;
+  border:1px solid #ddd;
+  background:#fff;
+  border-radius:9px;
+  font-size:12px;
+}
+
+.data{
+  text-align:center;
+  color:#aaa;
+  font-size:10px;
+  padding:2px 0 12px;
 }
 
 .empty{
   text-align:center;
-  padding:15px;
   color:#999;
-  font-size:13px;
+  padding:12px;
+  font-size:12px;
 }
 
-@media(max-width:420px){
+@media(max-width:400px){
 
   .app{
-    padding:8px;
-  }
-
-  .card{
-    border-radius:14px;
+    padding:7px;
   }
 
   .current-word{
     font-size:36px;
   }
 
-  .word-chip{
-    padding:6px 8px;
-    font-size:13px;
-  }
-
-  .sentence-en{
-    font-size:15px;
+  .sound-part{
+    padding:5px 9px;
   }
 
 }
@@ -526,361 +545,364 @@ button{
 
 <div class="app">
 
-  <!-- =====================
-       顶部
-  ====================== -->
+<!-- =========================
+     顶部
+========================= -->
 
-  <header class="header">
+<header class="header">
 
-    <div class="logo">
-      🎧 每句练耳
-    </div>
+  <div class="logo">
+    🎧 每句练耳
+  </div>
 
-    <div class="subtitle">
-      Chaowen AI · 声音 → 单词 → 词块 → 母句 → 听力
-    </div>
+  <div class="sub">
+    Chaowen AI · 声音 → 单词 → 词块 → 母句 → 听力
+  </div>
 
-  </header>
+</header>
 
 
-  <!-- =====================
-       搜索
-  ====================== -->
+<!-- =========================
+     搜索
+========================= -->
 
-  <div class="search">
+<div class="search">
 
-    <input
-      id="searchInput"
-      type="search"
-      placeholder="搜索单词，例如 cat、water、go"
-      autocomplete="off"
-    >
+  <input
+    id="searchInput"
+    type="search"
+    placeholder="搜索单词或中文，例如 cat / 猫"
+    autocomplete="off"
+  >
+
+  <div
+    id="searchResults"
+    class="search-results">
+  </div>
+
+</div>
+
+
+<!-- =========================
+     声音状态
+========================= -->
+
+<div class="card">
+
+  <div class="status-row">
 
     <div
-      id="searchResults"
-      class="search-results">
+      id="soundStatus"
+      class="status">
+      🟡 正在准备英语声音……
     </div>
+
+    <button
+      class="test"
+      onclick="testSound()">
+      测试
+    </button>
 
   </div>
 
-
-  <!-- =====================
-       声音状态
-  ====================== -->
-
-  <div class="card">
-
-    <div class="sound-row">
-
-      <div
-        id="soundStatus"
-        class="sound-status warn">
-        🟡 正在准备英语声音……
-      </div>
-
-      <button
-        class="test-btn"
-        onclick="testSound()">
-        测试声音
-      </button>
-
-    </div>
-
-  </div>
+</div>
 
 
-  <!-- =====================
-       词族 + 当前单词
-  ====================== -->
+<!-- =========================
+     词族 + 当前单词
+========================= -->
 
-  <div class="card learning-card">
+<div class="card">
 
-    <div class="family-head">
+  <div class="family-top">
 
-      <button
-        class="family-arrow"
-        onclick="previousFamily()">
-        ‹
-      </button>
+    <button
+      class="arrow"
+      onclick="previousFamily()">
+      ‹
+    </button>
 
-      <div class="family-title">
-
-        <div
-          id="familyName"
-          class="family-name">
-          -at 词族
-        </div>
-
-        <div
-          id="familyType"
-          class="family-type">
-          拼读词族
-        </div>
-
-      </div>
-
-      <button
-        class="family-arrow"
-        onclick="nextFamily()">
-        ›
-      </button>
-
-    </div>
-
-
-    <div
-      id="wordList"
-      class="word-list">
-    </div>
-
-
-    <div class="current">
+    <div class="family-center">
 
       <div
-        id="currentWord"
-        class="current-word"
-        onclick="speakCurrentWord()">
-        cat
+        id="familyName"
+        class="family-name">
       </div>
 
       <div
-        id="currentPOS"
-        class="current-pos">
-        名词
-      </div>
-
-      <div
-        id="currentZH"
-        class="current-zh">
-        猫
-      </div>
-
-      <button
-        class="listen-word"
-        onclick="speakCurrentWord()">
-        🔊 听单词
-      </button>
-
-    </div>
-
-
-    <div class="word-nav">
-
-      <button onclick="previousWord()">
-        ← 上一个
-      </button>
-
-      <button onclick="nextWord()">
-        下一个 →
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- =================================================
-       核心模块
-       声音块 + 高频词块 + 母句型
-       三个合成一个模块
-  ================================================== -->
-
-  <div class="card language-module">
-
-    <div class="module-head">
-
-      <div class="module-title">
-        🧩 从声音到句子
-      </div>
-
-      <div class="module-tip">
-        点哪里，哪里发音
+        id="familyInfo"
+        class="family-info">
       </div>
 
     </div>
 
-
-    <!-- =====================
-         第一层：声音块
-    ====================== -->
-
-    <div class="learning-step">
-
-      <div class="step-title">
-
-        <div class="step-title-left">
-          ① 🧩 声音块
-        </div>
-
-        <div class="step-title-right">
-          拼起来读
-        </div>
-
-      </div>
-
-      <div
-        id="soundBlocks"
-        class="sound-blocks">
-      </div>
-
-    </div>
-
-
-    <!-- =====================
-         第二层：高频词块
-    ====================== -->
-
-    <div class="learning-step">
-
-      <div class="step-title">
-
-        <div class="step-title-left">
-          ② 🧱 高频词块
-        </div>
-
-        <div class="step-title-right">
-          英语这样组合
-        </div>
-
-      </div>
-
-      <div
-        id="chunkList"
-        class="chunk-list">
-      </div>
-
-    </div>
-
-
-    <!-- =====================
-         第三层：母句型
-    ====================== -->
-
-    <div class="learning-step">
-
-      <div class="step-title">
-
-        <div class="step-title-left">
-          ③ 🏠 母句型
-        </div>
-
-        <div class="step-title-right">
-          一句带出很多句
-        </div>
-
-      </div>
-
-      <div
-        id="sentenceList">
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================
-       听力
-  ====================== -->
-
-  <div class="card">
-
-    <div class="module-head">
-
-      <div class="module-title">
-        🎧 听力训练
-      </div>
-
-      <div class="module-tip">
-        先听 → 想 → 看
-      </div>
-
-    </div>
-
-    <div class="listen-box">
-
-      <div
-        id="listenDisplay"
-        class="listen-display">
-        先点击播放，只听英语
-      </div>
-
-      <div
-        id="listenMeaning"
-        class="listen-meaning">
-        先不要看答案
-      </div>
-
-      <div class="listen-buttons">
-
-        <button
-          class="primary"
-          onclick="playListening()">
-          ▶ 播放
-        </button>
-
-        <button
-          onclick="showListeningAnswer()">
-          👁 看答案
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================
-       语速
-  ====================== -->
-
-  <div class="card">
-
-    <div class="module-head">
-
-      <div class="module-title">
-        ⚙️ 语速
-      </div>
-
-      <div
-        id="speedLabel"
-        class="module-tip">
-        正常
-      </div>
-
-    </div>
-
-    <div class="speed-list">
-
-      <button
-        id="slowBtn"
-        onclick="setSpeed('slow')">
-        慢速
-      </button>
-
-      <button
-        id="normalBtn"
-        class="active"
-        onclick="setSpeed('normal')">
-        正常
-      </button>
-
-      <button
-        id="naturalBtn"
-        onclick="setSpeed('natural')">
-        自然
-      </button>
-
-    </div>
+    <button
+      class="arrow"
+      onclick="nextFamily()">
+      ›
+    </button>
 
   </div>
 
 
   <div
-    id="dataInfo"
-    class="data-info">
+    id="wordList"
+    class="word-list">
   </div>
+
+
+  <div class="current">
+
+    <div
+      id="currentWord"
+      class="current-word"
+      onclick="speakCurrentWord()">
+    </div>
+
+    <div
+      id="currentPOS"
+      class="current-pos">
+    </div>
+
+    <div
+      id="currentZH"
+      class="current-zh">
+    </div>
+
+
+    <!-- 极简播放 -->
+    <div class="player">
+
+      <button
+        class="play-main"
+        onclick="playLearningChain()">
+        ▶ 播放学习链
+      </button>
+
+      <button
+        class="replay"
+        onclick="speakCurrentWord()"
+        title="重听单词">
+        🔊
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="nav">
+
+    <button onclick="previousWord()">
+      ← 上一个
+    </button>
+
+    <button onclick="nextWord()">
+      下一个 →
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     核心学习链
+====================================================== -->
+
+<div class="card chain">
+
+  <div class="chain-title">
+
+    <strong>
+      🧩 单词学习链
+    </strong>
+
+    <span>
+      声音 → 词块 → 母句
+    </span>
+
+  </div>
+
+
+  <!-- =====================
+       ① 二块音 / 多块音
+  ====================== -->
+
+  <div class="step">
+
+    <div class="step-head">
+
+      <div class="step-name">
+        ① 🧩 声音块
+      </div>
+
+      <div class="step-tip">
+        二块音 / 多块音
+      </div>
+
+    </div>
+
+    <div
+      id="blendArea">
+    </div>
+
+  </div>
+
+
+  <!-- =====================
+       ② 高频词块
+  ====================== -->
+
+  <div class="step">
+
+    <div class="step-head">
+
+      <div class="step-name">
+        ② 🧱 高频词块
+      </div>
+
+      <div class="step-tip">
+        英语真实组合
+      </div>
+
+    </div>
+
+    <div
+      id="chunkList"
+      class="chunk-list">
+    </div>
+
+  </div>
+
+
+  <!-- =====================
+       ③ 母句型
+  ====================== -->
+
+  <div class="step">
+
+    <div class="step-head">
+
+      <div class="step-name">
+        ③ 🏠 母句型
+      </div>
+
+      <div class="step-tip">
+        一句带出很多句
+      </div>
+
+    </div>
+
+    <div
+      id="sentenceList">
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     听力
+========================= -->
+
+<div class="card">
+
+  <div class="listen-title">
+
+    <strong>
+      🎧 听力训练
+    </strong>
+
+    <span>
+      先听 → 想 → 看
+    </span>
+
+  </div>
+
+
+  <div
+    id="listenDisplay"
+    class="listen-display">
+    先听英语，不看答案
+  </div>
+
+
+  <div
+    id="listenMeaning"
+    class="listen-meaning">
+    听懂后再看中文
+  </div>
+
+
+  <div class="listen-actions">
+
+    <button
+      class="primary"
+      onclick="playListening()">
+      ▶ 先听
+    </button>
+
+    <button
+      onclick="showListeningAnswer()">
+      👁 看答案
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     语速
+========================= -->
+
+<div class="card">
+
+  <div class="listen-title">
+
+    <strong>
+      ⚙️ 语速
+    </strong>
+
+    <span id="speedLabel">
+      正常
+    </span>
+
+  </div>
+
+
+  <div class="speed">
+
+    <button
+      id="slowBtn"
+      onclick="setSpeed('slow')">
+      慢速
+    </button>
+
+    <button
+      id="normalBtn"
+      class="active"
+      onclick="setSpeed('normal')">
+      正常
+    </button>
+
+    <button
+      id="naturalBtn"
+      onclick="setSpeed('natural')">
+      自然
+    </button>
+
+  </div>
+
+</div>
+
+
+<div
+  id="dataInfo"
+  class="data">
+</div>
 
 </div>
 
@@ -888,7 +910,7 @@ button{
 <script>
 
 /* =========================================================
-   词族数据
+   词族
 ========================================================= */
 
 const FAMILY_DATA = [
@@ -919,6 +941,7 @@ const FAMILY_DATA = [
       ["man","名词","男人"],
       ["pan","名词","平底锅"],
       ["ran","动词","跑了"],
+      ["tan","形容词","棕褐色的"],
       ["van","名词","厢式车"]
     ]
   },
@@ -929,8 +952,10 @@ const FAMILY_DATA = [
     words:[
       ["cap","名词","帽子"],
       ["gap","名词","间隙"],
+      ["lap","名词","膝部"],
       ["map","名词","地图"],
       ["nap","名词","小睡"],
+      ["rap","动词","敲击"],
       ["tap","动词","轻敲"]
     ]
   },
@@ -1290,14 +1315,14 @@ const CHUNK_LIBRARY = {
     ["go home","回家"],
     ["go to work","去上班"],
     ["go outside","出去"],
-    ["want to go","想走"]
+    ["want to go","想去"]
   ],
 
   eat:[
     ["eat food","吃东西"],
     ["eat breakfast","吃早餐"],
     ["eat lunch","吃午饭"],
-    ["want to eat","想吃东西"]
+    ["want to eat","想吃"]
   ],
 
   drink:[
@@ -1357,7 +1382,7 @@ const CHUNK_LIBRARY = {
   ],
 
   book:[
-    ["read a book","读书"],
+    ["read a book","读一本书"],
     ["a good book","一本好书"],
     ["this book","这本书"],
     ["my book","我的书"]
@@ -1402,7 +1427,7 @@ const CHUNK_LIBRARY = {
     ["say hello","打招呼"],
     ["say it again","再说一遍"],
     ["say something","说点什么"],
-    ["say your name","说你的名字"]
+    ["say your name","说出你的名字"]
   ],
 
   know:[
@@ -1623,30 +1648,659 @@ const SENTENCE_LIBRARY = {
 
 
 /* =========================================================
-   状态
+   二块音 / 多块音核心数据
 ========================================================= */
 
-let familyIndex = 0;
-let wordIndex = 0;
+const BLEND_LIBRARY = {
 
-let currentRate = 0.85;
+  cat:[
+    ["c","at","cat"],
+    ["ca","t","cat"]
+  ],
 
-let voices = [];
+  bat:[
+    ["b","at","bat"],
+    ["ba","t","bat"]
+  ],
+
+  fat:[
+    ["f","at","fat"],
+    ["fa","t","fat"]
+  ],
+
+  hat:[
+    ["h","at","hat"],
+    ["ha","t","hat"]
+  ],
+
+  mat:[
+    ["m","at","mat"],
+    ["ma","t","mat"]
+  ],
+
+  pat:[
+    ["p","at","pat"],
+    ["pa","t","pat"]
+  ],
+
+  rat:[
+    ["r","at","rat"],
+    ["ra","t","rat"]
+  ],
+
+  sat:[
+    ["s","at","sat"],
+    ["sa","t","sat"]
+  ],
+
+  can:[
+    ["c","an","can"],
+    ["ca","n","can"]
+  ],
+
+  fan:[
+    ["f","an","fan"],
+    ["fa","n","fan"]
+  ],
+
+  man:[
+    ["m","an","man"],
+    ["ma","n","man"]
+  ],
+
+  pan:[
+    ["p","an","pan"],
+    ["pa","n","pan"]
+  ],
+
+  van:[
+    ["v","an","van"],
+    ["va","n","van"]
+  ],
+
+  cap:[
+    ["c","ap","cap"],
+    ["ca","p","cap"]
+  ],
+
+  gap:[
+    ["g","ap","gap"],
+    ["ga","p","gap"]
+  ],
+
+  lap:[
+    ["l","ap","lap"],
+    ["la","p","lap"]
+  ],
+
+  map:[
+    ["m","ap","map"],
+    ["ma","p","map"]
+  ],
+
+  nap:[
+    ["n","ap","nap"],
+    ["na","p","nap"]
+  ],
+
+  tap:[
+    ["t","ap","tap"],
+    ["ta","p","tap"]
+  ],
+
+  ham:[
+    ["h","am","ham"],
+    ["ha","m","ham"]
+  ],
+
+  jam:[
+    ["j","am","jam"],
+    ["ja","m","jam"]
+  ],
+
+  ram:[
+    ["r","am","ram"],
+    ["ra","m","ram"]
+  ],
+
+  bag:[
+    ["b","ag","bag"],
+    ["ba","g","bag"]
+  ],
+
+  flag:[
+    ["fl","ag","flag"],
+    ["f","lag","flag"]
+  ],
+
+  rag:[
+    ["r","ag","rag"],
+    ["ra","g","rag"]
+  ],
+
+  tag:[
+    ["t","ag","tag"],
+    ["ta","g","tag"]
+  ],
+
+  bed:[
+    ["b","ed","bed"],
+    ["be","d","bed"]
+  ],
+
+  fed:[
+    ["f","ed","fed"],
+    ["fe","d","fed"]
+  ],
+
+  red:[
+    ["r","ed","red"],
+    ["re","d","red"]
+  ],
+
+  pen:[
+    ["p","en","pen"],
+    ["pe","n","pen"]
+  ],
+
+  ten:[
+    ["t","en","ten"],
+    ["te","n","ten"]
+  ],
+
+  get:[
+    ["g","et","get"],
+    ["ge","t","get"]
+  ],
+
+  jet:[
+    ["j","et","jet"],
+    ["je","t","jet"]
+  ],
+
+  let:[
+    ["l","et","let"],
+    ["le","t","let"]
+  ],
+
+  net:[
+    ["n","et","net"],
+    ["ne","t","net"]
+  ],
+
+  pet:[
+    ["p","et","pet"],
+    ["pe","t","pet"]
+  ],
+
+  set:[
+    ["s","et","set"],
+    ["se","t","set"]
+  ],
+
+  big:[
+    ["b","ig","big"],
+    ["bi","g","big"]
+  ],
+
+  dig:[
+    ["d","ig","dig"],
+    ["di","g","dig"]
+  ],
+
+  pig:[
+    ["p","ig","pig"],
+    ["pi","g","pig"]
+  ],
+
+  wig:[
+    ["w","ig","wig"],
+    ["wi","g","wig"]
+  ],
+
+  pin:[
+    ["p","in","pin"],
+    ["pi","n","pin"]
+  ],
+
+  win:[
+    ["w","in","win"],
+    ["wi","n","win"]
+  ],
+
+  dip:[
+    ["d","ip","dip"],
+    ["di","p","dip"]
+  ],
+
+  hip:[
+    ["h","ip","hip"],
+    ["hi","p","hip"]
+  ],
+
+  lip:[
+    ["l","ip","lip"],
+    ["li","p","lip"]
+  ],
+
+  sip:[
+    ["s","ip","sip"],
+    ["si","p","sip"]
+  ],
+
+  tip:[
+    ["t","ip","tip"],
+    ["ti","p","tip"]
+  ],
+
+  bit:[
+    ["b","it","bit"],
+    ["bi","t","bit"]
+  ],
+
+  fit:[
+    ["f","it","fit"],
+    ["fi","t","fit"]
+  ],
+
+  hit:[
+    ["h","it","hit"],
+    ["hi","t","hit"]
+  ],
+
+  kit:[
+    ["k","it","kit"],
+    ["ki","t","kit"]
+  ],
+
+  sit:[
+    ["s","it","sit"],
+    ["si","t","sit"]
+  ],
+
+  dog:[
+    ["d","og","dog"],
+    ["do","g","dog"]
+  ],
+
+  fog:[
+    ["f","og","fog"],
+    ["fo","g","fog"]
+  ],
+
+  log:[
+    ["l","og","log"],
+    ["lo","g","log"]
+  ],
+
+  jog:[
+    ["j","og","jog"],
+    ["jo","g","jog"]
+  ],
+
+  hot:[
+    ["h","ot","hot"],
+    ["ho","t","hot"]
+  ],
+
+  lot:[
+    ["l","ot","lot"],
+    ["lo","t","lot"]
+  ],
+
+  not:[
+    ["n","ot","not"],
+    ["no","t","not"]
+  ],
+
+  pot:[
+    ["p","ot","pot"],
+    ["po","t","pot"]
+  ],
+
+  dot:[
+    ["d","ot","dot"],
+    ["do","t","dot"]
+  ],
+
+  bug:[
+    ["b","ug","bug"],
+    ["bu","g","bug"]
+  ],
+
+  hug:[
+    ["h","ug","hug"],
+    ["hu","g","hug"]
+  ],
+
+  jug:[
+    ["j","ug","jug"],
+    ["ju","g","jug"]
+  ],
+
+  mug:[
+    ["m","ug","mug"],
+    ["mu","g","mug"]
+  ],
+
+  rug:[
+    ["r","ug","rug"],
+    ["ru","g","rug"]
+  ],
+
+  run:[
+    ["r","un","run"],
+    ["ru","n","run"]
+  ],
+
+  sun:[
+    ["s","un","sun"],
+    ["su","n","sun"]
+  ],
+
+  bun:[
+    ["b","un","bun"],
+    ["bu","n","bun"]
+  ],
+
+  fun:[
+    ["f","un","fun"],
+    ["fu","n","fun"]
+  ],
+
+  cut:[
+    ["c","ut","cut"],
+    ["cu","t","cut"]
+  ],
+
+  hut:[
+    ["h","ut","hut"],
+    ["hu","t","hut"]
+  ],
+
+  nut:[
+    ["n","ut","nut"],
+    ["nu","t","nut"]
+  ],
+
+  shut:[
+    ["sh","ut","shut"],
+    ["shu","t","shut"]
+  ],
+
+  bake:[
+    ["b","ake","bake"],
+    ["ba","ke","bake"]
+  ],
+
+  cake:[
+    ["c","ake","cake"],
+    ["ca","ke","cake"]
+  ],
+
+  lake:[
+    ["l","ake","lake"],
+    ["la","ke","lake"]
+  ],
+
+  make:[
+    ["m","ake","make"],
+    ["ma","ke","make"]
+  ],
+
+  take:[
+    ["t","ake","take"],
+    ["ta","ke","take"]
+  ],
+
+  wake:[
+    ["w","ake","wake"],
+    ["wa","ke","wake"]
+  ],
+
+  day:[
+    ["d","ay","day"],
+    ["da","y","day"]
+  ],
+
+  say:[
+    ["s","ay","say"],
+    ["sa","y","say"]
+  ],
+
+  pay:[
+    ["p","ay","pay"],
+    ["pa","y","pay"]
+  ],
+
+  play:[
+    ["pl","ay","play"],
+    ["p","lay","play"]
+  ],
+
+  stay:[
+    ["st","ay","stay"],
+    ["s","tay","stay"]
+  ],
+
+  see:[
+    ["s","ee","see"],
+    ["se","e","see"]
+  ],
+
+  tree:[
+    ["tr","ee","tree"],
+    ["t","ree","tree"]
+  ],
+
+  free:[
+    ["fr","ee","free"],
+    ["f","ree","free"]
+  ],
+
+  green:[
+    ["gr","een","green"],
+    ["g","reen","green"]
+  ],
+
+  eat:[
+    ["e","at","eat"],
+    ["ea","t","eat"]
+  ],
+
+  meat:[
+    ["m","eat","meat"],
+    ["me","at","meat"]
+  ],
+
+  seat:[
+    ["s","eat","seat"],
+    ["se","at","seat"]
+  ],
+
+  tea:[
+    ["t","ea","tea"],
+    ["te","a","tea"]
+  ],
+
+  food:[
+    ["f","ood","food"],
+    ["fo","od","food"]
+  ],
+
+  good:[
+    ["g","ood","good"],
+    ["go","od","good"]
+  ],
+
+  book:[
+    ["b","ook","book"],
+    ["bo","ok","book"]
+  ],
+
+  look:[
+    ["l","ook","look"],
+    ["lo","ok","look"]
+  ],
+
+  cook:[
+    ["c","ook","cook"],
+    ["co","ok","cook"]
+  ],
+
+  room:[
+    ["r","oom","room"],
+    ["ro","om","room"]
+  ],
+
+  car:[
+    ["c","ar","car"],
+    ["ca","r","car"]
+  ],
+
+  far:[
+    ["f","ar","far"],
+    ["fa","r","far"]
+  ],
+
+  park:[
+    ["p","ark","park"],
+    ["pa","rk","park"]
+  ],
+
+  hard:[
+    ["h","ard","hard"],
+    ["ha","rd","hard"]
+  ],
+
+  start:[
+    ["st","art","start"],
+    ["s","tart","start"]
+  ],
+
+  for:[
+    ["f","or","for"],
+    ["fo","r","for"]
+  ],
+
+  more:[
+    ["m","ore","more"],
+    ["mo","re","more"]
+  ],
+
+  door:[
+    ["d","oor","door"],
+    ["do","or","door"]
+  ],
+
+  four:[
+    ["f","our","four"],
+    ["fo","ur","four"]
+  ],
+
+  store:[
+    ["st","ore","store"],
+    ["s","tore","store"]
+  ],
+
+  light:[
+    ["l","ight","light"],
+    ["li","ght","light"]
+  ],
+
+  night:[
+    ["n","ight","night"],
+    ["ni","ght","night"]
+  ],
+
+  right:[
+    ["r","ight","right"],
+    ["ri","ght","right"]
+  ],
+
+  fight:[
+    ["f","ight","fight"],
+    ["fi","ght","fight"]
+  ],
+
+  might:[
+    ["m","ight","might"],
+    ["mi","ght","might"]
+  ],
+
+  cow:[
+    ["c","ow","cow"],
+    ["co","w","cow"]
+  ],
+
+  how:[
+    ["h","ow","how"],
+    ["ho","w","how"]
+  ],
+
+  now:[
+    ["n","ow","now"],
+    ["no","w","now"]
+  ],
+
+  show:[
+    ["sh","ow","show"],
+    ["sho","w","show"]
+  ],
+
+  know:[
+    ["kn","ow","know"],
+    ["k","now","know"]
+  ],
+
+  sound:[
+    ["s","ound","sound"],
+    ["sou","nd","sound"]
+  ],
+
+  round:[
+    ["r","ound","round"],
+    ["rou","nd","round"]
+  ],
+
+  ground:[
+    ["gr","ound","ground"],
+    ["g","round","ground"]
+  ],
+
+  found:[
+    ["f","ound","found"],
+    ["fou","nd","found"]
+  ],
+
+  around:[
+    ["a","round","around"],
+    ["ar","ound","around"]
+  ]
+
+};
 
 
 /* =========================================================
-   语音
+   语音引擎
 ========================================================= */
 
 const synth =
   window.speechSynthesis;
 
+let voices = [];
+
+let currentRate = 0.85;
+
 
 function loadVoices(){
 
   if(!synth){
+
     updateSoundStatus();
+
     return;
+
   }
 
   voices =
@@ -1680,19 +2334,19 @@ function getEnglishVoice(){
   return (
 
     voices.find(
-      v => /^en-US/i.test(v.lang)
+      v=>/^en-US/i.test(v.lang)
     )
 
     ||
 
     voices.find(
-      v => /^en-GB/i.test(v.lang)
+      v=>/^en-GB/i.test(v.lang)
     )
 
     ||
 
     voices.find(
-      v => /^en/i.test(v.lang)
+      v=>/^en/i.test(v.lang)
     )
 
     ||
@@ -1713,7 +2367,7 @@ function speakText(text){
   if(!synth){
 
     alert(
-      "当前浏览器不支持英语语音。"
+      "当前浏览器不支持英语语音播放。"
     );
 
     return;
@@ -1785,9 +2439,6 @@ function updateSoundStatus(){
     el.textContent =
       "🔴 浏览器不支持语音";
 
-    el.className =
-      "sound-status warn";
-
     return;
 
   }
@@ -1798,7 +2449,7 @@ function updateSoundStatus(){
       "🟢 英语声音已准备好";
 
     el.className =
-      "sound-status ok";
+      "status ok";
 
   }else{
 
@@ -1806,7 +2457,7 @@ function updateSoundStatus(){
       "🟡 正在准备英语声音……";
 
     el.className =
-      "sound-status warn";
+      "status";
 
   }
 
@@ -1823,7 +2474,15 @@ function testSound(){
 
 
 /* =========================================================
-   当前数据
+   当前状态
+========================================================= */
+
+let familyIndex = 0;
+let wordIndex = 2;
+
+
+/* =========================================================
+   数据取得
 ========================================================= */
 
 function getFamily(){
@@ -1852,7 +2511,7 @@ function getWord(){
 
 
 /* =========================================================
-   总渲染
+   渲染
 ========================================================= */
 
 function render(){
@@ -1875,11 +2534,11 @@ function render(){
 
   renderFamily();
 
-  renderWords();
+  renderWordList();
 
-  renderCurrentWord();
+  renderCurrent();
 
-  renderSoundBlocks();
+  renderBlend();
 
   renderChunks();
 
@@ -1887,7 +2546,7 @@ function render(){
 
   resetListening();
 
-  updateDataInfo();
+  updateData();
 
 }
 
@@ -1908,7 +2567,7 @@ function renderFamily(){
     " 词族";
 
   document.getElementById(
-    "familyType"
+    "familyInfo"
   ).textContent =
     family.type +
     " · " +
@@ -1919,18 +2578,14 @@ function renderFamily(){
 }
 
 
-/* =========================================================
-   词族单词
-========================================================= */
+function renderWordList(){
 
-function renderWords(){
-
-  const container =
+  const box =
     document.getElementById(
       "wordList"
     );
 
-  container.innerHTML = "";
+  box.innerHTML = "";
 
   getFamily()
     .words
@@ -1965,7 +2620,7 @@ function renderWords(){
 
           };
 
-        container.appendChild(
+        box.appendChild(
           button
         );
 
@@ -1979,7 +2634,7 @@ function renderWords(){
    当前单词
 ========================================================= */
 
-function renderCurrentWord(){
+function renderCurrent(){
 
   const data =
     getWordData();
@@ -2005,153 +2660,190 @@ function renderCurrentWord(){
 function speakCurrentWord(){
 
   speakText(
-    getWordData()[0]
+    getWord()
   );
 
 }
 
 
 /* =========================================================
-   声音块
+   二块音 / 多块音
 ========================================================= */
 
-function splitSoundBlocks(word){
+function getBlendData(word){
 
-  const groups = [
+  if(
+    BLEND_LIBRARY[word]
+  ){
 
-    "ight",
-    "ough",
-    "tion",
-    "sion",
-
-    "sh",
-    "ch",
-    "th",
-    "ph",
-    "wh",
-    "ck",
-    "ng",
-
-    "ee",
-    "ea",
-    "oo",
-    "ai",
-    "ay",
-    "oa",
-    "ow",
-    "ou",
-
-    "ar",
-    "or",
-    "er",
-    "ir",
-    "ur",
-
-    "ing"
-
-  ];
-
-  const result = [];
-
-  let i = 0;
-
-  while(i < word.length){
-
-    let matched = "";
-
-    for(
-      let size = 4;
-      size >= 2;
-      size--
-    ){
-
-      const part =
-        word.slice(
-          i,
-          i + size
-        );
-
-      if(
-        groups.includes(part)
-      ){
-
-        matched =
-          part;
-
-        break;
-
-      }
-
-    }
-
-    if(matched){
-
-      result.push(
-        matched
-      );
-
-      i +=
-        matched.length;
-
-    }else{
-
-      result.push(
-        word[i]
-      );
-
-      i++;
-
-    }
+    return BLEND_LIBRARY[word];
 
   }
 
-  return result;
+  /* 没有专门数据时，
+     至少保持真实单词整体播放 */
+
+  return [
+    [word[0],word.slice(1),word]
+  ];
 
 }
 
 
-function renderSoundBlocks(){
+function renderBlend(){
 
-  const container =
+  const area =
     document.getElementById(
-      "soundBlocks"
+      "blendArea"
     );
 
-  container.innerHTML = "";
+  area.innerHTML = "";
 
-  const blocks =
-    splitSoundBlocks(
-      getWord()
+  const word =
+    getWord();
+
+  const data =
+    getBlendData(word);
+
+
+  const box =
+    document.createElement(
+      "div"
     );
 
-  blocks.forEach(
-    block=>{
+  box.className =
+    "blend-list";
 
-      const button =
+
+  data.forEach(
+    item=>{
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "blend-row";
+
+
+      const first =
         document.createElement(
           "button"
         );
 
-      button.className =
-        "sound-block";
+      first.className =
+        "blend-mini";
 
-      button.textContent =
-        block;
+      first.textContent =
+        item[0];
 
-      button.onclick =
+      first.onclick =
         function(){
 
           speakText(
-            block
+            item[0]
           );
 
         };
 
-      container.appendChild(
-        button
+
+      const plus =
+        document.createElement(
+          "span"
+        );
+
+      plus.textContent =
+        "+";
+
+      plus.className =
+        "plus";
+
+
+      const second =
+        document.createElement(
+          "button"
+        );
+
+      second.className =
+        "blend-mini";
+
+      second.textContent =
+        item[1];
+
+      second.onclick =
+        function(){
+
+          speakText(
+            item[1]
+          );
+
+        };
+
+
+      const arrow =
+        document.createElement(
+          "span"
+        );
+
+      arrow.textContent =
+        "→";
+
+      arrow.className =
+        "blend-arrow";
+
+
+      const result =
+        document.createElement(
+          "button"
+        );
+
+      result.className =
+        "blend-word";
+
+      result.textContent =
+        item[2];
+
+      result.onclick =
+        function(){
+
+          speakText(
+            item[2]
+          );
+
+        };
+
+
+      row.appendChild(
+        first
+      );
+
+      row.appendChild(
+        plus
+      );
+
+      row.appendChild(
+        second
+      );
+
+      row.appendChild(
+        arrow
+      );
+
+      row.appendChild(
+        result
+      );
+
+      box.appendChild(
+        row
       );
 
     }
+  );
+
+
+  area.appendChild(
+    box
   );
 
 }
@@ -2181,11 +2873,6 @@ function getChunks(word){
     [
       "the " + word,
       "这个/那个 " + word
-    ],
-
-    [
-      "this " + word,
-      "这个 " + word
     ]
 
   ];
@@ -2195,19 +2882,17 @@ function getChunks(word){
 
 function renderChunks(){
 
-  const container =
+  const box =
     document.getElementById(
       "chunkList"
     );
 
-  container.innerHTML = "";
+  box.innerHTML = "";
 
-  const chunks =
-    getChunks(
-      getWord()
-    );
-
-  chunks.forEach(
+  getChunks(
+    getWord()
+  )
+  .forEach(
     item=>{
 
       const button =
@@ -2237,7 +2922,7 @@ function renderChunks(){
 
         };
 
-      container.appendChild(
+      box.appendChild(
         button
       );
 
@@ -2248,7 +2933,7 @@ function renderChunks(){
 
 
 /* =========================================================
-   母句型
+   母句
 ========================================================= */
 
 function getSentences(word){
@@ -2274,16 +2959,6 @@ function getSentences(word){
     ],
 
     [
-      "I use " +
-      word +
-      ".",
-
-      "我使用 " +
-      word +
-      "。"
-    ],
-
-    [
       "This is " +
       word +
       ".",
@@ -2300,75 +2975,44 @@ function getSentences(word){
 
 function renderSentences(){
 
-  const container =
+  const box =
     document.getElementById(
       "sentenceList"
     );
 
-  container.innerHTML = "";
+  box.innerHTML = "";
 
-  const sentences =
-    getSentences(
-      getWord()
-    );
-
-  sentences.forEach(
+  getSentences(
+    getWord()
+  )
+  .forEach(
     item=>{
 
-      const box =
+      const sentence =
         document.createElement(
           "div"
         );
 
-      box.className =
+      sentence.className =
         "sentence";
 
 
-      const english =
-        document.createElement(
-          "div"
-        );
+      sentence.innerHTML =
 
-      english.className =
-        "sentence-en";
+        "<div class='sentence-en'>" +
+        item[0] +
+        "</div>" +
 
-      english.textContent =
-        item[0];
+        "<div class='sentence-zh'>" +
+        item[1] +
+        "</div>" +
 
-      english.onclick =
-        function(){
-
-          speakText(
-            item[0]
-          );
-
-        };
+        "<div class='sentence-hint'>" +
+        "🔊 点击听句子" +
+        "</div>";
 
 
-      const chinese =
-        document.createElement(
-          "div"
-        );
-
-      chinese.className =
-        "sentence-zh";
-
-      chinese.textContent =
-        item[1];
-
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-      button.className =
-        "sentence-play";
-
-      button.textContent =
-        "🔊 听句子";
-
-      button.onclick =
+      sentence.onclick =
         function(){
 
           speakText(
@@ -2379,22 +3023,132 @@ function renderSentences(){
 
 
       box.appendChild(
-        english
-      );
-
-      box.appendChild(
-        chinese
-      );
-
-      box.appendChild(
-        button
-      );
-
-      container.appendChild(
-        box
+        sentence
       );
 
     }
+  );
+
+}
+
+
+/* =========================================================
+   一键播放学习链
+========================================================= */
+
+function playLearningChain(){
+
+  const word =
+    getWord();
+
+  const chunks =
+    getChunks(word);
+
+  const sentences =
+    getSentences(word);
+
+  const firstBlend =
+    getBlendData(word)[0];
+
+
+  const sequence = [
+
+    firstBlend[0],
+
+    firstBlend[1],
+
+    word,
+
+    chunks[0][0],
+
+    sentences[0][0]
+
+  ];
+
+
+  playSequence(
+    sequence,
+    0
+  );
+
+}
+
+
+function playSequence(
+  list,
+  index
+){
+
+  if(
+    index >= list.length
+  ){
+
+    return;
+
+  }
+
+  if(!synth){
+
+    return;
+
+  }
+
+  synth.cancel();
+
+
+  const utter =
+    new SpeechSynthesisUtterance(
+      list[index]
+    );
+
+  const voice =
+    getEnglishVoice();
+
+  if(voice){
+
+    utter.voice =
+      voice;
+
+    utter.lang =
+      voice.lang;
+
+  }else{
+
+    utter.lang =
+      "en-US";
+
+  }
+
+  utter.rate =
+    currentRate;
+
+  utter.pitch =
+    1;
+
+  utter.volume =
+    1;
+
+
+  utter.onend =
+    function(){
+
+      setTimeout(
+        function(){
+
+          playSequence(
+            list,
+            index + 1
+          );
+
+        },
+        220
+      );
+
+    };
+
+
+  synth.speak(
+    utter
   );
 
 }
@@ -2418,12 +3172,12 @@ function resetListening(){
   document.getElementById(
     "listenDisplay"
   ).textContent =
-    "先点击播放，只听英语";
+    "先听英语，不看答案";
 
   document.getElementById(
     "listenMeaning"
   ).textContent =
-    "先不要看答案";
+    "听懂后再看中文";
 
 }
 
@@ -2459,19 +3213,16 @@ function showListeningAnswer(){
 
 
 /* =========================================================
-   单词切换
+   单词导航
 ========================================================= */
 
 function nextWord(){
-
-  const family =
-    getFamily();
 
   wordIndex++;
 
   if(
     wordIndex >=
-    family.words.length
+    getFamily().words.length
   ){
 
     wordIndex = 0;
@@ -2485,9 +3236,6 @@ function nextWord(){
 
 function previousWord(){
 
-  const family =
-    getFamily();
-
   wordIndex--;
 
   if(
@@ -2495,7 +3243,7 @@ function previousWord(){
   ){
 
     wordIndex =
-      family.words.length - 1;
+      getFamily().words.length - 1;
 
   }
 
@@ -2505,7 +3253,7 @@ function previousWord(){
 
 
 /* =========================================================
-   词族切换
+   词族导航
 ========================================================= */
 
 function nextFamily(){
@@ -2573,6 +3321,7 @@ function setSpeed(type){
 
   };
 
+
   Object.values(buttons)
     .forEach(
       button=>{
@@ -2585,7 +3334,8 @@ function setSpeed(type){
 
   if(type === "slow"){
 
-    currentRate = 0.68;
+    currentRate =
+      0.68;
 
     buttons.slow
       .classList.add(
@@ -2602,7 +3352,8 @@ function setSpeed(type){
 
   if(type === "normal"){
 
-    currentRate = 0.85;
+    currentRate =
+      0.85;
 
     buttons.normal
       .classList.add(
@@ -2619,7 +3370,8 @@ function setSpeed(type){
 
   if(type === "natural"){
 
-    currentRate = 1.0;
+    currentRate =
+      1.0;
 
     buttons.natural
       .classList.add(
@@ -2742,15 +3494,15 @@ searchInput.addEventListener(
       .forEach(
         result=>{
 
-          const box =
+          const item =
             document.createElement(
               "div"
             );
 
-          box.className =
+          item.className =
             "result";
 
-          box.innerHTML =
+          item.innerHTML =
 
             "<div class='result-word'>" +
             result.word +
@@ -2765,7 +3517,7 @@ searchInput.addEventListener(
             "</div>";
 
 
-          box.onclick =
+          item.onclick =
             function(){
 
               familyIndex =
@@ -2788,7 +3540,7 @@ searchInput.addEventListener(
 
 
           searchResults.appendChild(
-            box
+            item
           );
 
         }
@@ -2802,7 +3554,7 @@ searchInput.addEventListener(
    数据统计
 ========================================================= */
 
-function updateDataInfo(){
+function updateData(){
 
   let total = 0;
 
@@ -2815,6 +3567,7 @@ function updateDataInfo(){
     }
   );
 
+
   document.getElementById(
     "dataInfo"
   ).textContent =
@@ -2823,7 +3576,7 @@ function updateDataInfo(){
     " 个词族 · " +
     total +
     " 个单词 · " +
-    "后续继续扩展到 2000 词";
+    "结构预留 2000 词";
 
 }
 
