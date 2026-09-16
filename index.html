@@ -2,242 +2,256 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Chaowen AI 英语拼读训练</title>
+<title>Chaowen AI 英语词族 × 母语语块训练</title>
 
 <style>
+*{box-sizing:border-box}
 
-* {
-    box-sizing: border-box;
+body{
+    margin:0;
+    background:#f4f6f8;
+    color:#222;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
+    Arial,"Microsoft YaHei",sans-serif;
 }
 
-body {
-    margin: 0;
-    background: #f4f7fb;
-    color: #222;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        "Microsoft YaHei",
-        sans-serif;
+.container{
+    max-width:760px;
+    margin:auto;
+    padding:16px;
 }
 
-.container {
-    max-width: 760px;
-    margin: auto;
-    padding: 18px;
+header{
+    text-align:center;
+    padding:15px 5px 20px;
 }
 
-header {
-    text-align: center;
-    padding: 15px 5px 25px;
+.logo{
+    font-size:14px;
+    color:#777;
+    margin-bottom:6px;
 }
 
-.logo {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 8px;
+h1{
+    margin:0;
+    font-size:27px;
 }
 
-h1 {
-    margin: 0;
-    font-size: 28px;
+.subtitle{
+    color:#777;
+    margin-top:8px;
 }
 
-.subtitle {
-    margin-top: 8px;
-    color: #777;
+.card{
+    background:#fff;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 4px 18px rgba(0,0,0,.06);
 }
 
-.card {
-    background: white;
-    border-radius: 20px;
-    padding: 22px;
-    margin-bottom: 18px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+.title{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:16px;
 }
 
-.title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 18px;
+.big-word{
+    text-align:center;
+    font-size:46px;
+    font-weight:700;
+    margin:15px 0 4px;
 }
 
-.ipa {
-    text-align: center;
-    font-size: 68px;
-    font-weight: 700;
-    margin: 12px 0;
+.cn{
+    text-align:center;
+    color:#666;
+    font-size:18px;
+    margin-bottom:14px;
 }
 
-.ipa-name {
-    text-align: center;
-    color: #777;
-    font-size: 16px;
+.parts{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:18px 0;
 }
 
-.meaning {
-    text-align: center;
-    font-size: 20px;
-    margin: 12px 0;
+.part{
+    background:#eef2f6;
+    border-radius:12px;
+    padding:12px 15px;
+    font-size:24px;
+    font-weight:700;
+    cursor:pointer;
 }
 
-button {
-    width: 100%;
-    border: none;
-    border-radius: 14px;
-    padding: 15px;
-    margin-top: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    color: white;
+.part:active{
+    transform:scale(.96);
 }
 
-button:active {
-    transform: scale(0.98);
+.arrow{
+    color:#888;
+    font-size:20px;
 }
 
-.play-ipa {
-    background: #1769aa;
+button{
+    width:100%;
+    border:0;
+    border-radius:13px;
+    padding:14px;
+    margin-top:8px;
+    font-size:17px;
+    cursor:pointer;
+    background:#222;
+    color:#fff;
 }
 
-.play-word {
-    background: #198754;
+button:active{
+    transform:scale(.98);
 }
 
-.practice {
-    background: #6f42c1;
+.primary{background:#1769aa}
+.green{background:#198754}
+.purple{background:#6f42c1}
+.gray{background:#555}
+
+.speed{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:10px;
 }
 
-.stop {
-    background: #555;
+.speed button{
+    margin:0;
+    background:#e9edf2;
+    color:#222;
 }
 
-.status {
-    text-align: center;
-    margin-top: 10px;
-    min-height: 22px;
-    color: #666;
-    font-size: 14px;
+.speed button.active{
+    background:#222;
+    color:#fff;
 }
 
-.mouth {
-    background: #f7f8fa;
-    border-radius: 15px;
-    padding: 16px;
-    line-height: 1.8;
-    margin-top: 15px;
+.word-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
 }
 
-.parts {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 22px 0;
+.word-card{
+    background:#f1f3f5;
+    border-radius:14px;
+    padding:15px 8px;
+    text-align:center;
+    cursor:pointer;
 }
 
-.part {
-    padding: 13px 16px;
-    background: #eef2f7;
-    border-radius: 12px;
-    font-size: 25px;
-    font-weight: 700;
+.word-card:active{
+    transform:scale(.97);
 }
 
-.arrow {
-    font-size: 22px;
-    color: #777;
+.word-card strong{
+    display:block;
+    font-size:27px;
 }
 
-.word {
-    text-align: center;
-    font-size: 44px;
-    font-weight: 700;
-    margin: 12px 0 4px;
+.word-card span{
+    color:#666;
+    font-size:14px;
 }
 
-.word-cn {
-    text-align: center;
-    color: #666;
-    font-size: 20px;
-    margin-bottom: 12px;
+.chunk{
+    display:inline-block;
+    background:#edf4ff;
+    border-radius:10px;
+    padding:10px 13px;
+    margin:4px;
+    font-size:22px;
+    cursor:pointer;
 }
 
-.word-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+.chunk:active{
+    transform:scale(.96);
 }
 
-.word-card {
-    background: #f3f5f8;
-    border-radius: 14px;
-    padding: 15px 10px;
-    text-align: center;
-    cursor: pointer;
+.mother{
+    text-align:center;
+    font-size:27px;
+    font-weight:700;
+    line-height:1.6;
+    margin:15px 0;
 }
 
-.word-card:active {
-    transform: scale(0.97);
+.example{
+    text-align:center;
+    font-size:22px;
+    line-height:1.7;
+    margin:15px 0;
 }
 
-.word-card strong {
-    display: block;
-    font-size: 25px;
+.listen-area{
+    background:#f7f8fa;
+    border-radius:15px;
+    padding:15px;
+    margin-top:12px;
 }
 
-.word-card span {
-    color: #666;
-    font-size: 14px;
+.status{
+    text-align:center;
+    color:#777;
+    min-height:22px;
+    margin-top:10px;
+    font-size:14px;
 }
 
-.example {
-    text-align: center;
-    font-size: 24px;
-    line-height: 1.6;
-    margin: 18px 0;
+.progress{
+    height:8px;
+    background:#e6e8eb;
+    border-radius:10px;
+    overflow:hidden;
+    margin:12px 0;
 }
 
-.example-cn {
-    text-align: center;
-    color: #666;
-    font-size: 18px;
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:#222;
+    transition:.3s;
 }
 
-.note {
-    background: #fff8df;
-    border-radius: 14px;
-    padding: 16px;
-    line-height: 1.8;
-    margin-top: 15px;
+.note{
+    background:#fff8df;
+    border-radius:14px;
+    padding:15px;
+    line-height:1.8;
+    margin-top:12px;
 }
 
-.success {
-    background: #e9f7ef;
-    border-radius: 14px;
-    padding: 16px;
-    line-height: 1.8;
+.hidden{
+    display:none;
 }
 
-footer {
-    text-align: center;
-    color: #999;
-    font-size: 12px;
-    line-height: 1.7;
-    padding: 20px 5px 35px;
+.answer{
+    background:#eaf7ef;
+    border-radius:14px;
+    padding:15px;
+    line-height:1.8;
+    margin-top:12px;
 }
 
-hr {
-    border: none;
-    border-top: 1px solid #eee;
-    margin: 20px 0;
+footer{
+    text-align:center;
+    color:#999;
+    font-size:12px;
+    line-height:1.7;
+    padding:20px 5px 30px;
 }
-
 </style>
 </head>
 
@@ -246,261 +260,215 @@ hr {
 <div class="container">
 
 <header>
-
-    <div class="logo">
-        🎋 Chaowen AI
-    </div>
-
-    <h1>英语声音拼读训练</h1>
-
+    <div class="logo">🎋 Chaowen AI</div>
+    <h1>英语词族 × 母语语块训练</h1>
     <div class="subtitle">
-        从一个声音开始，把声音拼成单词
+        听懂 → 拼读 → 词块 → 母句 → 开口
     </div>
-
 </header>
 
 
-<!-- ==========================
-     ① 今日声音
-=========================== -->
+<!-- =========================
+     进度
+========================= -->
 
 <div class="card">
 
-    <div class="title">
-        ① 今天学习一个声音
+    <div class="title">今日训练进度</div>
+
+    <div id="progressText">
+        第 1 / 8 个词
     </div>
 
-    <div class="ipa">
-        /æ/
-    </div>
-
-    <div class="ipa-name">
-        cat 里面的声音
-    </div>
-
-    <button
-        class="play-ipa"
-        onclick="playPhonetic()">
-        🔊 听 /æ/
-    </button>
-
-    <div id="ipaStatus" class="status">
-        点击上面的按钮听声音
-    </div>
-
-    <div class="mouth">
-
-        <strong>👄 发音口型</strong>
-
-        <br>
-
-        嘴巴稍微张开。
-
-        <br>
-
-        舌头靠前、位置较低。
-
-        <br>
-
-        嘴唇保持放松，不要撅嘴。
-
-        <br><br>
-
-        🎯 现在先不用背复杂理论。
-
-        <br>
-
-        <strong>先听 → 再模仿 → 再拼。</strong>
-
+    <div class="progress">
+        <div id="progressBar" class="progress-bar"></div>
     </div>
 
 </div>
 
 
-<!-- ==========================
-     ② 三个声音
-=========================== -->
+<!-- =========================
+     ① 词族
+========================= -->
 
 <div class="card">
 
     <div class="title">
-        ② 一个单词由几个声音组成？
+        ① 今天的词族：-at
     </div>
 
-    <div class="word">
+    <div class="note">
+        先不要背一大堆规则。<br><br>
+
+        我们先发现一个共同声音：
+
+        <br><br>
+
+        <strong>-at</strong>
+
+        <br><br>
+
+        然后换前面的声音。
+    </div>
+
+    <div class="word-grid" id="wordGrid"></div>
+
+</div>
+
+
+<!-- =========================
+     ② 当前单词
+========================= -->
+
+<div class="card">
+
+    <div class="title">
+        ② 听一个词
+    </div>
+
+    <div class="big-word" id="currentWord">
         cat
     </div>
 
-    <div class="word-cn">
-        猫 🐱
+    <div class="cn" id="currentCN">
+        猫
     </div>
 
-    <div class="parts">
+    <button class="primary" onclick="playCurrentWord()">
+        🔊 听单词
+    </button>
 
-        <div class="part">
-            /k/
-        </div>
+    <div class="parts" id="currentParts"></div>
 
-        <div class="arrow">
-            →
-        </div>
+    <button class="green" onclick="playChunks()">
+        🔊 分块听
+    </button>
 
-        <div class="part">
-            /æ/
-        </div>
+    <button class="purple" onclick="nextWord()">
+        ▶ 下一个
+    </button>
 
-        <div class="arrow">
-            →
-        </div>
+</div>
 
-        <div class="part">
-            /t/
-        </div>
 
+<!-- =========================
+     ③ 词块
+========================= -->
+
+<div class="card">
+
+    <div class="title">
+        ③ 从单词进入语块
     </div>
+
+    <div id="chunkArea"></div>
 
     <div class="note">
+        <strong>词块不是单个单词。</strong><br><br>
 
-        我们现在不是死记：
-
-        <br><br>
-
-        <strong>C + A + T</strong>
-
-        <br><br>
-
-        而是训练：
-
-        <br><br>
-
-        <strong>/k/ → /æ/ → /t/</strong>
-
-        <br><br>
-
-        最后连起来：
-
-        <br><br>
-
-        <strong>cat</strong>
-
+        英语真正说话的时候，
+        经常是一块一块地说。
     </div>
-
-    <button
-        class="play-word"
-        onclick="speakWord('cat')">
-
-        🔊 听 cat
-
-    </button>
 
 </div>
 
 
-<!-- ==========================
-     ③ -at 词族
-=========================== -->
+<!-- =========================
+     ④ 母句型
+========================= -->
 
 <div class="card">
 
     <div class="title">
-        ③ -at 词族
+        ④ 母句型
     </div>
+
+    <div class="mother">
+        I want to ...
+    </div>
+
+    <button class="primary"
+            onclick="speak('I want to')">
+        🔊 听母句型
+    </button>
 
     <div class="note">
-
-        这些单词都有同一个结尾声音：
-
-        <br><br>
-
-        <strong>/æ/ + /t/</strong>
-
-        <br><br>
-
-        前面换一个声音，就可以形成新的单词。
-
+        这个句型可以不断替换后面的内容。
     </div>
 
-    <br>
+</div>
 
-    <div class="word-grid">
 
-        <div
-            class="word-card"
-            onclick="speakWord('at')">
+<!-- =========================
+     ⑤ 句子替换
+========================= -->
 
-            <strong>at</strong>
-            <span>在</span>
+<div class="card">
 
+    <div class="title">
+        ⑤ 母句型替换练习
+    </div>
+
+    <div id="sentenceArea"></div>
+
+</div>
+
+
+<!-- =========================
+     ⑥ 听力训练
+========================= -->
+
+<div class="card">
+
+    <div class="title">
+        ⑥ 先听，不看答案
+    </div>
+
+    <button class="primary"
+            onclick="listenFirst()">
+        🎧 先听英语
+    </button>
+
+    <button class="gray"
+            onclick="showAnswer()">
+        👀 显示答案
+    </button>
+
+    <div id="listeningAnswer"
+         class="answer hidden">
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ⑦ 跟读
+========================= -->
+
+<div class="card">
+
+    <div class="title">
+        ⑦ 跟读训练
+    </div>
+
+    <div class="listen-area">
+
+        <div class="example">
+            I want to go home.
         </div>
 
+        <button class="green"
+                onclick="speak('I want to go home.')">
+            🔊 听一句
+        </button>
 
-        <div
-            class="word-card"
-            onclick="speakWord('bat')">
+        <button class="purple"
+                onclick="repeatPause()">
+            🎯 听完停顿，再自己说
+        </button>
 
-            <strong>bat</strong>
-            <span>蝙蝠</span>
-
-        </div>
-
-
-        <div
-            class="word-card"
-            onclick="speakWord('cat')">
-
-            <strong>cat</strong>
-            <span>猫</span>
-
-        </div>
-
-
-        <div
-            class="word-card"
-            onclick="speakWord('fat')">
-
-            <strong>fat</strong>
-            <span>胖的</span>
-
-        </div>
-
-
-        <div
-            class="word-card"
-            onclick="speakWord('hat')">
-
-            <strong>hat</strong>
-            <span>帽子</span>
-
-        </div>
-
-
-        <div
-            class="word-card"
-            onclick="speakWord('mat')">
-
-            <strong>mat</strong>
-            <span>垫子</span>
-
-        </div>
-
-
-        <div
-            class="word-card"
-            onclick="speakWord('rat')">
-
-            <strong>rat</strong>
-            <span>老鼠</span>
-
-        </div>
-
-
-        <div
-            class="word-card"
-            onclick="speakWord('sat')">
-
-            <strong>sat</strong>
-            <span>坐下了</span>
-
+        <div id="repeatStatus"
+             class="status">
         </div>
 
     </div>
@@ -508,494 +476,711 @@ hr {
 </div>
 
 
-<!-- ==========================
-     ④ 声音连接
-=========================== -->
+<!-- =========================
+     ⑧ 语速
+========================= -->
 
 <div class="card">
 
     <div class="title">
-        ④ 前一个音接后一个音
+        ⑧ 语速
     </div>
 
-    <div class="parts">
+    <div class="speed">
 
-        <div class="part">
-            k
-        </div>
+        <button id="slowBtn"
+                onclick="setSpeed(.68,'slowBtn')">
+            慢速
+        </button>
 
-        <div class="arrow">
-            →
-        </div>
+        <button id="normalBtn"
+                class="active"
+                onclick="setSpeed(.85,'normalBtn')">
+            正常
+        </button>
 
-        <div class="part">
-            æ
-        </div>
-
-        <div class="arrow">
-            →
-        </div>
-
-        <div class="part">
-            t
-        </div>
+        <button id="naturalBtn"
+                onclick="setSpeed(1,'naturalBtn')">
+            自然
+        </button>
 
     </div>
 
-    <div class="word">
-        cat
-    </div>
-
-    <button
-        class="play-ipa"
-        onclick="playPhonetic()">
-
-        🔊 第一步：听 /æ/
-
-    </button>
-
-    <button
-        class="play-word"
-        onclick="speakWord('cat')">
-
-        🔊 第二步：听 cat
-
-    </button>
-
-    <button
-        class="practice"
-        onclick="practiceCat()">
-
-        🎯 第三步：练习 cat
-
-    </button>
-
-    <div id="practiceStatus" class="status"></div>
-
-</div>
-
-
-<!-- ==========================
-     ⑤ 句子
-=========================== -->
-
-<div class="card">
-
-    <div class="title">
-        ⑤ 把词族放进句子
-    </div>
-
-    <div class="example">
-        The cat sat on the mat.
-    </div>
-
-    <div class="example-cn">
-        猫坐在垫子上。
-    </div>
-
-    <button
-        class="play-word"
-        onclick="speakSentence()">
-
-        🔊 听完整句子
-
-    </button>
-
-    <hr>
-
-    <div class="success">
-
-        今天可以特别注意三个词：
-
-        <br><br>
-
-        <strong>cat</strong> → 猫
-
-        <br>
-
-        <strong>sat</strong> → 坐下了
-
-        <br>
-
-        <strong>mat</strong> → 垫子
-
-        <br><br>
-
-        它们都有：
-
-        <br>
-
-        <strong>/æ/</strong>
-
+    <div class="status">
+        先清楚，再自然。
     </div>
 
 </div>
 
 
-<!-- ==========================
-     ⑥ 学习顺序
-=========================== -->
+<!-- =========================
+     播放控制
+========================= -->
 
 <div class="card">
 
     <div class="title">
-        ⑥ 我们现在的学习方法
+        播放控制
     </div>
 
-    <div class="note">
-
-        <strong>第一步</strong>
-
-        <br>
-
-        听声音
-
-        <br><br>
-
-        ↓
-
-        <br><br>
-
-        <strong>第二步</strong>
-
-        <br>
-
-        模仿声音
-
-        <br><br>
-
-        ↓
-
-        <br><br>
-
-        <strong>第三步</strong>
-
-        <br>
-
-        声音连接
-
-        <br><br>
-
-        ↓
-
-        <br><br>
-
-        <strong>第四步</strong>
-
-        <br>
-
-        拼成单词
-
-        <br><br>
-
-        ↓
-
-        <br><br>
-
-        <strong>第五步</strong>
-
-        <br>
-
-        放进句子
-
-    </div>
-
-</div>
-
-
-<!-- ==========================
-     ⑦ 音频检测
-=========================== -->
-
-<div class="card">
-
-    <div class="title">
-        ⑦ 声音系统检测
-    </div>
-
-    <button
-        class="play-ipa"
-        onclick="testAudio()">
-
-        🔊 测试 /æ/ 音频
-
+    <button class="gray"
+            onclick="stopSpeech()">
+        ⏹ 停止
     </button>
 
-    <div id="audioTest" class="status">
-
-        等待测试……
-
+    <div id="globalStatus"
+         class="status">
+        准备开始
     </div>
 
 </div>
 
 
 <footer>
-
-    Chaowen AI 英语声音学习系统
-
-    <br>
-
-    当前课程：/æ/ + -at 词族
-
-    <br><br>
-
-    本页面采用独立音频文件播放，
-    不依赖系统英文朗读播放 /æ/。
-
+    Chaowen AI 英语学习系统 V2.0<br>
+    词族 → 词块 → 母句型 → 听力 → 跟读 → 开口
 </footer>
 
 </div>
 
 
-<!-- ==========================
-     真正的 /æ/ 音频
-=========================== -->
-
-<audio
-    id="phoneticAudio"
-    preload="auto">
-
-    <source
-        src="audio/phonetic-8.mp3"
-        type="audio/mpeg">
-
-</audio>
-
-
 <script>
 
-/* =========================================
-   全局音频
-========================================= */
+/* =================================================
+   数据
+================================================= */
 
-const phoneticAudio =
-    document.getElementById("phoneticAudio");
+const words = [
 
+    {
+        word:"at",
+        cn:"在",
+        parts:["at"],
+        chunks:["at home","at work"],
+        sentences:[
+            "I am at home.",
+            "I am at work."
+        ]
+    },
 
-/* =========================================
-   播放 /æ/
-========================================= */
+    {
+        word:"bat",
+        cn:"蝙蝠",
+        parts:["b","at"],
+        chunks:["a bat"],
+        sentences:[
+            "I see a bat."
+        ]
+    },
 
-function playPhonetic() {
+    {
+        word:"cat",
+        cn:"猫",
+        parts:["c","at"],
+        chunks:["the cat","my cat"],
+        sentences:[
+            "I see the cat.",
+            "I like my cat."
+        ]
+    },
 
-    stopAllAudio();
+    {
+        word:"fat",
+        cn:"胖的",
+        parts:["f","at"],
+        chunks:["a fat cat"],
+        sentences:[
+            "It is a fat cat."
+        ]
+    },
 
-    const status =
-        document.getElementById("ipaStatus");
+    {
+        word:"hat",
+        cn:"帽子",
+        parts:["h","at"],
+        chunks:["a hat","my hat"],
+        sentences:[
+            "This is my hat.",
+            "I want a hat."
+        ]
+    },
 
-    status.innerText = "正在播放 /æ/ …";
+    {
+        word:"mat",
+        cn:"垫子",
+        parts:["m","at"],
+        chunks:["the mat","on the mat"],
+        sentences:[
+            "The cat is on the mat."
+        ]
+    },
 
-    phoneticAudio.currentTime = 0;
+    {
+        word:"rat",
+        cn:"老鼠",
+        parts:["r","at"],
+        chunks:["a rat","the rat"],
+        sentences:[
+            "I see a rat."
+        ]
+    },
 
-    const result =
-        phoneticAudio.play();
-
-    if (result !== undefined) {
-
-        result
-        .then(function() {
-
-            status.innerText =
-                "正在播放 /æ/";
-
-        })
-        .catch(function(error) {
-
-            console.error(error);
-
-            status.innerText =
-                "播放失败：请检查 audio/phonetic-8.mp3";
-
-        });
-
+    {
+        word:"sat",
+        cn:"坐下了",
+        parts:["s","at"],
+        chunks:["sat down"],
+        sentences:[
+            "The cat sat down."
+        ]
     }
 
-}
+];
 
 
-/* =========================================
-   停止全部音频
-========================================= */
+/* =================================================
+   全局变量
+================================================= */
 
-function stopAllAudio() {
+let currentIndex = 2;
 
-    phoneticAudio.pause();
+let speed = .85;
 
-    phoneticAudio.currentTime = 0;
-
-    if ("speechSynthesis" in window) {
-
-        window.speechSynthesis.cancel();
-
-    }
-
-}
+let speaking = false;
 
 
-/* =========================================
-   单词朗读
-========================================= */
+/* =================================================
+   页面初始化
+================================================= */
 
-function speakWord(word) {
+function init(){
 
-    stopAllAudio();
+    renderWordGrid();
 
-    if (!("speechSynthesis" in window)) {
+    renderCurrentWord();
 
-        alert("你的浏览器不支持系统朗读。");
+    updateProgress();
 
-        return;
-
-    }
-
-    const speech =
-        new SpeechSynthesisUtterance(word);
-
-    speech.lang = "en-US";
-
-    speech.rate = 0.72;
-
-    speech.pitch = 1;
-
-    window.speechSynthesis.speak(speech);
+    renderSentenceArea();
 
 }
 
 
-/* =========================================
-   句子朗读
-========================================= */
+/* =================================================
+   词族列表
+================================================= */
 
-function speakSentence() {
+function renderWordGrid(){
 
-    stopAllAudio();
+    const grid =
+        document.getElementById("wordGrid");
 
-    const sentence =
-        "The cat sat on the mat.";
+    grid.innerHTML = "";
 
-    const speech =
-        new SpeechSynthesisUtterance(sentence);
+    words.forEach((item,index)=>{
 
-    speech.lang = "en-US";
+        const div =
+            document.createElement("div");
 
-    speech.rate = 0.68;
+        div.className = "word-card";
 
-    speech.pitch = 1;
+        div.innerHTML = `
+            <strong>${item.word}</strong>
+            <span>${item.cn}</span>
+        `;
 
-    window.speechSynthesis.speak(speech);
+        div.onclick = function(){
 
-}
+            currentIndex = index;
 
+            renderCurrentWord();
 
-/* =========================================
-   cat 练习
-========================================= */
+            updateProgress();
 
-function practiceCat() {
+        };
 
-    stopAllAudio();
-
-    const status =
-        document.getElementById("practiceStatus");
-
-    status.innerHTML =
-        "看着下面：<br><br>" +
-        "<strong>/k/ → /æ/ → /t/</strong>" +
-        "<br><br>" +
-        "自己读一遍：<strong>cat</strong>";
-
-}
-
-
-/* =========================================
-   音频检测
-========================================= */
-
-function testAudio() {
-
-    stopAllAudio();
-
-    const result =
-        document.getElementById("audioTest");
-
-    result.innerText =
-        "正在检查音频文件……";
-
-    phoneticAudio.load();
-
-    phoneticAudio.oncanplay = function() {
-
-        result.innerText =
-            "✅ 找到 phonetic-8.mp3，可以播放。";
-
-    };
-
-    phoneticAudio.onerror = function() {
-
-        result.innerText =
-            "❌ 找不到 audio/phonetic-8.mp3";
-
-    };
-
-    phoneticAudio.currentTime = 0;
-
-    phoneticAudio.play()
-    .then(function() {
-
-        result.innerText =
-            "✅ /æ/ 音频播放成功！";
-
-    })
-    .catch(function(error) {
-
-        console.log(error);
-
-        result.innerText =
-            "⚠️ 文件已经找到，但浏览器没有播放。请再次点击按钮。";
+        grid.appendChild(div);
 
     });
 
 }
 
 
-/* =========================================
-   音频播放结束
-========================================= */
+/* =================================================
+   当前单词
+================================================= */
 
-phoneticAudio.addEventListener(
-    "ended",
-    function() {
+function renderCurrentWord(){
 
-        const status =
-            document.getElementById("ipaStatus");
+    const item =
+        words[currentIndex];
+
+    document.getElementById("currentWord")
+        .innerText = item.word;
+
+    document.getElementById("currentCN")
+        .innerText = item.cn;
+
+    const parts =
+        document.getElementById("currentParts");
+
+    parts.innerHTML = "";
+
+    item.parts.forEach((part,index)=>{
+
+        const p =
+            document.createElement("div");
+
+        p.className = "part";
+
+        p.innerText = part;
+
+        p.onclick = function(){
+
+            speak(part);
+
+        };
+
+        parts.appendChild(p);
+
+        if(index < item.parts.length-1){
+
+            const arrow =
+                document.createElement("div");
+
+            arrow.className = "arrow";
+
+            arrow.innerText = "→";
+
+            parts.appendChild(arrow);
+
+        }
+
+    });
+
+    renderChunkArea();
+
+    renderSentenceArea();
+
+}
+
+
+/* =================================================
+   播放当前单词
+================================================= */
+
+function playCurrentWord(){
+
+    const item =
+        words[currentIndex];
+
+    speak(item.word);
+
+}
+
+
+/* =================================================
+   播放拼读块
+================================================= */
+
+function playChunks(){
+
+    const item =
+        words[currentIndex];
+
+    const list =
+        item.parts.slice();
+
+    speakSequence(list);
+
+}
+
+
+/* =================================================
+   词块区域
+================================================= */
+
+function renderChunkArea(){
+
+    const item =
+        words[currentIndex];
+
+    const area =
+        document.getElementById("chunkArea");
+
+    area.innerHTML = "";
+
+    item.chunks.forEach(chunk=>{
+
+        const span =
+            document.createElement("span");
+
+        span.className = "chunk";
+
+        span.innerText = chunk;
+
+        span.onclick = function(){
+
+            speak(chunk);
+
+        };
+
+        area.appendChild(span);
+
+    });
+
+}
+
+
+/* =================================================
+   母句替换
+================================================= */
+
+function renderSentenceArea(){
+
+    const area =
+        document.getElementById("sentenceArea");
+
+    const item =
+        words[currentIndex];
+
+    area.innerHTML = "";
+
+    item.sentences.forEach(sentence=>{
+
+        const box =
+            document.createElement("div");
+
+        box.className = "listen-area";
+
+        box.innerHTML = `
+            <div class="example">
+                ${sentence}
+            </div>
+
+            <button class="green">
+                🔊 听这句话
+            </button>
+        `;
+
+        box.querySelector("button")
+            .onclick = function(){
+
+                speak(sentence);
+
+            };
+
+        area.appendChild(box);
+
+    });
+
+}
+
+
+/* =================================================
+   下一词
+================================================= */
+
+function nextWord(){
+
+    stopSpeech();
+
+    currentIndex++;
+
+    if(currentIndex >= words.length){
+
+        currentIndex = 0;
+
+    }
+
+    renderCurrentWord();
+
+    updateProgress();
+
+}
+
+
+/* =================================================
+   进度
+================================================= */
+
+function updateProgress(){
+
+    const number =
+        currentIndex + 1;
+
+    document.getElementById("progressText")
+        .innerText =
+        `第 ${number} / ${words.length} 个词`;
+
+    const percent =
+        number / words.length * 100;
+
+    document.getElementById("progressBar")
+        .style.width =
+        percent + "%";
+
+}
+
+
+/* =================================================
+   核心语音函数
+================================================= */
+
+function speak(text){
+
+    stopSpeech();
+
+    const utterance =
+        new SpeechSynthesisUtterance(text);
+
+    utterance.lang = "en-US";
+
+    utterance.rate = speed;
+
+    utterance.pitch = 1;
+
+    utterance.volume = 1;
+
+    utterance.onstart = function(){
+
+        speaking = true;
+
+        setStatus(
+            "正在播放： " + text
+        );
+
+    };
+
+    utterance.onend = function(){
+
+        speaking = false;
+
+        setStatus("播放完成");
+
+    };
+
+    utterance.onerror = function(){
+
+        speaking = false;
+
+        setStatus("播放出现问题，请再次点击");
+
+    };
+
+    window.speechSynthesis
+        .speak(utterance);
+
+}
+
+
+/* =================================================
+   连续播放
+================================================= */
+
+function speakSequence(list){
+
+    stopSpeech();
+
+    let index = 0;
+
+    function next(){
+
+        if(index >= list.length){
+
+            setStatus("拼读完成");
+
+            return;
+
+        }
+
+        const text =
+            list[index];
+
+        const utterance =
+            new SpeechSynthesisUtterance(text);
+
+        utterance.lang = "en-US";
+
+        utterance.rate = speed;
+
+        utterance.pitch = 1;
+
+        utterance.onend = function(){
+
+            index++;
+
+            setTimeout(next,120);
+
+        };
+
+        utterance.onerror = function(){
+
+            index++;
+
+            setTimeout(next,200);
+
+        };
+
+        window.speechSynthesis
+            .speak(utterance);
+
+    }
+
+    next();
+
+}
+
+
+/* =================================================
+   先听
+================================================= */
+
+function listenFirst(){
+
+    const sentence =
+        "I want to go home.";
+
+    document.getElementById("listeningAnswer")
+        .classList.add("hidden");
+
+    speak(sentence);
+
+}
+
+
+/* =================================================
+   显示答案
+================================================= */
+
+function showAnswer(){
+
+    const box =
+        document.getElementById("listeningAnswer");
+
+    box.innerHTML = `
+        <strong>I want to go home.</strong>
+        <br><br>
+        我想回家。
+        <br><br>
+        母句型：
+        <strong>I want to ...</strong>
+    `;
+
+    box.classList.remove("hidden");
+
+}
+
+
+/* =================================================
+   跟读停顿
+================================================= */
+
+function repeatPause(){
+
+    stopSpeech();
+
+    const status =
+        document.getElementById("repeatStatus");
+
+    status.innerText =
+        "听完了。现在停下来，自己说一遍。";
+
+    const utterance =
+        new SpeechSynthesisUtterance(
+            "I want to go home."
+        );
+
+    utterance.lang = "en-US";
+
+    utterance.rate = speed;
+
+    utterance.onend = function(){
 
         status.innerText =
-            "播放完成";
+            "⏸ 停顿……现在你自己说。";
+
+    };
+
+    window.speechSynthesis
+        .speak(utterance);
+
+}
+
+
+/* =================================================
+   语速
+================================================= */
+
+function setSpeed(value,id){
+
+    speed = value;
+
+    document.querySelectorAll(".speed button")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+        });
+
+    document.getElementById(id)
+        .classList.add("active");
+
+}
+
+
+/* =================================================
+   停止
+================================================= */
+
+function stopSpeech(){
+
+    if("speechSynthesis" in window){
+
+        window.speechSynthesis.cancel();
+
+    }
+
+    speaking = false;
+
+}
+
+
+/* =================================================
+   状态
+================================================= */
+
+function setStatus(text){
+
+    document.getElementById("globalStatus")
+        .innerText = text;
+
+}
+
+
+/* =================================================
+   防止 iOS speechSynthesis 长时间播放异常
+================================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    function(){
+
+        if(document.hidden){
+
+            stopSpeech();
+
+        }
 
     }
 );
 
 
-/* =========================================
-   音频加载失败
-========================================= */
+/* =================================================
+   启动
+================================================= */
 
-phoneticAudio.addEventListener(
-    "error",
-    function() {
-
-        const status =
-            document.getElementById("ipaStatus");
-
-        status.innerText =
-            "❌ 音频文件加载失败：audio/phonetic-8.mp3";
-
-        console.error(
-            "无法加载：audio/phonetic-8.mp3"
-        );
-
-    }
+window.addEventListener(
+    "load",
+    init
 );
 
 </script>
