@@ -39,8 +39,8 @@ button{
 .app{
   width:100%;
   max-width:620px;
-  margin:0 auto;
-  padding:12px;
+  margin:auto;
+  padding:10px;
 }
 
 /* =========================
@@ -49,7 +49,7 @@ button{
 
 .header{
   text-align:center;
-  padding:6px 0 12px;
+  padding:7px 0 11px;
 }
 
 .logo{
@@ -73,12 +73,12 @@ button{
 
 .search input{
   width:100%;
-  height:44px;
-  padding:0 14px;
+  height:43px;
+  padding:0 13px;
   border:1px solid #ddd;
   border-radius:12px;
-  background:#fff;
   outline:none;
+  background:#fff;
   font-size:14px;
 }
 
@@ -94,7 +94,7 @@ button{
 }
 
 .result{
-  padding:10px 12px;
+  padding:9px 12px;
   border-bottom:1px solid #eee;
 }
 
@@ -108,18 +108,18 @@ button{
 
 .result-info{
   margin-top:2px;
-  font-size:12px;
   color:#888;
+  font-size:12px;
 }
 
 /* =========================
-   卡片
+   通用卡片
 ========================= */
 
 .card{
   background:#fff;
   border-radius:15px;
-  padding:14px;
+  padding:13px;
   margin-bottom:10px;
   box-shadow:0 1px 7px rgba(0,0,0,.035);
 }
@@ -135,8 +135,8 @@ button{
 }
 
 .sound-status{
-  font-size:12px;
   color:#888;
+  font-size:12px;
 }
 
 .sound-status.ok{
@@ -144,7 +144,7 @@ button{
 }
 
 .sound-status.warn{
-  color:#ad6b00;
+  color:#a86a00;
 }
 
 .test-btn{
@@ -170,9 +170,9 @@ button{
 }
 
 .family-arrow{
-  flex:none;
   width:34px;
   height:34px;
+  flex:none;
   border:0;
   border-radius:9px;
   background:#f1f2f4;
@@ -195,15 +195,11 @@ button{
   font-size:11px;
 }
 
-/* =========================
-   词族单词
-========================= */
-
 .word-list{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
-  padding:11px 0;
+  padding:10px 0;
   border-bottom:1px solid #eee;
 }
 
@@ -222,24 +218,15 @@ button{
   border-color:#222;
 }
 
-/* =========================
-   当前单词
-========================= */
-
 .current{
   text-align:center;
-  padding:16px 4px 9px;
+  padding:15px 4px 9px;
 }
 
 .current-word{
-  font-size:40px;
+  font-size:39px;
   line-height:1.05;
   font-weight:800;
-  letter-spacing:.3px;
-}
-
-.current-word:active{
-  opacity:.6;
 }
 
 .current-pos{
@@ -279,27 +266,57 @@ button{
   font-size:13px;
 }
 
-.word-nav button:active{
-  background:#eee;
-}
-
 /* =========================
-   模块标题
+   核心一体化模块
 ========================= */
 
-.section-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:9px;
+.language-module{
+  padding:13px;
 }
 
-.section-title{
-  font-size:15px;
+.module-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-bottom:10px;
+  border-bottom:1px solid #eee;
+}
+
+.module-title{
+  font-size:16px;
   font-weight:800;
 }
 
-.section-tip{
+.module-tip{
+  color:#aaa;
+  font-size:11px;
+}
+
+/* 学习层级 */
+
+.learning-step{
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+
+.learning-step:last-child{
+  border-bottom:0;
+  padding-bottom:2px;
+}
+
+.step-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:8px;
+}
+
+.step-title-left{
+  font-size:14px;
+  font-weight:800;
+}
+
+.step-title-right{
   color:#aaa;
   font-size:11px;
 }
@@ -324,8 +341,12 @@ button{
   font-weight:700;
 }
 
+.sound-block:active{
+  background:#ddd;
+}
+
 /* =========================
-   词块
+   高频词块
 ========================= */
 
 .chunk-list{
@@ -335,7 +356,7 @@ button{
 }
 
 .chunk{
-  border:1px solid #e3e3e3;
+  border:1px solid #e2e2e2;
   background:#fafafa;
   border-radius:9px;
   padding:7px 9px;
@@ -344,7 +365,7 @@ button{
 
 .chunk-en{
   font-size:14px;
-  font-weight:600;
+  font-weight:700;
 }
 
 .chunk-zh{
@@ -358,8 +379,8 @@ button{
 ========================= */
 
 .sentence{
-  padding:10px 0;
-  border-bottom:1px solid #eee;
+  padding:8px 0;
+  border-bottom:1px solid #f0f0f0;
 }
 
 .sentence:last-child{
@@ -368,12 +389,8 @@ button{
 
 .sentence-en{
   font-size:16px;
-  line-height:1.5;
+  line-height:1.45;
   font-weight:700;
-}
-
-.sentence-en:active{
-  opacity:.55;
 }
 
 .sentence-zh{
@@ -382,8 +399,8 @@ button{
   font-size:13px;
 }
 
-.sentence-btn{
-  margin-top:6px;
+.sentence-play{
+  margin-top:5px;
   border:1px solid #ddd;
   background:#fff;
   border-radius:8px;
@@ -400,10 +417,10 @@ button{
 }
 
 .listen-display{
-  min-height:65px;
+  min-height:64px;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   padding:10px;
   border-radius:11px;
   background:#f5f6f8;
@@ -413,8 +430,8 @@ button{
 }
 
 .listen-meaning{
-  min-height:23px;
-  margin-top:7px;
+  min-height:22px;
+  margin-top:6px;
   color:#777;
   font-size:13px;
 }
@@ -435,9 +452,9 @@ button{
 }
 
 .listen-buttons .primary{
-  border-color:#222;
   background:#222;
   color:#fff;
+  border-color:#222;
 }
 
 /* =========================
@@ -454,7 +471,7 @@ button{
   border:1px solid #ddd;
   background:#fff;
   border-radius:9px;
-  padding:8px 4px;
+  padding:8px;
   font-size:12px;
 }
 
@@ -464,36 +481,27 @@ button{
   border-color:#222;
 }
 
-/* =========================
-   数据状态
-========================= */
-
 .data-info{
   text-align:center;
+  padding:2px 0 15px;
   color:#aaa;
   font-size:11px;
-  padding:2px 0 16px;
 }
 
 .empty{
   text-align:center;
-  color:#999;
   padding:15px;
+  color:#999;
   font-size:13px;
 }
-
-/* =========================
-   手机
-========================= */
 
 @media(max-width:420px){
 
   .app{
-    padding:9px;
+    padding:8px;
   }
 
   .card{
-    padding:12px;
     border-radius:14px;
   }
 
@@ -529,7 +537,7 @@ button{
     </div>
 
     <div class="subtitle">
-      Chaowen AI · 从声音到句子
+      Chaowen AI · 声音 → 单词 → 词块 → 母句 → 听力
     </div>
 
   </header>
@@ -671,78 +679,101 @@ button{
   </div>
 
 
-  <!-- =====================
-       声音块
-  ====================== -->
+  <!-- =================================================
+       核心模块
+       声音块 + 高频词块 + 母句型
+       三个合成一个模块
+  ================================================== -->
 
-  <div class="card">
+  <div class="card language-module">
 
-    <div class="section-head">
+    <div class="module-head">
 
-      <div class="section-title">
-        🧩 声音块
+      <div class="module-title">
+        🧩 从声音到句子
       </div>
 
-      <div class="section-tip">
-        点一下就听
-      </div>
-
-    </div>
-
-    <div
-      id="soundBlocks"
-      class="sound-blocks">
-    </div>
-
-  </div>
-
-
-  <!-- =====================
-       高频词块
-  ====================== -->
-
-  <div class="card">
-
-    <div class="section-head">
-
-      <div class="section-title">
-        🧱 高频词块
-      </div>
-
-      <div class="section-tip">
-        英语真实组合
+      <div class="module-tip">
+        点哪里，哪里发音
       </div>
 
     </div>
 
-    <div
-      id="chunkList"
-      class="chunk-list">
-    </div>
 
-  </div>
+    <!-- =====================
+         第一层：声音块
+    ====================== -->
 
+    <div class="learning-step">
 
-  <!-- =====================
-       母句型
-  ====================== -->
+      <div class="step-title">
 
-  <div class="card">
+        <div class="step-title-left">
+          ① 🧩 声音块
+        </div>
 
-    <div class="section-head">
+        <div class="step-title-right">
+          拼起来读
+        </div>
 
-      <div class="section-title">
-        🏠 母句型
       </div>
 
-      <div class="section-tip">
-        一句带出很多句
+      <div
+        id="soundBlocks"
+        class="sound-blocks">
       </div>
 
     </div>
 
-    <div
-      id="sentenceList">
+
+    <!-- =====================
+         第二层：高频词块
+    ====================== -->
+
+    <div class="learning-step">
+
+      <div class="step-title">
+
+        <div class="step-title-left">
+          ② 🧱 高频词块
+        </div>
+
+        <div class="step-title-right">
+          英语这样组合
+        </div>
+
+      </div>
+
+      <div
+        id="chunkList"
+        class="chunk-list">
+      </div>
+
+    </div>
+
+
+    <!-- =====================
+         第三层：母句型
+    ====================== -->
+
+    <div class="learning-step">
+
+      <div class="step-title">
+
+        <div class="step-title-left">
+          ③ 🏠 母句型
+        </div>
+
+        <div class="step-title-right">
+          一句带出很多句
+        </div>
+
+      </div>
+
+      <div
+        id="sentenceList">
+      </div>
+
     </div>
 
   </div>
@@ -754,13 +785,13 @@ button{
 
   <div class="card">
 
-    <div class="section-head">
+    <div class="module-head">
 
-      <div class="section-title">
+      <div class="module-title">
         🎧 听力训练
       </div>
 
-      <div class="section-tip">
+      <div class="module-tip">
         先听 → 想 → 看
       </div>
 
@@ -777,7 +808,7 @@ button{
       <div
         id="listenMeaning"
         class="listen-meaning">
-        暂时不要看答案
+        先不要看答案
       </div>
 
       <div class="listen-buttons">
@@ -806,15 +837,15 @@ button{
 
   <div class="card">
 
-    <div class="section-head">
+    <div class="module-head">
 
-      <div class="section-title">
+      <div class="module-title">
         ⚙️ 语速
       </div>
 
       <div
         id="speedLabel"
-        class="section-tip">
+        class="module-tip">
         正常
       </div>
 
@@ -846,10 +877,6 @@ button{
   </div>
 
 
-  <!-- =====================
-       数据
-  ====================== -->
-
   <div
     id="dataInfo"
     class="data-info">
@@ -861,29 +888,7 @@ button{
 <script>
 
 /* =========================================================
-   每句练耳
-   数据结构：
-
-   词族
-   ↓
-   单词
-   ↓
-   词性
-   ↓
-   中文
-   ↓
-   声音块
-   ↓
-   词块
-   ↓
-   母句
-   ↓
-   听力
-========================================================= */
-
-
-/* =========================================================
-   1. 词族数据
+   词族数据
 ========================================================= */
 
 const FAMILY_DATA = [
@@ -914,7 +919,6 @@ const FAMILY_DATA = [
       ["man","名词","男人"],
       ["pan","名词","平底锅"],
       ["ran","动词","跑了"],
-      ["tan","形容词","棕褐色的"],
       ["van","名词","厢式车"]
     ]
   },
@@ -925,10 +929,8 @@ const FAMILY_DATA = [
     words:[
       ["cap","名词","帽子"],
       ["gap","名词","间隙"],
-      ["lap","名词","大腿"],
       ["map","名词","地图"],
       ["nap","名词","小睡"],
-      ["rap","动词","敲击"],
       ["tap","动词","轻敲"]
     ]
   },
@@ -940,8 +942,7 @@ const FAMILY_DATA = [
       ["am","动词","是"],
       ["ham","名词","火腿"],
       ["jam","名词","果酱"],
-      ["ram","名词","公羊"],
-      ["Sam","人名","萨姆"]
+      ["ram","名词","公羊"]
     ]
   },
 
@@ -1053,16 +1054,6 @@ const FAMILY_DATA = [
   },
 
   {
-    family:"-ob",
-    type:"拼读词族",
-    words:[
-      ["job","名词","工作"],
-      ["rob","动词","抢劫"],
-      ["sob","动词","啜泣"]
-    ]
-  },
-
-  {
     family:"-og",
     type:"拼读词族",
     words:[
@@ -1144,19 +1135,6 @@ const FAMILY_DATA = [
       ["make","动词","制作"],
       ["take","动词","拿；带"],
       ["wake","动词","醒来"]
-    ]
-  },
-
-  {
-    family:"-ate",
-    type:"长元音词族",
-    words:[
-      ["date","名词","日期"],
-      ["gate","名词","门"],
-      ["late","形容词","迟的"],
-      ["mate","名词","伙伴"],
-      ["rate","名词","比率"],
-      ["plate","名词","盘子"]
     ]
   },
 
@@ -1249,30 +1227,6 @@ const FAMILY_DATA = [
   },
 
   {
-    family:"-air",
-    type:"常见词族",
-    words:[
-      ["air","名词","空气"],
-      ["chair","名词","椅子"],
-      ["hair","名词","头发"],
-      ["pair","名词","一对"],
-      ["fair","形容词","公平的"]
-    ]
-  },
-
-  {
-    family:"-ink",
-    type:"常见词族",
-    words:[
-      ["drink","动词","喝"],
-      ["think","动词","想"],
-      ["sink","名词","水槽"],
-      ["pink","形容词","粉色的"],
-      ["link","名词","链接"]
-    ]
-  },
-
-  {
     family:"-ight",
     type:"常见词族",
     words:[
@@ -1313,7 +1267,7 @@ const FAMILY_DATA = [
 
 
 /* =========================================================
-   2. 高频词块
+   高频词块
 ========================================================= */
 
 const CHUNK_LIBRARY = {
@@ -1461,7 +1415,7 @@ const CHUNK_LIBRARY = {
   think:[
     ["think about it","考虑一下"],
     ["I think so","我想是的"],
-    ["I think...","我认为……"],
+    ["I think","我认为"],
     ["let me think","让我想想"]
   ],
 
@@ -1498,20 +1452,13 @@ const CHUNK_LIBRARY = {
     ["get in the car","上车"],
     ["get out of the car","下车"],
     ["drive a car","开车"]
-  ],
-
-  time:[
-    ["take your time","慢慢来"],
-    ["what time","几点"],
-    ["right time","正确的时间"],
-    ["this time","这一次"]
   ]
 
 };
 
 
 /* =========================================================
-   3. 母句库
+   母句型
 ========================================================= */
 
 const SENTENCE_LIBRARY = {
@@ -1670,19 +1617,13 @@ const SENTENCE_LIBRARY = {
     ["This is my car.","这是我的车。"],
     ["I have a car.","我有一辆车。"],
     ["Get in the car.","上车。"]
-  ],
-
-  time:[
-    ["Take your time.","慢慢来。"],
-    ["What time is it?","现在几点？"],
-    ["I don't have time.","我没有时间。"]
   ]
 
 };
 
 
 /* =========================================================
-   4. 状态
+   状态
 ========================================================= */
 
 let familyIndex = 0;
@@ -1692,14 +1633,13 @@ let currentRate = 0.85;
 
 let voices = [];
 
-let listeningAnswerVisible = false;
-
 
 /* =========================================================
-   5. 语音系统
+   语音
 ========================================================= */
 
-const synth = window.speechSynthesis;
+const synth =
+  window.speechSynthesis;
 
 
 function loadVoices(){
@@ -1709,7 +1649,8 @@ function loadVoices(){
     return;
   }
 
-  voices = synth.getVoices() || [];
+  voices =
+    synth.getVoices() || [];
 
   updateSoundStatus();
 
@@ -1720,11 +1661,12 @@ if(synth){
 
   loadVoices();
 
-  synth.onvoiceschanged = function(){
+  synth.onvoiceschanged =
+    function(){
 
-    loadVoices();
+      loadVoices();
 
-  };
+    };
 
 }
 
@@ -1738,19 +1680,19 @@ function getEnglishVoice(){
   return (
 
     voices.find(
-      voice => /^en-US/i.test(voice.lang)
+      v => /^en-US/i.test(v.lang)
     )
 
     ||
 
     voices.find(
-      voice => /^en-GB/i.test(voice.lang)
+      v => /^en-GB/i.test(v.lang)
     )
 
     ||
 
     voices.find(
-      voice => /^en/i.test(voice.lang)
+      v => /^en/i.test(v.lang)
     )
 
     ||
@@ -1771,7 +1713,7 @@ function speakText(text){
   if(!synth){
 
     alert(
-      "当前浏览器不支持英语语音播放。"
+      "当前浏览器不支持英语语音。"
     );
 
     return;
@@ -1783,27 +1725,40 @@ function speakText(text){
     synth.cancel();
 
     const utter =
-      new SpeechSynthesisUtterance(text);
+      new SpeechSynthesisUtterance(
+        text
+      );
 
     const voice =
       getEnglishVoice();
 
     if(voice){
 
-      utter.voice = voice;
-      utter.lang = voice.lang;
+      utter.voice =
+        voice;
+
+      utter.lang =
+        voice.lang;
 
     }else{
 
-      utter.lang = "en-US";
+      utter.lang =
+        "en-US";
 
     }
 
-    utter.rate = currentRate;
-    utter.pitch = 1;
-    utter.volume = 1;
+    utter.rate =
+      currentRate;
 
-    synth.speak(utter);
+    utter.pitch =
+      1;
+
+    utter.volume =
+      1;
+
+    synth.speak(
+      utter
+    );
 
   }catch(error){
 
@@ -1816,21 +1771,21 @@ function speakText(text){
 
 function updateSoundStatus(){
 
-  const element =
+  const el =
     document.getElementById(
       "soundStatus"
     );
 
-  if(!element){
+  if(!el){
     return;
   }
 
   if(!synth){
 
-    element.textContent =
+    el.textContent =
       "🔴 浏览器不支持语音";
 
-    element.className =
+    el.className =
       "sound-status warn";
 
     return;
@@ -1839,18 +1794,18 @@ function updateSoundStatus(){
 
   if(voices.length){
 
-    element.textContent =
+    el.textContent =
       "🟢 英语声音已准备好";
 
-    element.className =
+    el.className =
       "sound-status ok";
 
   }else{
 
-    element.textContent =
+    el.textContent =
       "🟡 正在准备英语声音……";
 
-    element.className =
+    el.className =
       "sound-status warn";
 
   }
@@ -1868,48 +1823,50 @@ function testSound(){
 
 
 /* =========================================================
-   6. 获取数据
+   当前数据
 ========================================================= */
 
-function currentFamily(){
+function getFamily(){
 
-  return FAMILY_DATA[familyIndex];
-
-}
-
-
-function currentWordData(){
-
-  const family =
-    currentFamily();
-
-  return family.words[wordIndex];
+  return FAMILY_DATA[
+    familyIndex
+  ];
 
 }
 
 
-function currentWord(){
+function getWordData(){
 
-  return currentWordData()[0].toLowerCase();
+  return getFamily()
+    .words[wordIndex];
+
+}
+
+
+function getWord(){
+
+  return getWordData()[0]
+    .toLowerCase();
 
 }
 
 
 /* =========================================================
-   7. 渲染全部
+   总渲染
 ========================================================= */
 
 function render(){
 
   const family =
-    currentFamily();
+    getFamily();
 
   if(!family){
     return;
   }
 
   if(
-    wordIndex >= family.words.length
+    wordIndex >=
+    family.words.length
   ){
 
     wordIndex = 0;
@@ -1918,9 +1875,9 @@ function render(){
 
   renderFamily();
 
-  renderWordList();
+  renderWords();
 
-  renderCurrent();
+  renderCurrentWord();
 
   renderSoundBlocks();
 
@@ -1936,18 +1893,19 @@ function render(){
 
 
 /* =========================================================
-   8. 词族
+   词族
 ========================================================= */
 
 function renderFamily(){
 
   const family =
-    currentFamily();
+    getFamily();
 
   document.getElementById(
     "familyName"
   ).textContent =
-    family.family + " 词族";
+    family.family +
+    " 词族";
 
   document.getElementById(
     "familyType"
@@ -1962,10 +1920,10 @@ function renderFamily(){
 
 
 /* =========================================================
-   9. 单词列表
+   词族单词
 ========================================================= */
 
-function renderWordList(){
+function renderWords(){
 
   const container =
     document.getElementById(
@@ -1974,57 +1932,57 @@ function renderWordList(){
 
   container.innerHTML = "";
 
-  const family =
-    currentFamily();
+  getFamily()
+    .words
+    .forEach(
+      (item,index)=>{
 
-  family.words.forEach(
-    (item,index)=>{
+        const button =
+          document.createElement(
+            "button"
+          );
 
-      const button =
-        document.createElement(
-          "button"
+        button.className =
+          "word-chip" +
+          (
+            index === wordIndex
+            ? " active"
+            : ""
+          );
+
+        button.textContent =
+          item[0];
+
+        button.onclick =
+          function(){
+
+            wordIndex =
+              index;
+
+            render();
+
+            speakCurrentWord();
+
+          };
+
+        container.appendChild(
+          button
         );
 
-      button.className =
-        "word-chip" +
-        (
-          index === wordIndex
-          ? " active"
-          : ""
-        );
-
-      button.textContent =
-        item[0];
-
-      button.onclick =
-        function(){
-
-          wordIndex = index;
-
-          render();
-
-          speakCurrentWord();
-
-        };
-
-      container.appendChild(
-        button
-      );
-
-    }
-  );
+      }
+    );
 
 }
 
 
 /* =========================================================
-   10. 当前单词
+   当前单词
 ========================================================= */
 
-function renderCurrent(){
+function renderCurrentWord(){
 
   const data =
-    currentWordData();
+    getWordData();
 
   document.getElementById(
     "currentWord"
@@ -2047,14 +2005,14 @@ function renderCurrent(){
 function speakCurrentWord(){
 
   speakText(
-    currentWordData()[0]
+    getWordData()[0]
   );
 
 }
 
 
 /* =========================================================
-   11. 声音块
+   声音块
 ========================================================= */
 
 function splitSoundBlocks(word){
@@ -2089,16 +2047,15 @@ function splitSoundBlocks(word){
     "ir",
     "ur",
 
-    "ing",
-    "ed"
+    "ing"
 
   ];
 
   const result = [];
 
-  let index = 0;
+  let i = 0;
 
-  while(index < word.length){
+  while(i < word.length){
 
     let matched = "";
 
@@ -2110,15 +2067,16 @@ function splitSoundBlocks(word){
 
       const part =
         word.slice(
-          index,
-          index + size
+          i,
+          i + size
         );
 
       if(
         groups.includes(part)
       ){
 
-        matched = part;
+        matched =
+          part;
 
         break;
 
@@ -2128,17 +2086,20 @@ function splitSoundBlocks(word){
 
     if(matched){
 
-      result.push(matched);
+      result.push(
+        matched
+      );
 
-      index += matched.length;
+      i +=
+        matched.length;
 
     }else{
 
       result.push(
-        word[index]
+        word[i]
       );
 
-      index++;
+      i++;
 
     }
 
@@ -2160,7 +2121,7 @@ function renderSoundBlocks(){
 
   const blocks =
     splitSoundBlocks(
-      currentWord()
+      getWord()
     );
 
   blocks.forEach(
@@ -2180,7 +2141,9 @@ function renderSoundBlocks(){
       button.onclick =
         function(){
 
-          speakText(block);
+          speakText(
+            block
+          );
 
         };
 
@@ -2195,7 +2158,7 @@ function renderSoundBlocks(){
 
 
 /* =========================================================
-   12. 高频词块
+   高频词块
 ========================================================= */
 
 function getChunks(word){
@@ -2223,11 +2186,6 @@ function getChunks(word){
     [
       "this " + word,
       "这个 " + word
-    ],
-
-    [
-      "I like " + word,
-      "我喜欢 " + word
     ]
 
   ];
@@ -2246,7 +2204,7 @@ function renderChunks(){
 
   const chunks =
     getChunks(
-      currentWord()
+      getWord()
     );
 
   chunks.forEach(
@@ -2260,17 +2218,15 @@ function renderChunks(){
       button.className =
         "chunk";
 
-      button.innerHTML = `
+      button.innerHTML =
 
-        <div class="chunk-en">
-          ${item[0]}
-        </div>
+        "<div class='chunk-en'>" +
+        item[0] +
+        "</div>" +
 
-        <div class="chunk-zh">
-          ${item[1]}
-        </div>
-
-      `;
+        "<div class='chunk-zh'>" +
+        item[1] +
+        "</div>";
 
       button.onclick =
         function(){
@@ -2292,7 +2248,7 @@ function renderChunks(){
 
 
 /* =========================================================
-   13. 母句
+   母句型
 ========================================================= */
 
 function getSentences(word){
@@ -2308,18 +2264,33 @@ function getSentences(word){
   return [
 
     [
-      "I like " + word + ".",
-      "我喜欢 " + word + "。"
+      "I like " +
+      word +
+      ".",
+
+      "我喜欢 " +
+      word +
+      "。"
     ],
 
     [
-      "I use " + word + ".",
-      "我使用 " + word + "。"
+      "I use " +
+      word +
+      ".",
+
+      "我使用 " +
+      word +
+      "。"
     ],
 
     [
-      "This is " + word + ".",
-      "这是 " + word + "。"
+      "This is " +
+      word +
+      ".",
+
+      "这是 " +
+      word +
+      "。"
     ]
 
   ];
@@ -2338,7 +2309,7 @@ function renderSentences(){
 
   const sentences =
     getSentences(
-      currentWord()
+      getWord()
     );
 
   sentences.forEach(
@@ -2351,6 +2322,7 @@ function renderSentences(){
 
       box.className =
         "sentence";
+
 
       const english =
         document.createElement(
@@ -2385,18 +2357,18 @@ function renderSentences(){
         item[1];
 
 
-      const play =
+      const button =
         document.createElement(
           "button"
         );
 
-      play.className =
-        "sentence-btn";
+      button.className =
+        "sentence-play";
 
-      play.textContent =
+      button.textContent =
         "🔊 听句子";
 
-      play.onclick =
+      button.onclick =
         function(){
 
           speakText(
@@ -2415,7 +2387,7 @@ function renderSentences(){
       );
 
       box.appendChild(
-        play
+        button
       );
 
       container.appendChild(
@@ -2429,22 +2401,19 @@ function renderSentences(){
 
 
 /* =========================================================
-   14. 听力
+   听力
 ========================================================= */
 
-function listeningSentence(){
+function getListeningSentence(){
 
   return getSentences(
-    currentWord()
+    getWord()
   )[0];
 
 }
 
 
 function resetListening(){
-
-  listeningAnswerVisible =
-    false;
 
   document.getElementById(
     "listenDisplay"
@@ -2462,7 +2431,7 @@ function resetListening(){
 function playListening(){
 
   const sentence =
-    listeningSentence();
+    getListeningSentence();
 
   speakText(
     sentence[0]
@@ -2474,10 +2443,7 @@ function playListening(){
 function showListeningAnswer(){
 
   const sentence =
-    listeningSentence();
-
-  listeningAnswerVisible =
-    true;
+    getListeningSentence();
 
   document.getElementById(
     "listenDisplay"
@@ -2493,18 +2459,19 @@ function showListeningAnswer(){
 
 
 /* =========================================================
-   15. 单词导航
+   单词切换
 ========================================================= */
 
 function nextWord(){
 
   const family =
-    currentFamily();
+    getFamily();
 
   wordIndex++;
 
   if(
-    wordIndex >= family.words.length
+    wordIndex >=
+    family.words.length
   ){
 
     wordIndex = 0;
@@ -2519,7 +2486,7 @@ function nextWord(){
 function previousWord(){
 
   const family =
-    currentFamily();
+    getFamily();
 
   wordIndex--;
 
@@ -2538,7 +2505,7 @@ function previousWord(){
 
 
 /* =========================================================
-   16. 词族导航
+   词族切换
 ========================================================= */
 
 function nextFamily(){
@@ -2546,7 +2513,8 @@ function nextFamily(){
   familyIndex++;
 
   if(
-    familyIndex >= FAMILY_DATA.length
+    familyIndex >=
+    FAMILY_DATA.length
   ){
 
     familyIndex = 0;
@@ -2581,7 +2549,7 @@ function previousFamily(){
 
 
 /* =========================================================
-   17. 语速
+   语速
 ========================================================= */
 
 function setSpeed(type){
@@ -2620,7 +2588,9 @@ function setSpeed(type){
     currentRate = 0.68;
 
     buttons.slow
-      .classList.add("active");
+      .classList.add(
+        "active"
+      );
 
     document.getElementById(
       "speedLabel"
@@ -2635,7 +2605,9 @@ function setSpeed(type){
     currentRate = 0.85;
 
     buttons.normal
-      .classList.add("active");
+      .classList.add(
+        "active"
+      );
 
     document.getElementById(
       "speedLabel"
@@ -2650,7 +2622,9 @@ function setSpeed(type){
     currentRate = 1.0;
 
     buttons.natural
-      .classList.add("active");
+      .classList.add(
+        "active"
+      );
 
     document.getElementById(
       "speedLabel"
@@ -2663,7 +2637,7 @@ function setSpeed(type){
 
 
 /* =========================================================
-   18. 搜索
+   搜索
 ========================================================= */
 
 const searchInput =
@@ -2686,12 +2660,11 @@ searchInput.addEventListener(
         .trim()
         .toLowerCase();
 
-    searchResults.innerHTML = "";
+    searchResults.innerHTML =
+      "";
 
     if(!keyword){
-
       return;
-
     }
 
 
@@ -2705,29 +2678,41 @@ searchInput.addEventListener(
           (data,wIndex)=>{
 
             const word =
-              data[0].toLowerCase();
+              data[0]
+                .toLowerCase();
 
-            const chinese =
+            const zh =
               data[2];
 
             if(
-              word.includes(keyword) ||
-              chinese.includes(keyword)
+              word.includes(
+                keyword
+              )
+              ||
+              zh.includes(
+                keyword
+              )
             ){
 
               results.push({
 
-                familyIndex:fIndex,
+                familyIndex:
+                  fIndex,
 
-                wordIndex:wIndex,
+                wordIndex:
+                  wIndex,
 
-                family:family.family,
+                family:
+                  family.family,
 
-                word:data[0],
+                word:
+                  data[0],
 
-                pos:data[1],
+                pos:
+                  data[1],
 
-                zh:data[2]
+                zh:
+                  data[2]
 
               });
 
@@ -2743,11 +2728,9 @@ searchInput.addEventListener(
     if(!results.length){
 
       searchResults.innerHTML =
-        `
-        <div class="empty">
-          没有找到这个单词
-        </div>
-        `;
+        "<div class='empty'>" +
+        "没有找到这个单词" +
+        "</div>";
 
       return;
 
@@ -2767,21 +2750,19 @@ searchInput.addEventListener(
           box.className =
             "result";
 
-          box.innerHTML = `
+          box.innerHTML =
 
-            <div class="result-word">
-              ${result.word}
-            </div>
+            "<div class='result-word'>" +
+            result.word +
+            "</div>" +
 
-            <div class="result-info">
-              ${result.pos}
-              ·
-              ${result.zh}
-              ·
-              ${result.family}
-            </div>
-
-          `;
+            "<div class='result-info'>" +
+            result.pos +
+            " · " +
+            result.zh +
+            " · " +
+            result.family +
+            "</div>";
 
 
           box.onclick =
@@ -2818,38 +2799,37 @@ searchInput.addEventListener(
 
 
 /* =========================================================
-   19. 数据统计
+   数据统计
 ========================================================= */
 
 function updateDataInfo(){
 
-  let totalWords = 0;
+  let total = 0;
 
   FAMILY_DATA.forEach(
     family=>{
 
-      totalWords +=
+      total +=
         family.words.length;
 
     }
   );
 
-
   document.getElementById(
     "dataInfo"
   ).textContent =
 
-    "当前数据：" +
     FAMILY_DATA.length +
     " 个词族 · " +
-    totalWords +
-    " 个单词 · 可继续扩展至 2000词";
+    total +
+    " 个单词 · " +
+    "后续继续扩展到 2000 词";
 
 }
 
 
 /* =========================================================
-   20. 键盘
+   键盘
 ========================================================= */
 
 document.addEventListener(
@@ -2857,7 +2837,8 @@ document.addEventListener(
   function(event){
 
     if(
-      event.key === "ArrowRight"
+      event.key ===
+      "ArrowRight"
     ){
 
       nextWord();
@@ -2865,7 +2846,8 @@ document.addEventListener(
     }
 
     if(
-      event.key === "ArrowLeft"
+      event.key ===
+      "ArrowLeft"
     ){
 
       previousWord();
@@ -2877,7 +2859,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   21. 启动
+   启动
 ========================================================= */
 
 render();
