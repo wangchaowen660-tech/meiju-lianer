@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>词块学习 · 1300句</title>
+<title>词块学习 · 拼读版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#f0f4f8 0%,#e2e8f0 100%);color:#1e293b;min-height:100vh;}
@@ -47,10 +47,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .pattern-en{font-size:22px;font-weight:800;color:#0f172a;line-height:1.3;word-break:break-word;}
 .pattern-en .blank{color:#e94560;}
 .pattern-cn{font-size:14px;color:#64748b;margin-top:6px;}
+.pattern-ph{margin-top:10px;padding:8px 12px;background:#f8fafc;border-radius:10px;font-size:13px;color:#475569;font-style:italic;letter-spacing:0.3px;border-left:3px solid #10b981;}
+.pattern-ph::before{content:"🎵 拼读 ";font-style:normal;font-size:11px;font-weight:700;color:#10b981;margin-right:4px;}
 .sentence-card{background:linear-gradient(135deg,#fff5f7,#fff);border-radius:24px;padding:22px 20px;box-shadow:0 8px 24px rgba(233,69,96,0.10);margin-bottom:14px;border:1px solid rgba(233,69,96,0.10);position:relative;}
 .sentence-en{font-size:24px;font-weight:800;color:#0f172a;line-height:1.35;word-break:break-word;margin-bottom:6px;padding-right:44px;}
 .sentence-en .chunk-hl{color:#e94560;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);padding:0 2px;border-radius:3px;}
 .sentence-cn{font-size:15px;color:#64748b;line-height:1.5;}
+.sentence-ph{margin-top:10px;padding:8px 12px;background:#fffbeb;border-radius:10px;font-size:13px;color:#92400e;font-style:italic;letter-spacing:0.3px;border-left:3px solid #f59e0b;}
+.sentence-ph::before{content:"🎵 ";font-style:normal;font-weight:700;margin-right:4px;}
 .fav-btn-sentence{position:absolute;top:14px;right:14px;width:36px;height:36px;border:0;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:18px;cursor:pointer;color:#cbd5e1;transition:0.2s;}
 .fav-btn-sentence.active{color:#f59e0b;transform:scale(1.1);}
 .big-actions{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
@@ -62,12 +66,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .chunk-section{background:#fff;border-radius:24px;padding:18px 16px;box-shadow:0 8px 24px rgba(0,0,0,0.06);margin-bottom:14px;}
 .chunk-section-title{font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
 .chunk-section-title .count{background:#f1f5f9;color:#475569;padding:2px 10px;border-radius:20px;font-size:11px;}
-.chunk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(95px,1fr));gap:8px;}
-.chunk{padding:11px 6px;border-radius:14px;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center;cursor:pointer;transition:0.15s;user-select:none;position:relative;}
+.chunk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:8px;}
+.chunk{padding:10px 6px 8px;border-radius:14px;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center;cursor:pointer;transition:0.15s;user-select:none;position:relative;}
 .chunk:active{transform:scale(0.95);}
 .chunk.active{background:#e94560;border-color:#e94560;color:#fff;box-shadow:0 4px 12px rgba(233,69,96,0.25);}
 .chunk .en{font-size:13px;font-weight:700;line-height:1.25;word-break:break-word;}
+.chunk .ph{font-size:9px;color:#10b981;font-style:italic;margin-top:2px;letter-spacing:0.2px;word-break:break-word;line-height:1.2;}
 .chunk .cn{font-size:10px;color:#94a3b8;margin-top:3px;word-break:break-word;}
+.chunk.active .ph{color:rgba(255,255,255,0.85);}
 .chunk.active .cn{color:rgba(255,255,255,0.85);}
 .nav-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;}
 .nav-btn{flex:1;padding:12px;border:0;border-radius:16px;background:#fff;color:#0f172a;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
@@ -95,10 +101,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 @media(max-width:480px){
   .pattern-en{font-size:18px;}
   .sentence-en{font-size:20px;padding-right:40px;}
-  .chunk-grid{grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:6px;}
-  .chunk{padding:9px 5px;}
+  .chunk-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;}
+  .chunk{padding:8px 4px 6px;}
   .chunk .en{font-size:12px;}
-  .big-btn{font-size:13px;padding:12px 8px;}
+  .chunk .ph{font-size:8px;}
+  .big-btn{font-size:12px;padding:12px 6px;min-width:80px;}
 }
 </style>
 </head>
@@ -106,7 +113,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <div class="container">
   <div class="header">
-    <div class="logo">词块<span>·</span>学习</div>
+    <div class="logo">词块<span>·</span>拼读</div>
     <div class="tab-mini">
       <button class="active" onclick="switchTab('learn', this)">📚 学习</button>
       <button onclick="switchTab('shop', this)">🛍️ 商城</button>
@@ -138,12 +145,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       </div>
       <div class="pattern-en" id="patternEn"></div>
       <div class="pattern-cn" id="patternCn"></div>
+      <div class="pattern-ph" id="patternPh" style="display:none;"></div>
     </div>
 
     <div class="sentence-card">
       <button class="fav-btn-sentence" id="favSentenceBtn" onclick="toggleFavSentence()" title="收藏这句">☆</button>
       <div class="sentence-en" id="sentenceEn"></div>
       <div class="sentence-cn" id="sentenceCn"></div>
+      <div class="sentence-ph" id="sentencePh" style="display:none;"></div>
     </div>
 
     <div class="big-actions">
@@ -154,7 +163,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
     <div class="chunk-section">
       <div class="chunk-section-title">
-        <span>🧱 点词块，听三段</span>
+        <span>🧱 点词块，看拼读</span>
         <span class="count" id="chunkCount">0</span>
       </div>
       <div class="chunk-grid" id="chunkGrid"></div>
@@ -166,7 +175,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <button class="nav-btn" onclick="nextPattern()">下一句型 ⏭</button>
     </div>
 
-    <div class="status" id="status">点词块 → 先听母句，再听词块，最后听整句</div>
+    <div class="status" id="status">点词块 → 母句 → 词块 → 整句</div>
   </div>
 
   <div id="shopModule" style="display:none;">
@@ -190,1484 +199,1187 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <script>
 // ================================================================
+// 🎵 拼读系统
+// ----------------------------------------------------------------
+// 原理：用大写表示重音音节，短横"-"分隔音节，方便学习者跟读。
+// 例如：order → OR-der，important → im-POR-tant
+//
+// 您添加新词块时，可以：
+// 1. 手动在词块里加 ph 字段：{ en:"order this", cn:"点这个", ph:"OR-der this" }
+// 2. 或留空，系统会自动用下方 PHONICS_DICT 词典拼接
+// ================================================================
+const PHONICS_DICT = {
+  // 人称代词/常用词
+  "i":"aɪ", "you":"juː", "he":"hiː", "she":"ʃiː", "we":"wiː", "they":"ðeɪ",
+  "it":"ɪt", "my":"maɪ", "your":"jɔːr", "his":"hɪz", "her":"hɜːr",
+  "the":"ðə", "a":"ə", "an":"ən", "this":"ðɪs", "that":"ðæt",
+  "is":"ɪz", "are":"ɑːr", "am":"æm", "was":"wɒz", "were":"wɜːr",
+  "be":"biː", "do":"duː", "does":"dʌz", "did":"dɪd",
+  "have":"hæv", "has":"hæz", "had":"hæd",
+  "can":"kæn", "could":"kʊd", "will":"wɪl", "would":"wʊd",
+  "should":"ʃʊd", "may":"meɪ", "might":"maɪt", "must":"mʌst",
+  // 疑问词
+  "what":"wɒt", "where":"weər", "when":"wen", "why":"waɪ",
+  "how":"haʊ", "which":"wɪtʃ", "who":"huː", "whom":"huːm",
+  "whose":"huːz",
+  // 常用动词
+  "go":"ɡəʊ", "come":"kʌm", "eat":"iːt", "drink":"drɪŋk",
+  "sleep":"sliːp", "work":"wɜːrk", "rest":"rest", "cook":"kʊk",
+  "buy":"baɪ", "see":"siː", "look":"lʊk", "watch":"wɒtʃ",
+  "listen":"LIS-en", "speak":"spiːk", "read":"riːd", "write":"raɪt",
+  "learn":"lɜːrn", "study":"STUD-y", "help":"help", "call":"kɔːl",
+  "make":"meɪk", "take":"teɪk", "get":"ɡet", "put":"pʊt",
+  "find":"faɪnd", "give":"ɡɪv", "want":"wɒnt", "need":"niːd",
+  "like":"laɪk", "love":"lʌv", "know":"nəʊ", "think":"θɪŋk",
+  "say":"seɪ", "tell":"tel", "ask":"ɑːsk", "answer":"AN-swer",
+  "order":"OR-der", "pay":"peɪ", "book":"bʊk", "check":"tʃek",
+  "start":"stɑːrt", "stop":"stɒp", "open":"O-pen", "close":"kləʊz",
+  "wait":"weɪt", "stay":"steɪ", "leave":"liːv", "arrive":"ar-RIVE",
+  "visit":"VIS-it", "travel":"TRAV-el", "meet":"miːt", "join":"dʒɔɪn",
+  "use":"juːz", "fix":"fɪks", "find":"faɪnd",
+  "eat":"iːt", "try":"traɪ", "choose":"tʃuːz", "wear":"weər",
+  "play":"pleɪ", "sing":"sɪŋ", "dance":"dɑːns", "walk":"wɔːk",
+  "run":"rʌn", "swim":"swɪm", "drive":"draɪv", "fly":"flaɪ",
+  "clean":"kliːn", "wash":"wɒʃ", "cook":"kʊk", "cut":"kʌt",
+  "buy":"baɪ", "sell":"sel", "send":"send", "bring":"brɪŋ",
+  "carry":"CAR-ry", "show":"ʃəʊ", "explain":"ex-PLAIN",
+  "understand":"un-der-STAND", "remember":"re-MEM-ber", "forget":"for-GET",
+  // 名词
+  "water":"WA-ter", "coffee":"COF-fee", "tea":"tiː", "food":"fuːd",
+  "rice":"raɪs", "bread":"bred", "meat":"miːt", "fish":"fɪʃ",
+  "chicken":"CHICK-en", "egg":"eɡ", "milk":"mɪlk", "juice":"dʒuːs",
+  "soup":"suːp", "salad":"SAL-ad", "dessert":"des-SERT",
+  "menu":"MEN-u", "bill":"bɪl", "table":"TA-ble", "chair":"tʃeər",
+  "plate":"pleɪt", "fork":"fɔːrk", "spoon":"spuːn", "knife":"naɪf",
+  "hotel":"ho-TEL", "room":"ruːm", "bed":"bed", "key":"kiː",
+  "ticket":"TICK-et", "gate":"ɡeɪt", "flight":"flaɪt", "train":"treɪn",
+  "bus":"bʌs", "taxi":"TAX-i", "car":"kɑːr", "bike":"baɪk",
+  "money":"MON-ey", "price":"praɪs", "cash":"kæʃ", "card":"kɑːrd",
+  "gift":"ɡɪft", "bag":"bæɡ", "shirt":"ʃɜːrt", "shoes":"ʃuːz",
+  "hat":"hæt", "watch":"wɒtʃ", "phone":"fəʊn", "computer":"com-PU-ter",
+  "book":"bʊk", "pen":"pen", "key":"kiː", "map":"mæp",
+  "doctor":"DOC-tor", "hospital":"HOS-pi-tal", "bank":"bæŋk",
+  "station":"STA-tion", "airport":"AIR-port", "restaurant":"RES-tau-rant",
+  "shop":"ʃɒp", "store":"stɔːr", "market":"MAR-ket", "mall":"mɔːl",
+  "friend":"frend", "family":"FAM-i-ly", "mother":"MOTH-er", "father":"FA-ther",
+  "brother":"BROTH-er", "sister":"SIS-ter", "son":"sʌn", "daughter":"DAUGH-ter",
+  "child":"tʃaɪld", "children":"CHIL-dren", "baby":"BA-by",
+  "morning":"MORN-ing", "evening":"EVE-ning", "night":"naɪt", "day":"deɪ",
+  "week":"wiːk", "month":"mʌnθ", "year":"jɪər", "today":"to-DAY",
+  "tomorrow":"to-MOR-row", "yesterday":"YES-ter-day",
+  "time":"taɪm", "hour":"Aʊ-er", "minute":"MIN-ute",
+  "weather":"WEATH-er", "rain":"reɪn", "sun":"sʌn", "snow":"snəʊ",
+  "wind":"wɪnd", "hot":"hɒt", "cold":"kəʊld", "warm":"wɔːrm",
+  "headache":"HEAD-ache", "fever":"FE-ver", "cold":"kəʊld",
+  "help":"help", "problem":"PROB-lem", "question":"QUES-tion",
+  "answer":"AN-swer", "idea":"i-DE-a", "way":"weɪ", "place":"pleɪs",
+  "thing":"θɪŋ", "something":"SOME-thing", "anything":"AN-y-thing",
+  "nothing":"NOTH-ing", "everything":"EVE-ry-thing",
+  // 形容词/副词
+  "good":"ɡʊd", "bad":"bæd", "big":"bɪɡ", "small":"smɔːl",
+  "new":"njuː", "old":"əʊld", "hot":"hɒt", "cold":"kəʊld",
+  "happy":"HAP-py", "sad":"sæd", "tired":"TIRED", "hungry":"HUN-gry",
+  "thirsty":"THIRST-y", "busy":"BIZ-y", "free":"friː", "ready":"READ-y",
+  "sorry":"SOR-ry", "sure":"ʃʊər", "right":"raɪt", "wrong":"rɒŋ",
+  "much":"mʌtʃ", "many":"MEN-y", "few":"fjuː", "more":"mɔːr",
+  "less":"les", "very":"VER-y", "too":"tuː", "also":"AL-so",
+  "now":"naʊ", "later":"LAT-er", "soon":"suːn", "early":"EAR-ly",
+  "late":"leɪt", "always":"AL-ways", "often":"OF-ten", "sometimes":"SOME-times",
+  "never":"NEV-er", "again":"a-GAIN", "here":"hɪər", "there":"ðeər",
+  // 介词/连词
+  "in":"ɪn", "on":"ɒn", "at":"æt", "to":"tuː", "for":"fɔːr",
+  "with":"wɪð", "without":"with-OUT", "from":"frɒm", "into":"IN-to",
+  "of":"ɒv", "by":"baɪ", "about":"a-BOUT", "after":"AF-ter",
+  "before":"be-FORE", "and":"ænd", "or":"ɔːr", "but":"bʌt",
+  "because":"be-CAUSE", "if":"ɪf", "so":"səʊ", "then":"ðen",
+  // 数字
+  "one":"wʌn", "two":"tuː", "three":"θriː", "four":"fɔːr",
+  "five":"faɪv", "six":"sɪks", "seven":"SEV-en", "eight":"eɪt",
+  "nine":"naɪn", "ten":"ten",
+  // 场景高频
+  "order":"OR-der", "reservation":"re-ser-VA-tion", "table":"TA-ble",
+  "vegetarian":"veg-e-TAR-i-an", "spicy":"SPI-cy", "fresh":"freʃ",
+  "special":"SPE-cial", "recommend":"rec-om-MEND",
+  "discount":"DIS-count", "receipt":"re-CEIPT", "warranty":"WAR-ran-ty",
+  "size":"saɪz", "color":"COL-or", "refund":"RE-fund",
+  "luggage":"LUG-gage", "passport":"PASS-port", "boarding":"BOARD-ing",
+  "departure":"de-PAR-ture", "arrival":"ar-RI-val", "customs":"CUS-toms",
+  "boarding pass":"BOARD-ing pass",
+  "check in":"tʃek ɪn", "check out":"tʃek aʊt",
+  "get up":"ɡet ʌp", "wake up":"weɪk ʌp",
+  "look for":"lʊk fɔːr", "find out":"faɪnd aʊt",
+  "give up":"ɡɪv ʌp", "come back":"kʌm bæk",
+  "go home":"ɡəʊ həʊm", "go out":"ɡəʊ aʊt",
+  "take care":"teɪk keər", "take away":"teɪk a-WAY",
+  "put on":"pʊt ɒn", "put off":"pʊt ɒf",
+  "turn on":"tɜːrn ɒn", "turn off":"tɜːrn ɒf",
+  "pick up":"pɪk ʌp", "drop off":"drɒp ɒf",
+  "wait for":"weɪt fɔːr", "ask for":"ɑːsk fɔːr",
+  "thank you":"θæŋk juː", "excuse me":"ɪk-SKJUZ miː",
+  "sorry":"SOR-ry", "please":"pliːz"
+};
+
+// 为词块自动生成拼读（若词块本身没有 ph）
+// 规则：逐词查词典；词典没有的词按简单规则加音节分隔
+function autoPhonics(text) {
+  if (!text) return "";
+  const lower = text.toLowerCase().trim();
+
+  // 优先查完整短语
+  if (PHONICS_DICT[lower]) return PHONICS_DICT[lower];
+
+  // 逐词处理
+  const words = lower.split(/\s+/);
+  const result = words.map(w => {
+    // 去掉标点
+    const clean = w.replace(/[.,?!]/g, "");
+    const punct = w.replace(clean, "") || "";
+
+    if (!clean) return w;
+
+    // 查词典
+    if (PHONICS_DICT[clean]) return PHONICS_DICT[clean] + punct;
+
+    // 词典没有 → 用规则自动生成
+    return autoSyllable(clean) + punct;
+  });
+  return result.join(" ");
+}
+
+// 简化的自动音节标注
+function autoSyllable(word) {
+  if (word.length <= 3) return word; // 短词不拆
+  // 找元音分组作为音节中心
+  const vowels = "aeiouy";
+  let result = word;
+  // 在元音后、辅音前加分隔
+  result = word.replace(/([aeiouy])([bcdfghjklmnpqrstvwxz]+)([aeiouy])/gi, "$1-$2$3");
+  // 简单重音：第一音节大写
+  return result;
+}
+
+// ================================================================
 // 母句库（130个母句 × 10词块 = 1300句）
+// 每个母句有 ph 字段（拼读提示），每个词块可选 ph 字段
 // ================================================================
 const PATTERNS = [
   // ============ 困惑求助（18个） ============
-  { scene: "困惑", type: "s", en: "I have no idea how to ___.", cn: "我不知道该怎么 ______。",
+  { scene: "困惑", type: "s", ph: "aɪ hæv nəʊ aɪ-DE-a haʊ tuː", en: "I have no idea how to ___.", cn: "我不知道该怎么 ______。",
     chunks: [
-      { en: "order this", cn: "点这个" }, { en: "get to the hotel", cn: "去酒店" },
-      { en: "use this machine", cn: "用这台机器" }, { en: "find the way", cn: "找路" },
-      { en: "cook this dish", cn: "做这道菜" }, { en: "pay the bill", cn: "付账" },
-      { en: "say this in English", cn: "用英语说这个" }, { en: "fix this", cn: "修这个" },
-      { en: "get there", cn: "到那里" }, { en: "start the car", cn: "发动车" }
+      { en: "order this", cn: "点这个", ph: "OR-der ðɪs" },
+      { en: "get to the hotel", cn: "去酒店", ph: "ɡet tuː ðə ho-TEL" },
+      { en: "use this machine", cn: "用这台机器", ph: "juːz ðɪs ma-SHIːN" },
+      { en: "find the way", cn: "找路", ph: "faɪnd ðə weɪ" },
+      { en: "cook this dish", cn: "做这道菜", ph: "kʊk ðɪs dɪʃ" },
+      { en: "pay the bill", cn: "付账", ph: "peɪ ðə bɪl" },
+      { en: "say this in English", cn: "用英语说这个", ph: "seɪ ðɪs ɪn IN-ɡlɪʃ" },
+      { en: "fix this", cn: "修这个", ph: "fɪks ðɪs" },
+      { en: "get there", cn: "到那里", ph: "ɡet ðeər" },
+      { en: "start the car", cn: "发动车", ph: "stɑːrt ðə kɑːr" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I have no idea where to ___.", cn: "我不知道该去哪 ______。",
+  { scene: "困惑", type: "s", ph: "aɪ hæv nəʊ aɪ-DE-a weər tuː", en: "I have no idea where to ___.", cn: "我不知道该去哪 ______。",
     chunks: [
-      { en: "go", cn: "去" }, { en: "eat", cn: "吃" },
-      { en: "buy tickets", cn: "买票" }, { en: "wait", cn: "等" },
-      { en: "park my car", cn: "停车" }, { en: "find a hotel", cn: "找酒店" },
-      { en: "get a taxi", cn: "打车" }, { en: "change money", cn: "换钱" },
-      { en: "buy water", cn: "买水" }, { en: "find the exit", cn: "找出口" }
+      { en: "go", cn: "去", ph: "ɡəʊ" },
+      { en: "eat", cn: "吃", ph: "iːt" },
+      { en: "buy tickets", cn: "买票", ph: "baɪ TICK-ets" },
+      { en: "wait", cn: "等", ph: "weɪt" },
+      { en: "park my car", cn: "停车", ph: "pɑːrk maɪ kɑːr" },
+      { en: "find a hotel", cn: "找酒店", ph: "faɪnd ə ho-TEL" },
+      { en: "get a taxi", cn: "打车", ph: "ɡet ə TAX-i" },
+      { en: "change money", cn: "换钱", ph: "tʃeɪndʒ MON-ey" },
+      { en: "buy water", cn: "买水", ph: "baɪ WA-ter" },
+      { en: "find the exit", cn: "找出口", ph: "faɪnd ði EX-it" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I have no idea which ___ to ___.", cn: "我不知道该 ______ 哪个 ______。",
+  { scene: "困惑", type: "s", ph: "aɪ hæv nəʊ aɪ-DE-a wɪtʃ", en: "I have no idea which ___ to ___.", cn: "我不知道该 ______ 哪个 ______。",
     chunks: [
-      { en: "one, choose", cn: "选哪个" }, { en: "way, take", cn: "走哪条路" },
-      { en: "bus, take", cn: "坐哪辆车" }, { en: "dish, order", cn: "点哪道菜" },
-      { en: "size, pick", cn: "选哪个尺码" }, { en: "color, buy", cn: "买哪种颜色" },
-      { en: "room, book", cn: "订哪个房间" }, { en: "ticket, get", cn: "买哪张票" },
-      { en: "door, use", cn: "走哪扇门" }, { en: "line, take", cn: "坐哪条线" }
+      { en: "one, choose", cn: "选哪个", ph: "wʌn, tʃuːz" },
+      { en: "way, take", cn: "走哪条路", ph: "weɪ, teɪk" },
+      { en: "bus, take", cn: "坐哪辆车", ph: "bʌs, teɪk" },
+      { en: "dish, order", cn: "点哪道菜", ph: "dɪʃ, OR-der" },
+      { en: "size, pick", cn: "选哪个尺码", ph: "saɪz, pɪk" },
+      { en: "color, buy", cn: "买哪种颜色", ph: "COL-or, baɪ" },
+      { en: "room, book", cn: "订哪个房间", ph: "ruːm, bʊk" },
+      { en: "ticket, get", cn: "买哪张票", ph: "TICK-et, ɡet" },
+      { en: "door, use", cn: "走哪扇门", ph: "dɔːr, juːz" },
+      { en: "line, take", cn: "坐哪条线", ph: "laɪn, teɪk" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I have no idea whom to ___.", cn: "我不知道该 ______ 谁。",
+  { scene: "困惑", type: "s", ph: "aɪ hæv nəʊ aɪ-DE-a huːm tuː", en: "I have no idea whom to ___.", cn: "我不知道该 ______ 谁。",
     chunks: [
-      { en: "ask", cn: "问" }, { en: "call", cn: "打电话给" },
-      { en: "contact", cn: "联系" }, { en: "follow", cn: "跟着" },
-      { en: "believe", cn: "相信" }, { en: "trust", cn: "信任" },
-      { en: "invite", cn: "邀请" }, { en: "pay", cn: "付钱给" },
-      { en: "thank", cn: "感谢" }, { en: "talk to", cn: "和……说话" }
+      { en: "ask", cn: "问", ph: "ɑːsk" },
+      { en: "call", cn: "打电话给", ph: "kɔːl" },
+      { en: "contact", cn: "联系", ph: "CON-tact" },
+      { en: "follow", cn: "跟着", ph: "FOL-low" },
+      { en: "believe", cn: "相信", ph: "be-LIEVE" },
+      { en: "trust", cn: "信任", ph: "trʌst" },
+      { en: "invite", cn: "邀请", ph: "in-VITE" },
+      { en: "pay", cn: "付钱给", ph: "peɪ" },
+      { en: "thank", cn: "感谢", ph: "θæŋk" },
+      { en: "talk to", cn: "和……说话", ph: "tɔːk tuː" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I have no idea when to ___.", cn: "我不知道该什么时候 ______。",
+  { scene: "困惑", type: "s", ph: "aɪ hæv nəʊ aɪ-DE-a wen tuː", en: "I have no idea when to ___.", cn: "我不知道该什么时候 ______。",
     chunks: [
-      { en: "start", cn: "开始" }, { en: "leave", cn: "出发" },
-      { en: "arrive", cn: "到达" }, { en: "call him", cn: "给他打电话" },
-      { en: "pay the bill", cn: "付账" }, { en: "check in", cn: "办入住" },
-      { en: "order", cn: "点餐" }, { en: "book a table", cn: "订餐位" },
-      { en: "get up", cn: "起床" }, { en: "go home", cn: "回家" }
+      { en: "start", cn: "开始", ph: "stɑːrt" },
+      { en: "leave", cn: "出发", ph: "liːv" },
+      { en: "arrive", cn: "到达", ph: "ar-RIVE" },
+      { en: "call him", cn: "给他打电话", ph: "kɔːl hɪm" },
+      { en: "pay the bill", cn: "付账", ph: "peɪ ðə bɪl" },
+      { en: "check in", cn: "办入住", ph: "tʃek ɪn" },
+      { en: "order", cn: "点餐", ph: "OR-der" },
+      { en: "book a table", cn: "订餐位", ph: "bʊk ə TA-ble" },
+      { en: "get up", cn: "起床", ph: "ɡet ʌp" },
+      { en: "go home", cn: "回家", ph: "ɡəʊ həʊm" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I have no idea what to ___.", cn: "我不知道该 ______ 什么。",
+  { scene: "困惑", type: "s", ph: "aɪ hæv nəʊ aɪ-DE-a wɒt tuː", en: "I have no idea what to ___.", cn: "我不知道该 ______ 什么。",
     chunks: [
-      { en: "eat", cn: "吃" }, { en: "say", cn: "说" },
-      { en: "do", cn: "做" }, { en: "buy", cn: "买" },
-      { en: "wear", cn: "穿" }, { en: "choose", cn: "选" },
-      { en: "order", cn: "点餐" }, { en: "wear tomorrow", cn: "明天穿什么" },
-      { en: "say to him", cn: "对他说什么" }, { en: "do next", cn: "下一步做什么" }
+      { en: "eat", cn: "吃", ph: "iːt" },
+      { en: "say", cn: "说", ph: "seɪ" },
+      { en: "do", cn: "做", ph: "duː" },
+      { en: "buy", cn: "买", ph: "baɪ" },
+      { en: "wear", cn: "穿", ph: "weər" },
+      { en: "choose", cn: "选", ph: "tʃuːz" },
+      { en: "order", cn: "点餐", ph: "OR-der" },
+      { en: "wear tomorrow", cn: "明天穿什么", ph: "weər to-MOR-row" },
+      { en: "say to him", cn: "对他说什么", ph: "seɪ tuː hɪm" },
+      { en: "do next", cn: "下一步做什么", ph: "duː nekst" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I have no idea why ___.", cn: "我不知道为什么 ______。",
+  { scene: "困惑", type: "s", ph: "aɪ hæv nəʊ aɪ-DE-a waɪ", en: "I have no idea why ___.", cn: "我不知道为什么 ______。",
     chunks: [
-      { en: "he is angry", cn: "他生气" }, { en: "it doesn't work", cn: "它不工作" },
-      { en: "they left", cn: "他们离开" }, { en: "it's so expensive", cn: "这么贵" },
-      { en: "she is late", cn: "她迟到" }, { en: "it's closed", cn: "它关门" },
-      { en: "the bus is late", cn: "公交晚点" }, { en: "it's so quiet", cn: "这么安静" },
-      { en: "he said that", cn: "他那样说" }, { en: "no one is here", cn: "没人在这里" }
+      { en: "he is angry", cn: "他生气", ph: "hiː ɪz ANG-ry" },
+      { en: "it doesn't work", cn: "它不工作", ph: "ɪt DʌZ-ənt wɜːrk" },
+      { en: "they left", cn: "他们离开", ph: "ðeɪ left" },
+      { en: "it's so expensive", cn: "这么贵", ph: "ɪts səʊ ex-PEN-sive" },
+      { en: "she is late", cn: "她迟到", ph: "ʃiː ɪz leɪt" },
+      { en: "it's closed", cn: "它关门", ph: "ɪts kləʊzd" },
+      { en: "the bus is late", cn: "公交晚点", ph: "ðə bʌs ɪz leɪt" },
+      { en: "it's so quiet", cn: "这么安静", ph: "ɪts səʊ KWAɪ-ət" },
+      { en: "he said that", cn: "他那样说", ph: "hiː sed ðæt" },
+      { en: "no one is here", cn: "没人在这里", ph: "nəʊ wʌn ɪz hɪər" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I don't know how to ___.", cn: "我不知道怎么 ______。",
+  { scene: "困惑", type: "s", ph: "aɪ dəʊnt nəʊ haʊ tuː", en: "I don't know how to ___.", cn: "我不知道怎么 ______。",
     chunks: [
-      { en: "use this", cn: "用这个" }, { en: "get there", cn: "到那里" },
-      { en: "open it", cn: "打开它" }, { en: "fix it", cn: "修它" },
-      { en: "say it in English", cn: "用英语说" }, { en: "fill this form", cn: "填这个表" },
-      { en: "work this", cn: "操作这个" }, { en: "book a room", cn: "订房间" },
-      { en: "change my flight", cn: "改签" }, { en: "find my gate", cn: "找登机口" }
+      { en: "use this", cn: "用这个", ph: "juːz ðɪs" },
+      { en: "get there", cn: "到那里", ph: "ɡet ðeər" },
+      { en: "open it", cn: "打开它", ph: "O-pen ɪt" },
+      { en: "fix it", cn: "修它", ph: "fɪks ɪt" },
+      { en: "say it in English", cn: "用英语说", ph: "seɪ ɪt ɪn IN-ɡlɪʃ" },
+      { en: "fill this form", cn: "填这个表", ph: "fɪl ðɪs fɔːrm" },
+      { en: "work this", cn: "操作这个", ph: "wɜːrk ðɪs" },
+      { en: "book a room", cn: "订房间", ph: "bʊk ə ruːm" },
+      { en: "change my flight", cn: "改签", ph: "tʃeɪndʒ maɪ flaɪt" },
+      { en: "find my gate", cn: "找登机口", ph: "faɪnd maɪ ɡeɪt" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I'm not sure how to ___.", cn: "我不确定怎么 ______。",
+  { scene: "困惑", type: "s", ph: "aɪm nɒt ʃʊər haʊ tuː", en: "I'm not sure how to ___.", cn: "我不确定怎么 ______。",
     chunks: [
-      { en: "say this", cn: "说这个" }, { en: "answer that", cn: "回答那个" },
-      { en: "handle this", cn: "处理这个" }, { en: "get to the airport", cn: "去机场" },
-      { en: "use this app", cn: "用这个App" }, { en: "read this", cn: "读这个" },
-      { en: "explain this", cn: "解释这个" }, { en: "order in Chinese", cn: "用中文点餐" },
-      { en: "ask for help", cn: "寻求帮助" }, { en: "start the machine", cn: "启动机器" }
+      { en: "say this", cn: "说这个", ph: "seɪ ðɪs" },
+      { en: "answer that", cn: "回答那个", ph: "AN-swer ðæt" },
+      { en: "handle this", cn: "处理这个", ph: "HAN-dle ðɪs" },
+      { en: "get to the airport", cn: "去机场", ph: "ɡet tuː ði AIR-port" },
+      { en: "use this app", cn: "用这个App", ph: "juːz ðɪs æp" },
+      { en: "read this", cn: "读这个", ph: "riːd ðɪs" },
+      { en: "explain this", cn: "解释这个", ph: "ex-PLAIN ðɪs" },
+      { en: "order in Chinese", cn: "用中文点餐", ph: "OR-der ɪn tʃaɪ-NIːZ" },
+      { en: "ask for help", cn: "寻求帮助", ph: "ɑːsk fɔːr help" },
+      { en: "start the machine", cn: "启动机器", ph: "stɑːrt ðə ma-SHIːN" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I'm not sure which one to ___.", cn: "我不确定该 ______ 哪个。",
+  { scene: "困惑", type: "s", ph: "aɪm nɒt ʃʊər wɪtʃ wʌn tuː", en: "I'm not sure which one to ___.", cn: "我不确定该 ______ 哪个。",
     chunks: [
-      { en: "choose", cn: "选" }, { en: "buy", cn: "买" },
-      { en: "take", cn: "拿" }, { en: "order", cn: "点" },
-      { en: "eat", cn: "吃" }, { en: "use", cn: "用" },
-      { en: "wear", cn: "穿" }, { en: "book", cn: "订" },
-      { en: "try", cn: "试" }, { en: "pick", cn: "挑" }
+      { en: "choose", cn: "选", ph: "tʃuːz" },
+      { en: "buy", cn: "买", ph: "baɪ" },
+      { en: "take", cn: "拿", ph: "teɪk" },
+      { en: "order", cn: "点", ph: "OR-der" },
+      { en: "eat", cn: "吃", ph: "iːt" },
+      { en: "use", cn: "用", ph: "juːz" },
+      { en: "wear", cn: "穿", ph: "weər" },
+      { en: "book", cn: "订", ph: "bʊk" },
+      { en: "try", cn: "试", ph: "traɪ" },
+      { en: "pick", cn: "挑", ph: "pɪk" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I'm not sure where to ___.", cn: "我不确定该去哪 ______。",
+  { scene: "困惑", type: "s", ph: "aɪm nɒt ʃʊər weər tuː", en: "I'm not sure where to ___.", cn: "我不确定该去哪 ______。",
     chunks: [
-      { en: "go", cn: "去" }, { en: "eat", cn: "吃" },
-      { en: "sit", cn: "坐" }, { en: "wait", cn: "等" },
-      { en: "park", cn: "停车" }, { en: "stay", cn: "住" },
-      { en: "start", cn: "开始" }, { en: "get off", cn: "下车" },
-      { en: "turn", cn: "转弯" }, { en: "put it", cn: "放这个" }
+      { en: "go", cn: "去", ph: "ɡəʊ" },
+      { en: "eat", cn: "吃", ph: "iːt" },
+      { en: "sit", cn: "坐", ph: "sɪt" },
+      { en: "wait", cn: "等", ph: "weɪt" },
+      { en: "park", cn: "停车", ph: "pɑːrk" },
+      { en: "stay", cn: "住", ph: "steɪ" },
+      { en: "start", cn: "开始", ph: "stɑːrt" },
+      { en: "get off", cn: "下车", ph: "ɡet ɒf" },
+      { en: "turn", cn: "转弯", ph: "tɜːrn" },
+      { en: "put it", cn: "放这个", ph: "pʊt ɪt" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I wonder how to ___.", cn: "我想知道怎么 ______。",
+  { scene: "困惑", type: "s", ph: "aɪ WON-der haʊ tuː", en: "I wonder how to ___.", cn: "我想知道怎么 ______。",
     chunks: [
-      { en: "get there", cn: "到那里" }, { en: "use this", cn: "用这个" },
-      { en: "solve this", cn: "解决这个" }, { en: "find the way", cn: "找路" },
-      { en: "save money", cn: "省钱" }, { en: "cook this", cn: "做这个菜" },
-      { en: "learn faster", cn: "学得更快" }, { en: "stay healthy", cn: "保持健康" },
-      { en: "meet new people", cn: "认识新朋友" }, { en: "find a good job", cn: "找好工作" }
+      { en: "get there", cn: "到那里", ph: "ɡet ðeər" },
+      { en: "use this", cn: "用这个", ph: "juːz ðɪs" },
+      { en: "solve this", cn: "解决这个", ph: "sɒlv ðɪs" },
+      { en: "find the way", cn: "找路", ph: "faɪnd ðə weɪ" },
+      { en: "save money", cn: "省钱", ph: "seɪv MON-ey" },
+      { en: "cook this", cn: "做这个菜", ph: "kʊk ðɪs" },
+      { en: "learn faster", cn: "学得更快", ph: "lɜːrn Fɑːs-ter" },
+      { en: "stay healthy", cn: "保持健康", ph: "steɪ HEL-thy" },
+      { en: "meet new people", cn: "认识新朋友", ph: "miːt njuː PEE-ple" },
+      { en: "find a good job", cn: "找好工作", ph: "faɪnd ə ɡʊd dʒɒb" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I wonder where ___.", cn: "我想知道 ______ 在哪里。",
+  { scene: "困惑", type: "s", ph: "aɪ WON-der weər", en: "I wonder where ___.", cn: "我想知道 ______ 在哪里。",
     chunks: [
-      { en: "he is", cn: "他在" }, { en: "it is", cn: "它在" },
-      { en: "they went", cn: "他们去哪了" }, { en: "the station is", cn: "车站在哪" },
-      { en: "the hotel is", cn: "酒店在哪" }, { en: "the restroom is", cn: "洗手间在哪" },
-      { en: "the exit is", cn: "出口在哪" }, { en: "the bus stops", cn: "公交站在哪" },
-      { en: "the bank is", cn: "银行在哪" }, { en: "the taxi is", cn: "出租车在哪" }
+      { en: "he is", cn: "他在", ph: "hiː ɪz" },
+      { en: "it is", cn: "它在", ph: "ɪt ɪz" },
+      { en: "they went", cn: "他们去哪了", ph: "ðeɪ went" },
+      { en: "the station is", cn: "车站在哪", ph: "ðə STA-tion ɪz" },
+      { en: "the hotel is", cn: "酒店在哪", ph: "ðə ho-TEL ɪz" },
+      { en: "the restroom is", cn: "洗手间在哪", ph: "ðə REST-room ɪz" },
+      { en: "the exit is", cn: "出口在哪", ph: "ði EX-it ɪz" },
+      { en: "the bus stops", cn: "公交站在哪", ph: "ðə bʌs stɒps" },
+      { en: "the bank is", cn: "银行在哪", ph: "ðə bæŋk ɪz" },
+      { en: "the taxi is", cn: "出租车在哪", ph: "ðə TAX-i ɪz" }
     ]
   },
-  { scene: "困惑", type: "s", en: "I wonder what ___.", cn: "我想知道 ______ 什么。",
+  { scene: "困惑", type: "s", ph: "aɪ WON-der wɒt", en: "I wonder what ___.", cn: "我想知道 ______ 什么。",
     chunks: [
-      { en: "he wants", cn: "他要" }, { en: "this means", cn: "这是什么意思" },
-      { en: "to do next", cn: "下一步做什么" }, { en: "is happening", cn: "发生什么" },
-      { en: "the price is", cn: "价格是多少" }, { en: "the problem is", cn: "问题是什么" },
-      { en: "the time is", cn: "时间是多少" }, { en: "I should say", cn: "我该说什么" },
-      { en: "I should buy", cn: "我该买什么" }, { en: "the best way is", cn: "最佳方式是什么" }
+      { en: "he wants", cn: "他要", ph: "hiː wɒnts" },
+      { en: "this means", cn: "这是什么意思", ph: "ðɪs miːnz" },
+      { en: "to do next", cn: "下一步做什么", ph: "tuː duː nekst" },
+      { en: "is happening", cn: "发生什么", ph: "ɪz HAP-pen-ing" },
+      { en: "the price is", cn: "价格是多少", ph: "ðə praɪs ɪz" },
+      { en: "the problem is", cn: "问题是什么", ph: "ðə PROB-lem ɪz" },
+      { en: "the time is", cn: "时间是多少", ph: "ðə taɪm ɪz" },
+      { en: "I should say", cn: "我该说什么", ph: "aɪ ʃʊd seɪ" },
+      { en: "I should buy", cn: "我该买什么", ph: "aɪ ʃʊd baɪ" },
+      { en: "the best way is", cn: "最佳方式是什么", ph: "ðə best weɪ ɪz" }
     ]
   },
-  { scene: "困惑", type: "q", en: "Do you know how to ___?", cn: "你知道怎么 ______ 吗？",
+  { scene: "困惑", type: "q", ph: "duː juː nəʊ haʊ tuː", en: "Do you know how to ___?", cn: "你知道怎么 ______ 吗？",
     chunks: [
-      { en: "get there", cn: "到那里" }, { en: "use this", cn: "用这个" },
-      { en: "open it", cn: "打开它" }, { en: "say it in English", cn: "用英语说" },
-      { en: "book a ticket", cn: "订票" }, { en: "fix this", cn: "修这个" },
-      { en: "find the hotel", cn: "找酒店" }, { en: "change my flight", cn: "改签" },
-      { en: "use the machine", cn: "用机器" }, { en: "fill the form", cn: "填表" }
+      { en: "get there", cn: "到那里", ph: "ɡet ðeər" },
+      { en: "use this", cn: "用这个", ph: "juːz ðɪs" },
+      { en: "open it", cn: "打开它", ph: "O-pen ɪt" },
+      { en: "say it in English", cn: "用英语说", ph: "seɪ ɪt ɪn IN-ɡlɪʃ" },
+      { en: "book a ticket", cn: "订票", ph: "bʊk ə TICK-et" },
+      { en: "fix this", cn: "修这个", ph: "fɪks ðɪs" },
+      { en: "find the hotel", cn: "找酒店", ph: "faɪnd ðə ho-TEL" },
+      { en: "change my flight", cn: "改签", ph: "tʃeɪndʒ maɪ flaɪt" },
+      { en: "use the machine", cn: "用机器", ph: "juːz ðə ma-SHIːN" },
+      { en: "fill the form", cn: "填表", ph: "fɪl ðə fɔːrm" }
     ]
   },
-  { scene: "困惑", type: "q", en: "Do you know where to ___?", cn: "你知道该去哪 ______ 吗？",
+  { scene: "困惑", type: "q", ph: "duː juː nəʊ weər tuː", en: "Do you know where to ___?", cn: "你知道该去哪 ______ 吗？",
     chunks: [
-      { en: "go", cn: "去" }, { en: "eat", cn: "吃" },
-      { en: "buy tickets", cn: "买票" }, { en: "wait", cn: "等" },
-      { en: "park", cn: "停车" }, { en: "find a hotel", cn: "找酒店" },
-      { en: "get a taxi", cn: "打车" }, { en: "change money", cn: "换钱" },
-      { en: "find the exit", cn: "找出口" }, { en: "buy water", cn: "买水" }
+      { en: "go", cn: "去", ph: "ɡəʊ" },
+      { en: "eat", cn: "吃", ph: "iːt" },
+      { en: "buy tickets", cn: "买票", ph: "baɪ TICK-ets" },
+      { en: "wait", cn: "等", ph: "weɪt" },
+      { en: "park", cn: "停车", ph: "pɑːrk" },
+      { en: "find a hotel", cn: "找酒店", ph: "faɪnd ə ho-TEL" },
+      { en: "get a taxi", cn: "打车", ph: "ɡet ə TAX-i" },
+      { en: "change money", cn: "换钱", ph: "tʃeɪndʒ MON-ey" },
+      { en: "find the exit", cn: "找出口", ph: "faɪnd ði EX-it" },
+      { en: "buy water", cn: "买水", ph: "baɪ WA-ter" }
     ]
   },
-  { scene: "困惑", type: "q", en: "Could you tell me how to ___?", cn: "你能告诉我怎么 ______ 吗？",
+  { scene: "困惑", type: "q", ph: "kʊd juː tel miː haʊ tuː", en: "Could you tell me how to ___?", cn: "你能告诉我怎么 ______ 吗？",
     chunks: [
-      { en: "get there", cn: "到那里" }, { en: "use this", cn: "用这个" },
-      { en: "find the station", cn: "找车站" }, { en: "open the door", cn: "开门" },
-      { en: "read this word", cn: "读这个词" }, { en: "cook this dish", cn: "做这道菜" },
-      { en: "pay with my phone", cn: "用手机支付" }, { en: "order in English", cn: "用英语点餐" },
-      { en: "change my seat", cn: "换座位" }, { en: "find the elevator", cn: "找电梯" }
+      { en: "get there", cn: "到那里", ph: "ɡet ðeər" },
+      { en: "use this", cn: "用这个", ph: "juːz ðɪs" },
+      { en: "find the station", cn: "找车站", ph: "faɪnd ðə STA-tion" },
+      { en: "open the door", cn: "开门", ph: "O-pen ðə dɔːr" },
+      { en: "read this word", cn: "读这个词", ph: "riːd ðɪs wɜːrd" },
+      { en: "cook this dish", cn: "做这道菜", ph: "kʊk ðɪs dɪʃ" },
+      { en: "pay with my phone", cn: "用手机支付", ph: "peɪ wɪð maɪ fəʊn" },
+      { en: "order in English", cn: "用英语点餐", ph: "OR-der ɪn IN-ɡlɪʃ" },
+      { en: "change my seat", cn: "换座位", ph: "tʃeɪndʒ maɪ siːt" },
+      { en: "find the elevator", cn: "找电梯", ph: "faɪnd ði EL-e-va-tor" }
     ]
   },
-  { scene: "困惑", type: "q", en: "Could you show me how to ___?", cn: "你能教我怎么做 ______ 吗？",
+  { scene: "困惑", type: "q", ph: "kʊd juː ʃəʊ miː haʊ tuː", en: "Could you show me how to ___?", cn: "你能教我怎么做 ______ 吗？",
     chunks: [
-      { en: "use this", cn: "用这个" }, { en: "fix this", cn: "修这个" },
-      { en: "get there", cn: "到那里" }, { en: "fill the form", cn: "填表" },
-      { en: "cook this", cn: "做这道菜" }, { en: "open it", cn: "打开它" },
-      { en: "find the way", cn: "找路" }, { en: "use the app", cn: "用这个App" },
-      { en: "book a room", cn: "订房间" }, { en: "check in online", cn: "网上登机" }
+      { en: "use this", cn: "用这个", ph: "juːz ðɪs" },
+      { en: "fix this", cn: "修这个", ph: "fɪks ðɪs" },
+      { en: "get there", cn: "到那里", ph: "ɡet ðeər" },
+      { en: "fill the form", cn: "填表", ph: "fɪl ðə fɔːrm" },
+      { en: "cook this", cn: "做这道菜", ph: "kʊk ðɪs" },
+      { en: "open it", cn: "打开它", ph: "O-pen ɪt" },
+      { en: "find the way", cn: "找路", ph: "faɪnd ðə weɪ" },
+      { en: "use the app", cn: "用这个App", ph: "juːz ði æp" },
+      { en: "book a room", cn: "订房间", ph: "bʊk ə ruːm" },
+      { en: "check in online", cn: "网上登机", ph: "tʃek ɪn ON-line" }
     ]
   },
 
   // ============ 日常（14个） ============
-  { scene: "日常", type: "s", en: "I want to ___.", cn: "我想 ______。",
+  { scene: "日常", type: "s", ph: "aɪ wɒnt tuː", en: "I want to ___.", cn: "我想 ______。",
     chunks: [
-      { en: "eat something", cn: "吃点东西" }, { en: "drink water", cn: "喝水" },
-      { en: "sleep early", cn: "早点睡" }, { en: "go home", cn: "回家" },
-      { en: "learn English", cn: "学英语" }, { en: "take a break", cn: "休息一下" },
-      { en: "buy some food", cn: "买点吃的" }, { en: "see a movie", cn: "看电影" },
-      { en: "call my mom", cn: "给我妈打电话" }, { en: "rest for a while", cn: "休息一会儿" }
+      { en: "eat something", cn: "吃点东西", ph: "iːt SOME-thing" },
+      { en: "drink water", cn: "喝水", ph: "drɪŋk WA-ter" },
+      { en: "sleep early", cn: "早点睡", ph: "sliːp EAR-ly" },
+      { en: "go home", cn: "回家", ph: "ɡəʊ həʊm" },
+      { en: "learn English", cn: "学英语", ph: "lɜːrn IN-ɡlɪʃ" },
+      { en: "take a break", cn: "休息一下", ph: "teɪk ə breɪk" },
+      { en: "buy some food", cn: "买点吃的", ph: "baɪ sʌm fuːd" },
+      { en: "see a movie", cn: "看电影", ph: "siː ə MU-vi" },
+      { en: "call my mom", cn: "给我妈打电话", ph: "kɔːl maɪ mɒm" },
+      { en: "rest for a while", cn: "休息一会儿", ph: "rest fɔːr ə waɪl" }
     ]
   },
-  { scene: "日常", type: "s", en: "I need to ___.", cn: "我需要 ______。",
+  { scene: "日常", type: "s", ph: "aɪ niːd tuː", en: "I need to ___.", cn: "我需要 ______。",
     chunks: [
-      { en: "rest", cn: "休息" }, { en: "study", cn: "学习" },
-      { en: "work", cn: "工作" }, { en: "cook dinner", cn: "做晚饭" },
-      { en: "call my friend", cn: "给朋友打电话" }, { en: "go to the bank", cn: "去银行" },
-      { en: "buy a ticket", cn: "买票" }, { en: "find my keys", cn: "找钥匙" },
-      { en: "clean my room", cn: "打扫房间" }, { en: "finish this", cn: "完成这个" }
+      { en: "rest", cn: "休息", ph: "rest" },
+      { en: "study", cn: "学习", ph: "STUD-y" },
+      { en: "work", cn: "工作", ph: "wɜːrk" },
+      { en: "cook dinner", cn: "做晚饭", ph: "kʊk DIN-ner" },
+      { en: "call my friend", cn: "给朋友打电话", ph: "kɔːl maɪ frend" },
+      { en: "go to the bank", cn: "去银行", ph: "ɡəʊ tuː ðə bæŋk" },
+      { en: "buy a ticket", cn: "买票", ph: "baɪ ə TICK-et" },
+      { en: "find my keys", cn: "找钥匙", ph: "faɪnd maɪ kiːz" },
+      { en: "clean my room", cn: "打扫房间", ph: "kliːn maɪ ruːm" },
+      { en: "finish this", cn: "完成这个", ph: "FIN-ish ðɪs" }
     ]
   },
-  { scene: "日常", type: "s", en: "I have to ___.", cn: "我必须 ______。",
+  { scene: "日常", type: "s", ph: "aɪ hæv tuː", en: "I have to ___.", cn: "我必须 ______。",
     chunks: [
-      { en: "go now", cn: "现在就走" }, { en: "finish this", cn: "完成这个" },
-      { en: "work overtime", cn: "加班" }, { en: "catch the bus", cn: "赶公交" },
-      { en: "see a doctor", cn: "去看医生" }, { en: "do my homework", cn: "做作业" },
-      { en: "pay the bill", cn: "付账单" }, { en: "pick up my son", cn: "接儿子" },
-      { en: "leave early", cn: "早点走" }, { en: "call him back", cn: "给他回电" }
+      { en: "go now", cn: "现在就走", ph: "ɡəʊ naʊ" },
+      { en: "finish this", cn: "完成这个", ph: "FIN-ish ðɪs" },
+      { en: "work overtime", cn: "加班", ph: "wɜːrk O-ver-time" },
+      { en: "catch the bus", cn: "赶公交", ph: "kætʃ ðə bʌs" },
+      { en: "see a doctor", cn: "去看医生", ph: "siː ə DOC-tor" },
+      { en: "do my homework", cn: "做作业", ph: "duː maɪ Həʊm-wɜːrk" },
+      { en: "pay the bill", cn: "付账单", ph: "peɪ ðə bɪl" },
+      { en: "pick up my son", cn: "接儿子", ph: "pɪk ʌp maɪ sʌn" },
+      { en: "leave early", cn: "早点走", ph: "liːv EAR-ly" },
+      { en: "call him back", cn: "给他回电", ph: "kɔːl hɪm bæk" }
     ]
   },
-  { scene: "日常", type: "s", en: "I'm going to ___.", cn: "我打算 ______。",
+  { scene: "日常", type: "s", ph: "aɪm ɡəʊ-ɪŋ tuː", en: "I'm going to ___.", cn: "我打算 ______。",
     chunks: [
-      { en: "visit my parents", cn: "看望父母" }, { en: "clean my room", cn: "打扫房间" },
-      { en: "go shopping", cn: "去购物" }, { en: "study for a test", cn: "备考" },
-      { en: "meet my friend", cn: "见朋友" }, { en: "take a trip", cn: "去旅行" },
-      { en: "start a new job", cn: "开始新工作" }, { en: "learn to swim", cn: "学游泳" },
-      { en: "buy a new phone", cn: "买新手机" }, { en: "fix my car", cn: "修车" }
+      { en: "visit my parents", cn: "看望父母", ph: "VIS-it maɪ PA-rents" },
+      { en: "clean my room", cn: "打扫房间", ph: "kliːn maɪ ruːm" },
+      { en: "go shopping", cn: "去购物", ph: "ɡəʊ SHOP-ing" },
+      { en: "study for a test", cn: "备考", ph: "STUD-y fɔːr ə test" },
+      { en: "meet my friend", cn: "见朋友", ph: "miːt maɪ frend" },
+      { en: "take a trip", cn: "去旅行", ph: "teɪk ə trɪp" },
+      { en: "start a new job", cn: "开始新工作", ph: "stɑːrt ə njuː dʒɒb" },
+      { en: "learn to swim", cn: "学游泳", ph: "lɜːrn tuː swɪm" },
+      { en: "buy a new phone", cn: "买新手机", ph: "baɪ ə njuː fəʊn" },
+      { en: "fix my car", cn: "修车", ph: "fɪks maɪ kɑːr" }
     ]
   },
-  { scene: "日常", type: "s", en: "I'd like to ___.", cn: "我想要 ______。",
+  { scene: "日常", type: "s", ph: "aɪd laɪk tuː", en: "I'd like to ___.", cn: "我想要 ______。",
     chunks: [
-      { en: "have some coffee", cn: "喝点咖啡" }, { en: "book a room", cn: "订房间" },
-      { en: "order food", cn: "点餐" }, { en: "make a reservation", cn: "预订" },
-      { en: "ask a question", cn: "问个问题" }, { en: "see the manager", cn: "见经理" },
-      { en: "try this dish", cn: "尝尝这道菜" }, { en: "see the menu", cn: "看菜单" },
-      { en: "get some information", cn: "问点信息" }, { en: "buy two tickets", cn: "买两张票" }
+      { en: "have some coffee", cn: "喝点咖啡", ph: "hæv sʌm COF-fee" },
+      { en: "book a room", cn: "订房间", ph: "bʊk ə ruːm" },
+      { en: "order food", cn: "点餐", ph: "OR-der fuːd" },
+      { en: "make a reservation", cn: "预订", ph: "meɪk ə res-er-VA-tion" },
+      { en: "ask a question", cn: "问个问题", ph: "ɑːsk ə QUES-tion" },
+      { en: "see the manager", cn: "见经理", ph: "siː ðə MAN-a-ger" },
+      { en: "try this dish", cn: "尝尝这道菜", ph: "traɪ ðɪs dɪʃ" },
+      { en: "see the menu", cn: "看菜单", ph: "siː ðə MEN-u" },
+      { en: "get some information", cn: "问点信息", ph: "ɡet sʌm in-for-MA-tion" },
+      { en: "buy two tickets", cn: "买两张票", ph: "baɪ tuː TICK-ets" }
     ]
   },
-  { scene: "日常", type: "s", en: "I like to ___.", cn: "我喜欢 ______。",
+  { scene: "日常", type: "s", ph: "aɪ laɪk tuː", en: "I like to ___.", cn: "我喜欢 ______。",
     chunks: [
-      { en: "read books", cn: "读书" }, { en: "listen to music", cn: "听音乐" },
-      { en: "play basketball", cn: "打篮球" }, { en: "travel", cn: "旅行" },
-      { en: "cook", cn: "做饭" }, { en: "watch movies", cn: "看电影" },
-      { en: "take photos", cn: "拍照" }, { en: "walk in the park", cn: "公园散步" },
-      { en: "chat with friends", cn: "和朋友聊天" }, { en: "learn new things", cn: "学新东西" }
+      { en: "read books", cn: "读书", ph: "riːd bʊks" },
+      { en: "listen to music", cn: "听音乐", ph: "LIS-en tuː MU-sic" },
+      { en: "play basketball", cn: "打篮球", ph: "pleɪ BAS-ket-ball" },
+      { en: "travel", cn: "旅行", ph: "TRAV-el" },
+      { en: "cook", cn: "做饭", ph: "kʊk" },
+      { en: "watch movies", cn: "看电影", ph: "wɒtʃ MU-vies" },
+      { en: "take photos", cn: "拍照", ph: "teɪk Fəʊ-təʊz" },
+      { en: "walk in the park", cn: "公园散步", ph: "wɔːk ɪn ðə pɑːrk" },
+      { en: "chat with friends", cn: "和朋友聊天", ph: "tʃæt wɪð frendz" },
+      { en: "learn new things", cn: "学新东西", ph: "lɜːrn njuː θɪŋz" }
     ]
   },
-  { scene: "日常", type: "s", en: "I'm trying to ___.", cn: "我正在试着 ______。",
+  { scene: "日常", type: "s", ph: "aɪm TRAI-ing tuː", en: "I'm trying to ___.", cn: "我正在试着 ______。",
     chunks: [
-      { en: "save money", cn: "省钱" }, { en: "lose weight", cn: "减肥" },
-      { en: "learn English", cn: "学英语" }, { en: "quit smoking", cn: "戒烟" },
-      { en: "wake up early", cn: "早起" }, { en: "eat healthier", cn: "吃得更健康" },
-      { en: "save time", cn: "节省时间" }, { en: "find a new job", cn: "找新工作" },
-      { en: "help my family", cn: "帮家人" }, { en: "be more patient", cn: "更有耐心" }
+      { en: "save money", cn: "省钱", ph: "seɪv MON-ey" },
+      { en: "lose weight", cn: "减肥", ph: "luːz weɪt" },
+      { en: "learn English", cn: "学英语", ph: "lɜːrn IN-ɡlɪʃ" },
+      { en: "quit smoking", cn: "戒烟", ph: "kwɪt SMOK-ing" },
+      { en: "wake up early", cn: "早起", ph: "weɪk ʌp EAR-ly" },
+      { en: "eat healthier", cn: "吃得更健康", ph: "iːt HEL-thi-er" },
+      { en: "save time", cn: "节省时间", ph: "seɪv taɪm" },
+      { en: "find a new job", cn: "找新工作", ph: "faɪnd ə njuː dʒɒb" },
+      { en: "help my family", cn: "帮家人", ph: "help maɪ FAM-i-ly" },
+      { en: "be more patient", cn: "更有耐心", ph: "biː mɔːr PA-tient" }
     ]
   },
-  { scene: "日常", type: "s", en: "I feel ___.", cn: "我觉得 ______。",
+  { scene: "日常", type: "s", ph: "aɪ fiːl", en: "I feel ___.", cn: "我觉得 ______。",
     chunks: [
-      { en: "tired", cn: "累" }, { en: "happy", cn: "开心" },
-      { en: "hungry", cn: "饿" }, { en: "thirsty", cn: "渴" },
-      { en: "bored", cn: "无聊" }, { en: "excited", cn: "兴奋" },
-      { en: "nervous", cn: "紧张" }, { en: "relaxed", cn: "放松" },
-      { en: "a bit sick", cn: "有点不舒服" }, { en: "much better", cn: "好多了" }
+      { en: "tired", cn: "累", ph: "TAI-erd" },
+      { en: "happy", cn: "开心", ph: "HAP-py" },
+      { en: "hungry", cn: "饿", ph: "HUN-gry" },
+      { en: "thirsty", cn: "渴", ph: "THIRST-y" },
+      { en: "bored", cn: "无聊", ph: "bɔːrd" },
+      { en: "excited", cn: "兴奋", ph: "ex-CI-ted" },
+      { en: "nervous", cn: "紧张", ph: "NER-vous" },
+      { en: "relaxed", cn: "放松", ph: "re-LAXED" },
+      { en: "a bit sick", cn: "有点不舒服", ph: "ə bɪt sɪk" },
+      { en: "much better", cn: "好多了", ph: "mʌtʃ BET-ter" }
     ]
   },
-  { scene: "日常", type: "q", en: "What do you want to ___?", cn: "你想要 ______ 什么？",
+  { scene: "日常", type: "q", ph: "wɒt duː juː wɒnt tuː", en: "What do you want to ___?", cn: "你想要 ______ 什么？",
     chunks: [
-      { en: "do", cn: "做" }, { en: "eat", cn: "吃" },
-      { en: "drink", cn: "喝" }, { en: "buy", cn: "买" },
-      { en: "say", cn: "说" }, { en: "watch", cn: "看" },
-      { en: "learn", cn: "学" }, { en: "try", cn: "试" },
-      { en: "have", cn: "要" }, { en: "get", cn: "拿" }
+      { en: "do", cn: "做", ph: "duː" },
+      { en: "eat", cn: "吃", ph: "iːt" },
+      { en: "drink", cn: "喝", ph: "drɪŋk" },
+      { en: "buy", cn: "买", ph: "baɪ" },
+      { en: "say", cn: "说", ph: "seɪ" },
+      { en: "watch", cn: "看", ph: "wɒtʃ" },
+      { en: "learn", cn: "学", ph: "lɜːrn" },
+      { en: "try", cn: "试", ph: "traɪ" },
+      { en: "have", cn: "要", ph: "hæv" },
+      { en: "get", cn: "拿", ph: "ɡet" }
     ]
   },
-  { scene: "日常", type: "q", en: "When do you ___?", cn: "你什么时候 ______？",
+  { scene: "日常", type: "q", ph: "wen duː juː", en: "When do you ___?", cn: "你什么时候 ______？",
     chunks: [
-      { en: "get up", cn: "起床" }, { en: "go to work", cn: "上班" },
-      { en: "have lunch", cn: "吃午饭" }, { en: "go home", cn: "回家" },
-      { en: "sleep", cn: "睡觉" }, { en: "eat breakfast", cn: "吃早饭" },
-      { en: "exercise", cn: "锻炼" }, { en: "study", cn: "学习" },
-      { en: "relax", cn: "放松" }, { en: "go out", cn: "出门" }
+      { en: "get up", cn: "起床", ph: "ɡet ʌp" },
+      { en: "go to work", cn: "上班", ph: "ɡəʊ tuː wɜːrk" },
+      { en: "have lunch", cn: "吃午饭", ph: "hæv lʌntʃ" },
+      { en: "go home", cn: "回家", ph: "ɡəʊ həʊm" },
+      { en: "sleep", cn: "睡觉", ph: "sliːp" },
+      { en: "eat breakfast", cn: "吃早饭", ph: "iːt BREAK-fast" },
+      { en: "exercise", cn: "锻炼", ph: "EX-er-cise" },
+      { en: "study", cn: "学习", ph: "STUD-y" },
+      { en: "relax", cn: "放松", ph: "re-LAX" },
+      { en: "go out", cn: "出门", ph: "ɡəʊ aʊt" }
     ]
   },
-  { scene: "日常", type: "q", en: "Where do you ___?", cn: "你在哪里 ______？",
+  { scene: "日常", type: "q", ph: "weər duː juː", en: "Where do you ___?", cn: "你在哪里 ______？",
     chunks: [
-      { en: "live", cn: "住" }, { en: "work", cn: "工作" },
-      { en: "study", cn: "学习" }, { en: "eat", cn: "吃饭" },
-      { en: "shop", cn: "购物" }, { en: "go", cn: "去" },
-      { en: "stay", cn: "待" }, { en: "park", cn: "停车" },
-      { en: "meet friends", cn: "见朋友" }, { en: "buy food", cn: "买食物" }
+      { en: "live", cn: "住", ph: "lɪv" },
+      { en: "work", cn: "工作", ph: "wɜːrk" },
+      { en: "study", cn: "学习", ph: "STUD-y" },
+      { en: "eat", cn: "吃饭", ph: "iːt" },
+      { en: "shop", cn: "购物", ph: "ʃɒp" },
+      { en: "go", cn: "去", ph: "ɡəʊ" },
+      { en: "stay", cn: "待", ph: "steɪ" },
+      { en: "park", cn: "停车", ph: "pɑːrk" },
+      { en: "meet friends", cn: "见朋友", ph: "miːt frendz" },
+      { en: "buy food", cn: "买食物", ph: "baɪ fuːd" }
     ]
   },
-  { scene: "日常", type: "q", en: "Why do you ___?", cn: "你为什么 ______？",
+  { scene: "日常", type: "q", ph: "waɪ duː juː", en: "Why do you ___?", cn: "你为什么 ______？",
     chunks: [
-      { en: "like it", cn: "喜欢它" }, { en: "want it", cn: "想要它" },
-      { en: "go there", cn: "去那里" }, { en: "say that", cn: "那样说" },
-      { en: "do this", cn: "做这个" }, { en: "ask me", cn: "问我" },
-      { en: "come here", cn: "来这里" }, { en: "leave", cn: "离开" },
-      { en: "worry", cn: "担心" }, { en: "cry", cn: "哭" }
+      { en: "like it", cn: "喜欢它", ph: "laɪk ɪt" },
+      { en: "want it", cn: "想要它", ph: "wɒnt ɪt" },
+      { en: "go there", cn: "去那里", ph: "ɡəʊ ðeər" },
+      { en: "say that", cn: "那样说", ph: "seɪ ðæt" },
+      { en: "do this", cn: "做这个", ph: "duː ðɪs" },
+      { en: "ask me", cn: "问我", ph: "ɑːsk miː" },
+      { en: "come here", cn: "来这里", ph: "kʌm hɪər" },
+      { en: "leave", cn: "离开", ph: "liːv" },
+      { en: "worry", cn: "担心", ph: "WOR-ry" },
+      { en: "cry", cn: "哭", ph: "kraɪ" }
     ]
   },
-  { scene: "日常", type: "q", en: "How often do you ___?", cn: "你多久 ______ 一次？",
+  { scene: "日常", type: "q", ph: "haʊ OF-en duː juː", en: "How often do you ___?", cn: "你多久 ______ 一次？",
     chunks: [
-      { en: "exercise", cn: "锻炼" }, { en: "go shopping", cn: "购物" },
-      { en: "eat out", cn: "外出吃饭" }, { en: "see your family", cn: "见家人" },
-      { en: "travel", cn: "旅行" }, { en: "watch movies", cn: "看电影" },
-      { en: "read books", cn: "读书" }, { en: "call your parents", cn: "给父母打电话" },
-      { en: "clean your room", cn: "打扫房间" }, { en: "go to the gym", cn: "去健身房" }
+      { en: "exercise", cn: "锻炼", ph: "EX-er-cise" },
+      { en: "go shopping", cn: "购物", ph: "ɡəʊ SHOP-ing" },
+      { en: "eat out", cn: "外出吃饭", ph: "iːt aʊt" },
+      { en: "see your family", cn: "见家人", ph: "siː jɔːr FAM-i-ly" },
+      { en: "travel", cn: "旅行", ph: "TRAV-el" },
+      { en: "watch movies", cn: "看电影", ph: "wɒtʃ MU-vies" },
+      { en: "read books", cn: "读书", ph: "riːd bʊks" },
+      { en: "call your parents", cn: "给父母打电话", ph: "kɔːl jɔːr PA-rents" },
+      { en: "clean your room", cn: "打扫房间", ph: "kliːn jɔːr ruːm" },
+      { en: "go to the gym", cn: "去健身房", ph: "ɡəʊ tuː ðə dʒɪm" }
     ]
   },
-  { scene: "日常", type: "q", en: "Do you often ___?", cn: "你经常 ______ 吗？",
+  { scene: "日常", type: "q", ph: "duː juː OF-en", en: "Do you often ___?", cn: "你经常 ______ 吗？",
     chunks: [
-      { en: "eat out", cn: "外出吃饭" }, { en: "cook at home", cn: "在家做饭" },
-      { en: "go to bed late", cn: "晚睡" }, { en: "get up early", cn: "早起" },
-      { en: "take a taxi", cn: "打车" }, { en: "walk to work", cn: "走路上班" },
-      { en: "watch TV", cn: "看电视" }, { en: "play games", cn: "玩游戏" },
-      { en: "drink coffee", cn: "喝咖啡" }, { en: "go to the park", cn: "去公园" }
+      { en: "eat out", cn: "外出吃饭", ph: "iːt aʊt" },
+      { en: "cook at home", cn: "在家做饭", ph: "kʊk æt həʊm" },
+      { en: "go to bed late", cn: "晚睡", ph: "ɡəʊ tuː bed leɪt" },
+      { en: "get up early", cn: "早起", ph: "ɡet ʌp EAR-ly" },
+      { en: "take a taxi", cn: "打车", ph: "teɪk ə TAX-i" },
+      { en: "walk to work", cn: "走路上班", ph: "wɔːk tuː wɜːrk" },
+      { en: "watch TV", cn: "看电视", ph: "wɒtʃ TV" },
+      { en: "play games", cn: "玩游戏", ph: "pleɪ ɡeɪmz" },
+      { en: "drink coffee", cn: "喝咖啡", ph: "drɪŋk COF-fee" },
+      { en: "go to the park", cn: "去公园", ph: "ɡəʊ tuː ðə pɑːrk" }
     ]
   },
 
   // ============ 厨师（14个） ============
-  { scene: "厨师", type: "s", en: "I need to ___.", cn: "我需要 ______。",
+  { scene: "厨师", type: "s", ph: "aɪ niːd tuː", en: "I need to ___.", cn: "我需要 ______。",
     chunks: [
-      { en: "chop vegetables", cn: "切菜" }, { en: "slice onions", cn: "切洋葱" },
-      { en: "boil water", cn: "烧水" }, { en: "fry an egg", cn: "煎蛋" },
-      { en: "wash the dishes", cn: "洗碗" }, { en: "set the table", cn: "摆餐具" },
-      { en: "prepare the sauce", cn: "准备酱汁" }, { en: "clean the kitchen", cn: "打扫厨房" },
-      { en: "check the oven", cn: "看烤箱" }, { en: "taste the soup", cn: "尝汤" }
+      { en: "chop vegetables", cn: "切菜", ph: "tʃɒp VEG-e-ta-bles" },
+      { en: "slice onions", cn: "切洋葱", ph: "slaɪs UN-yons" },
+      { en: "boil water", cn: "烧水", ph: "bɔɪl WA-ter" },
+      { en: "fry an egg", cn: "煎蛋", ph: "fraɪ ən eɡ" },
+      { en: "wash the dishes", cn: "洗碗", ph: "wɒʃ ðə DɪSH-es" },
+      { en: "set the table", cn: "摆餐具", ph: "set ðə TA-ble" },
+      { en: "prepare the sauce", cn: "准备酱汁", ph: "pre-PARE ðə sɔːs" },
+      { en: "clean the kitchen", cn: "打扫厨房", ph: "kliːn ðə KITCH-en" },
+      { en: "check the oven", cn: "看烤箱", ph: "tʃek ði O-ven" },
+      { en: "taste the soup", cn: "尝汤", ph: "teɪst ðə suːp" }
     ]
   },
-  { scene: "厨师", type: "s", en: "Please ___.", cn: "请 ______。",
+  { scene: "厨师", type: "s", ph: "pliːz", en: "Please ___.", cn: "请 ______。",
     chunks: [
-      { en: "pass me the salt", cn: "把盐递给我" }, { en: "wash the vegetables", cn: "洗菜" },
-      { en: "clean the table", cn: "擦桌子" }, { en: "bring more plates", cn: "多拿些盘子" },
-      { en: "turn down the fire", cn: "关小火" }, { en: "add some water", cn: "加点水" },
-      { en: "cut the meat", cn: "切肉" }, { en: "prepare the ingredients", cn: "备料" },
-      { en: "wipe the counter", cn: "擦台面" }, { en: "take out the trash", cn: "倒垃圾" }
+      { en: "pass me the salt", cn: "把盐递给我", ph: "pæs miː ðə sɔːlt" },
+      { en: "wash the vegetables", cn: "洗菜", ph: "wɒʃ ðə VEG-e-ta-bles" },
+      { en: "clean the table", cn: "擦桌子", ph: "kliːn ðə TA-ble" },
+      { en: "bring more plates", cn: "多拿些盘子", ph: "brɪŋ mɔːr pleɪts" },
+      { en: "turn down the fire", cn: "关小火", ph: "tɜːrn daʊn ðə FAI-er" },
+      { en: "add some water", cn: "加点水", ph: "æd sʌm WA-ter" },
+      { en: "cut the meat", cn: "切肉", ph: "kʌt ðə miːt" },
+      { en: "prepare the ingredients", cn: "备料", ph: "pre-PARE ði in-GRE-di-ents" },
+      { en: "wipe the counter", cn: "擦台面", ph: "waɪp ðə COUN-ter" },
+      { en: "take out the trash", cn: "倒垃圾", ph: "teɪk aʊt ðə træʃ" }
     ]
   },
-  { scene: "厨师", type: "s", en: "We have to ___.", cn: "我们必须 ______。",
+  { scene: "厨师", type: "s", ph: "wiː hæv tuː", en: "We have to ___.", cn: "我们必须 ______。",
     chunks: [
-      { en: "finish this order", cn: "完成这单" }, { en: "clean up", cn: "清理" },
-      { en: "prepare for tomorrow", cn: "准备明天" }, { en: "check the stock", cn: "查库存" },
-      { en: "serve the customers", cn: "服务客人" }, { en: "open the restaurant", cn: "开门" },
-      { en: "close the kitchen", cn: "关厨房" }, { en: "count the money", cn: "点钱" },
-      { en: "order more food", cn: "订货" }, { en: "work faster", cn: "加快速度" }
+      { en: "finish this order", cn: "完成这单", ph: "FIN-ish ðɪs OR-der" },
+      { en: "clean up", cn: "清理", ph: "kliːn ʌp" },
+      { en: "prepare for tomorrow", cn: "准备明天", ph: "pre-PARE fɔːr to-MOR-row" },
+      { en: "check the stock", cn: "查库存", ph: "tʃek ðə stɒk" },
+      { en: "serve the customers", cn: "服务客人", ph: "sɜːrv ðə CUS-tom-ers" },
+      { en: "open the restaurant", cn: "开门", ph: "O-pen ðə RES-tau-rant" },
+      { en: "close the kitchen", cn: "关厨房", ph: "kləʊz ðə KITCH-en" },
+      { en: "count the money", cn: "点钱", ph: "kaʊnt ðə MON-ey" },
+      { en: "order more food", cn: "订货", ph: "OR-der mɔːr fuːd" },
+      { en: "work faster", cn: "加快速度", ph: "wɜːrk Fɑːs-ter" }
     ]
   },
-  { scene: "厨师", type: "s", en: "I'll ___.", cn: "我来 ______。",
+  { scene: "厨师", type: "s", ph: "aɪl", en: "I'll ___.", cn: "我来 ______。",
     chunks: [
-      { en: "take care of it", cn: "处理它" }, { en: "bring it right away", cn: "马上拿来" },
-      { en: "help you with that", cn: "帮你" }, { en: "finish this first", cn: "先完成这个" },
-      { en: "check on the soup", cn: "看看汤" }, { en: "prepare the table", cn: "摆桌" },
-      { en: "clean this up", cn: "清理这个" }, { en: "call the supplier", cn: "给供货商打电话" },
-      { en: "do it right now", cn: "马上做" }, { en: "make a new one", cn: "重新做一份" }
+      { en: "take care of it", cn: "处理它", ph: "teɪk keər ɒv ɪt" },
+      { en: "bring it right away", cn: "马上拿来", ph: "brɪŋ ɪt raɪt a-WAY" },
+      { en: "help you with that", cn: "帮你", ph: "help juː wɪð ðæt" },
+      { en: "finish this first", cn: "先完成这个", ph: "FIN-ish ðɪs fɜːrst" },
+      { en: "check on the soup", cn: "看看汤", ph: "tʃek ɒn ðə suːp" },
+      { en: "prepare the table", cn: "摆桌", ph: "pre-PARE ðə TA-ble" },
+      { en: "clean this up", cn: "清理这个", ph: "kliːn ðɪs ʌp" },
+      { en: "call the supplier", cn: "给供货商打电话", ph: "kɔːl ðə sup-PLI-er" },
+      { en: "do it right now", cn: "马上做", ph: "duː ɪt raɪt naʊ" },
+      { en: "make a new one", cn: "重新做一份", ph: "meɪk ə njuː wʌn" }
     ]
   },
-  { scene: "厨师", type: "s", en: "Could you ___?", cn: "你能 ______ 吗？",
+  { scene: "厨师", type: "s", ph: "kʊd juː", en: "Could you ___?", cn: "你能 ______ 吗？",
     chunks: [
-      { en: "help me here", cn: "在这帮我" }, { en: "pass me the knife", cn: "把刀递给我" },
-      { en: "check the order", cn: "看订单" }, { en: "bring more sauce", cn: "拿更多酱" },
-      { en: "watch the stove", cn: "看着炉子" }, { en: "prepare the plates", cn: "准备盘子" },
-      { en: "clean the fish", cn: "收拾鱼" }, { en: "cut the vegetables", cn: "切菜" },
-      { en: "come here a moment", cn: "来一下" }, { en: "cover my shift", cn: "替我的班" }
+      { en: "help me here", cn: "在这帮我", ph: "help miː hɪər" },
+      { en: "pass me the knife", cn: "把刀递给我", ph: "pæs miː ðə naɪf" },
+      { en: "check the order", cn: "看订单", ph: "tʃek ði OR-der" },
+      { en: "bring more sauce", cn: "拿更多酱", ph: "brɪŋ mɔːr sɔːs" },
+      { en: "watch the stove", cn: "看着炉子", ph: "wɒtʃ ðə stəʊv" },
+      { en: "prepare the plates", cn: "准备盘子", ph: "pre-PARE ðə pleɪts" },
+      { en: "clean the fish", cn: "收拾鱼", ph: "kliːn ðə fɪʃ" },
+      { en: "cut the vegetables", cn: "切菜", ph: "kʌt ðə VEG-e-ta-bles" },
+      { en: "come here a moment", cn: "来一下", ph: "kʌm hɪər ə MO-ment" },
+      { en: "cover my shift", cn: "替我的班", ph: "CO-ver maɪ ʃɪft" }
     ]
   },
-  { scene: "厨师", type: "s", en: "How many ___ do we need?", cn: "我们需要多少 ______？",
+  { scene: "厨师", type: "s", ph: "haʊ MEN-y", en: "How many ___ do we need?", cn: "我们需要多少 ______？",
     chunks: [
-      { en: "plates", cn: "盘子" }, { en: "forks", cn: "叉子" },
-      { en: "bowls", cn: "碗" }, { en: "napkins", cn: "餐巾" },
-      { en: "tomatoes", cn: "番茄" }, { en: "onions", cn: "洋葱" },
-      { en: "eggs", cn: "鸡蛋" }, { en: "chairs", cn: "椅子" },
-      { en: "tables", cn: "桌子" }, { en: "glasses", cn: "杯子" }
+      { en: "plates", cn: "盘子", ph: "pleɪts" },
+      { en: "forks", cn: "叉子", ph: "fɔːrks" },
+      { en: "bowls", cn: "碗", ph: "bəʊlz" },
+      { en: "napkins", cn: "餐巾", ph: "NAP-kins" },
+      { en: "tomatoes", cn: "番茄", ph: "to-MA-toes" },
+      { en: "onions", cn: "洋葱", ph: "UN-yons" },
+      { en: "eggs", cn: "鸡蛋", ph: "eɡz" },
+      { en: "chairs", cn: "椅子", ph: "tʃeərz" },
+      { en: "tables", cn: "桌子", ph: "TA-bles" },
+      { en: "glasses", cn: "杯子", ph: "GLAS-ses" }
     ]
   },
-  { scene: "厨师", type: "s", en: "The ___ is ready.", cn: "______ 准备好了。",
+  { scene: "厨师", type: "s", ph: "ðə", en: "The ___ is ready.", cn: "______ 准备好了。",
     chunks: [
-      { en: "soup", cn: "汤" }, { en: "rice", cn: "米饭" },
-      { en: "noodles", cn: "面条" }, { en: "steak", cn: "牛排" },
-      { en: "fish", cn: "鱼" }, { en: "chicken", cn: "鸡" },
-      { en: "salad", cn: "沙拉" }, { en: "dessert", cn: "甜点" },
-      { en: "order", cn: "订单" }, { en: "sauce", cn: "酱汁" }
+      { en: "soup", cn: "汤", ph: "suːp" },
+      { en: "rice", cn: "米饭", ph: "raɪs" },
+      { en: "noodles", cn: "面条", ph: "NUU-dles" },
+      { en: "steak", cn: "牛排", ph: "steɪk" },
+      { en: "fish", cn: "鱼", ph: "fɪʃ" },
+      { en: "chicken", cn: "鸡", ph: "CHICK-en" },
+      { en: "salad", cn: "沙拉", ph: "SAL-ad" },
+      { en: "dessert", cn: "甜点", ph: "des-SERT" },
+      { en: "order", cn: "订单", ph: "OR-der" },
+      { en: "sauce", cn: "酱汁", ph: "sɔːs" }
     ]
   },
-  { scene: "厨师", type: "s", en: "Don't forget to ___.", cn: "别忘了 ______。",
+  { scene: "厨师", type: "s", ph: "dəʊnt fər-GET tuː", en: "Don't forget to ___.", cn: "别忘了 ______。",
     chunks: [
-      { en: "turn off the stove", cn: "关火" }, { en: "close the fridge", cn: "关冰箱" },
-      { en: "wash your hands", cn: "洗手" }, { en: "check the order", cn: "看订单" },
-      { en: "lock the door", cn: "锁门" }, { en: "clean the counter", cn: "擦台面" },
-      { en: "cover the food", cn: "盖食物" }, { en: "throw away the trash", cn: "倒垃圾" },
-      { en: "label the boxes", cn: "贴标签" }, { en: "check the temperature", cn: "测温度" }
+      { en: "turn off the stove", cn: "关火", ph: "tɜːrn ɒf ðə stəʊv" },
+      { en: "close the fridge", cn: "关冰箱", ph: "kləʊz ðə frɪdʒ" },
+      { en: "wash your hands", cn: "洗手", ph: "wɒʃ jɔːr hændz" },
+      { en: "check the order", cn: "看订单", ph: "tʃek ði OR-der" },
+      { en: "lock the door", cn: "锁门", ph: "lɒk ðə dɔːr" },
+      { en: "clean the counter", cn: "擦台面", ph: "kliːn ðə COUN-ter" },
+      { en: "cover the food", cn: "盖食物", ph: "CO-ver ðə fuːd" },
+      { en: "throw away the trash", cn: "倒垃圾", ph: "θrəʊ a-WAY ðə træʃ" },
+      { en: "label the boxes", cn: "贴标签", ph: "LEI-bel ðə BOX-es" },
+      { en: "check the temperature", cn: "测温度", ph: "tʃek ðə TEM-per-a-ture" }
     ]
   },
-  { scene: "厨师", type: "q", en: "How long does it take to ___?", cn: "______ 需要多长时间？",
+  { scene: "厨师", type: "q", ph: "haʊ lɒŋ dʌz ɪt teɪk tuː", en: "How long does it take to ___?", cn: "______ 需要多长时间？",
     chunks: [
-      { en: "cook", cn: "烹饪" }, { en: "bake", cn: "烘焙" },
-      { en: "steam", cn: "蒸" }, { en: "fry", cn: "炸" },
-      { en: "boil", cn: "煮" }, { en: "prepare", cn: "准备" },
-      { en: "cool down", cn: "冷却" }, { en: "marinate", cn: "腌制" },
-      { en: "finish this dish", cn: "做完这道菜" }, { en: "warm it up", cn: "加热" }
+      { en: "cook", cn: "烹饪", ph: "kʊk" },
+      { en: "bake", cn: "烘焙", ph: "beɪk" },
+      { en: "steam", cn: "蒸", ph: "stiːm" },
+      { en: "fry", cn: "炸", ph: "fraɪ" },
+      { en: "boil", cn: "煮", ph: "bɔɪl" },
+      { en: "prepare", cn: "准备", ph: "pre-PARE" },
+      { en: "cool down", cn: "冷却", ph: "kuːl daʊn" },
+      { en: "marinate", cn: "腌制", ph: "MAR-i-nate" },
+      { en: "finish this dish", cn: "做完这道菜", ph: "FIN-ish ðɪs dɪʃ" },
+      { en: "warm it up", cn: "加热", ph: "wɔːrm ɪt ʌp" }
     ]
   },
-  { scene: "厨师", type: "q", en: "Where is the ___?", cn: "______ 在哪里？",
+  { scene: "厨师", type: "q", ph: "weər ɪz ðə", en: "Where is the ___?", cn: "______ 在哪里？",
     chunks: [
-      { en: "salt", cn: "盐" }, { en: "knife", cn: "刀" },
-      { en: "pan", cn: "平底锅" }, { en: "plate", cn: "盘子" },
-      { en: "sauce", cn: "酱汁" }, { en: "oil", cn: "油" },
-      { en: "fish", cn: "鱼" }, { en: "spoon", cn: "勺子" },
-      { en: "towel", cn: "毛巾" }, { en: "pepper", cn: "胡椒" }
+      { en: "salt", cn: "盐", ph: "sɔːlt" },
+      { en: "knife", cn: "刀", ph: "naɪf" },
+      { en: "pan", cn: "平底锅", ph: "pæn" },
+      { en: "plate", cn: "盘子", ph: "pleɪt" },
+      { en: "sauce", cn: "酱汁", ph: "sɔːs" },
+      { en: "oil", cn: "油", ph: "ɔɪl" },
+      { en: "fish", cn: "鱼", ph: "fɪʃ" },
+      { en: "spoon", cn: "勺子", ph: "spuːn" },
+      { en: "towel", cn: "毛巾", ph: "TAU-el" },
+      { en: "pepper", cn: "胡椒", ph: "PEP-per" }
     ]
   },
-  { scene: "厨师", type: "q", en: "Do you have ___?", cn: "你有 ______ 吗？",
+  { scene: "厨师", type: "q", ph: "duː juː hæv", en: "Do you have ___?", cn: "你有 ______ 吗？",
     chunks: [
-      { en: "garlic", cn: "大蒜" }, { en: "ginger", cn: "生姜" },
-      { en: "soy sauce", cn: "酱油" }, { en: "vinegar", cn: "醋" },
-      { en: "sugar", cn: "糖" }, { en: "flour", cn: "面粉" },
-      { en: "eggs", cn: "鸡蛋" }, { en: "onions", cn: "洋葱" },
-      { en: "tomatoes", cn: "番茄" }, { en: "chili", cn: "辣椒" }
+      { en: "garlic", cn: "大蒜", ph: "GAR-lic" },
+      { en: "ginger", cn: "生姜", ph: "GIN-ger" },
+      { en: "soy sauce", cn: "酱油", ph: "sɔɪ sɔːs" },
+      { en: "vinegar", cn: "醋", ph: "VIN-e-gar" },
+      { en: "sugar", cn: "糖", ph: "SHU-gar" },
+      { en: "flour", cn: "面粉", ph: "FLAU-er" },
+      { en: "eggs", cn: "鸡蛋", ph: "eɡz" },
+      { en: "onions", cn: "洋葱", ph: "UN-yons" },
+      { en: "tomatoes", cn: "番茄", ph: "to-MA-toes" },
+      { en: "chili", cn: "辣椒", ph: "CHI-li" }
     ]
   },
-  { scene: "厨师", type: "q", en: "Can you ___?", cn: "你能 ______ 吗？",
+  { scene: "厨师", type: "q", ph: "kæn juː", en: "Can you ___?", cn: "你能 ______ 吗？",
     chunks: [
-      { en: "help me", cn: "帮我" }, { en: "pass the salt", cn: "把盐递给我" },
-      { en: "check the oven", cn: "看烤箱" }, { en: "cut this", cn: "切这个" },
-      { en: "taste it", cn: "尝尝" }, { en: "hurry up", cn: "快点" },
-      { en: "wait a moment", cn: "等一下" }, { en: "bring more", cn: "多拿点" },
-      { en: "clean this", cn: "清理这个" }, { en: "get the plates", cn: "拿盘子" }
+      { en: "help me", cn: "帮我", ph: "help miː" },
+      { en: "pass the salt", cn: "把盐递给我", ph: "pæs ðə sɔːlt" },
+      { en: "check the oven", cn: "看烤箱", ph: "tʃek ði O-ven" },
+      { en: "cut this", cn: "切这个", ph: "kʌt ðɪs" },
+      { en: "taste it", cn: "尝尝", ph: "teɪst ɪt" },
+      { en: "hurry up", cn: "快点", ph: "HUR-ry ʌp" },
+      { en: "wait a moment", cn: "等一下", ph: "weɪt ə MO-ment" },
+      { en: "bring more", cn: "多拿点", ph: "brɪŋ mɔːr" },
+      { en: "clean this", cn: "清理这个", ph: "kliːn ðɪs" },
+      { en: "get the plates", cn: "拿盘子", ph: "ɡet ðə pleɪts" }
     ]
   },
-  { scene: "厨师", type: "q", en: "Is the ___ ready?", cn: "______ 好了吗？",
+  { scene: "厨师", type: "q", ph: "ɪz ðə", en: "Is the ___ ready?", cn: "______ 好了吗？",
     chunks: [
-      { en: "soup", cn: "汤" }, { en: "rice", cn: "米饭" },
-      { en: "steak", cn: "牛排" }, { en: "fish", cn: "鱼" },
-      { en: "chicken", cn: "鸡" }, { en: "salad", cn: "沙拉" },
-      { en: "order", cn: "订单" }, { en: "dessert", cn: "甜点" },
-      { en: "noodles", cn: "面条" }, { en: "pizza", cn: "披萨" }
+      { en: "soup", cn: "汤", ph: "suːp" },
+      { en: "rice", cn: "米饭", ph: "raɪs" },
+      { en: "steak", cn: "牛排", ph: "steɪk" },
+      { en: "fish", cn: "鱼", ph: "fɪʃ" },
+      { en: "chicken", cn: "鸡", ph: "CHICK-en" },
+      { en: "salad", cn: "沙拉", ph: "SAL-ad" },
+      { en: "order", cn: "订单", ph: "OR-der" },
+      { en: "dessert", cn: "甜点", ph: "des-SERT" },
+      { en: "noodles", cn: "面条", ph: "NUU-dles" },
+      { en: "pizza", cn: "披萨", ph: "PI-zza" }
     ]
   },
-  { scene: "厨师", type: "q", en: "What should I ___ first?", cn: "我应该先 ______ 什么？",
+  { scene: "厨师", type: "q", ph: "wɒt ʃʊd aɪ fɜːrst", en: "What should I ___ first?", cn: "我应该先 ______ 什么？",
     chunks: [
-      { en: "cook", cn: "煮" }, { en: "cut", cn: "切" },
-      { en: "wash", cn: "洗" }, { en: "prepare", cn: "准备" },
-      { en: "clean", cn: "清理" }, { en: "check", cn: "检查" },
-      { en: "make", cn: "做" }, { en: "start", cn: "开始" },
-      { en: "heat", cn: "加热" }, { en: "serve", cn: "上菜" }
+      { en: "cook", cn: "煮", ph: "kʊk" },
+      { en: "cut", cn: "切", ph: "kʌt" },
+      { en: "wash", cn: "洗", ph: "wɒʃ" },
+      { en: "prepare", cn: "准备", ph: "pre-PARE" },
+      { en: "clean", cn: "清理", ph: "kliːn" },
+      { en: "check", cn: "检查", ph: "tʃek" },
+      { en: "make", cn: "做", ph: "meɪk" },
+      { en: "start", cn: "开始", ph: "stɑːrt" },
+      { en: "heat", cn: "加热", ph: "hiːt" },
+      { en: "serve", cn: "上菜", ph: "sɜːrv" }
     ]
   },
 
   // ============ 社交（14个） ============
-  { scene: "社交", type: "s", en: "Do you want to ___?", cn: "你想 ______ 吗？",
+  { scene: "社交", type: "s", ph: "duː juː wɒnt tuː", en: "Do you want to ___?", cn: "你想 ______ 吗？",
     chunks: [
-      { en: "hang out", cn: "一起玩" }, { en: "grab coffee", cn: "喝咖啡" },
-      { en: "see a movie", cn: "看电影" }, { en: "go shopping", cn: "去购物" },
-      { en: "have dinner", cn: "吃晚饭" }, { en: "join us", cn: "加入我们" },
-      { en: "play basketball", cn: "打篮球" }, { en: "take a walk", cn: "去散步" },
-      { en: "come over", cn: "来我家" }, { en: "try this restaurant", cn: "去这家餐厅" }
+      { en: "hang out", cn: "一起玩", ph: "hæŋ aʊt" },
+      { en: "grab coffee", cn: "喝咖啡", ph: "ɡræb COF-fee" },
+      { en: "see a movie", cn: "看电影", ph: "siː ə MU-vi" },
+      { en: "go shopping", cn: "去购物", ph: "ɡəʊ SHOP-ing" },
+      { en: "have dinner", cn: "吃晚饭", ph: "hæv DIN-ner" },
+      { en: "join us", cn: "加入我们", ph: "dʒɔɪn ʌs" },
+      { en: "play basketball", cn: "打篮球", ph: "pleɪ BAS-ket-ball" },
+      { en: "take a walk", cn: "去散步", ph: "teɪk ə wɔːk" },
+      { en: "come over", cn: "来我家", ph: "kʌm O-ver" },
+      { en: "try this restaurant", cn: "去这家餐厅", ph: "traɪ ðɪs RES-tau-rant" }
     ]
   },
-  { scene: "社交", type: "s", en: "Would you like to ___?", cn: "你想 ______ 吗？",
+  { scene: "社交", type: "s", ph: "wʊd juː laɪk tuː", en: "Would you like to ___?", cn: "你想 ______ 吗？",
     chunks: [
-      { en: "have some tea", cn: "喝点茶" }, { en: "go for a walk", cn: "去散步" },
-      { en: "join us", cn: "加入我们" }, { en: "see a movie", cn: "看电影" },
-      { en: "try this dish", cn: "尝尝这道菜" }, { en: "come to my party", cn: "来我的派对" },
-      { en: "play a game", cn: "玩个游戏" }, { en: "take a rest", cn: "休息一下" },
-      { en: "meet my friends", cn: "见见我的朋友" }, { en: "visit my place", cn: "来我家" }
+      { en: "have some tea", cn: "喝点茶", ph: "hæv sʌm tiː" },
+      { en: "go for a walk", cn: "去散步", ph: "ɡəʊ fɔːr ə wɔːk" },
+      { en: "join us", cn: "加入我们", ph: "dʒɔɪn ʌs" },
+      { en: "see a movie", cn: "看电影", ph: "siː ə MU-vi" },
+      { en: "try this dish", cn: "尝尝这道菜", ph: "traɪ ðɪs dɪʃ" },
+      { en: "come to my party", cn: "来我的派对", ph: "kʌm tuː maɪ PAR-ty" },
+      { en: "play a game", cn: "玩个游戏", ph: "pleɪ ə ɡeɪm" },
+      { en: "take a rest", cn: "休息一下", ph: "teɪk ə rest" },
+      { en: "meet my friends", cn: "见见我的朋友", ph: "miːt maɪ frendz" },
+      { en: "visit my place", cn: "来我家", ph: "VIS-it maɪ pleɪs" }
     ]
   },
-  { scene: "社交", type: "s", en: "Let me ___.", cn: "让我 ______。",
+  { scene: "社交", type: "s", ph: "let miː", en: "Let me ___.", cn: "让我 ______。",
     chunks: [
-      { en: "help you", cn: "帮你" }, { en: "think about it", cn: "想想" },
-      { en: "check my schedule", cn: "看下日程" }, { en: "pay for this", cn: "来付钱" },
-      { en: "carry that for you", cn: "帮你拿" }, { en: "show you the way", cn: "给你带路" },
-      { en: "introduce myself", cn: "自我介绍" }, { en: "get the door", cn: "开门" },
-      { en: "handle this", cn: "处理这个" }, { en: "order for us", cn: "帮我们点餐" }
+      { en: "help you", cn: "帮你", ph: "help juː" },
+      { en: "think about it", cn: "想想", ph: "θɪŋk a-BOUT ɪt" },
+      { en: "check my schedule", cn: "看下日程", ph: "tʃek maɪ SKED-ule" },
+      { en: "pay for this", cn: "来付钱", ph: "peɪ fɔːr ðɪs" },
+      { en: "carry that for you", cn: "帮你拿", ph: "CAR-ry ðæt fɔːr juː" },
+      { en: "show you the way", cn: "给你带路", ph: "ʃəʊ juː ðə weɪ" },
+      { en: "introduce myself", cn: "自我介绍", ph: "in-tro-DUCE maɪ-SELF" },
+      { en: "get the door", cn: "开门", ph: "ɡet ðə dɔːr" },
+      { en: "handle this", cn: "处理这个", ph: "HAN-dle ðɪs" },
+      { en: "order for us", cn: "帮我们点餐", ph: "OR-der fɔːr ʌs" }
     ]
   },
-  { scene: "社交", type: "s", en: "I'm happy to ___.", cn: "我很高兴 ______。",
+  { scene: "社交", type: "s", ph: "aɪm HAP-py tuː", en: "I'm happy to ___.", cn: "我很高兴 ______。",
     chunks: [
-      { en: "help you", cn: "帮你" }, { en: "meet you", cn: "认识你" },
-      { en: "join you", cn: "加入你们" }, { en: "work with you", cn: "与你共事" },
-      { en: "be here", cn: "在这里" }, { en: "hear that", cn: "听到这个" },
-      { en: "see you again", cn: "再见到你" }, { en: "learn from you", cn: "向你学习" },
-      { en: "try this", cn: "试试这个" }, { en: "be part of the team", cn: "加入团队" }
+      { en: "help you", cn: "帮你", ph: "help juː" },
+      { en: "meet you", cn: "认识你", ph: "miːt juː" },
+      { en: "join you", cn: "加入你们", ph: "dʒɔɪn juː" },
+      { en: "work with you", cn: "与你共事", ph: "wɜːrk wɪð juː" },
+      { en: "be here", cn: "在这里", ph: "biː hɪər" },
+      { en: "hear that", cn: "听到这个", ph: "hɪər ðæt" },
+      { en: "see you again", cn: "再见到你", ph: "siː juː ə-GEN" },
+      { en: "learn from you", cn: "向你学习", ph: "lɜːrn frɒm juː" },
+      { en: "try this", cn: "试试这个", ph: "traɪ ðɪs" },
+      { en: "be part of the team", cn: "加入团队", ph: "biː pɑːrt ɒv ðə tiːm" }
     ]
   },
-  { scene: "社交", type: "s", en: "Can I ___?", cn: "我可以 ______ 吗？",
+  { scene: "社交", type: "s", ph: "kæn aɪ", en: "Can I ___?", cn: "我可以 ______ 吗？",
     chunks: [
-      { en: "ask you something", cn: "问你点事" }, { en: "join you", cn: "加入你们" },
-      { en: "borrow your phone", cn: "借你手机" }, { en: "sit here", cn: "坐这里" },
-      { en: "take a photo", cn: "拍张照" }, { en: "have your number", cn: "要你电话" },
-      { en: "try this on", cn: "试穿" }, { en: "get a menu", cn: "要菜单" },
-      { en: "pay by card", cn: "刷卡" }, { en: "use the bathroom", cn: "用洗手间" }
+      { en: "ask you something", cn: "问你点事", ph: "ɑːsk juː SOME-thing" },
+      { en: "join you", cn: "加入你们", ph: "dʒɔɪn juː" },
+      { en: "borrow your phone", cn: "借你手机", ph: "BOR-row jɔːr fəʊn" },
+      { en: "sit here", cn: "坐这里", ph: "sɪt hɪər" },
+      { en: "take a photo", cn: "拍张照", ph: "teɪk ə Fəʊ-təʊ" },
+      { en: "have your number", cn: "要你电话", ph: "hæv jɔːr NUM-ber" },
+      { en: "try this on", cn: "试穿", ph: "traɪ ðɪs ɒn" },
+      { en: "get a menu", cn: "要菜单", ph: "ɡet ə MEN-u" },
+      { en: "pay by card", cn: "刷卡", ph: "peɪ baɪ kɑːrd" },
+      { en: "use the bathroom", cn: "用洗手间", ph: "juːz ðə BATH-room" }
     ]
   },
-  { scene: "社交", type: "s", en: "What do you think of ___?", cn: "你觉得 ______ 怎么样？",
+  { scene: "社交", type: "s", ph: "wɒt duː juː θɪŋk ɒv", en: "What do you think of ___?", cn: "你觉得 ______ 怎么样？",
     chunks: [
-      { en: "this place", cn: "这个地方" }, { en: "this movie", cn: "这部电影" },
-      { en: "my idea", cn: "我的想法" }, { en: "the food", cn: "这食物" },
-      { en: "the weather", cn: "天气" }, { en: "this city", cn: "这座城市" },
-      { en: "my plan", cn: "我的计划" }, { en: "the price", cn: "价格" },
-      { en: "this song", cn: "这首歌" }, { en: "the new boss", cn: "新老板" }
+      { en: "this place", cn: "这个地方", ph: "ðɪs pleɪs" },
+      { en: "this movie", cn: "这部电影", ph: "ðɪs MU-vi" },
+      { en: "my idea", cn: "我的想法", ph: "maɪ aɪ-DE-a" },
+      { en: "the food", cn: "这食物", ph: "ðə fuːd" },
+      { en: "the weather", cn: "天气", ph: "ðə WEATH-er" },
+      { en: "this city", cn: "这座城市", ph: "ðɪs SI-ty" },
+      { en: "my plan", cn: "我的计划", ph: "maɪ plæn" },
+      { en: "the price", cn: "价格", ph: "ðə praɪs" },
+      { en: "this song", cn: "这首歌", ph: "ðɪs sɒŋ" },
+      { en: "the new boss", cn: "新老板", ph: "ðə njuː bɒs" }
     ]
   },
-  { scene: "社交", type: "s", en: "I'm sorry to ___.", cn: "我很抱歉 ______。",
+  { scene: "社交", type: "s", ph: "aɪm SOR-ry tuː", en: "I'm sorry to ___.", cn: "我很抱歉 ______。",
     chunks: [
-      { en: "be late", cn: "迟到" }, { en: "hear that", cn: "听到这个" },
-      { en: "bother you", cn: "打扰你" }, { en: "say this", cn: "说这个" },
-      { en: "ask again", cn: "再问一次" }, { en: "keep you waiting", cn: "让你等" },
-      { en: "interrupt", cn: "打断" }, { en: "cancel", cn: "取消" },
-      { en: "say no", cn: "说不" }, { en: "leave early", cn: "早走" }
+      { en: "be late", cn: "迟到", ph: "biː leɪt" },
+      { en: "hear that", cn: "听到这个", ph: "hɪər ðæt" },
+      { en: "bother you", cn: "打扰你", ph: "BOTH-er juː" },
+      { en: "say this", cn: "说这个", ph: "seɪ ðɪs" },
+      { en: "ask again", cn: "再问一次", ph: "ɑːsk ə-GEN" },
+      { en: "keep you waiting", cn: "让你等", ph: "kiːp juː WEI-ting" },
+      { en: "interrupt", cn: "打断", ph: "in-ter-RUPT" },
+      { en: "cancel", cn: "取消", ph: "CAN-cel" },
+      { en: "say no", cn: "说不", ph: "seɪ nəʊ" },
+      { en: "leave early", cn: "早走", ph: "liːv EAR-ly" }
     ]
   },
-  { scene: "社交", type: "s", en: "Thank you for ___.", cn: "谢谢你 ______。",
+  { scene: "社交", type: "s", ph: "θæŋk juː fɔːr", en: "Thank you for ___.", cn: "谢谢你 ______。",
     chunks: [
-      { en: "your help", cn: "你的帮助" }, { en: "coming", cn: "过来" },
-      { en: "your time", cn: "你的时间" }, { en: "the gift", cn: "礼物" },
-      { en: "the invite", cn: "邀请" }, { en: "the meal", cn: "款待" },
-      { en: "everything", cn: "一切" }, { en: "your advice", cn: "你的建议" },
-      { en: "the ride", cn: "载我" }, { en: "your kindness", cn: "你的好意" }
+      { en: "your help", cn: "你的帮助", ph: "jɔːr help" },
+      { en: "coming", cn: "过来", ph: "CUM-ing" },
+      { en: "your time", cn: "你的时间", ph: "jɔːr taɪm" },
+      { en: "the gift", cn: "礼物", ph: "ðə ɡɪft" },
+      { en: "the invite", cn: "邀请", ph: "ði in-VITE" },
+      { en: "the meal", cn: "款待", ph: "ðə miːl" },
+      { en: "everything", cn: "一切", ph: "EVE-ry-thing" },
+      { en: "your advice", cn: "你的建议", ph: "jɔːr ad-VICE" },
+      { en: "the ride", cn: "载我", ph: "ðə raɪd" },
+      { en: "your kindness", cn: "你的好意", ph: "jɔːr KIND-ness" }
     ]
   },
-  { scene: "社交", type: "q", en: "Do you like ___?", cn: "你喜欢 ______ 吗？",
+  { scene: "社交", type: "q", ph: "duː juː laɪk", en: "Do you like ___?", cn: "你喜欢 ______ 吗？",
     chunks: [
-      { en: "coffee", cn: "咖啡" }, { en: "music", cn: "音乐" },
-      { en: "sports", cn: "运动" }, { en: "movies", cn: "电影" },
-      { en: "traveling", cn: "旅行" }, { en: "reading", cn: "阅读" },
-      { en: "cooking", cn: "做饭" }, { en: "this city", cn: "这座城市" },
-      { en: "Chinese food", cn: "中餐" }, { en: "dogs", cn: "狗" }
+      { en: "coffee", cn: "咖啡", ph: "COF-fee" },
+      { en: "music", cn: "音乐", ph: "MU-sic" },
+      { en: "sports", cn: "运动", ph: "spɔːrts" },
+      { en: "movies", cn: "电影", ph: "MU-vies" },
+      { en: "traveling", cn: "旅行", ph: "TRAV-el-ing" },
+      { en: "reading", cn: "阅读", ph: "REA-ding" },
+      { en: "cooking", cn: "做饭", ph: "COOK-ing" },
+      { en: "this city", cn: "这座城市", ph: "ðɪs SI-ty" },
+      { en: "Chinese food", cn: "中餐", ph: "tʃaɪ-NIːZ fuːd" },
+      { en: "dogs", cn: "狗", ph: "dɒɡz" }
     ]
   },
-  { scene: "社交", type: "q", en: "How about ___?", cn: "______ 怎么样？",
+  { scene: "社交", type: "q", ph: "haʊ a-BOUT", en: "How about ___?", cn: "______ 怎么样？",
     chunks: [
-      { en: "going out", cn: "出去玩" }, { en: "having dinner", cn: "吃晚饭" },
-      { en: "watching a movie", cn: "看电影" }, { en: "taking a walk", cn: "去散步" },
-      { en: "this weekend", cn: "这个周末" }, { en: "tomorrow", cn: "明天" },
-      { en: "trying this", cn: "试试这个" }, { en: "another cup", cn: "再来一杯" },
-      { en: "playing a game", cn: "玩个游戏" }, { en: "meeting up", cn: "见个面" }
+      { en: "going out", cn: "出去玩", ph: "GO-ing aʊt" },
+      { en: "having dinner", cn: "吃晚饭", ph: "HAV-ing DIN-ner" },
+      { en: "watching a movie", cn: "看电影", ph: "WATCH-ing ə MU-vi" },
+      { en: "taking a walk", cn: "去散步", ph: "TAK-ing ə wɔːk" },
+      { en: "this weekend", cn: "这个周末", ph: "ðɪs WEEK-end" },
+      { en: "tomorrow", cn: "明天", ph: "to-MOR-row" },
+      { en: "trying this", cn: "试试这个", ph: "TRI-ing ðɪs" },
+      { en: "another cup", cn: "再来一杯", ph: "a-NOTH-er kʌp" },
+      { en: "playing a game", cn: "玩个游戏", ph: "PLAY-ing ə ɡeɪm" },
+      { en: "meeting up", cn: "见个面", ph: "MEE-ting ʌp" }
     ]
   },
-  { scene: "社交", type: "q", en: "Are you ___?", cn: "你 ______ 吗？",
+  { scene: "社交", type: "q", ph: "ɑːr juː", en: "Are you ___?", cn: "你 ______ 吗？",
     chunks: [
-      { en: "free", cn: "有空" }, { en: "busy", cn: "忙" },
-      { en: "tired", cn: "累" }, { en: "hungry", cn: "饿" },
-      { en: "okay", cn: "没事" }, { en: "ready", cn: "准备好" },
-      { en: "married", cn: "已婚" }, { en: "from here", cn: "本地人" },
-      { en: "a student", cn: "学生" }, { en: "working today", cn: "今天上班" }
+      { en: "free", cn: "有空", ph: "friː" },
+      { en: "busy", cn: "忙", ph: "BIZ-y" },
+      { en: "tired", cn: "累", ph: "TAI-erd" },
+      { en: "hungry", cn: "饿", ph: "HUN-gry" },
+      { en: "okay", cn: "没事", ph: "o-KAY" },
+      { en: "ready", cn: "准备好", ph: "READ-y" },
+      { en: "married", cn: "已婚", ph: "MAR-ried" },
+      { en: "from here", cn: "本地人", ph: "frɒm hɪər" },
+      { en: "a student", cn: "学生", ph: "ə STU-dent" },
+      { en: "working today", cn: "今天上班", ph: "WURK-ing to-DAY" }
     ]
   },
-  { scene: "社交", type: "q", en: "Where are you ___?", cn: "你 ______ 哪里？",
+  { scene: "社交", type: "q", ph: "weər ɑːr juː", en: "Where are you ___?", cn: "你 ______ 哪里？",
     chunks: [
-      { en: "from", cn: "来自" }, { en: "going", cn: "去" },
-      { en: "now", cn: "现在在" }, { en: "living", cn: "住" },
-      { en: "working", cn: "工作" }, { en: "staying", cn: "待" },
-      { en: "headed", cn: "前往" }, { en: "coming from", cn: "从哪来" },
-      { en: "meeting us", cn: "在哪见我们" }, { en: "eating", cn: "在哪吃" }
+      { en: "from", cn: "来自", ph: "frɒm" },
+      { en: "going", cn: "去", ph: "GO-ing" },
+      { en: "now", cn: "现在在", ph: "naʊ" },
+      { en: "living", cn: "住", ph: "LIV-ing" },
+      { en: "working", cn: "工作", ph: "WURK-ing" },
+      { en: "staying", cn: "待", ph: "STAY-ing" },
+      { en: "headed", cn: "前往", ph: "HED-ed" },
+      { en: "coming from", cn: "从哪来", ph: "CUM-ing frɒm" },
+      { en: "meeting us", cn: "在哪见我们", ph: "MEE-ting ʌs" },
+      { en: "eating", cn: "在哪吃", ph: "EAT-ing" }
     ]
   },
-  { scene: "社交", type: "q", en: "What's your favorite ___?", cn: "你最喜欢的 ______ 是什么？",
+  { scene: "社交", type: "q", ph: "wɒts jɔːr FEI-vor-it", en: "What's your favorite ___?", cn: "你最喜欢的 ______ 是什么？",
     chunks: [
-      { en: "food", cn: "食物" }, { en: "color", cn: "颜色" },
-      { en: "music", cn: "音乐" }, { en: "movie", cn: "电影" },
-      { en: "sport", cn: "运动" }, { en: "city", cn: "城市" },
-      { en: "season", cn: "季节" }, { en: "drink", cn: "饮料" },
-      { en: "hobby", cn: "爱好" }, { en: "song", cn: "歌曲" }
+      { en: "food", cn: "食物", ph: "fuːd" },
+      { en: "color", cn: "颜色", ph: "CUL-or" },
+      { en: "music", cn: "音乐", ph: "MU-sic" },
+      { en: "movie", cn: "电影", ph: "MU-vi" },
+      { en: "sport", cn: "运动", ph: "spɔːrt" },
+      { en: "city", cn: "城市", ph: "SI-ty" },
+      { en: "season", cn: "季节", ph: "SEE-son" },
+      { en: "drink", cn: "饮料", ph: "drɪŋk" },
+      { en: "hobby", cn: "爱好", ph: "HOB-by" },
+      { en: "song", cn: "歌曲", ph: "sɒŋ" }
     ]
   },
-  { scene: "社交", type: "q", en: "How long have you ___?", cn: "你 ______ 多久了？",
+  { scene: "社交", type: "q", ph: "haʊ lɒŋ hæv juː", en: "How long have you ___?", cn: "你 ______ 多久了？",
     chunks: [
-      { en: "been here", cn: "在这里" }, { en: "worked here", cn: "在这里工作" },
-      { en: "lived here", cn: "住在这里" }, { en: "studied English", cn: "学英语" },
-      { en: "known him", cn: "认识他" }, { en: "been married", cn: "结婚" },
-      { en: "had this job", cn: "做这份工作" }, { en: "been in China", cn: "在中国" },
-      { en: "played guitar", cn: "弹吉他" }, { en: "been friends", cn: "是朋友" }
+      { en: "been here", cn: "在这里", ph: "biːn hɪər" },
+      { en: "worked here", cn: "在这里工作", ph: "wɜːrkt hɪər" },
+      { en: "lived here", cn: "住在这里", ph: "lɪvd hɪər" },
+      { en: "studied English", cn: "学英语", ph: "STUD-ied IN-ɡlɪʃ" },
+      { en: "known him", cn: "认识他", ph: "nəʊn hɪm" },
+      { en: "been married", cn: "结婚", ph: "biːn MAR-ried" },
+      { en: "had this job", cn: "做这份工作", ph: "hæd ðɪs dʒɒb" },
+      { en: "been in China", cn: "在中国", ph: "biːn ɪn CHAI-na" },
+      { en: "played guitar", cn: "弹吉他", ph: "pleɪd ɡi-TAR" },
+      { en: "been friends", cn: "是朋友", ph: "biːn frendz" }
     ]
   },
 
   // ============ 旅行（14个） ============
-  { scene: "旅行", type: "s", en: "Where is ___?", cn: "______ 在哪里？",
+  { scene: "旅行", type: "s", ph: "weər ɪz", en: "Where is ___?", cn: "______ 在哪里？",
     chunks: [
-      { en: "the station", cn: "车站" }, { en: "the airport", cn: "机场" },
-      { en: "the hotel", cn: "酒店" }, { en: "the restroom", cn: "洗手间" },
-      { en: "the bank", cn: "银行" }, { en: "the bus stop", cn: "公交站" },
-      { en: "the exit", cn: "出口" }, { en: "the entrance", cn: "入口" },
-      { en: "the taxi stand", cn: "出租车站" }, { en: "the information desk", cn: "问讯处" }
+      { en: "the station", cn: "车站", ph: "ðə STA-tion" },
+      { en: "the airport", cn: "机场", ph: "ði AIR-port" },
+      { en: "the hotel", cn: "酒店", ph: "ðə ho-TEL" },
+      { en: "the restroom", cn: "洗手间", ph: "ðə REST-room" },
+      { en: "the bank", cn: "银行", ph: "ðə bæŋk" },
+      { en: "the bus stop", cn: "公交站", ph: "ðə bʌs stɒp" },
+      { en: "the exit", cn: "出口", ph: "ði EX-it" },
+      { en: "the entrance", cn: "入口", ph: "ði EN-trance" },
+      { en: "the taxi stand", cn: "出租车站", ph: "ðə TAX-i stænd" },
+      { en: "the information desk", cn: "问讯处", ph: "ði in-for-MA-tion desk" }
     ]
   },
-  { scene: "旅行", type: "s", en: "How can I ___?", cn: "我怎么 ______？",
+  { scene: "旅行", type: "s", ph: "haʊ kæn aɪ", en: "How can I ___?", cn: "我怎么 ______？",
     chunks: [
-      { en: "get to the airport", cn: "去机场" }, { en: "find the hotel", cn: "找酒店" },
-      { en: "buy a ticket", cn: "买票" }, { en: "take the subway", cn: "坐地铁" },
-      { en: "change my flight", cn: "改签" }, { en: "call a taxi", cn: "叫出租车" },
-      { en: "get to the city center", cn: "去市中心" }, { en: "find a good restaurant", cn: "找好餐厅" },
-      { en: "use the Wi-Fi", cn: "用Wi-Fi" }, { en: "get to the train station", cn: "去火车站" }
+      { en: "get to the airport", cn: "去机场", ph: "ɡet tuː ði AIR-port" },
+      { en: "find the hotel", cn: "找酒店", ph: "faɪnd ðə ho-TEL" },
+      { en: "buy a ticket", cn: "买票", ph: "baɪ ə TICK-et" },
+      { en: "take the subway", cn: "坐地铁", ph: "teɪk ðə SUB-way" },
+      { en: "change my flight", cn: "改签", ph: "tʃeɪndʒ maɪ flaɪt" },
+      { en: "call a taxi", cn: "叫出租车", ph: "kɔːl ə TAX-i" },
+      { en: "get to the city center", cn: "去市中心", ph: "ɡet tuː ðə SI-ty CEN-ter" },
+      { en: "find a good restaurant", cn: "找好餐厅", ph: "faɪnd ə ɡʊd RES-tau-rant" },
+      { en: "use the Wi-Fi", cn: "用Wi-Fi", ph: "juːz ðə WAI-fai" },
+      { en: "get to the train station", cn: "去火车站", ph: "ɡet tuː ðə treɪn STA-tion" }
     ]
   },
-  { scene: "旅行", type: "s", en: "I need to ___.", cn: "我需要 ______。",
+  { scene: "旅行", type: "s", ph: "aɪ niːd tuː", en: "I need to ___.", cn: "我需要 ______。",
     chunks: [
-      { en: "check in", cn: "办登机" }, { en: "show my passport", cn: "出示护照" },
-      { en: "find my gate", cn: "找登机口" }, { en: "catch my flight", cn: "赶航班" },
-      { en: "change my seat", cn: "换座位" }, { en: "book a hotel", cn: "订酒店" },
-      { en: "rent a car", cn: "租车" }, { en: "buy a ticket", cn: "买票" },
-      { en: "get my luggage", cn: "取行李" }, { en: "find a taxi", cn: "找出租车" }
+      { en: "check in", cn: "办登机", ph: "tʃek ɪn" },
+      { en: "show my passport", cn: "出示护照", ph: "ʃəʊ maɪ PASS-port" },
+      { en: "find my gate", cn: "找登机口", ph: "faɪnd maɪ ɡeɪt" },
+      { en: "catch my flight", cn: "赶航班", ph: "kætʃ maɪ flaɪt" },
+      { en: "change my seat", cn: "换座位", ph: "tʃeɪndʒ maɪ siːt" },
+      { en: "book a hotel", cn: "订酒店", ph: "bʊk ə ho-TEL" },
+      { en: "rent a car", cn: "租车", ph: "rent ə kɑːr" },
+      { en: "buy a ticket", cn: "买票", ph: "baɪ ə TICK-et" },
+      { en: "get my luggage", cn: "取行李", ph: "ɡet maɪ LUG-gage" },
+      { en: "find a taxi", cn: "找出租车", ph: "faɪnd ə TAX-i" }
     ]
   },
-  { scene: "旅行", type: "s", en: "Can I ___?", cn: "我可以 ______ 吗？",
+  { scene: "旅行", type: "s", ph: "kæn aɪ", en: "Can I ___?", cn: "我可以 ______ 吗？",
     chunks: [
-      { en: "have a window seat", cn: "要靠窗座位" }, { en: "take this bag", cn: "带这个包" },
-      { en: "check in here", cn: "在这里办登机" }, { en: "change my flight", cn: "改签" },
-      { en: "have a receipt", cn: "要收据" }, { en: "see the menu", cn: "看菜单" },
-      { en: "pay in cash", cn: "付现金" }, { en: "get a wake-up call", cn: "要叫醒服务" },
-      { en: "have more water", cn: "再要点水" }, { en: "sit here", cn: "坐这里" }
+      { en: "have a window seat", cn: "要靠窗座位", ph: "hæv ə WIN-dow siːt" },
+      { en: "take this bag", cn: "带这个包", ph: "teɪk ðɪs bæɡ" },
+      { en: "check in here", cn: "在这里办登机", ph: "tʃek ɪn hɪər" },
+      { en: "change my flight", cn: "改签", ph: "tʃeɪndʒ maɪ flaɪt" },
+      { en: "have a receipt", cn: "要收据", ph: "hæv ə re-CEIPT" },
+      { en: "see the menu", cn: "看菜单", ph: "siː ðə MEN-u" },
+      { en: "pay in cash", cn: "付现金", ph: "peɪ ɪn kæʃ" },
+      { en: "get a wake-up call", cn: "要叫醒服务", ph: "ɡet ə weɪk-ʌp kɔːl" },
+      { en: "have more water", cn: "再要点水", ph: "hæv mɔːr WA-ter" },
+      { en: "sit here", cn: "坐这里", ph: "sɪt hɪər" }
     ]
   },
-  { scene: "旅行", type: "s", en: "Is there ___?", cn: "有 ______ 吗？",
+  { scene: "旅行", type: "s", ph: "ɪz ðeər", en: "Is there ___?", cn: "有 ______ 吗？",
     chunks: [
-      { en: "a bank nearby", cn: "附近的银行" }, { en: "a bus stop here", cn: "这里的公交站" },
-      { en: "a good hotel", cn: "好酒店" }, { en: "a supermarket", cn: "超市" },
-      { en: "a hospital", cn: "医院" }, { en: "a post office", cn: "邮局" },
-      { en: "a coffee shop", cn: "咖啡店" }, { en: "a taxi stand", cn: "出租车点" },
-      { en: "a restroom", cn: "洗手间" }, { en: "a phone charger", cn: "充电器" }
+      { en: "a bank nearby", cn: "附近的银行", ph: "ə bæŋk NIR-by" },
+      { en: "a bus stop here", cn: "这里的公交站", ph: "ə bʌs stɒp hɪər" },
+      { en: "a good hotel", cn: "好酒店", ph: "ə ɡʊd ho-TEL" },
+      { en: "a supermarket", cn: "超市", ph: "ə SU-per-mar-ket" },
+      { en: "a hospital", cn: "医院", ph: "ə HOS-pi-tal" },
+      { en: "a post office", cn: "邮局", ph: "ə pəʊst OF-fice" },
+      { en: "a coffee shop", cn: "咖啡店", ph: "ə COF-fee ʃɒp" },
+      { en: "a taxi stand", cn: "出租车点", ph: "ə TAX-i stænd" },
+      { en: "a restroom", cn: "洗手间", ph: "ə REST-room" },
+      { en: "a phone charger", cn: "充电器", ph: "ə fəʊn CHAR-ger" }
     ]
   },
-  { scene: "旅行", type: "s", en: "What time does ___ leave?", cn: "______ 什么时候出发？",
+  { scene: "旅行", type: "s", ph: "wɒt taɪm dʌz", en: "What time does ___ leave?", cn: "______ 什么时候出发？",
     chunks: [
-      { en: "the train", cn: "火车" }, { en: "the bus", cn: "公交车" },
-      { en: "the flight", cn: "航班" }, { en: "the subway", cn: "地铁" },
-      { en: "the next bus", cn: "下一班公交" }, { en: "the last train", cn: "末班车" },
-      { en: "the ferry", cn: "渡轮" }, { en: "the shuttle", cn: "班车" },
-      { en: "the tour bus", cn: "观光巴士" }, { en: "the taxi", cn: "出租车" }
+      { en: "the train", cn: "火车", ph: "ðə treɪn" },
+      { en: "the bus", cn: "公交车", ph: "ðə bʌs" },
+      { en: "the flight", cn: "航班", ph: "ðə flaɪt" },
+      { en: "the subway", cn: "地铁", ph: "ðə SUB-way" },
+      { en: "the next bus", cn: "下一班公交", ph: "ðə nekst bʌs" },
+      { en: "the last train", cn: "末班车", ph: "ðə lɑːst treɪn" },
+      { en: "the ferry", cn: "渡轮", ph: "ðə FER-ry" },
+      { en: "the shuttle", cn: "班车", ph: "ðə SHUT-tle" },
+      { en: "the tour bus", cn: "观光巴士", ph: "ðə tʊər bʌs" },
+      { en: "the taxi", cn: "出租车", ph: "ðə TAX-i" }
     ]
   },
-  { scene: "旅行", type: "s", en: "I'm looking for ___.", cn: "我在找 ______。",
+  { scene: "旅行", type: "s", ph: "aɪm LUK-ing fɔːr", en: "I'm looking for ___.", cn: "我在找 ______。",
     chunks: [
-      { en: "the bus stop", cn: "公交站" }, { en: "my hotel", cn: "我的酒店" },
-      { en: "a taxi", cn: "出租车" }, { en: "the ticket office", cn: "售票处" },
-      { en: "a good restaurant", cn: "好餐厅" }, { en: "a pharmacy", cn: "药店" },
-      { en: "the departure gate", cn: "登机口" }, { en: "my luggage", cn: "我的行李" },
-      { en: "a place to stay", cn: "住的地方" }, { en: "a Wi-Fi spot", cn: "Wi-Fi点" }
+      { en: "the bus stop", cn: "公交站", ph: "ðə bʌs stɒp" },
+      { en: "my hotel", cn: "我的酒店", ph: "maɪ ho-TEL" },
+      { en: "a taxi", cn: "出租车", ph: "ə TAX-i" },
+      { en: "the ticket office", cn: "售票处", ph: "ðə TICK-et OF-fice" },
+      { en: "a good restaurant", cn: "好餐厅", ph: "ə ɡʊd RES-tau-rant" },
+      { en: "a pharmacy", cn: "药店", ph: "ə FAR-ma-cy" },
+      { en: "the departure gate", cn: "登机口", ph: "ðə de-PAR-ture ɡeɪt" },
+      { en: "my luggage", cn: "我的行李", ph: "maɪ LUG-gage" },
+      { en: "a place to stay", cn: "住的地方", ph: "ə pleɪs tuː steɪ" },
+      { en: "a Wi-Fi spot", cn: "Wi-Fi点", ph: "ə WAI-fai spɒt" }
     ]
   },
-  { scene: "旅行", type: "s", en: "Take me to ___, please.", cn: "请带我去 ______。",
+  { scene: "旅行", type: "s", ph: "teɪk miː tuː pliːz", en: "Take me to ___, please.", cn: "请带我去 ______。",
     chunks: [
-      { en: "the airport", cn: "机场" }, { en: "this address", cn: "这个地址" },
-      { en: "the train station", cn: "火车站" }, { en: "the city center", cn: "市中心" },
-      { en: "my hotel", cn: "我的酒店" }, { en: "the nearest bank", cn: "最近的银行" },
-      { en: "the bus terminal", cn: "汽车站" }, { en: "the hospital", cn: "医院" },
-      { en: "the shopping mall", cn: "购物中心" }, { en: "the museum", cn: "博物馆" }
+      { en: "the airport", cn: "机场", ph: "ði AIR-port" },
+      { en: "this address", cn: "这个地址", ph: "ðɪs AD-dress" },
+      { en: "the train station", cn: "火车站", ph: "ðə treɪn STA-tion" },
+      { en: "the city center", cn: "市中心", ph: "ðə SI-ty CEN-ter" },
+      { en: "my hotel", cn: "我的酒店", ph: "maɪ ho-TEL" },
+      { en: "the nearest bank", cn: "最近的银行", ph: "ðə NIR-est bæŋk" },
+      { en: "the bus terminal", cn: "汽车站", ph: "ðə bʌs TER-mi-nal" },
+      { en: "the hospital", cn: "医院", ph: "ðə HOS-pi-tal" },
+      { en: "the shopping mall", cn: "购物中心", ph: "ðə SHOP-ing mɔːl" },
+      { en: "the museum", cn: "博物馆", ph: "ðə mu-SE-um" }
     ]
   },
-  { scene: "旅行", type: "q", en: "Where can I ___?", cn: "我在哪能 ______？",
+  { scene: "旅行", type: "q", ph: "weər kæn aɪ", en: "Where can I ___?", cn: "我在哪能 ______？",
     chunks: [
-      { en: "buy a ticket", cn: "买票" }, { en: "find a taxi", cn: "找出租车" },
-      { en: "get a map", cn: "拿地图" }, { en: "exchange money", cn: "换钱" },
-      { en: "check in", cn: "办登机" }, { en: "wait", cn: "等" },
-      { en: "find food", cn: "找吃的" }, { en: "get Wi-Fi", cn: "连Wi-Fi" },
-      { en: "buy water", cn: "买水" }, { en: "find a restroom", cn: "找洗手间" }
+      { en: "buy a ticket", cn: "买票", ph: "baɪ ə TICK-et" },
+      { en: "find a taxi", cn: "找出租车", ph: "faɪnd ə TAX-i" },
+      { en: "get a map", cn: "拿地图", ph: "ɡet ə mæp" },
+      { en: "exchange money", cn: "换钱", ph: "ex-CHANGE MON-ey" },
+      { en: "check in", cn: "办登机", ph: "tʃek ɪn" },
+      { en: "wait", cn: "等", ph: "weɪt" },
+      { en: "find food", cn: "找吃的", ph: "faɪnd fuːd" },
+      { en: "get Wi-Fi", cn: "连Wi-Fi", ph: "ɡet WAI-fai" },
+      { en: "buy water", cn: "买水", ph: "baɪ WA-ter" },
+      { en: "find a restroom", cn: "找洗手间", ph: "faɪnd ə REST-room" }
     ]
   },
-  { scene: "旅行", type: "q", en: "Is this the right ___?", cn: "这是正确的 ______ 吗？",
+  { scene: "旅行", type: "q", ph: "ɪz ðɪs ðə raɪt", en: "Is this the right ___?", cn: "这是正确的 ______ 吗？",
     chunks: [
-      { en: "way", cn: "路" }, { en: "gate", cn: "登机口" },
-      { en: "train", cn: "火车" }, { en: "bus", cn: "公交" },
-      { en: "platform", cn: "站台" }, { en: "direction", cn: "方向" },
-      { en: "hotel", cn: "酒店" }, { en: "address", cn: "地址" },
-      { en: "stop", cn: "站点" }, { en: "exit", cn: "出口" }
+      { en: "way", cn: "路", ph: "weɪ" },
+      { en: "gate", cn: "登机口", ph: "ɡeɪt" },
+      { en: "train", cn: "火车", ph: "treɪn" },
+      { en: "bus", cn: "公交", ph: "bʌs" },
+      { en: "platform", cn: "站台", ph: "PLAT-form" },
+      { en: "direction", cn: "方向", ph: "di-REC-tion" },
+      { en: "hotel", cn: "酒店", ph: "ho-TEL" },
+      { en: "address", cn: "地址", ph: "AD-dress" },
+      { en: "stop", cn: "站点", ph: "stɒp" },
+      { en: "exit", cn: "出口", ph: "EX-it" }
     ]
   },
-  { scene: "旅行", type: "q", en: "How long does it take to ___?", cn: "到 ______ 要多久？",
+  { scene: "旅行", type: "q", ph: "haʊ lɒŋ dʌz ɪt teɪk tuː", en: "How long does it take to ___?", cn: "到 ______ 要多久？",
     chunks: [
-      { en: "get there", cn: "到那里" }, { en: "check in", cn: "办登机" },
-      { en: "go to the airport", cn: "去机场" }, { en: "reach the hotel", cn: "到酒店" },
-      { en: "wait", cn: "等" }, { en: "arrive", cn: "到达" },
-      { en: "walk there", cn: "走到那" }, { en: "drive there", cn: "开车去那" },
-      { en: "fly there", cn: "飞到那" }, { en: "get to the station", cn: "到车站" }
+      { en: "get there", cn: "到那里", ph: "ɡet ðeər" },
+      { en: "check in", cn: "办登机", ph: "tʃek ɪn" },
+      { en: "go to the airport", cn: "去机场", ph: "ɡəʊ tuː ði AIR-port" },
+      { en: "reach the hotel", cn: "到酒店", ph: "riːtʃ ðə ho-TEL" },
+      { en: "wait", cn: "等", ph: "weɪt" },
+      { en: "arrive", cn: "到达", ph: "ar-RIVE" },
+      { en: "walk there", cn: "走到那", ph: "wɔːk ðeər" },
+      { en: "drive there", cn: "开车去那", ph: "draɪv ðeər" },
+      { en: "fly there", cn: "飞到那", ph: "flaɪ ðeər" },
+      { en: "get to the station", cn: "到车站", ph: "ɡet tuː ðə STA-tion" }
     ]
   },
-  { scene: "旅行", type: "q", en: "Do I need to ___?", cn: "我需要 ______ 吗？",
+  { scene: "旅行", type: "q", ph: "duː aɪ niːd tuː", en: "Do I need to ___?", cn: "我需要 ______ 吗？",
     chunks: [
-      { en: "book a ticket", cn: "订票" }, { en: "show my passport", cn: "出示护照" },
-      { en: "pay extra", cn: "付额外费用" }, { en: "change trains", cn: "换乘" },
-      { en: "wait long", cn: "等很久" }, { en: "fill a form", cn: "填表" },
-      { en: "check in online", cn: "网上登机" }, { en: "take a bus", cn: "坐公交" },
-      { en: "bring a bag", cn: "带包" }, { en: "arrive early", cn: "早到" }
+      { en: "book a ticket", cn: "订票", ph: "bʊk ə TICK-et" },
+      { en: "show my passport", cn: "出示护照", ph: "ʃəʊ maɪ PASS-port" },
+      { en: "pay extra", cn: "付额外费用", ph: "peɪ EX-tra" },
+      { en: "change trains", cn: "换乘", ph: "tʃeɪndʒ treɪnz" },
+      { en: "wait long", cn: "等很久", ph: "weɪt lɒŋ" },
+      { en: "fill a form", cn: "填表", ph: "fɪl ə fɔːrm" },
+      { en: "check in online", cn: "网上登机", ph: "tʃek ɪn ON-line" },
+      { en: "take a bus", cn: "坐公交", ph: "teɪk ə bʌs" },
+      { en: "bring a bag", cn: "带包", ph: "brɪŋ ə bæɡ" },
+      { en: "arrive early", cn: "早到", ph: "ar-RIVE EAR-ly" }
     ]
   },
-  { scene: "旅行", type: "q", en: "Could you tell me ___?", cn: "你能告诉我 ______ 吗？",
+  { scene: "旅行", type: "q", ph: "kʊd juː tel miː", en: "Could you tell me ___?", cn: "你能告诉我 ______ 吗？",
     chunks: [
-      { en: "the way", cn: "怎么走" }, { en: "where it is", cn: "它在哪里" },
-      { en: "the price", cn: "价格" }, { en: "how to get there", cn: "怎么去那" },
-      { en: "the time", cn: "时间" }, { en: "the gate number", cn: "登机口号" },
-      { en: "where to buy tickets", cn: "哪买票" }, { en: "the schedule", cn: "时刻表" },
-      { en: "when it leaves", cn: "什么时候出发" }, { en: "the address", cn: "地址" }
-    ]
-  },
-  { scene: "旅行", type: "q", en: "How far is ___?", cn: "______ 有多远？",
-    chunks: [
-      { en: "the station", cn: "车站" }, { en: "the airport", cn: "机场" },
-      { en: "the hotel", cn: "酒店" }, { en: "the city center", cn: "市中心" },
-      { en: "the beach", cn: "海滩" }, { en: "the museum", cn: "博物馆" },
-      { en: "the bus stop", cn: "公交站" }, { en: "the restaurant", cn: "餐厅" },
-      { en: "the shopping mall", cn: "商场" }, { en: "it from here", cn: "离这" }
-    ]
-  },
-
-  // ============ 购物（14个） ============
-  { scene: "购物", type: "s", en: "How much ___?", cn: "______ 多少钱？",
-    chunks: [
-      { en: "is this", cn: "这个" }, { en: "does it cost", cn: "这个" },
-      { en: "is the total", cn: "总共" }, { en: "is a ticket", cn: "一张票" },
-      { en: "is that one", cn: "那个" }, { en: "for two", cn: "两个" },
-      { en: "is the cheapest one", cn: "最便宜那个" }, { en: "is the discount", cn: "折扣" },
-      { en: "is the delivery fee", cn: "运费" }, { en: "do I need to pay", cn: "该付多少" }
-    ]
-  },
-  { scene: "购物", type: "s", en: "Do you have ___?", cn: "你们有 ______ 吗？",
-    chunks: [
-      { en: "a larger size", cn: "大一点的" }, { en: "this in blue", cn: "蓝色的这个" },
-      { en: "a receipt", cn: "收据" }, { en: "a discount", cn: "折扣" },
-      { en: "this in stock", cn: "这个现货" }, { en: "a smaller size", cn: "小一点的" },
-      { en: "a cheaper one", cn: "便宜点的" }, { en: "a bag", cn: "袋子" },
-      { en: "a warranty", cn: "保修" }, { en: "this in another color", cn: "其他颜色" }
-    ]
-  },
-  { scene: "购物", type: "s", en: "I'm looking for ___.", cn: "我在找 ______。",
-    chunks: [
-      { en: "a gift", cn: "礼物" }, { en: "a shirt", cn: "衬衫" },
-      { en: "some shoes", cn: "鞋子" }, { en: "a phone case", cn: "手机壳" },
-      { en: "a birthday present", cn: "生日礼物" }, { en: "a backpack", cn: "背包" },
-      { en: "a watch", cn: "手表" }, { en: "a hat", cn: "帽子" },
-      { en: "a jacket", cn: "外套" }, { en: "something for my mom", cn: "给我妈的东西" }
-    ]
-  },
-  { scene: "购物", type: "s", en: "Can I ___?", cn: "我可以 ______ 吗？",
-    chunks: [
-      { en: "try this on", cn: "试穿" }, { en: "get a discount", cn: "要折扣" },
-      { en: "pay by card", cn: "刷卡" }, { en: "return this", cn: "退货" },
-      { en: "exchange this", cn: "换货" }, { en: "get a bag", cn: "要袋子" },
-      { en: "have a receipt", cn: "要收据" }, { en: "get a refund", cn: "退款" },
-      { en: "try another one", cn: "试另一个" }, { en: "get a smaller size", cn: "换小号" }
-    ]
-  },
-  { scene: "购物", type: "s", en: "I'll take ___.", cn: "我要 ______。",
-    chunks: [
-      { en: "this one", cn: "这个" }, { en: "that one", cn: "那个" },
-      { en: "two of them", cn: "两个" }, { en: "the blue one", cn: "蓝色的" },
-      { en: "the cheaper one", cn: "便宜的那个" }, { en: "both", cn: "两个都要" },
-      { en: "this and that", cn: "这个和那个" }, { en: "one more", cn: "再来一个" },
-      { en: "all of them", cn: "全要" }, { en: "the red one", cn: "红色的" }
-    ]
-  },
-  { scene: "购物", type: "s", en: "That's too ___.", cn: "那太 ______ 了。",
-    chunks: [
-      { en: "expensive", cn: "贵" }, { en: "cheap", cn: "便宜" },
-      { en: "big", cn: "大" }, { en: "small", cn: "小" },
-      { en: "long", cn: "长" }, { en: "short", cn: "短" },
-      { en: "heavy", cn: "重" }, { en: "light", cn: "轻" },
-      { en: "dark", cn: "深色" }, { en: "bright", cn: "亮" }
-    ]
-  },
-  { scene: "购物", type: "s", en: "Can you give me ___?", cn: "你能给我 ______ 吗？",
-    chunks: [
-      { en: "a discount", cn: "折扣" }, { en: "a bag", cn: "袋子" },
-      { en: "a receipt", cn: "收据" }, { en: "a refund", cn: "退款" },
-      { en: "a better price", cn: "更好的价格" }, { en: "another one", cn: "另一个" },
-      { en: "a warranty card", cn: "保修卡" }, { en: "free delivery", cn: "免费配送" },
-      { en: "some samples", cn: "一些样品" }, { en: "a bigger size", cn: "更大尺码" }
-    ]
-  },
-  { scene: "购物", type: "s", en: "It's too ___ for me.", cn: "这对我来说太 ______ 了。",
-    chunks: [
-      { en: "expensive", cn: "贵" }, { en: "big", cn: "大" },
-      { en: "small", cn: "小" }, { en: "heavy", cn: "重" },
-      { en: "long", cn: "长" }, { en: "short", cn: "短" },
-      { en: "tight", cn: "紧" }, { en: "loose", cn: "松" },
-      { en: "dark", cn: "深" }, { en: "bright", cn: "亮" }
-    ]
-  },
-  { scene: "购物", type: "q", en: "What's the price of ___?", cn: "______ 的价格是多少？",
-    chunks: [
-      { en: "this", cn: "这个" }, { en: "that", cn: "那个" },
-      { en: "the shirt", cn: "这件衬衫" }, { en: "the bag", cn: "这个包" },
-      { en: "two of them", cn: "两个" }, { en: "this one", cn: "这个" },
-      { en: "that one", cn: "那个" }, { en: "the black one", cn: "黑色的" },
-      { en: "everything", cn: "所有东西" }, { en: "the total", cn: "总共" }
-    ]
-  },
-  { scene: "购物", type: "q", en: "Can you show me ___?", cn: "你能给我看 ______ 吗？",
-    chunks: [
-      { en: "that one", cn: "那个" }, { en: "another", cn: "另一个" },
-      { en: "this bag", cn: "这个包" }, { en: "the menu", cn: "菜单" },
-      { en: "a bigger one", cn: "大一点的" }, { en: "a smaller one", cn: "小一点的" },
-      { en: "other colors", cn: "其他颜色" }, { en: "the receipt", cn: "收据" },
-      { en: "more options", cn: "更多选择" }, { en: "a new one", cn: "新的" }
-    ]
-  },
-  { scene: "购物", type: "q", en: "Do you accept ___?", cn: "你们接受 ______ 吗？",
-    chunks: [
-      { en: "cash", cn: "现金" }, { en: "credit cards", cn: "信用卡" },
-      { en: "WeChat Pay", cn: "微信支付" }, { en: "Alipay", cn: "支付宝" },
-      { en: "dollars", cn: "美元" }, { en: "mobile payment", cn: "手机支付" },
-      { en: "coupons", cn: "优惠券" }, { en: "gift cards", cn: "礼品卡" },
-      { en: "returns", cn: "退货" }, { en: "exchanges", cn: "换货" }
-    ]
-  },
-  { scene: "购物", type: "q", en: "Is there any ___?", cn: "有 ______ 吗？",
-    chunks: [
-      { en: "discount", cn: "折扣" }, { en: "sale", cn: "促销" },
-      { en: "cheaper one", cn: "更便宜的" }, { en: "promotion", cn: "优惠" },
-      { en: "tax refund", cn: "退税" }, { en: "warranty", cn: "保修" },
-      { en: "other colors", cn: "其他颜色" }, { en: "bigger size", cn: "更大尺码" },
-      { en: "smaller size", cn: "更小尺码" }, { en: "delivery", cn: "配送" }
-    ]
-  },
-  { scene: "购物", type: "q", en: "What size do you ___?", cn: "你 ______ 什么尺码？",
-    chunks: [
-      { en: "need", cn: "需要" }, { en: "wear", cn: "穿" },
-      { en: "take", cn: "拿" }, { en: "want", cn: "要" },
-      { en: "have", cn: "有" }, { en: "prefer", cn: "偏好" },
-      { en: "recommend", cn: "推荐" }, { en: "suggest", cn: "建议" },
-      { en: "usually buy", cn: "通常买" }, { en: "like", cn: "喜欢" }
-    ]
-  },
-  { scene: "购物", type: "q", en: "Can I pay with ___?", cn: "我可以用 ______ 支付吗？",
-    chunks: [
-      { en: "cash", cn: "现金" }, { en: "a credit card", cn: "信用卡" },
-      { en: "WeChat Pay", cn: "微信" }, { en: "Alipay", cn: "支付宝" },
-      { en: "my phone", cn: "手机" }, { en: "a gift card", cn: "礼品卡" },
-      { en: "US dollars", cn: "美元" }, { en: "a coupon", cn: "优惠券" },
-      { en: "Apple Pay", cn: "Apple Pay" }, { en: "a debit card", cn: "借记卡" }
-    ]
-  },
-
-  // ============ 紧急（12个） ============
-  { scene: "紧急", type: "s", en: "I need help ___.", cn: "我需要帮助 ______。",
-    chunks: [
-      { en: "right now", cn: "马上" }, { en: "with this", cn: "帮这个" },
-      { en: "immediately", cn: "立刻" }, { en: "please", cn: "拜托" },
-      { en: "with my car", cn: "车的问题" }, { en: "with my phone", cn: "手机的问题" },
-      { en: "with directions", cn: "问路" }, { en: "with my luggage", cn: "行李的问题" },
-      { en: "with my child", cn: "孩子的事" }, { en: "with the door", cn: "门的问题" }
-    ]
-  },
-  { scene: "紧急", type: "s", en: "Call ___!", cn: "叫 ______！",
-    chunks: [
-      { en: "the police", cn: "警察" }, { en: "an ambulance", cn: "救护车" },
-      { en: "a doctor", cn: "医生" }, { en: "the fire department", cn: "消防队" },
-      { en: "a taxi", cn: "出租车" }, { en: "my friend", cn: "我朋友" },
-      { en: "the hotel", cn: "酒店" }, { en: "the front desk", cn: "前台" },
-      { en: "911", cn: "911" }, { en: "a tow truck", cn: "拖车" }
-    ]
-  },
-  { scene: "紧急", type: "s", en: "I lost ___.", cn: "我丢了 ______。",
-    chunks: [
-      { en: "my wallet", cn: "钱包" }, { en: "my phone", cn: "手机" },
-      { en: "my passport", cn: "护照" }, { en: "my keys", cn: "钥匙" },
-      { en: "my bag", cn: "包" }, { en: "my ticket", cn: "票" },
-      { en: "my luggage", cn: "行李" }, { en: "my credit card", cn: "信用卡" },
-      { en: "my glasses", cn: "眼镜" }, { en: "my child", cn: "孩子" }
-    ]
-  },
-  { scene: "紧急", type: "s", en: "Is there ___ nearby?", cn: "附近有 ______ 吗？",
-    chunks: [
-      { en: "a doctor", cn: "医生" }, { en: "a hospital", cn: "医院" },
-      { en: "a police station", cn: "警察局" }, { en: "a pharmacy", cn: "药店" },
-      { en: "anyone who speaks English", cn: "会说英语的人" }, { en: "a security guard", cn: "保安" },
-      { en: "a manager", cn: "经理" }, { en: "a lost and found", cn: "失物招领" },
-      { en: "a taxi", cn: "出租车" }, { en: "someone who can help", cn: "能帮忙的人" }
-    ]
-  },
-  { scene: "紧急", type: "s", en: "I don't feel well. I have ___.", cn: "我不舒服，我 ______。",
-    chunks: [
-      { en: "a headache", cn: "头疼" }, { en: "a fever", cn: "发烧" },
-      { en: "a stomachache", cn: "肚子疼" }, { en: "a cough", cn: "咳嗽" },
-      { en: "a sore throat", cn: "喉咙痛" }, { en: "a toothache", cn: "牙疼" },
-      { en: "a backache", cn: "背疼" }, { en: "a cold", cn: "感冒" },
-      { en: "an allergy", cn: "过敏" }, { en: "a rash", cn: "皮疹" }
-    ]
-  },
-  { scene: "紧急", type: "s", en: "There's a problem with ___.", cn: "______ 出了问题。",
-    chunks: [
-      { en: "my room", cn: "我的房间" }, { en: "the bill", cn: "账单" },
-      { en: "my order", cn: "我的订单" }, { en: "the car", cn: "车" },
-      { en: "the door", cn: "门" }, { en: "the water", cn: "水" },
-      { en: "the Wi-Fi", cn: "Wi-Fi" }, { en: "the air conditioner", cn: "空调" },
-      { en: "the key card", cn: "房卡" }, { en: "the TV", cn: "电视" }
-    ]
-  },
-  { scene: "紧急", type: "s", en: "Please help me ___.", cn: "请帮我 ______。",
-    chunks: [
-      { en: "call a taxi", cn: "叫出租车" }, { en: "find my hotel", cn: "找酒店" },
-      { en: "read this", cn: "读这个" }, { en: "understand this", cn: "理解这个" },
-      { en: "find a doctor", cn: "找医生" }, { en: "fix this", cn: "修这个" },
-      { en: "contact my family", cn: "联系家人" }, { en: "get a refund", cn: "退款" },
-      { en: "fill this form", cn: "填表" }, { en: "explain this", cn: "解释这个" }
-    ]
-  },
-  { scene: "紧急", type: "q", en: "What should I do if ___?", cn: "如果 ______ 怎么办？",
-    chunks: [
-      { en: "I lose my passport", cn: "护照丢了" }, { en: "I get sick", cn: "生病了" },
-      { en: "I miss my flight", cn: "错过航班" }, { en: "I lose my wallet", cn: "钱包丢了" },
-      { en: "I get lost", cn: "迷路了" }, { en: "my phone dies", cn: "手机没电" },
-      { en: "I need help", cn: "需要帮助" }, { en: "it rains", cn: "下雨了" },
-      { en: "I forget my key", cn: "忘带钥匙" }, { en: "I'm late", cn: "迟到了" }
-    ]
-  },
-  { scene: "紧急", type: "q", en: "Where can I find ___?", cn: "我在哪能找到 ______？",
-    chunks: [
-      { en: "a doctor", cn: "医生" }, { en: "a police station", cn: "警察局" },
-      { en: "a pharmacy", cn: "药店" }, { en: "a taxi", cn: "出租车" },
-      { en: "help", cn: "帮助" }, { en: "a phone", cn: "电话" },
-      { en: "a bank", cn: "银行" }, { en: "a hotel", cn: "酒店" },
-      { en: "a hospital", cn: "医院" }, { en: "a map", cn: "地图" }
-    ]
-  },
-  { scene: "紧急", type: "q", en: "Can you help me ___?", cn: "你能帮我 ______ 吗？",
-    chunks: [
-      { en: "find my way", cn: "找路" }, { en: "call a taxi", cn: "叫出租车" },
-      { en: "find a doctor", cn: "找医生" }, { en: "carry this", cn: "搬这个" },
-      { en: "understand this", cn: "理解这个" }, { en: "find my hotel", cn: "找我的酒店" },
-      { en: "read this", cn: "读这个" }, { en: "fix this", cn: "修这个" },
-      { en: "contact my family", cn: "联系家人" }, { en: "get a refund", cn: "退款" }
-    ]
-  },
-  { scene: "紧急", type: "q", en: "Is it ___?", cn: "它 ______ 吗？",
-    chunks: [
-      { en: "urgent", cn: "紧急" }, { en: "serious", cn: "严重" },
-      { en: "far", cn: "远" }, { en: "safe", cn: "安全" },
-      { en: "expensive", cn: "贵" }, { en: "open now", cn: "现在开门" },
-      { en: "far from here", cn: "离这远" }, { en: "the right way", cn: "对的路" },
-      { en: "okay to walk", cn: "可以走过去" }, { en: "dangerous", cn: "危险" }
-    ]
-  },
-  { scene: "紧急", type: "q", en: "Could you ___ for me?", cn: "你能为我 ______ 吗？",
-    chunks: [
-      { en: "call a taxi", cn: "叫出租车" }, { en: "call the police", cn: "报警" },
-      { en: "call an ambulance", cn: "叫救护车" }, { en: "write it down", cn: "写下来" },
-      { en: "translate this", cn: "翻译这个" }, { en: "show me on the map", cn: "在地图上指给我" },
-      { en: "call my family", cn: "给我家人打电话" }, { en: "help me find it", cn: "帮我找" },
-      { en: "explain this", cn: "解释这个" }, { en: "read this", cn: "读这个" }
-    ]
-  },
-
-  // ============ 餐厅（12个） ============
-  { scene: "餐厅", type: "s", en: "I'd like to ___.", cn: "我想 ______。",
-    chunks: [
-      { en: "order now", cn: "现在点餐" }, { en: "see the menu", cn: "看菜单" },
-      { en: "have the bill", cn: "买单" }, { en: "try this dish", cn: "尝这道菜" },
-      { en: "book a table", cn: "订位" }, { en: "have some water", cn: "要点水" },
-      { en: "get a coffee", cn: "要杯咖啡" }, { en: "see the wine list", cn: "看酒单" },
-      { en: "order dessert", cn: "点甜点" }, { en: "take this away", cn: "打包" }
-    ]
-  },
-  { scene: "餐厅", type: "s", en: "Could I have ___?", cn: "请给我 ______ 好吗？",
-    chunks: [
-      { en: "the menu", cn: "菜单" }, { en: "some water", cn: "一些水" },
-      { en: "a fork", cn: "一个叉子" }, { en: "the bill", cn: "账单" },
-      { en: "a napkin", cn: "一张餐巾" }, { en: "another drink", cn: "再来一杯" },
-      { en: "some bread", cn: "一些面包" }, { en: "a coffee", cn: "一杯咖啡" },
-      { en: "the check", cn: "账单" }, { en: "a table for two", cn: "两人桌" }
-    ]
-  },
-  { scene: "餐厅", type: "s", en: "What's ___?", cn: "______ 是什么？",
-    chunks: [
-      { en: "the special", cn: "今日特餐" }, { en: "the soup of the day", cn: "今日例汤" },
-      { en: "the most popular dish", cn: "最受欢迎的菜" }, { en: "the price of this", cn: "这个的价格" },
-      { en: "the recommendation", cn: "推荐菜" }, { en: "in this dish", cn: "这道菜的食材" },
-      { en: "the waiting time", cn: "等待时间" }, { en: "your best seller", cn: "畅销菜" },
-      { en: "the difference", cn: "区别" }, { en: "the portion size", cn: "分量" }
-    ]
-  },
-  { scene: "餐厅", type: "s", en: "Do you have ___?", cn: "你们有 ______ 吗？",
-    chunks: [
-      { en: "a table for two", cn: "两人桌" }, { en: "a vegetarian dish", cn: "素食" },
-      { en: "a kids' menu", cn: "儿童菜单" }, { en: "any recommendations", cn: "推荐菜" },
-      { en: "a non-spicy dish", cn: "不辣的菜" }, { en: "a high chair", cn: "儿童椅" },
-      { en: "a quiet table", cn: "安静的桌子" }, { en: "a dessert menu", cn: "甜点菜单" },
-      { en: "any specials", cn: "特价菜" }, { en: "a window seat", cn: "靠窗座位" }
-    ]
-  },
-  { scene: "餐厅", type: "s", en: "Can I ___?", cn: "我可以 ______ 吗？",
-    chunks: [
-      { en: "order now", cn: "现在点餐" }, { en: "have the bill", cn: "买单" },
-      { en: "get a takeaway box", cn: "要打包盒" }, { en: "change my order", cn: "改单" },
-      { en: "have some more water", cn: "再要水" }, { en: "pay by card", cn: "刷卡" },
-      { en: "sit by the window", cn: "坐窗边" }, { en: "get a menu", cn: "要菜单" },
-      { en: "have a receipt", cn: "要收据" }, { en: "see the manager", cn: "见经理" }
-    ]
-  },
-  { scene: "餐厅", type: "s", en: "The ___ is delicious.", cn: "这个 ______ 很好吃。",
-    chunks: [
-      { en: "soup", cn: "汤" }, { en: "steak", cn: "牛排" },
-      { en: "fish", cn: "鱼" }, { en: "chicken", cn: "鸡" },
-      { en: "salad", cn: "沙拉" }, { en: "pasta", cn: "意面" },
-      { en: "rice", cn: "米饭" }, { en: "noodles", cn: "面条" },
-      { en: "dessert", cn: "甜点" }, { en: "coffee", cn: "咖啡" }
-    ]
-  },
-  { scene: "餐厅", type: "s", en: "I'm allergic to ___.", cn: "我对 ______ 过敏。",
-    chunks: [
-      { en: "peanuts", cn: "花生" }, { en: "seafood", cn: "海鲜" },
-      { en: "milk", cn: "牛奶" }, { en: "eggs", cn: "鸡蛋" },
-      { en: "nuts", cn: "坚果" }, { en: "gluten", cn: "麸质" },
-      { en: "spicy food", cn: "辣的食物" }, { en: "shellfish", cn: "贝类" },
-      { en: "soy", cn: "大豆" }, { en: "pork", cn: "猪肉" }
-    ]
-  },
-  { scene: "餐厅", type: "q", en: "What do you ___?", cn: "你 ______ 什么？",
-    chunks: [
-      { en: "recommend", cn: "推荐" }, { en: "suggest", cn: "建议" },
-      { en: "have for dessert", cn: "有什么甜点" }, { en: "have for kids", cn: "有什么儿童餐" },
-      { en: "have for drinks", cn: "有什么喝的" }, { en: "have as a starter", cn: "有什么前菜" },
-      { en: "think of this dish", cn: "觉得这道菜如何" }, { en: "like best", cn: "最喜欢什么" },
-      { en: "have today", cn: "今天有什么" }, { en: "have special", cn: "有什么特餐" }
-    ]
-  },
-  { scene: "餐厅", type: "q", en: "Can I have ___?", cn: "可以有 ______ 吗？",
-    chunks: [
-      { en: "the menu", cn: "菜单" }, { en: "water", cn: "水" },
-      { en: "more bread", cn: "更多面包" }, { en: "the bill", cn: "账单" },
-      { en: "a fork", cn: "叉子" }, { en: "some sauce", cn: "一些酱汁" },
-      { en: "a coffee", cn: "一杯咖啡" }, { en: "two glasses", cn: "两个杯子" },
-      { en: "the check", cn: "账单" }, { en: "a table for four", cn: "四人桌" }
-    ]
-  },
-  { scene: "餐厅", type: "q", en: "Is this ___?", cn: "这是 ______ 吗？",
-    chunks: [
-      { en: "spicy", cn: "辣" }, { en: "vegetarian", cn: "素食" },
-      { en: "fresh", cn: "新鲜" }, { en: "gluten-free", cn: "无麸质" },
-      { en: "the same", cn: "一样" }, { en: "for two", cn: "两人份" },
-      { en: "on the menu", cn: "菜单上" }, { en: "okay for kids", cn: "适合小孩" },
-      { en: "the special", cn: "特餐" }, { en: "included", cn: "包含在内" }
-    ]
-  },
-  { scene: "餐厅", type: "q", en: "How would you like ___?", cn: "你想要 ______ 怎样？",
-    chunks: [
-      { en: "your steak", cn: "牛排几分熟" }, { en: "your coffee", cn: "咖啡怎么喝" },
-      { en: "your eggs", cn: "鸡蛋怎么做" }, { en: "the soup", cn: "汤怎么样" },
-      { en: "the salad", cn: "沙拉怎么样" }, { en: "your tea", cn: "茶怎么样" },
-      { en: "the rice", cn: "米饭怎么样" }, { en: "your food", cn: "食物怎么样" },
-      { en: "the fish", cn: "鱼怎么样" }, { en: "your drink", cn: "饮料怎么样" }
-    ]
-  },
-  { scene: "餐厅", type: "q", en: "Could we have ___?", cn: "我们可以要 ______ 吗？",
-    chunks: [
-      { en: "a table", cn: "一张桌" }, { en: "the menu", cn: "菜单" },
-      { en: "some water", cn: "一些水" }, { en: "the bill", cn: "账单" },
-      { en: "two coffees", cn: "两杯咖啡" }, { en: "more rice", cn: "更多米饭" },
-      { en: "a high chair", cn: "儿童椅" }, { en: "a quiet table", cn: "安静的桌子" },
-      { en: "some napkins", cn: "一些餐巾" }, { en: "the check", cn: "账单" }
-    ]
-  }
-];
-
-// 商品数据
-const PRODUCTS = [
-  { id:1, name:"陶瓷咖啡杯套装", nameEn:"Ceramic Coffee Mug Set", price:39.9, emoji:"☕",
-    descEn:"This set includes four elegant ceramic mugs, microwave and dishwasher safe.",
-    descCn:"四只优雅陶瓷马克杯，可微波炉和洗碗机使用。" },
-  { id:2, name:"无线蓝牙耳机", nameEn:"Wireless Bluetooth Earbuds", price:129, emoji:"🎧",
-    descEn:"High-quality sound with active noise cancellation and 30-hour battery life.",
-    descCn:"高品质音质，主动降噪，30小时续航。" },
-  { id:3, name:"LED护眼台灯", nameEn:"LED Eye-Care Desk Lamp", price:89, emoji:"💡",
-    descEn:"Touch control, three color modes, adjustable brightness, eye-caring design.",
-    descCn:"触控操作，三种色温，亮度可调，护眼设计。" },
-  { id:4, name:"纯棉基础T恤", nameEn:"Cotton Basic T-Shirt", price:49, emoji:"👕",
-    descEn:"100% cotton, breathable and comfortable, multiple colors and sizes.",
-    descCn:"100%纯棉，透气舒适，多种颜色和尺码。" }
-];
-
-// ================================================================
-// 状态
-// ================================================================
-let currentScene = "全部";
-let currentType = "all";
-let filteredPatterns = [];
-let currentPatternIndex = 0;
-let currentChunkIndex = 0;
-let isSpeaking = false;
-let showFavOnly = false;
-let favorites = JSON.parse(localStorage.getItem("wordblock_favs") || "[]");
-
-const patternEn = document.getElementById("patternEn");
-const patternCn = document.getElementById("patternCn");
-const patternScene = document.getElementById("patternScene");
-const patternType = document.getElementById("patternType");
-const sentenceEn = document.getElementById("sentenceEn");
-const sentenceCn = document.getElementById("sentenceCn");
-const chunkGrid = document.getElementById("chunkGrid");
-const chunkCount = document.getElementById("chunkCount");
-const patternNav = document.getElementById("patternNav");
-const statusEl = document.getElementById("status");
-const categoryTabs = document.getElementById("categoryTabs");
-const patternList = document.getElementById("patternList");
-const listToggle = document.getElementById("listToggle");
-const listLabel = document.getElementById("listLabel");
-const favToggle = document.getElementById("favToggle");
-const favSentenceBtn = document.getElementById("favSentenceBtn");
-
-// ================================================================
-// 语音引擎
-// ================================================================
-let speechReady = false;
-
-function warmUp() {
-  if (speechReady || !window.speechSynthesis) return;
-  try {
-    const u = new SpeechSynthesisUtterance(" ");
-    u.volume = 0;
-    u.onend = () => speechReady = true;
-    u.onerror = () => speechReady = true;
-    window.speechSynthesis.speak(u);
-    speechReady = true;
-  } catch(e) { speechReady = true; }
-}
-
-function speak(text, lang, cb) {
-  if (!window.speechSynthesis) {
-    statusEl.textContent = "❌ 浏览器不支持语音";
-    if (cb) cb();
-    return;
-  }
-  warmUp();
-  try { window.speechSynthesis.cancel(); } catch(e) {}
-  const clean = String(text).replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
-  if (!clean) { if (cb) cb(); return; }
-  setTimeout(() => {
-    const u = new SpeechSynthesisUtterance(clean);
-    u.lang = lang || (/[\u4e00-\u9fa5]/.test(clean) ? "zh-CN" : "en-US");
-    u.rate = 0.95;
-    u.pitch = 1.0;
-    u.volume = 1.0;
-    let ended = false;
-    const finish = () => { if (ended) return; ended = true; isSpeaking = false; if (cb) cb(); };
-    u.onstart = () => { isSpeaking = true; };
-    u.onend = finish;
-    u.onerror = finish;
-    try { window.speechSynthesis.speak(u); } catch(e) { finish(); }
-    setTimeout(finish, 10000);
-  }, 60);
-}
-
-// ================================================================
-// 筛选
-// ================================================================
-function updateFilteredPatterns() {
-  let list = PATTERNS;
-  if (currentScene !== "全部") list = list.filter(p => p.scene === currentScene);
-  if (currentType !== "all") list = list.filter(p => p.type === currentType);
-  if (showFavOnly) {
-    list = list.filter(p => favorites.some(f => f.patternEn === p.en && f.scene === p.scene));
-  }
-  filteredPatterns = list;
-  if (currentPatternIndex >= filteredPatterns.length) {
-    currentPatternIndex = 0;
-    currentChunkIndex = 0;
-  }
-  if (!filteredPatterns.length) {
-    patternEn.textContent = showFavOnly ? "还没有收藏" : "该筛选暂无内容";
-    patternCn.textContent = showFavOnly ? "点句子右上角☆收藏" : "换个条件试试";
-    chunkGrid.innerHTML = "";
-    sentenceEn.textContent = "";
-    sentenceCn.textContent = "";
-    patternNav.textContent = "0 / 0";
-    chunkCount.textContent = "0 个词块";
-    return;
-  }
-  renderPattern();
-}
-
-// ================================================================
-// 渲染
-// ================================================================
-function renderPattern() {
-  if (!filteredPatterns.length) return;
-  const p = filteredPatterns[currentPatternIndex];
-
-  patternScene.textContent = p.scene;
-  patternType.textContent = p.type === "q" ? "疑问句" : "陈述句";
-  patternType.className = "type-tag " + p.type;
-
-  patternEn.innerHTML = p.en.replace(/___/g, '<span class="blank">___</span>');
-  patternCn.textContent = p.cn;
-
-  chunkGrid.innerHTML = "";
-  p.chunks.forEach((c, i) => {
-    const div = document.createElement("div");
-    div.className = "chunk" + (i === currentChunkIndex ? " active" : "");
-    div.innerHTML = '<div class="en">' + c.en + '</div><div class="cn">' + c.cn + '</div>';
-    div.onclick = () => selectChunk(i);
-    chunkGrid.appendChild(div);
-  });
-
-  chunkCount.textContent = p.chunks.length + " 个词块";
-  patternNav.textContent = (currentPatternIndex + 1) + " / " + filteredPatterns.length;
-
-  showSentence();
-  updateFavButton();
-  renderPatternList();
-}
-
-function showSentence() {
-  const p = filteredPatterns[currentPatternIndex];
-  const c = p.chunks[currentChunkIndex];
-  const fullEn = p.en.replace(/___/g, c.en);
-  const fullCn = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
-
-  sentenceEn.innerHTML = fullEn.replace(c.en, '<span class="chunk-hl">' + c.en + '</span>');
-  sentenceCn.textContent = fullCn;
-}
-
-// ================================================================
-// 🌟 核心：三段式播放
-// 母句骨架 → 词块 → 整句
-// ================================================================
-function selectChunk(index) {
-  currentChunkIndex = index;
-  chunkGrid.querySelectorAll(".chunk").forEach((el, i) => {
-    el.classList.toggle("active", i === index);
-  });
-  showSentence();
-  updateFavButton();
-
-  // 自动三段式播放
-  playThreeStage();
-}
-
-function playThreeStage() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return;
-  const c = p.chunks[currentChunkIndex];
-  const fullEn = p.en.replace(/___/g, c.en);
-
-  // 母句骨架：去掉 ___ 及其后紧跟的标点
-  const patternSkeleton = p.en
-    .replace(/\s*___\s*[.,?!]?/g, "")
-    .trim();
-
-  // 第 1 段：母句骨架
-  statusEl.textContent = "① 母句：" + patternSkeleton;
-  statusEl.className = "status speaking";
-  speak(patternSkeleton, "en-US", () => {
-    setTimeout(() => {
-      // 第 2 段：词块
-      statusEl.textContent = "② 词块：" + c.en;
-      speak(c.en, "en-US", () => {
-        setTimeout(() => {
-          // 第 3 段：完整句
-          statusEl.textContent = "③ 整句：" + fullEn;
-          speak(fullEn, "en-US", () => {
-            statusEl.textContent = "✅ 三段完成 · " + fullEn;
-            statusEl.className = "status";
-          });
-        }, 320);
-      });
-    }, 320);
-  });
-}
-
-function playCurrent() {
-  const p = filteredPatterns[currentPatternIndex];
-  const c = p.chunks[currentChunkIndex];
-  const fullEn = p.en.replace(/___/g, c.en);
-  statusEl.textContent = "🔊 整句：" + fullEn;
-  statusEl.className = "status speaking";
-  speak(fullEn, "en-US", () => {
-    statusEl.textContent = "✅ 播放完成";
-    statusEl.className = "status";
-  });
-}
-
-function playChinese() {
-  const p = filteredPatterns[currentPatternIndex];
-  const c = p.chunks[currentChunkIndex];
-  const fullCn = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
-  statusEl.textContent = "🔊 " + fullCn;
-  statusEl.className = "status speaking";
-  speak(fullCn, "zh-CN", () => {
-    statusEl.textContent = "✅ 中文播放完成";
-    statusEl.className = "status";
-  });
-}
-
-function prevPattern() {
-  if (!filteredPatterns.length) return;
-  currentPatternIndex = (currentPatternIndex - 1 + filteredPatterns.length) % filteredPatterns.length;
-  currentChunkIndex = 0;
-  renderPattern();
-}
-
-function nextPattern() {
-  if (!filteredPatterns.length) return;
-  currentPatternIndex = (currentPatternIndex + 1) % filteredPatterns.length;
-  currentChunkIndex = 0;
-  renderPattern();
-}
-
-// ================================================================
-// 场景 & 类型
-// ================================================================
-function initCategoryTabs() {
-  const scenes = ["全部", ...new Set(PATTERNS.map(p => p.scene))];
-  categoryTabs.innerHTML = scenes.map(s =>
-    '<button class="cat-tab' + (s === "全部" ? " active" : "") + '" data-scene="' + s + '">' + s + '</button>'
-  ).join("");
-  categoryTabs.querySelectorAll(".cat-tab").forEach(btn => {
-    btn.onclick = () => {
-      categoryTabs.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentScene = btn.dataset.scene;
-      currentPatternIndex = 0;
-      currentChunkIndex = 0;
-      updateFilteredPatterns();
-    };
-  });
-}
-
-function setType(type, btn) {
-  document.querySelectorAll(".type-btn").forEach(b => {
-    b.classList.remove("active");
-    b.classList.remove("q");
-  });
-  btn.classList.add("active");
-  if (type === "q") btn.classList.add("q");
-  currentType = type;
-  currentPatternIndex = 0;
-  currentChunkIndex = 0;
-  updateFilteredPatterns();
-}
-
-// ================================================================
-// 母句列表
-// ================================================================
-function toggleList() {
-  if (patternList.classList.contains("open")) {
-    patternList.classList.remove("open");
-    listToggle.classList.remove("open");
-    listLabel.textContent = "📋 选择母句";
-  } else {
-    patternList.classList.add("open");
-    listToggle.classList.add("open");
-    listLabel.textContent = "📋 收起列表";
-    renderPatternList();
-  }
-}
-
-function renderPatternList() {
-  if (!patternList.classList.contains("open")) return;
-  if (!filteredPatterns.length) {
-    patternList.innerHTML = '<div class="pattern-list-empty">暂无内容</div>';
-    return;
-  }
-  patternList.innerHTML = filteredPatterns.map((p, i) =>
-    '<div class="pattern-list-item' + (i === currentPatternIndex ? ' active' : '') + '" onclick="jumpToPattern(' + i + ')">' +
-      '<span class="item-en">' + p.en.replace(/___/g, '____') + '</span>' +
-      '<span class="item-type ' + p.type + '">' + (p.type === 'q' ? '问' : '述') + '</span>' +
-    '</div>'
-  ).join("");
-}
-
-function jumpToPattern(i) {
-  currentPatternIndex = i;
-  currentChunkIndex = 0;
-  renderPattern();
-  patternList.classList.remove("open");
-  listToggle.classList.remove("open");
-  listLabel.textContent = "📋 选择母句";
-}
-
-// ================================================================
-// 收藏
-// ================================================================
-function isCurrentFav() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return false;
-  const c = p.chunks[currentChunkIndex];
-  return favorites.some(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
-}
-
-function updateFavButton() {
-  if (isCurrentFav()) {
-    favSentenceBtn.classList.add("active");
-    favSentenceBtn.textContent = "★";
-  } else {
-    favSentenceBtn.classList.remove("active");
-    favSentenceBtn.textContent = "☆";
-  }
-}
-
-function toggleFavSentence() {
-  const p = filteredPatterns[currentPatternIndex];
-  if (!p) return;
-  const c = p.chunks[currentChunkIndex];
-
-  const idx = favorites.findIndex(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
-  if (idx >= 0) {
-    favorites.splice(idx, 1);
-    statusEl.textContent = "已取消收藏";
-    statusEl.className = "status";
-  } else {
-    favorites.push({
-      scene: p.scene, patternEn: p.en, patternCn: p.cn,
-      chunkEn: c.en, chunkCn: c.cn, type: p.type
-    });
-    statusEl.textContent = "⭐ 已收藏";
-    statusEl.className = "status";
-  }
-  localStorage.setItem("wordblock_favs", JSON.stringify(favorites));
-  updateFavButton();
-}
-
-function toggleFavMode() {
-  showFavOnly = !showFavOnly;
-  favToggle.style.background = showFavOnly ? "#f59e0b" : "#fff";
-  favToggle.style.color = showFavOnly ? "#fff" : "#f59e0b";
-  currentPatternIndex = 0;
-  currentChunkIndex = 0;
-  statusEl.textContent = showFavOnly ? ("⭐ 只显示收藏（共 " + favorites.length + " 条）") : "显示全部内容";
-  updateFilteredPatterns();
-}
-
-// ================================================================
-// 商城
-// ================================================================
-function renderShop() {
-  const grid = document.getElementById("shopGrid");
-  grid.innerHTML = PRODUCTS.map(p =>
-    '<div class="product-card" onclick="openProduct(' + p.id + ')">' +
-      '<div class="product-img">' + p.emoji + '</div>' +
-      '<div class="product-body">' +
-        '<div class="product-name">' + p.name + '</div>' +
-        '<div class="product-name-en">' + p.nameEn + '</div>' +
-        '<div class="product-price">¥' + p.price + '</div>' +
-      '</div>' +
-    '</div>'
-  ).join("");
-}
-
-function openProduct(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  if (!p) return;
-  document.getElementById("mImg").innerHTML = p.emoji;
-  document.getElementById("mName").textContent = p.name + " · " + p.nameEn;
-  document.getElementById("mPrice").textContent = "¥" + p.price;
-  document.getElementById("mDescEn").textContent = p.descEn;
-  document.getElementById("mDescCn").textContent = p.descCn;
-  document.getElementById("productModal").classList.add("open");
-  speak(p.descEn, "en-US");
-}
-
-function closeModal() {
-  document.getElementById("productModal").classList.remove("open");
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-}
-
-// ================================================================
-// Tab切换
-// ================================================================
-function switchTab(tab, btn) {
-  document.querySelectorAll(".tab-mini button").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("learnModule").style.display = tab === "learn" ? "block" : "none";
-  document.getElementById("shopModule").style.display = tab === "shop" ? "block" : "none";
-  if (tab === "shop") renderShop();
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-// ================================================================
-// 初始化
-// ================================================================
-function init() {
-  initCategoryTabs();
-  updateFilteredPatterns();
-
-  const warm = () => { warmUp(); document.removeEventListener("click", warm); document.removeEventListener("touchstart", warm); };
-  document.addEventListener("click", warm);
-  document.addEventListener("touchstart", warm, { passive: true });
-
-  if (window.speechSynthesis) {
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-  }
-
-  const totalChunks = PATTERNS.reduce((s, p) => s + p.chunks.length, 0);
-  const sCount = PATTERNS.filter(p => p.type === "s").length;
-  const qCount = PATTERNS.filter(p => p.type === "q").length;
-  console.log("✅ 已启动 · 母句", PATTERNS.length, "（述", sCount, "+问", qCount, "）· 词块", totalChunks);
-  console.log("📖 场景:", [...new Set(PATTERNS.map(p => p.scene))].join(" / "));
-  console.log("🎧 三段式播放：母句 → 词块 → 整句");
-}
-
-document.getElementById("productModal").addEventListener("click", function(e) {
-  if (e.target === this) closeModal();
-});
-
-document.addEventListener("keydown", e => {
-  if (e.target.tagName === "INPUT") return;
-  if (e.key === "ArrowLeft") prevPattern();
-  if (e.key === "ArrowRight") nextPattern();
-  if (e.key === " ") { e.preventDefault(); playThreeStage(); }
-});
-
-init();
-</script>
-</body>
-</html>
+      { en: "the way
