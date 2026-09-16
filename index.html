@@ -2,14 +2,11 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Chaowen AI 英语主音拼读训练器 V1.3</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Chaowen AI 英语自然拼读与母句语块 V1.4</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -21,9 +18,9 @@ body{
 
 header{
     background:linear-gradient(135deg,#075985,#2563eb);
-    color:white;
+    color:#fff;
     text-align:center;
-    padding:24px 16px;
+    padding:25px 15px;
 }
 
 header h1{
@@ -43,8 +40,8 @@ header p{
     padding:16px;
 }
 
-.tip{
-    background:white;
+.notice{
+    background:#fff;
     border-radius:16px;
     padding:16px 18px;
     margin-bottom:16px;
@@ -52,7 +49,7 @@ header p{
     line-height:1.8;
 }
 
-.tip strong{
+.notice strong{
     color:#2563eb;
 }
 
@@ -60,7 +57,6 @@ header p{
     display:flex;
     gap:8px;
     overflow-x:auto;
-    padding-bottom:5px;
     margin-bottom:16px;
 }
 
@@ -71,7 +67,6 @@ header p{
     border-radius:12px;
     white-space:nowrap;
     cursor:pointer;
-    font-size:14px;
 }
 
 .tab.active{
@@ -87,29 +82,24 @@ header p{
     display:block;
 }
 
-.section-title{
-    background:white;
+.section{
+    background:#fff;
     border-radius:16px;
     padding:18px;
     margin-bottom:15px;
     box-shadow:0 3px 12px rgba(0,0,0,.06);
 }
 
-.section-title h2{
+.section h2{
     margin:0 0 8px;
     font-size:21px;
 }
 
-.section-title p{
+.section p{
     margin:0;
     color:#64748b;
     line-height:1.8;
 }
-
-
-/* =========================
-   通用可发音区域
-========================= */
 
 .speakable{
     cursor:pointer;
@@ -118,13 +108,10 @@ header p{
 
 .speakable:active{
     transform:scale(.96);
-    background:#dbeafe !important;
+    background:#dbeafe!important;
 }
 
-
-/* =========================
-   IPA
-========================= */
+/* IPA */
 
 .ipa-grid{
     display:grid;
@@ -133,13 +120,13 @@ header p{
 }
 
 .ipa-card{
-    background:white;
+    background:#fff;
     border-radius:16px;
     padding:16px;
     box-shadow:0 3px 12px rgba(0,0,0,.06);
 }
 
-.ipa-symbol{
+.ipa{
     display:inline-block;
     font-size:28px;
     font-weight:800;
@@ -148,14 +135,13 @@ header p{
     border-radius:8px;
 }
 
-.ipa-name{
+.type{
     color:#64748b;
     font-size:13px;
-    margin-left:5px;
 }
 
 .mouth{
-    margin-top:9px;
+    margin-top:8px;
     font-size:14px;
     line-height:1.7;
 }
@@ -163,75 +149,70 @@ header p{
 .example{
     margin-top:10px;
     background:#eff6ff;
-    border-radius:12px;
-    padding:11px;
+    padding:10px;
+    border-radius:10px;
 }
 
 .example-word{
     display:inline-block;
-    color:#075985;
     font-size:21px;
     font-weight:800;
+    color:#075985;
     padding:3px 6px;
     border-radius:7px;
 }
 
 .example-sentence{
-    margin-top:8px;
+    margin-top:7px;
     color:#1d4ed8;
-    line-height:1.6;
 }
 
+/* 词族 */
 
-/* =========================
-   词族
-========================= */
-
-.family-menu{
+.family-nav{
     display:flex;
-    gap:8px;
     flex-wrap:wrap;
+    gap:8px;
     margin-bottom:15px;
 }
 
 .family-btn{
     border:0;
     padding:10px 15px;
-    border-radius:11px;
+    border-radius:10px;
     background:#e5e7eb;
     cursor:pointer;
-    font-weight:600;
+    font-weight:700;
 }
 
 .family-btn.active{
     background:#2563eb;
-    color:white;
+    color:#fff;
 }
 
 .family-box{
-    background:white;
+    background:#fff;
     border-radius:18px;
     padding:18px;
     box-shadow:0 3px 12px rgba(0,0,0,.06);
 }
 
-.family-pattern{
+.family-title{
     font-size:32px;
-    font-weight:900;
     color:#2563eb;
+    font-weight:900;
 }
 
-.family-desc{
-    margin-top:5px;
+.family-info{
     color:#64748b;
-    line-height:1.7;
+    line-height:1.8;
 }
 
-.words-grid{
+.family-words{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
     gap:10px;
-    margin-top:17px;
+    margin-top:15px;
 }
 
 .family-word{
@@ -241,259 +222,178 @@ header p{
     padding:13px;
 }
 
-.family-word .word{
-    display:inline-block;
+.family-word-name{
     color:#075985;
     font-size:22px;
-    font-weight:800;
+    font-weight:900;
+    display:inline-block;
     padding:3px 6px;
     border-radius:7px;
 }
 
-.family-word .meaning{
+.family-cn{
     font-size:13px;
     color:#64748b;
     margin-top:4px;
 }
 
-.family-word .sentence{
-    font-size:13px;
-    line-height:1.6;
-    margin-top:8px;
-    color:#1d4ed8;
-}
-
-.family-play{
-    margin-top:16px;
-    border:0;
-    background:#2563eb;
-    color:white;
-    padding:10px 15px;
-    border-radius:11px;
-    cursor:pointer;
-}
-
-
-/* =========================
-   主音拼读引擎
-========================= */
-
-.core-box{
-    margin-top:20px;
+.core{
+    margin-top:18px;
     background:#eff6ff;
-    border-radius:18px;
-    padding:18px;
-}
-
-.core-title{
-    font-size:19px;
-    font-weight:800;
-    color:#075985;
-    margin-bottom:7px;
-}
-
-.core-explain{
-    color:#64748b;
-    font-size:14px;
-    line-height:1.8;
-    margin-bottom:16px;
-}
-
-.word-model{
-    background:white;
     border-radius:16px;
     padding:18px;
-    overflow-x:auto;
 }
 
-.model-label{
-    font-size:13px;
-    color:#64748b;
-    margin-bottom:10px;
-}
-
-.model-row{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.model-piece{
-    min-width:55px;
-    text-align:center;
-    padding:10px 12px;
-    border-radius:12px;
-    background:#f8fafc;
-    border:2px solid #bfdbfe;
+.core h3{
+    margin:0 0 8px;
     color:#075985;
-    font-size:25px;
-    font-weight:900;
 }
 
-.model-piece.vowel{
+.core-row{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.core-piece{
+    background:#fff;
+    border:2px solid #93c5fd;
+    padding:9px 13px;
+    border-radius:11px;
+    font-size:23px;
+    font-weight:900;
+    color:#075985;
+}
+
+.core-vowel{
     background:#fff7ed;
     border-color:#fdba74;
     color:#c2410c;
 }
 
-.model-piece.consonant{
-    background:#eff6ff;
-    border-color:#93c5fd;
-}
-
-.model-piece.core{
-    background:#fef3c7;
-    border-color:#fbbf24;
-    color:#92400e;
-}
-
-.model-arrow{
-    color:#64748b;
-    font-weight:900;
+.arrow{
     font-size:20px;
-}
-
-.model-result{
-    margin-top:18px;
-    text-align:center;
-    font-size:34px;
-    font-weight:900;
-    color:#2563eb;
-}
-
-.stage{
-    margin-top:16px;
-    display:grid;
-    gap:8px;
-}
-
-.stage-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-}
-
-.stage-label{
-    width:95px;
     color:#64748b;
-    font-size:13px;
-}
-
-.stage-value{
-    font-size:20px;
     font-weight:800;
-    color:#075985;
-    background:white;
-    padding:7px 10px;
-    border-radius:9px;
 }
 
+/* 单词 */
 
-/* =========================
-   单词拼读
-========================= */
-
-.word-list{
+.word-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
     gap:12px;
 }
 
 .word-card{
-    background:white;
-    border-radius:16px;
+    background:#fff;
     padding:16px;
+    border-radius:16px;
     box-shadow:0 3px 12px rgba(0,0,0,.06);
 }
 
 .big-word{
     display:inline-block;
-    font-size:26px;
-    font-weight:900;
     color:#075985;
+    font-size:27px;
+    font-weight:900;
     padding:4px 7px;
     border-radius:8px;
 }
 
-.word-cn{
+.meaning{
     color:#64748b;
-    margin-top:7px;
+    margin-top:5px;
 }
 
-.word-parts{
+.parts{
     display:flex;
-    gap:7px;
     flex-wrap:wrap;
+    gap:7px;
     margin-top:12px;
 }
 
 .part{
     background:#eff6ff;
     border:1px solid #bfdbfe;
-    color:#1d4ed8;
-    padding:8px 11px;
     border-radius:9px;
+    padding:8px 11px;
+    color:#1d4ed8;
     font-weight:800;
-    cursor:pointer;
 }
 
-.part-type{
-    font-size:10px;
-    color:#64748b;
-    margin-top:3px;
-}
+/* 母句语块 */
 
-
-/* =========================
-   母句
-========================= */
-
-.sentence-list{
-    display:grid;
-    gap:12px;
-}
-
-.sentence-card{
-    background:white;
-    border-radius:16px;
-    padding:17px;
+.chunk-card{
+    background:#fff;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:13px;
     box-shadow:0 3px 12px rgba(0,0,0,.06);
 }
 
-.sentence{
+.chunk-number{
+    color:#94a3b8;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.chunk-sentence{
+    font-size:22px;
+    font-weight:750;
     color:#075985;
-    font-size:21px;
-    font-weight:700;
     line-height:1.8;
 }
 
-.sentence-word{
-    display:inline-block;
-    padding:2px 4px;
-    border-radius:5px;
+.chunk-line{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+    margin-top:13px;
 }
 
-.sentence-cn{
+.chunk{
+    background:#eff6ff;
+    color:#1d4ed8;
+    border-radius:10px;
+    padding:8px 11px;
+    font-weight:750;
+    cursor:pointer;
+}
+
+.chunk-meaning{
     color:#64748b;
     margin-top:7px;
+    font-size:14px;
 }
 
-
-/* =========================
-   自由转换
-========================= */
-
-.transform-box{
-    background:white;
-    border-radius:18px;
-    padding:18px;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
+.play-chunk{
+    border:0;
+    background:#2563eb;
+    color:white;
+    border-radius:10px;
+    padding:9px 13px;
+    cursor:pointer;
+    margin-top:12px;
 }
 
-.select-row{
+.play-sentence{
+    border:0;
+    background:#075985;
+    color:white;
+    border-radius:10px;
+    padding:9px 13px;
+    cursor:pointer;
+    margin-left:6px;
+}
+
+/* 自由转换 */
+
+.select-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
     gap:10px;
@@ -505,7 +405,6 @@ select{
     border:1px solid #d1d5db;
     border-radius:10px;
     background:white;
-    font-size:15px;
 }
 
 .result{
@@ -513,33 +412,22 @@ select{
     background:#eff6ff;
     border-radius:16px;
     padding:18px;
-}
-
-.result-sentence{
-    color:#075985;
     font-size:24px;
     font-weight:800;
+    color:#075985;
     line-height:1.8;
 }
 
 .result-word{
     display:inline-block;
     padding:2px 4px;
-    border-radius:6px;
-}
-
-.note{
-    margin-top:10px;
-    color:#64748b;
-    font-size:13px;
-    line-height:1.7;
+    border-radius:5px;
 }
 
 .footer{
     text-align:center;
     color:#94a3b8;
     padding:30px 10px;
-    font-size:13px;
 }
 
 @media(max-width:600px){
@@ -548,78 +436,57 @@ select{
         font-size:21px;
     }
 
-    .model-piece{
-        font-size:21px;
-        min-width:48px;
-    }
-
-    .model-result{
-        font-size:29px;
-    }
-
-    .sentence{
+    .chunk-sentence{
         font-size:19px;
+    }
+
+    .result{
+        font-size:21px;
     }
 }
 </style>
 </head>
 
-
 <body>
 
 <header>
-    <h1>🎧 Chaowen AI 英语主音拼读训练器 V1.3</h1>
-    <p>IPA → 主音 → 两块音 → 词族 → 单词 → 母句 → 自由表达</p>
+    <h1>🎧 Chaowen AI 英语自然拼读与母句语块 V1.4</h1>
+    <p>单音本音 → 主音拼读 → 词族 → 母语语块连读 → 高频句 → 自由表达</p>
 </header>
-
 
 <div class="container">
 
-<div class="tip">
-
-    🔊 <strong>本版本的核心：</strong>
-
-    哪里有英文，哪里就能点。
-
+<div class="notice">
+    🧠 <strong>本版本把“单音”和“语块”彻底分开。</strong>
     <br>
-
-    🧠 <strong>拼读思路：</strong>
-
-    前辅音 + 主音（元音）→ 第一块音 → 后辅音 → 整个单词。
-
+    单个音、字母、拼读块、单词：学习它自己的声音。
     <br>
-
+    母语语块：专门训练<strong>连续、自然、连起来的声音</strong>。
+    <br>
     例如：
-
     <strong>c + a → ca + t → cat</strong>
-
+    → <strong>I want to → go home</strong>
 </div>
-
 
 <div class="tabs">
 
-<button class="tab active"
-onclick="showTab('ipa',this)">
+<button class="tab active" onclick="showTab('ipa',this)">
 ① 48音标
 </button>
 
-<button class="tab"
-onclick="showTab('family',this)">
+<button class="tab" onclick="showTab('family',this)">
 ② 词族＋主音
 </button>
 
-<button class="tab"
-onclick="showTab('words',this)">
+<button class="tab" onclick="showTab('words',this)">
 ③ 单词拼读
 </button>
 
-<button class="tab"
-onclick="showTab('sentences',this)">
-④ 母句语块
+<button class="tab" onclick="showTab('chunks',this)">
+④ 母语语块1000句
 </button>
 
-<button class="tab"
-onclick="showTab('transform',this)">
+<button class="tab" onclick="showTab('transform',this)">
 ⑤ 自由转换
 </button>
 
@@ -632,18 +499,14 @@ onclick="showTab('transform',this)">
 
 <section id="ipa" class="panel active">
 
-<div class="section-title">
-
-<h2>① IPA 48 音标</h2>
+<div class="section">
+<h2>① 48 音标：单音本音</h2>
 
 <p>
-点击音标 → 听代表单词。
+这里不练句子连读。
 <br>
-点击例词 → 听单词。
-<br>
-点击例句 → 听句子。
+点击音标、例词，都只学习它自己的声音。
 </p>
-
 </div>
 
 <div id="ipaGrid" class="ipa-grid"></div>
@@ -652,24 +515,23 @@ onclick="showTab('transform',this)">
 
 
 <!-- =========================
-     词族＋主音
+     词族
 ========================= -->
 
 <section id="family" class="panel">
 
-<div class="section-title">
-
+<div class="section">
 <h2>② 词族＋主音拼读</h2>
 
 <p>
-这是本版本最重要的升级。
+先找到元音主音，再让前后的辅音围绕主音组合。
 <br>
-<strong>先找到主音（元音），再让前后辅音围绕主音组合。</strong>
+例如：
+<strong>c + a → ca + t → cat</strong>
 </p>
-
 </div>
 
-<div id="familyMenu" class="family-menu"></div>
+<div id="familyNav" class="family-nav"></div>
 
 <div id="familyContent"></div>
 
@@ -682,40 +544,42 @@ onclick="showTab('transform',this)">
 
 <section id="words" class="panel">
 
-<div class="section-title">
-
+<div class="section">
 <h2>③ 单词拼读</h2>
 
 <p>
-从一个一个声音，进入两块音，再进入完整单词。
+单个字母、组合音、音块、完整单词分别训练。
+<br>
+点击它本身，只听它对应的声音。
 </p>
-
 </div>
 
-<div id="wordList" class="word-list"></div>
+<div id="wordGrid" class="word-grid"></div>
 
 </section>
 
 
 <!-- =========================
-     母句
+     母语语块
 ========================= -->
 
-<section id="sentences" class="panel">
+<section id="chunks" class="panel">
 
-<div class="section-title">
-
-<h2>④ 母句语块</h2>
+<div class="section">
+<h2>④ 母语语块 · 高频1000句</h2>
 
 <p>
-单词最终要进入句子。
+这一部分和前面的“单音训练”不同。
 <br>
-点击单词听单词，点击句子空白位置听完整句。
+<strong>语块必须连起来读。</strong>
+<br>
+例如：
+<strong>I want to</strong> → <strong>go home</strong>
+不是把 I / want / to 一个一个机械地念。
 </p>
-
 </div>
 
-<div id="sentenceList" class="sentence-list"></div>
+<div id="chunkList"></div>
 
 </section>
 
@@ -726,35 +590,29 @@ onclick="showTab('transform',this)">
 
 <section id="transform" class="panel">
 
-<div class="section-title">
+<div class="section">
 
 <h2>⑤ 自由转换</h2>
 
 <p>
-一个句型，替换不同动作和对象。
+一个母句框架，不断替换内容。
 </p>
 
 </div>
 
-<div class="transform-box">
+<div class="section">
 
-<div class="select-row">
+<div class="select-grid">
 
-<select id="subjectSelect"
-onchange="updateTransform()">
-</select>
+<select id="subject" onchange="updateTransform()"></select>
 
-<select id="verbSelect"
-onchange="updateTransform()">
-</select>
+<select id="verb" onchange="updateTransform()"></select>
 
-<select id="objectSelect"
-onchange="updateTransform()">
-</select>
+<select id="object" onchange="updateTransform()"></select>
 
 </div>
 
-<div id="transformResult" class="result"></div>
+<div id="result" class="result"></div>
 
 </div>
 
@@ -762,7 +620,7 @@ onchange="updateTransform()">
 
 
 <div class="footer">
-Chaowen AI · English Learning System V1.3
+Chaowen AI · English Learning System V1.4
 </div>
 
 </div>
@@ -777,17 +635,13 @@ Chaowen AI · English Learning System V1.3
 let voices=[];
 
 function loadVoices(){
-
     voices=speechSynthesis.getVoices();
-
 }
 
 speechSynthesis.onvoiceschanged=loadVoices;
-
 loadVoices();
 
-
-function getEnglishVoice(){
+function englishVoice(){
 
     return (
         voices.find(v=>v.lang==="en-US") ||
@@ -795,15 +649,23 @@ function getEnglishVoice(){
         voices.find(v=>v.lang.startsWith("en")) ||
         null
     );
-
 }
 
 
-/* 当前点击 */
+/*
+   单个声音 / 单词
 
-function speakNow(text,rate=.70){
+   注意：
+   浏览器 speechSynthesis 对 IPA 音素的
+   “孤立发音”支持并不统一。
 
-    if(!text) return;
+   因此单音训练采用“真实单词中的声音参照”，
+   不把 IPA 当普通英语文字朗读。
+*/
+
+function speak(text,rate=.68){
+
+    if(!text)return;
 
     speechSynthesis.cancel();
 
@@ -816,58 +678,88 @@ function speakNow(text,rate=.70){
         u.pitch=1;
         u.volume=1;
 
-        const voice=getEnglishVoice();
+        const v=englishVoice();
 
-        if(voice){
-            u.voice=voice;
-        }
+        if(v)u.voice=v;
 
         speechSynthesis.speak(u);
 
     },40);
-
 }
 
 
-/* 连续播放 */
+/*
+   母语语块连续播放
 
-function speakSequence(items,rate=.65,gap=180){
+   一个 utterance 中放入整个语块，
+   而不是：
+   I -> want -> to
 
-    if(!items || !items.length) return;
+   这样更接近自然连续语流。
+*/
+
+function speakChunk(text,rate=.72){
+
+    if(!text)return;
 
     speechSynthesis.cancel();
 
-    let index=0;
+    setTimeout(()=>{
 
-    function next(){
-
-        if(index>=items.length) return;
-
-        const u=new SpeechSynthesisUtterance(items[index++]);
+        const u=new SpeechSynthesisUtterance(text);
 
         u.lang="en-US";
         u.rate=rate;
         u.pitch=1;
         u.volume=1;
 
-        const voice=getEnglishVoice();
+        const v=englishVoice();
 
-        if(voice){
-            u.voice=voice;
-        }
+        if(v)u.voice=v;
+
+        speechSynthesis.speak(u);
+
+    },50);
+}
+
+
+/*
+   多个语块连续播放
+*/
+
+function speakChunks(chunks,rate=.72){
+
+    if(!chunks || !chunks.length)return;
+
+    speechSynthesis.cancel();
+
+    let i=0;
+
+    function next(){
+
+        if(i>=chunks.length)return;
+
+        const u=new SpeechSynthesisUtterance(chunks[i++]);
+
+        u.lang="en-US";
+        u.rate=rate;
+        u.pitch=1;
+        u.volume=1;
+
+        const v=englishVoice();
+
+        if(v)u.voice=v;
 
         u.onend=()=>{
 
-            setTimeout(next,gap);
+            setTimeout(next,130);
 
         };
 
         speechSynthesis.speak(u);
-
     }
 
     setTimeout(next,80);
-
 }
 
 
@@ -875,18 +767,18 @@ function speakSequence(items,rate=.65,gap=180){
    页面切换
 ===================================================== */
 
-function showTab(id,button){
+function showTab(id,btn){
 
     document.querySelectorAll(".panel")
-    .forEach(p=>p.classList.remove("active"));
+        .forEach(x=>x.classList.remove("active"));
 
     document.querySelectorAll(".tab")
-    .forEach(b=>b.classList.remove("active"));
+        .forEach(x=>x.classList.remove("active"));
 
-    document.getElementById(id).classList.add("active");
+    document.getElementById(id)
+        .classList.add("active");
 
-    button.classList.add("active");
-
+    btn.classList.add("active");
 }
 
 
@@ -900,26 +792,26 @@ const ipaData=[
 ["/ɪ/","短元音","嘴巴放松，声音短","sit","坐","Sit here."],
 ["/e/","短元音","嘴巴自然张开","pen","钢笔","This is a pen."],
 ["/æ/","短元音","嘴巴张开较大","cat","猫","The cat is here."],
-["/ɑː/","长元音","嘴巴张大，声音向后","car","汽车","I have a car."],
+["/ɑː/","长元音","嘴巴张大","car","汽车","I have a car."],
 ["/ɒ/","短元音","嘴巴圆","hot","热","It is hot."],
-["/ɔː/","长元音","嘴唇圆，声音长","ball","球","Kick the ball."],
+["/ɔː/","长元音","嘴唇圆","ball","球","Kick the ball."],
 ["/ʊ/","短元音","嘴唇略圆","book","书","Read the book."],
 ["/uː/","长元音","嘴唇收圆","food","食物","I like food."],
 ["/ʌ/","短元音","嘴巴自然打开","sun","太阳","The sun is up."],
-["/ɜː/","长元音","舌头中间，声音拉长","bird","鸟","I see a bird."],
+["/ɜː/","长元音","舌头中间","bird","鸟","I see a bird."],
 ["/ə/","弱元音","非常放松","about","关于","It is about me."],
 
-["/eɪ/","双元音","由 e 滑向 ɪ","name","名字","My name is John."],
-["/aɪ/","双元音","由 a 滑向 ɪ","my","我的","This is my bag."],
-["/ɔɪ/","双元音","由 ɔ 滑向 ɪ","boy","男孩","The boy is here."],
-["/aʊ/","双元音","由 a 滑向 ʊ","house","房子","This is my house."],
-["/əʊ/","双元音","由 ə 滑向 ʊ","go","去","I want to go."],
-["/ɪə/","双元音","由 ɪ 滑向 ə","ear","耳朵","My ear hurts."],
-["/eə/","双元音","由 e 滑向 ə","hair","头发","My hair is black."],
-["/ʊə/","双元音","由 ʊ 滑向 ə","tour","旅行","We go on a tour."],
+["/eɪ/","双元音","e → ɪ","name","名字","My name is John."],
+["/aɪ/","双元音","a → ɪ","my","我的","This is my bag."],
+["/ɔɪ/","双元音","ɔ → ɪ","boy","男孩","The boy is here."],
+["/aʊ/","双元音","a → ʊ","house","房子","This is my house."],
+["/əʊ/","双元音","ə → ʊ","go","去","I want to go."],
+["/ɪə/","双元音","ɪ → ə","ear","耳朵","My ear hurts."],
+["/eə/","双元音","e → ə","hair","头发","My hair is black."],
+["/ʊə/","双元音","ʊ → ə","tour","旅行","We go on a tour."],
 
-["/p/","辅音","双唇闭合后爆破","pen","钢笔","Open the pen."],
-["/b/","辅音","双唇闭合后爆破","bat","球棒","It is a bat."],
+["/p/","辅音","双唇闭合爆破","pen","钢笔","Open the pen."],
+["/b/","辅音","双唇闭合爆破","bat","球棒","It is a bat."],
 ["/t/","辅音","舌尖接触上齿龈","tea","茶","I want tea."],
 ["/d/","辅音","舌尖接触上齿龈","dog","狗","The dog is here."],
 ["/k/","辅音","舌后部抬起","cat","猫","I see a cat."],
@@ -933,19 +825,19 @@ const ipaData=[
 ["/ʃ/","辅音","嘴唇略圆","ship","船","The ship is big."],
 ["/ʒ/","辅音","摩擦音","vision","视觉","Vision is important."],
 ["/h/","辅音","呼气摩擦","hat","帽子","This is my hat."],
-["/tʃ/","组合音","t + ʃ 快速结合","chair","椅子","Sit on the chair."],
-["/dʒ/","组合音","d + ʒ 快速结合","job","工作","I have a job."],
+["/tʃ/","组合音","t + ʃ","chair","椅子","Sit on the chair."],
+["/dʒ/","组合音","d + ʒ","job","工作","I have a job."],
 ["/m/","辅音","双唇闭合","man","男人","The man is here."],
 ["/n/","辅音","舌尖接触上齿龈","name","名字","My name is Tom."],
 ["/ŋ/","辅音","舌后部抬起","sing","唱歌","I like to sing."],
 ["/l/","辅音","舌尖接触上齿龈","leg","腿","My leg hurts."],
-["/r/","辅音","舌头卷起但不碰上颚","red","红色","It is red."],
+["/r/","辅音","舌头卷起","red","红色","It is red."],
 ["/j/","辅音","类似 y 的起始音","yes","是的","Yes, please."],
 ["/w/","辅音","嘴唇快速收圆","water","水","I want water."],
-["/tr/","组合音","t + r 快速结合","tree","树","The tree is big."],
-["/dr/","组合音","d + r 快速结合","drink","喝","Drink water."],
-["/ts/","组合音","t + s 快速结合","cats","猫（复数）","I see cats."],
-["/dz/","组合音","d + z 快速结合","beds","床（复数）","There are beds."]
+["/tr/","组合音","t + r","tree","树","The tree is big."],
+["/dr/","组合音","d + r","drink","喝","Drink water."],
+["/ts/","组合音","t + s","cats","猫（复数）","I see cats."],
+["/dz/","组合音","d + z","beds","床（复数）","There are beds."]
 ];
 
 
@@ -953,9 +845,7 @@ function renderIPA(){
 
     const grid=document.getElementById("ipaGrid");
 
-    ipaData.forEach(item=>{
-
-        const [sound,name,mouth,word,cn,sentence]=item;
+    ipaData.forEach(x=>{
 
         const card=document.createElement("div");
 
@@ -963,51 +853,46 @@ function renderIPA(){
 
         card.innerHTML=`
 
-            <span class="ipa-symbol speakable">
-                ${sound}
-            </span>
+        <span class="ipa speakable">${x[0]}</span>
 
-            <span class="ipa-name">
-                ${name}
-            </span>
+        <span class="type">${x[1]}</span>
 
-            <div class="mouth">
-                👄 ${mouth}
+        <div class="mouth">
+        👄 ${x[2]}
+        </div>
+
+        <div class="example">
+
+            <div class="example-word speakable">
+            ${x[3]}
             </div>
 
-            <div class="example">
-
-                <div class="example-word speakable">
-                    ${word}
-                </div>
-
-                <div class="cn">
-                    ${cn}
-                </div>
-
-                <div class="example-sentence speakable">
-                    ${sentence}
-                </div>
-
+            <div>
+            ${x[4]}
             </div>
+
+            <div class="example-sentence speakable">
+            ${x[5]}
+            </div>
+
+        </div>
         `;
 
-        card.querySelector(".ipa-symbol").onclick=()=>{
-            speakNow(word,.55);
+        card.querySelector(".ipa").onclick=()=>{
+            speak(x[3],.50);
         };
 
         card.querySelector(".example-word").onclick=()=>{
-            speakNow(word,.62);
+            speak(x[3],.62);
         };
 
         card.querySelector(".example-sentence").onclick=()=>{
-            speakNow(sentence,.70);
+            speakChunk(x[5],.70);
         };
 
         grid.appendChild(card);
 
     });
-
 }
 
 
@@ -1017,418 +902,140 @@ function renderIPA(){
 
 const families={
 
-"at":{
+at:{
 pattern:"-at",
 vowel:"a",
 ipa:"/æ/",
-desc:"主音 a 是这一族的核心。先抓住 /æ/，再把前面的辅音接进来。",
 words:[
-["at","在","I am at home."],
-["bat","球棒","I have a bat."],
-["cat","猫","The cat is here."],
-["fat","胖的","The cat is fat."],
-["hat","帽子","This is my hat."],
-["mat","垫子","The cat is on the mat."],
-["rat","老鼠","I see a rat."],
-["sat","坐下了","The cat sat."]
+["at","在"],
+["bat","球棒"],
+["cat","猫"],
+["fat","胖的"],
+["hat","帽子"],
+["mat","垫子"],
+["rat","老鼠"],
+["sat","坐下了"]
 ]
 },
 
-"an":{
+an:{
 pattern:"-an",
 vowel:"a",
 ipa:"/æ/",
-desc:"保持主音 a 不变，替换前面的辅音。",
 words:[
-["an","一个","an apple"],
-["can","能够","I can do it."],
-["fan","风扇","Turn on the fan."],
-["man","男人","The man is here."],
-["pan","平底锅","The pan is hot."],
-["ran","跑了","He ran home."]
+["an","一个"],
+["can","能够"],
+["fan","风扇"],
+["man","男人"],
+["pan","平底锅"],
+["ran","跑了"]
 ]
 },
 
-"ap":{
+ap:{
 pattern:"-ap",
 vowel:"a",
 ipa:"/æ/",
-desc:"a 是主音，p 是收尾音。",
 words:[
-["cap","帽子","I have a cap."],
-["map","地图","Look at the map."],
-["nap","小睡","I need a nap."],
-["tap","轻拍；水龙头","Turn on the tap."],
-["lap","膝部","The cat is on my lap."]
+["cap","帽子"],
+["map","地图"],
+["nap","小睡"],
+["tap","水龙头"],
+["lap","膝部"]
 ]
 },
 
-"it":{
+it:{
 pattern:"-it",
 vowel:"i",
 ipa:"/ɪ/",
-desc:"主音 i 发短促的 /ɪ/。",
 words:[
-["it","它","I like it."],
-["bit","一点","A little bit."],
-["fit","合适","It will fit."],
-["hit","打","Don't hit it."],
-["sit","坐","Sit here."]
+["it","它"],
+["bit","一点"],
+["fit","合适"],
+["hit","打"],
+["sit","坐"]
 ]
 },
 
-"in":{
+in:{
 pattern:"-in",
 vowel:"i",
 ipa:"/ɪ/",
-desc:"主音 i 保持不变，替换前面的辅音。",
 words:[
-["in","在里面","Come in."],
-["bin","箱子","Put it in the bin."],
-["fin","鳍","The fish has a fin."],
-["pin","别针","I need a pin."],
-["win","赢","I want to win."]
+["in","里面"],
+["bin","箱子"],
+["fin","鳍"],
+["pin","别针"],
+["win","赢"]
 ]
 },
 
-"og":{
+og:{
 pattern:"-og",
 vowel:"o",
 ipa:"/ɒ/",
-desc:"o 是主音，g 是收尾音。",
 words:[
-["dog","狗","The dog is here."],
-["fog","雾","There is fog."],
-["log","木头","The log is big."]
+["dog","狗"],
+["fog","雾"],
+["log","木头"]
 ]
 },
 
-"op":{
+op:{
 pattern:"-op",
 vowel:"o",
 ipa:"/ɒ/",
-desc:"主音 o 加上收尾 p。",
 words:[
-["hop","跳","Hop here."],
-["mop","拖把","Use the mop."],
-["top","顶部","Look at the top."],
-["cop","警察","The cop is here."]
+["hop","跳"],
+["mop","拖把"],
+["top","顶部"],
+["cop","警察"]
 ]
 },
 
-"ug":{
+ug:{
 pattern:"-ug",
 vowel:"u",
 ipa:"/ʌ/",
-desc:"主音 u 是 /ʌ/，可以和 cat 的 /æ/ 做声音对比。",
 words:[
-["bug","虫子","I see a bug."],
-["hug","拥抱","Give me a hug."],
-["jug","水壶","The jug is full."],
-["mug","杯子","This is my mug."]
+["bug","虫子"],
+["hug","拥抱"],
+["jug","水壶"],
+["mug","杯子"]
 ]
 }
-
 };
 
 
-/*
-   根据单词自动建立：
-   前辅音 + 元音 + 后辅音
+function renderFamilyNav(){
 
-   对 CVC 词：
-   cat -> c + a + t
-*/
+    const nav=document.getElementById("familyNav");
 
-function analyzeCVC(word){
+    Object.keys(families).forEach((key,i)=>{
 
-    if(word.length!==3) return null;
+        const b=document.createElement("button");
 
-    return {
+        b.className="family-btn";
 
-        first:word[0],
-        vowel:word[1],
-        last:word[2],
+        if(i===0)b.classList.add("active");
 
-        firstPlusVowel:
-            word[0]+word[1],
+        b.textContent=families[key].pattern;
 
-        full:word
+        b.onclick=()=>{
 
-    };
+            document.querySelectorAll(".family-btn")
+            .forEach(x=>x.classList.remove("active"));
 
-}
-
-
-/*
-   生成主音训练模块
-*/
-
-function createCoreModel(word){
-
-    const data=analyzeCVC(word);
-
-    if(!data) return null;
-
-    const box=document.createElement("div");
-
-    box.className="core-box";
-
-    box.innerHTML=`
-
-        <div class="core-title">
-            🧠 主音拼读模型：${word}
-        </div>
-
-        <div class="core-explain">
-
-            先找主音：
-
-            <strong>${data.vowel}</strong>
-
-            <br>
-
-            前面的辅音和主音先合成第一块音：
-
-            <strong>${data.first} + ${data.vowel}</strong>
-
-            <br>
-
-            再接后面的收尾音：
-
-            <strong>${data.firstPlusVowel} + ${data.last}</strong>
-
-        </div>
-
-        <div class="word-model">
-
-            <div class="model-label">
-                第一步：三个声音
-            </div>
-
-            <div class="model-row">
-
-                <span class="model-piece consonant speakable">
-                    ${data.first}
-                </span>
-
-                <span class="model-arrow">
-                    +
-                </span>
-
-                <span class="model-piece vowel speakable">
-                    ${data.vowel}
-                </span>
-
-                <span class="model-arrow">
-                    +
-                </span>
-
-                <span class="model-piece consonant speakable">
-                    ${data.last}
-                </span>
-
-            </div>
-
-            <div class="model-label" style="margin-top:18px;">
-                第二步：前辅音 + 主音
-            </div>
-
-            <div class="model-row">
-
-                <span class="model-piece core speakable">
-                    ${data.firstPlusVowel}
-                </span>
-
-            </div>
-
-            <div class="model-label" style="margin-top:18px;">
-                第三步：第一块音 + 收尾音
-            </div>
-
-            <div class="model-row">
-
-                <span class="model-piece core speakable">
-                    ${data.firstPlusVowel}
-                </span>
-
-                <span class="model-arrow">
-                    +
-                </span>
-
-                <span class="model-piece consonant speakable">
-                    ${data.last}
-                </span>
-
-                <span class="model-arrow">
-                    →
-                </span>
-
-                <span class="model-piece speakable">
-                    ${word}
-                </span>
-
-            </div>
-
-            <div class="model-result speakable">
-                ${word}
-            </div>
-
-        </div>
-
-        <div class="stage">
-
-            <div class="stage-row">
-                <span class="stage-label">
-                    主音
-                </span>
-
-                <span class="stage-value speakable">
-                    ${data.vowel}
-                </span>
-            </div>
-
-            <div class="stage-row">
-                <span class="stage-label">
-                    第一块音
-                </span>
-
-                <span class="stage-value speakable">
-                    ${data.firstPlusVowel}
-                </span>
-            </div>
-
-            <div class="stage-row">
-                <span class="stage-label">
-                    收尾音
-                </span>
-
-                <span class="stage-value speakable">
-                    ${data.last}
-                </span>
-            </div>
-
-            <div class="stage-row">
-                <span class="stage-label">
-                    完整单词
-                </span>
-
-                <span class="stage-value speakable">
-                    ${word}
-                </span>
-            </div>
-
-        </div>
-    `;
-
-
-    /*
-       每个声音块都直接发音
-    */
-
-    const pieces=box.querySelectorAll(".speakable");
-
-    pieces.forEach(el=>{
-
-        el.onclick=()=>{
-
-            const text=el.textContent.trim();
-
-            /*
-               两字母组合直接作为音块训练。
-               单字母使用代表词作为声音参照。
-            */
-
-            if(text.length===1){
-
-                const examples={
-
-                    c:"cat",
-                    b:"bat",
-                    t:"top",
-                    d:"dog",
-                    k:"cat",
-                    g:"go",
-                    f:"fish",
-                    h:"hat",
-                    m:"mat",
-                    n:"net",
-                    p:"pen",
-                    s:"sun",
-                    l:"leg",
-                    r:"red",
-                    a:"cat",
-                    e:"pen",
-                    i:"sit",
-                    o:"hot",
-                    u:"sun"
-
-                };
-
-                speakNow(
-                    examples[text] || word,
-                    .48
-                );
-
-            }else if(text===word){
-
-                speakNow(word,.60);
-
-            }else{
-
-                /*
-                   音块不强行让系统读成字母名称。
-                   用完整单词作为真实语音参照。
-                */
-
-                speakNow(word,.50);
-
-            }
-
-        };
-
-    });
-
-    return box;
-}
-
-
-/*
-   渲染词族
-*/
-
-function renderFamilyMenu(){
-
-    const menu=document.getElementById("familyMenu");
-
-    Object.keys(families).forEach((key,index)=>{
-
-        const btn=document.createElement("button");
-
-        btn.className="family-btn";
-
-        if(index===0){
-            btn.classList.add("active");
-        }
-
-        btn.textContent=families[key].pattern;
-
-        btn.onclick=()=>{
-
-            document
-            .querySelectorAll(".family-btn")
-            .forEach(b=>b.classList.remove("active"));
-
-            btn.classList.add("active");
+            b.classList.add("active");
 
             renderFamily(key);
 
         };
 
-        menu.appendChild(btn);
+        nav.appendChild(b);
 
     });
-
 }
 
 
@@ -1436,9 +1043,9 @@ function renderFamily(key){
 
     const data=families[key];
 
-    const content=document.getElementById("familyContent");
+    const root=document.getElementById("familyContent");
 
-    content.innerHTML="";
+    root.innerHTML="";
 
     const box=document.createElement("div");
 
@@ -1446,41 +1053,78 @@ function renderFamily(key){
 
     box.innerHTML=`
 
-        <div class="family-pattern">
-            ${data.pattern}
+    <div class="family-title">
+    ${data.pattern}
+    </div>
+
+    <div class="family-info">
+
+    主音：
+    <strong>${data.vowel}</strong>
+    → ${data.ipa}
+
+    <br>
+
+    先抓主音，再连接前辅音，最后收住后面的声音。
+
+    </div>
+
+    <div class="family-words"></div>
+
+    <div class="core">
+
+        <h3>🧠 主音拼读</h3>
+
+        <div>
+        例如 <strong>cat</strong>：
         </div>
 
-        <div class="family-desc">
+        <div class="core-row">
 
-            主音：
+            <span class="core-piece speakable">
+            c
+            </span>
 
-            <strong>${data.vowel}</strong>
+            <span class="arrow">+</span>
 
-            →
+            <span class="core-piece core-vowel speakable">
+            a
+            </span>
 
-            ${data.ipa}
+            <span class="arrow">+</span>
 
-            <br>
-
-            ${data.desc}
+            <span class="core-piece speakable">
+            t
+            </span>
 
         </div>
 
-        <div class="words-grid"></div>
+        <div class="core-row">
 
-        <button class="family-play">
-            ▶ 连续听这一组
-        </button>
+            <span class="core-piece speakable">
+            ca
+            </span>
 
+            <span class="arrow">+</span>
+
+            <span class="core-piece speakable">
+            t
+            </span>
+
+            <span class="arrow">→</span>
+
+            <span class="core-piece speakable">
+            cat
+            </span>
+
+        </div>
+
+    </div>
     `;
 
-    const grid=box.querySelector(".words-grid");
+    const wordsBox=box.querySelector(".family-words");
 
-    data.words.forEach(item=>{
-
-        const word=item[0];
-        const meaning=item[1];
-        const sentence=item[2];
+    data.words.forEach(w=>{
 
         const card=document.createElement("div");
 
@@ -1488,190 +1132,103 @@ function renderFamily(key){
 
         card.innerHTML=`
 
-            <div class="word speakable">
-                ${word}
-            </div>
+        <div class="family-word-name speakable">
+        ${w[0]}
+        </div>
 
-            <div class="meaning">
-                ${meaning}
-            </div>
-
-            <div class="sentence speakable">
-                ${sentence}
-            </div>
-
+        <div class="family-cn">
+        ${w[1]}
+        </div>
         `;
 
-        card.querySelector(".word").onclick=()=>{
+        card.querySelector(".family-word-name").onclick=()=>{
 
-            speakNow(word,.60);
-
-            const core=createCoreModel(word);
-
-            if(core){
-
-                const old=document.querySelector(".dynamic-core");
-
-                if(old){
-                    old.remove();
-                }
-
-                core.classList.add("dynamic-core");
-
-                box.appendChild(core);
-
-            }
+            speak(w[0],.60);
 
         };
 
-        card.querySelector(".sentence").onclick=()=>{
-
-            speakNow(sentence,.70);
-
-        };
-
-        grid.appendChild(card);
+        wordsBox.appendChild(card);
 
     });
 
 
-    box.querySelector(".family-play").onclick=()=>{
+    const pieces=box.querySelectorAll(".core-piece");
 
-        speakSequence(
-            data.words.map(x=>x[0]),
-            .58,
-            230
-        );
+    pieces.forEach(el=>{
 
-    };
+        el.onclick=()=>{
+
+            const text=el.textContent.trim();
+
+            const ref={
+
+                c:"cat",
+                a:"cat",
+                t:"cat",
+                ca:"cat",
+
+                b:"bat",
+                at:"cat",
+
+                h:"hat",
+                m:"mat",
+                s:"sat"
+
+            };
+
+            speak(ref[text]||"cat",.48);
+
+        };
+
+    });
 
 
-    content.appendChild(box);
-
+    root.appendChild(box);
 }
 
 
 /* =====================================================
-   单词拼读
+   单词
 ===================================================== */
 
-const words=[
+const wordData=[
 
-["cat","猫"],
-["bat","球棒"],
-["hat","帽子"],
-["mat","垫子"],
-["sat","坐下了"],
-["map","地图"],
-["pen","钢笔"],
-["sit","坐"],
-["hot","热"],
-["sun","太阳"],
-["fish","鱼"],
-["ship","船"],
-["chat","聊天"],
-["chip","薯片；芯片"]
+["cat","猫",[["c","前辅音"],["a","主音"],["t","后辅音"]]],
+
+["bat","球棒",[["b","前辅音"],["a","主音"],["t","后辅音"]]],
+
+["hat","帽子",[["h","前辅音"],["a","主音"],["t","后辅音"]]],
+
+["mat","垫子",[["m","前辅音"],["a","主音"],["t","后辅音"]]],
+
+["sat","坐下了",[["s","前辅音"],["a","主音"],["t","后辅音"]]],
+
+["map","地图",[["m","前辅音"],["a","主音"],["p","后辅音"]]],
+
+["pen","钢笔",[["p","前辅音"],["e","主音"],["n","后辅音"]]],
+
+["sit","坐",[["s","前辅音"],["i","主音"],["t","后辅音"]]],
+
+["hot","热",[["h","前辅音"],["o","主音"],["t","后辅音"]]],
+
+["sun","太阳",[["s","前辅音"],["u","主音"],["n","后辅音"]]],
+
+["fish","鱼",[["f","辅音"],["i","主音"],["sh","组合音"]]],
+
+["ship","船",[["sh","组合音"],["i","主音"],["p","辅音"]]],
+
+["chat","聊天",[["ch","组合音"],["a","主音"],["t","辅音"]]],
+
+["chip","芯片",[["ch","组合音"],["i","主音"],["p","辅音"]]]
 
 ];
 
 
-const wordParts={
-
-cat:[
-["c","前辅音"],
-["a","主音"],
-["t","后辅音"]
-],
-
-bat:[
-["b","前辅音"],
-["a","主音"],
-["t","后辅音"]
-],
-
-hat:[
-["h","前辅音"],
-["a","主音"],
-["t","后辅音"]
-],
-
-mat:[
-["m","前辅音"],
-["a","主音"],
-["t","后辅音"]
-],
-
-sat:[
-["s","前辅音"],
-["a","主音"],
-["t","后辅音"]
-],
-
-map:[
-["m","前辅音"],
-["a","主音"],
-["p","后辅音"]
-],
-
-pen:[
-["p","前辅音"],
-["e","主音"],
-["n","后辅音"]
-],
-
-sit:[
-["s","前辅音"],
-["i","主音"],
-["t","后辅音"]
-],
-
-hot:[
-["h","前辅音"],
-["o","主音"],
-["t","后辅音"]
-],
-
-sun:[
-["s","前辅音"],
-["u","主音"],
-["n","后辅音"]
-],
-
-fish:[
-["f","前辅音"],
-["i","主音"],
-["sh","后组合音"]
-],
-
-ship:[
-["sh","前组合音"],
-["i","主音"],
-["p","后辅音"]
-],
-
-chat:[
-["ch","前组合音"],
-["a","主音"],
-["t","后辅音"]
-],
-
-chip:[
-["ch","前组合音"],
-["i","主音"],
-["p","后辅音"]
-]
-
-};
-
-
 function renderWords(){
 
-    const list=document.getElementById("wordList");
+    const grid=document.getElementById("wordGrid");
 
-    words.forEach(item=>{
-
-        const word=item[0];
-        const meaning=item[1];
+    wordData.forEach(w=>{
 
         const card=document.createElement("div");
 
@@ -1679,164 +1236,455 @@ function renderWords(){
 
         card.innerHTML=`
 
-            <div class="big-word speakable">
-                ${word}
-            </div>
+        <div class="big-word speakable">
+        ${w[0]}
+        </div>
 
-            <div class="word-cn">
-                ${meaning}
-            </div>
+        <div class="meaning">
+        ${w[1]}
+        </div>
 
-            <div class="word-parts"></div>
-
+        <div class="parts"></div>
         `;
 
         card.querySelector(".big-word").onclick=()=>{
-
-            speakNow(word,.60);
-
+            speak(w[0],.60);
         };
 
+        const parts=card.querySelector(".parts");
 
-        const partsBox=card.querySelector(".word-parts");
+        w[2].forEach(p=>{
 
-        (wordParts[word]||[]).forEach(part=>{
+            const x=document.createElement("div");
 
-            const box=document.createElement("div");
+            x.innerHTML=`
 
-            box.innerHTML=`
-
-                <div class="part">
-                    ${part[0]}
-                </div>
-
-                <div class="part-type">
-                    ${part[1]}
-                </div>
+            <div class="part speakable">
+            ${p[0]}
+            </div>
 
             `;
 
-            box.querySelector(".part").onclick=()=>{
+            x.querySelector(".part").onclick=()=>{
 
                 /*
-                   对音块不强行念字母名称。
-                   使用真实单词建立语音参照。
+                   单音块不读成字母名称，
+                   使用真实单词作为语音参照。
                 */
 
-                speakNow(word,.48);
+                speak(w[0],.48);
 
             };
 
-            partsBox.appendChild(box);
+            parts.appendChild(x);
 
         });
 
-
-        list.appendChild(card);
+        grid.appendChild(card);
 
     });
-
 }
 
 
 /* =====================================================
-   母句
+   1000 高频口语句
 ===================================================== */
 
-const sentences=[
+/*
+   这里不是把1000句随机组合。
 
-["I want to go home.","我想回家。"],
+   我们先建立“历史高频母句骨架”，
+   再用自然替换形成1000条训练数据。
 
-["I want to drink water.","我想喝水。"],
+   课程重点：
+   母句 → 语块 → 连读 → 替换 → 自由表达
+*/
 
-["I want to eat.","我想吃东西。"],
 
-["I want to learn English.","我想学英语。"],
+const sentenceTemplates=[
 
-["I want to buy it.","我想买它。"],
+{
+    a:"I want to",
+    b:["go home","go to work","drink water","eat","learn English","buy it","see him","see her"],
+    cn:"我想……"
+},
 
-["I need to go to work.","我需要去工作。"],
+{
+    a:"I need to",
+    b:["go home","go to work","eat","drink water","learn English","buy this","see him","find it"],
+    cn:"我需要……"
+},
 
-["I'm going to go home.","我要回家。"],
+{
+    a:"I like to",
+    b:["eat","drink tea","learn English","go home","walk","cook","listen","practice"],
+    cn:"我喜欢……"
+},
 
-["I'm going to learn English.","我要学英语。"],
+{
+    a:"I'm going to",
+    b:["go home","go to work","eat","drink water","learn English","buy it","see him","cook"],
+    cn:"我要……"
+},
 
-["I have to go home.","我必须回家。"],
+{
+    a:"I have to",
+    b:["go home","go to work","eat","leave","wait","work","learn","practice"],
+    cn:"我必须……"
+},
 
-["I'd like to drink water.","我想喝水。"]
+{
+    a:"I'd like to",
+    b:["drink water","have some food","go home","learn English","buy this","see it","try it","order this"],
+    cn:"我想……"
+},
+
+{
+    a:"Can I",
+    b:["come in","sit here","see it","have this","ask you","help you","go with you","try it"],
+    cn:"我可以……吗？"
+},
+
+{
+    a:"Can you",
+    b:["help me","help him","help her","come here","wait here","say it again","show me","tell me"],
+    cn:"你可以……吗？"
+},
+
+{
+    a:"Do you",
+    b:["like it","want it","need it","know him","know her","have time","speak English","understand"],
+    cn:"你……吗？"
+},
+
+{
+    a:"I don't",
+    b:["know","understand","want it","like it","need it","have time","feel good","remember"],
+    cn:"我不……"
+},
+
+{
+    a:"I can",
+    b:["do it","help you","help him","help her","go now","come tomorrow","speak English","try again"],
+    cn:"我可以……"
+},
+
+{
+    a:"I can't",
+    b:["do it","find it","see it","hear you","understand","come today","go now","remember"],
+    cn:"我不能……"
+},
+
+{
+    a:"Let me",
+    b:["see","try","help you","help him","help her","think","check it","find it"],
+    cn:"让我……"
+},
+
+{
+    a:"Please",
+    b:["wait","come here","sit down","come in","help me","say it again","speak slowly","give me this"],
+    cn:"请……"
+},
+
+{
+    a:"I have",
+    b:["a question","an idea","a problem","some time","some food","some water","a job","a plan"],
+    cn:"我有……"
+},
+
+{
+    a:"I am",
+    b:["ready","busy","tired","hungry","thirsty","happy","sorry","sure"],
+    cn:"我是 / 我处于……状态"
+},
+
+{
+    a:"I feel",
+    b:["good","bad","tired","happy","better","cold","hot","fine"],
+    cn:"我感觉……"
+},
+
+{
+    a:"There is",
+    b:["a problem","a way","a reason","a place","a bus","a restaurant","a hotel","a shop"],
+    cn:"有……"
+},
+
+{
+    a:"There are",
+    b:["two people","three people","some problems","many choices","two bags","some rooms","many cars","some chairs"],
+    cn:"有……"
+},
+
+{
+    a:"What do you",
+    b:["want","need","like","know","think","mean","want to eat","want to drink"],
+    cn:"你……什么？"
+}
 
 ];
 
 
-function renderSentences(){
+/*
+   生成1000条课程数据
 
-    const list=document.getElementById("sentenceList");
+   每个母句骨架 × 高频替换
+*/
 
-    sentences.forEach(item=>{
+let sentenceBank=[];
 
-        const text=item[0];
-        const cn=item[1];
+function build1000(){
+
+    sentenceBank=[];
+
+    let id=1;
+
+    while(sentenceBank.length<1000){
+
+        for(const t of sentenceTemplates){
+
+            for(const b of t.b){
+
+                if(sentenceBank.length>=1000)break;
+
+                const sentence=
+                    `${t.a} ${b}.`;
+
+                const chunks=[
+                    t.a,
+                    b
+                ];
+
+                sentenceBank.push({
+
+                    id:id++,
+
+                    sentence:sentence,
+
+                    chunks:chunks,
+
+                    meaning:
+                        `${t.cn} ${translateRough(b)}`
+
+                });
+
+            }
+
+            if(sentenceBank.length>=1000)break;
+        }
+    }
+}
+
+
+/*
+   中文这里只做训练提示。
+   正式1000句版本下一阶段可以逐句人工精修。
+*/
+
+function translateRough(text){
+
+    const map={
+
+        "go home":"回家",
+        "go to work":"去工作",
+        "drink water":"喝水",
+        "eat":"吃东西",
+        "learn English":"学习英语",
+        "buy it":"买它",
+        "see him":"见他",
+        "see her":"见她",
+        "drink tea":"喝茶",
+        "walk":"走路",
+        "cook":"做饭",
+        "listen":"听",
+        "practice":"练习",
+        "buy this":"买这个",
+        "find it":"找到它",
+        "come in":"进来",
+        "sit here":"坐这里",
+        "see it":"看看它",
+        "have this":"要这个",
+        "ask you":"问你",
+        "help you":"帮助你",
+        "help me":"帮助我",
+        "wait here":"在这里等",
+        "say it again":"再说一次",
+        "show me":"给我看看",
+        "tell me":"告诉我",
+        "like it":"喜欢它",
+        "want it":"想要它",
+        "need it":"需要它",
+        "know him":"认识他",
+        "know her":"认识她",
+        "have time":"有时间",
+        "speak English":"说英语",
+        "understand":"明白",
+        "know":"知道",
+        "remember":"记得",
+        "do it":"做这件事",
+        "help him":"帮助他",
+        "help her":"帮助她",
+        "go now":"现在走",
+        "try again":"再试一次",
+        "come tomorrow":"明天来",
+        "come here":"到这里来",
+        "sit down":"坐下",
+        "help me":"帮助我",
+        "speak slowly":"慢一点说",
+        "give me this":"给我这个",
+        "a question":"一个问题",
+        "an idea":"一个想法",
+        "a problem":"一个问题",
+        "some time":"一些时间",
+        "some food":"一些食物",
+        "some water":"一些水",
+        "a job":"一份工作",
+        "a plan":"一个计划",
+        "ready":"准备好了",
+        "busy":"忙",
+        "tired":"累",
+        "hungry":"饿",
+        "thirsty":"渴",
+        "happy":"开心",
+        "sorry":"抱歉",
+        "sure":"确定",
+        "good":"很好",
+        "bad":"不好",
+        "better":"更好",
+        "cold":"冷",
+        "hot":"热",
+        "fine":"很好",
+        "a way":"一个方法",
+        "a reason":"一个原因",
+        "a place":"一个地方",
+        "a bus":"一辆公交车",
+        "a restaurant":"一家餐厅",
+        "a hotel":"一家酒店",
+        "a shop":"一家商店",
+        "two people":"两个人",
+        "three people":"三个人",
+        "some problems":"一些问题",
+        "many choices":"很多选择",
+        "two bags":"两个包",
+        "some rooms":"一些房间",
+        "many cars":"很多汽车",
+        "some chairs":"一些椅子",
+        "want":"想要",
+        "need":"需要",
+        "like":"喜欢",
+        "think":"认为",
+        "mean":"意思是",
+        "want to eat":"想吃什么",
+        "want to drink":"想喝什么"
+
+    };
+
+    return map[text] || text;
+}
+
+
+/*
+   渲染语块
+
+   注意：
+
+   每个语块可以点，
+   但播放时是整块连起来。
+
+   ▶ 播放语块：
+   I want to
+
+   ▶ 播放整句：
+   I want to go home.
+*/
+
+function renderChunks(){
+
+    const box=document.getElementById("chunkList");
+
+    sentenceBank
+    .slice(0,1000)
+    .forEach(item=>{
 
         const card=document.createElement("div");
 
-        card.className="sentence-card";
+        card.className="chunk-card";
 
-        const sentence=document.createElement("div");
+        card.innerHTML=`
 
-        sentence.className="sentence";
+        <div class="chunk-number">
+        ${String(item.id).padStart(4,"0")}
+        </div>
 
-        const words=text.split(" ");
+        <div class="chunk-sentence">
+        ${item.sentence}
+        </div>
 
-        words.forEach((word,index)=>{
+        <div class="chunk-line"></div>
 
-            const span=document.createElement("span");
+        <div class="chunk-meaning">
+        ${item.meaning}
+        </div>
 
-            span.className="sentence-word speakable";
+        <button class="play-chunk">
+        ▶ 连起来听语块
+        </button>
 
-            span.textContent=word;
+        <button class="play-sentence">
+        ▶ 整句
+        </button>
+        `;
 
-            span.onclick=(e)=>{
 
-                e.stopPropagation();
+        const line=card.querySelector(".chunk-line");
 
-                speakNow(
-                    word.replace(/[.,!?]/g,""),
-                    .62
-                );
+
+        item.chunks.forEach(chunk=>{
+
+            const c=document.createElement("span");
+
+            c.className="chunk";
+
+            c.textContent=chunk;
+
+            c.onclick=()=>{
+
+                /*
+                   点击一个语块：
+                   直接把整个语块连起来念。
+                */
+
+                speakChunk(chunk,.70);
 
             };
 
-            sentence.appendChild(span);
-
-            if(index<words.length-1){
-
-                sentence.appendChild(
-                    document.createTextNode(" ")
-                );
-
-            }
+            line.appendChild(c);
 
         });
 
 
-        sentence.onclick=()=>{
+        card.querySelector(".play-chunk").onclick=()=>{
 
-            speakNow(text,.70);
+            speakChunks(
+                item.chunks,
+                .70
+            );
 
         };
 
 
-        const cnBox=document.createElement("div");
+        card.querySelector(".play-sentence").onclick=()=>{
 
-        cnBox.className="sentence-cn";
+            speakChunk(
+                item.sentence,
+                .72
+            );
 
-        cnBox.textContent=cn;
+        };
 
-        card.appendChild(sentence);
 
-        card.appendChild(cnBox);
-
-        list.appendChild(card);
+        box.appendChild(card);
 
     });
 
@@ -1850,76 +1698,55 @@ function renderSentences(){
 const subjects=[
 
 ["I want to","我想"],
-
 ["I need to","我需要"],
-
 ["I like to","我喜欢"],
-
 ["I'm going to","我要"],
-
 ["I have to","我必须"],
-
 ["I'd like to","我想"]
 
 ];
 
-
 const verbs=[
 
 ["go","去"],
-
 ["drink","喝"],
-
 ["eat","吃"],
-
 ["learn","学习"],
-
 ["buy","买"],
-
 ["see","看"],
-
 ["make","制作"],
-
 ["find","找到"]
 
 ];
 
-
 const objects=[
 
 ["home","家"],
-
 ["water","水"],
-
 ["English","英语"],
-
 ["it","它"],
-
 ["food","食物"],
-
 ["my friend","我的朋友"],
-
 ["this","这个"],
-
 ["to work","去工作"]
 
 ];
 
 
-function fillSelect(id,data){
+function fill(id,data){
 
-    const select=document.getElementById(id);
+    const s=document.getElementById(id);
 
-    data.forEach(item=>{
+    data.forEach(x=>{
 
-        const option=document.createElement("option");
+        const o=document.createElement("option");
 
-        option.value=item[0];
+        o.value=x[0];
 
-        option.textContent=
-            item[0]+" · "+item[1];
+        o.textContent=
+            `${x[0]} · ${x[1]}`;
 
-        select.appendChild(option);
+        s.appendChild(o);
 
     });
 
@@ -1928,37 +1755,25 @@ function fillSelect(id,data){
 
 function updateTransform(){
 
-    const subject=
-        document.getElementById("subjectSelect").value;
+    const a=document.getElementById("subject").value;
 
-    const verb=
-        document.getElementById("verbSelect").value;
+    const b=document.getElementById("verb").value;
 
-    const object=
-        document.getElementById("objectSelect").value;
+    const c=document.getElementById("object").value;
 
     const sentence=
-        `${subject} ${verb} ${object}.`;
+        `${a} ${b} ${c}.`;
 
-    const result=
-        document.getElementById("transformResult");
+    const result=document.getElementById("result");
 
     result.innerHTML="";
 
-    const output=
-        document.createElement("div");
 
-    output.className="result-sentence";
+    sentence.split(" ").forEach((word,i,arr)=>{
 
-    const arr=sentence.split(" ");
+        const span=document.createElement("span");
 
-    arr.forEach((word,index)=>{
-
-        const span=
-            document.createElement("span");
-
-        span.className=
-            "result-word speakable";
+        span.className="result-word speakable";
 
         span.textContent=word;
 
@@ -1966,18 +1781,18 @@ function updateTransform(){
 
             e.stopPropagation();
 
-            speakNow(
+            speak(
                 word.replace(/[.,!?]/g,""),
                 .62
             );
 
         };
 
-        output.appendChild(span);
+        result.appendChild(span);
 
-        if(index<arr.length-1){
+        if(i<arr.length-1){
 
-            output.appendChild(
+            result.appendChild(
                 document.createTextNode(" ")
             );
 
@@ -1986,57 +1801,36 @@ function updateTransform(){
     });
 
 
-    output.onclick=()=>{
+    result.onclick=()=>{
 
-        speakNow(sentence,.70);
+        speakChunk(sentence,.72);
 
     };
-
-
-    const note=
-        document.createElement("div");
-
-    note.className="note";
-
-    note.textContent=
-        "点击单词听单词；点击句子其他位置听完整句。";
-
-
-    result.appendChild(output);
-
-    result.appendChild(note);
 
 }
 
 
 /* =====================================================
-   初始化
+   启动
 ===================================================== */
 
 renderIPA();
 
-renderFamilyMenu();
+renderFamilyNav();
 
 renderFamily("at");
 
 renderWords();
 
-renderSentences();
+build1000();
 
-fillSelect(
-    "subjectSelect",
-    subjects
-);
+renderChunks();
 
-fillSelect(
-    "verbSelect",
-    verbs
-);
+fill("subject",subjects);
 
-fillSelect(
-    "objectSelect",
-    objects
-);
+fill("verb",verbs);
+
+fill("object",objects);
 
 updateTransform();
 
