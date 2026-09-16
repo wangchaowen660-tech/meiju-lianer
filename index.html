@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>词块学习 · 拼读版</title>
+<title>词块学习 · 拼读复习版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#f0f4f8 0%,#e2e8f0 100%);color:#1e293b;min-height:100vh;}
@@ -15,12 +15,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .tab-mini{display:flex;gap:4px;background:#fff;border-radius:30px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
 .tab-mini button{padding:5px 12px;border:0;border-radius:30px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;}
 .tab-mini button.active{background:#0f172a;color:#fff;}
-/* 场景标签 */
+.review-banner{display:none;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;padding:10px 14px;border-radius:14px;margin-bottom:10px;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(59,130,246,0.28);}
+.review-banner b{font-weight:800;}
+.review-banner button{background:rgba(255,255,255,0.25);border:0;color:#fff;padding:6px 14px;border-radius:12px;cursor:pointer;font-weight:700;font-size:12px;}
 .category-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:8px;-webkit-overflow-scrolling:touch;}
 .category-tabs::-webkit-scrollbar{display:none;}
 .cat-tab{flex-shrink:0;padding:6px 14px;border:0;border-radius:20px;background:#fff;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);white-space:nowrap;}
 .cat-tab.active{background:#0f172a;color:#fff;}
-/* 工具条 */
 .toolbar{display:flex;gap:6px;margin-bottom:10px;align-items:center;flex-wrap:wrap;}
 .type-filter{display:flex;gap:4px;background:#fff;border-radius:20px;padding:3px;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
 .type-btn{padding:5px 10px;border:0;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;background:transparent;color:#64748b;}
@@ -29,7 +30,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .icon-btn{padding:7px 12px;border:0;border-radius:20px;background:#fff;color:#0f172a;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
 .icon-btn.fav{color:#f59e0b;}
 .icon-btn.fav.on{background:#f59e0b;color:#fff;}
-/* 母句列表 */
 .pattern-list{background:#fff;border-radius:16px;padding:8px;margin-bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,0.06);max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;}
 .pattern-list.open{max-height:400px;overflow-y:auto;padding:8px;}
 .pattern-list-item{padding:10px 12px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;border-bottom:1px solid #f1f5f9;}
@@ -39,7 +39,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .pattern-list-item .item-type.s{background:#dcfce7;color:#166534;}
 .pattern-list-item .item-type.q{background:#dbeafe;color:#1e40af;}
 .pattern-list-empty{text-align:center;color:#94a3b8;padding:20px;font-size:13px;}
-/* 🌟 主卡片（合并母句+句子） */
 .main-card{background:#fff;border-radius:24px;padding:22px 20px;box-shadow:0 8px 24px rgba(0,0,0,0.06);margin-bottom:12px;position:relative;}
 .main-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
 .main-card-header .meta{font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;}
@@ -48,7 +47,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .main-card-header .meta .type-tag.q{background:#dbeafe;color:#1e40af;}
 .fav-btn-sentence{width:34px;height:34px;border:0;border-radius:50%;background:#f8fafc;font-size:17px;cursor:pointer;color:#cbd5e1;}
 .fav-btn-sentence.active{color:#f59e0b;background:#fef3c7;}
-/* 句子显示 */
 .sentence-line{font-size:26px;font-weight:800;line-height:1.5;word-break:break-word;letter-spacing:0.3px;}
 .sentence-line .part-pattern{color:#0f172a;cursor:pointer;padding:2px 2px;border-radius:6px;transition:background .15s;}
 .sentence-line .part-pattern:hover{background:#e2e8f0;}
@@ -63,18 +61,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .hint-row span{display:flex;align-items:center;gap:4px;}
 .hint-row .dot-black{width:8px;height:8px;border-radius:50%;background:#0f172a;}
 .hint-row .dot-red{width:8px;height:8px;border-radius:50%;background:#e94560;}
-/* 句子操作按钮 */
 .sentence-actions{display:flex;gap:8px;margin-top:14px;}
 .sentence-actions button{flex:1;padding:11px;border:0;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;}
 .sentence-actions button:active{transform:scale(0.97);}
 .btn-all{background:#e94560;color:#fff;box-shadow:0 4px 12px rgba(233,69,96,0.28);}
 .btn-cn{background:#f1f5f9;color:#0f172a;}
-/* 词块网格 */
 .chunk-section{background:#fff;border-radius:20px;padding:14px 14px 10px;box-shadow:0 4px 14px rgba(0,0,0,0.05);margin-bottom:12px;}
 .chunk-section-title{font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
 .chunk-section-title .count{background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:20px;font-size:10px;}
 .chunk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:7px;}
-.chunk{padding:9px 6px 7px;border-radius:12px;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center;cursor:pointer;transition:.15s;user-select:none;}
+.chunk{padding:9px 6px 7px;border-radius:12px;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center;cursor:pointer;transition:.15s;user-select:none;position:relative;}
 .chunk:active{transform:scale(0.95);}
 .chunk.active{background:#e94560;border-color:#e94560;color:#fff;box-shadow:0 4px 10px rgba(233,69,96,0.22);}
 .chunk .en{font-size:13px;font-weight:700;line-height:1.25;word-break:break-word;}
@@ -82,14 +78,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .chunk .cn{font-size:10px;color:#94a3b8;margin-top:3px;word-break:break-word;}
 .chunk.active .ph{color:rgba(255,255,255,0.9);}
 .chunk.active .cn{color:rgba(255,255,255,0.85);}
-/* 导航 */
+.chunk .learned-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:#22c55e;}
+.chunk.active .learned-dot{background:#fff;}
 .nav-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;}
 .nav-btn{flex:1;padding:11px;border:0;border-radius:14px;background:#fff;color:#0f172a;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
 .nav-btn:active{transform:scale(0.97);}
 .nav-center{font-size:12px;font-weight:700;color:#64748b;min-width:70px;text-align:center;}
 .status{text-align:center;font-size:12px;color:#94a3b8;min-height:18px;padding:4px 0;}
 .status.speaking{color:#e94560;font-weight:600;}
-/* 商城 */
 .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
 .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.05);cursor:pointer;}
 .product-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);}
@@ -97,7 +93,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .product-name{font-size:14px;font-weight:700;color:#0f172a;}
 .product-name-en{font-size:10px;color:#94a3b8;margin-top:2px;}
 .product-price{margin-top:6px;color:#e94560;font-weight:800;font-size:15px;}
-/* 弹窗 */
 .modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:200;justify-content:center;align-items:center;padding:16px;}
 .modal.open{display:flex;}
 .modal-box{background:#fff;border-radius:24px;max-width:520px;width:100%;max-height:85vh;overflow-y:auto;padding:24px;position:relative;}
@@ -129,6 +124,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   </div>
 
   <div id="learnModule">
+    <div class="review-banner" id="reviewBanner">
+      <span>🔁 复习模式 · 第 <b id="reviewProgress">1</b> / <b id="reviewTotal">0</b> 句</span>
+      <button onclick="exitReview()">✕ 退出复习</button>
+    </div>
+
     <div class="category-tabs" id="categoryTabs"></div>
 
     <div class="toolbar">
@@ -139,11 +139,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       </div>
       <button class="icon-btn" id="listToggle" onclick="toggleList()">📋 母句</button>
       <button class="icon-btn fav" id="favToggle" onclick="toggleFavMode()">⭐ 收藏</button>
+      <button class="icon-btn" id="reviewBtn" onclick="startReview()">🔁 复习</button>
     </div>
 
     <div class="pattern-list" id="patternList"></div>
 
-    <!-- 🌟 主卡片：黑色母句 + 红色词块 -->
     <div class="main-card">
       <div class="main-card-header">
         <div class="meta">
@@ -295,10 +295,9 @@ function getPhonics(text) {
 }
 
 // ================================================================
-// 母句库（130个母句 × 10词块 = 1300句）
+// 母句库
 // ================================================================
 const PATTERNS = [
-  // ============ 困惑（18个） ============
   { scene:"困惑", type:"s", en:"I have no idea how to ___.", cn:"我不知道该怎么 ______。", chunks:[
     {en:"order this",cn:"点这个"},{en:"get to the hotel",cn:"去酒店"},{en:"use this machine",cn:"用这台机器"},{en:"find the way",cn:"找路"},{en:"cook this dish",cn:"做这道菜"},{en:"pay the bill",cn:"付账"},{en:"say this in English",cn:"用英语说这个"},{en:"fix this",cn:"修这个"},{en:"get there",cn:"到那里"},{en:"start the car",cn:"发动车"}]},
   { scene:"困惑", type:"s", en:"I have no idea where to ___.", cn:"我不知道该去哪 ______。", chunks:[
@@ -336,7 +335,6 @@ const PATTERNS = [
   { scene:"困惑", type:"q", en:"Could you show me how to ___?", cn:"你能教我怎么做 ______ 吗？", chunks:[
     {en:"use this",cn:"用这个"},{en:"fix this",cn:"修这个"},{en:"get there",cn:"到那里"},{en:"fill the form",cn:"填表"},{en:"cook this",cn:"做这道菜"},{en:"open it",cn:"打开它"},{en:"find the way",cn:"找路"},{en:"use the app",cn:"用这个App"},{en:"book a room",cn:"订房间"},{en:"check in online",cn:"网上登机"}]},
 
-  // ============ 日常（14个） ============
   { scene:"日常", type:"s", en:"I want to ___.", cn:"我想 ______。", chunks:[
     {en:"eat something",cn:"吃点东西"},{en:"drink water",cn:"喝水"},{en:"sleep early",cn:"早点睡"},{en:"go home",cn:"回家"},{en:"learn English",cn:"学英语"},{en:"take a break",cn:"休息一下"},{en:"buy some food",cn:"买点吃的"},{en:"see a movie",cn:"看电影"},{en:"call my mom",cn:"给我妈打电话"},{en:"rest for a while",cn:"休息一会儿"}]},
   { scene:"日常", type:"s", en:"I need to ___.", cn:"我需要 ______。", chunks:[
@@ -366,7 +364,6 @@ const PATTERNS = [
   { scene:"日常", type:"q", en:"Do you often ___?", cn:"你经常 ______ 吗？", chunks:[
     {en:"eat out",cn:"外出吃饭"},{en:"cook at home",cn:"在家做饭"},{en:"go to bed late",cn:"晚睡"},{en:"get up early",cn:"早起"},{en:"take a taxi",cn:"打车"},{en:"walk to work",cn:"走路上班"},{en:"watch TV",cn:"看电视"},{en:"play games",cn:"玩游戏"},{en:"drink coffee",cn:"喝咖啡"},{en:"go to the park",cn:"去公园"}]},
 
-  // ============ 厨师（14个） ============
   { scene:"厨师", type:"s", en:"I need to ___.", cn:"我需要 ______。", chunks:[
     {en:"chop vegetables",cn:"切菜"},{en:"slice onions",cn:"切洋葱"},{en:"boil water",cn:"烧水"},{en:"fry an egg",cn:"煎蛋"},{en:"wash the dishes",cn:"洗碗"},{en:"set the table",cn:"摆餐具"},{en:"prepare the sauce",cn:"准备酱汁"},{en:"clean the kitchen",cn:"打扫厨房"},{en:"check the oven",cn:"看烤箱"},{en:"taste the soup",cn:"尝汤"}]},
   { scene:"厨师", type:"s", en:"Please ___.", cn:"请 ______。", chunks:[
@@ -396,7 +393,6 @@ const PATTERNS = [
   { scene:"厨师", type:"q", en:"What should I ___ first?", cn:"我应该先 ______ 什么？", chunks:[
     {en:"cook",cn:"煮"},{en:"cut",cn:"切"},{en:"wash",cn:"洗"},{en:"prepare",cn:"准备"},{en:"clean",cn:"清理"},{en:"check",cn:"检查"},{en:"make",cn:"做"},{en:"start",cn:"开始"},{en:"heat",cn:"加热"},{en:"serve",cn:"上菜"}]},
 
-  // ============ 社交（14个） ============
   { scene:"社交", type:"s", en:"Do you want to ___?", cn:"你想 ______ 吗？", chunks:[
     {en:"hang out",cn:"一起玩"},{en:"grab coffee",cn:"喝咖啡"},{en:"see a movie",cn:"看电影"},{en:"go shopping",cn:"去购物"},{en:"have dinner",cn:"吃晚饭"},{en:"join us",cn:"加入我们"},{en:"play basketball",cn:"打篮球"},{en:"take a walk",cn:"去散步"},{en:"come over",cn:"来我家"},{en:"try this restaurant",cn:"去这家餐厅"}]},
   { scene:"社交", type:"s", en:"Would you like to ___?", cn:"你想 ______ 吗？", chunks:[
@@ -426,7 +422,6 @@ const PATTERNS = [
   { scene:"社交", type:"q", en:"How long have you ___?", cn:"你 ______ 多久了？", chunks:[
     {en:"been here",cn:"在这里"},{en:"worked here",cn:"在这里工作"},{en:"lived here",cn:"住在这里"},{en:"studied English",cn:"学英语"},{en:"known him",cn:"认识他"},{en:"been married",cn:"结婚"},{en:"had this job",cn:"做这份工作"},{en:"been in China",cn:"在中国"},{en:"played guitar",cn:"弹吉他"},{en:"been friends",cn:"是朋友"}]},
 
-  // ============ 旅行（14个） ============
   { scene:"旅行", type:"s", en:"Where is ___?", cn:"______ 在哪里？", chunks:[
     {en:"the station",cn:"车站"},{en:"the airport",cn:"机场"},{en:"the hotel",cn:"酒店"},{en:"the restroom",cn:"洗手间"},{en:"the bank",cn:"银行"},{en:"the bus stop",cn:"公交站"},{en:"the exit",cn:"出口"},{en:"the entrance",cn:"入口"},{en:"the taxi stand",cn:"出租车站"},{en:"the information desk",cn:"问讯处"}]},
   { scene:"旅行", type:"s", en:"How can I ___?", cn:"我怎么 ______？", chunks:[
@@ -456,7 +451,6 @@ const PATTERNS = [
   { scene:"旅行", type:"q", en:"How far is ___?", cn:"______ 有多远？", chunks:[
     {en:"the station",cn:"车站"},{en:"the airport",cn:"机场"},{en:"the hotel",cn:"酒店"},{en:"the city center",cn:"市中心"},{en:"the beach",cn:"海滩"},{en:"the museum",cn:"博物馆"},{en:"the bus stop",cn:"公交站"},{en:"the restaurant",cn:"餐厅"},{en:"the shopping mall",cn:"商场"},{en:"it from here",cn:"离这"}]},
 
-  // ============ 购物（14个） ============
   { scene:"购物", type:"s", en:"How much ___?", cn:"______ 多少钱？", chunks:[
     {en:"is this",cn:"这个"},{en:"does it cost",cn:"这个"},{en:"is the total",cn:"总共"},{en:"is a ticket",cn:"一张票"},{en:"is that one",cn:"那个"},{en:"for two",cn:"两个"},{en:"is the cheapest one",cn:"最便宜那个"},{en:"is the discount",cn:"折扣"},{en:"is the delivery fee",cn:"运费"},{en:"do I need to pay",cn:"该付多少"}]},
   { scene:"购物", type:"s", en:"Do you have ___?", cn:"你们有 ______ 吗？", chunks:[
@@ -486,7 +480,6 @@ const PATTERNS = [
   { scene:"购物", type:"q", en:"Can I pay with ___?", cn:"我可以用 ______ 支付吗？", chunks:[
     {en:"cash",cn:"现金"},{en:"a credit card",cn:"信用卡"},{en:"WeChat Pay",cn:"微信"},{en:"Alipay",cn:"支付宝"},{en:"my phone",cn:"手机"},{en:"a gift card",cn:"礼品卡"},{en:"US dollars",cn:"美元"},{en:"a coupon",cn:"优惠券"},{en:"Apple Pay",cn:"Apple Pay"},{en:"a debit card",cn:"借记卡"}]},
 
-  // ============ 紧急（12个） ============
   { scene:"紧急", type:"s", en:"I need help ___.", cn:"我需要帮助 ______。", chunks:[
     {en:"right now",cn:"马上"},{en:"with this",cn:"帮这个"},{en:"immediately",cn:"立刻"},{en:"please",cn:"拜托"},{en:"with my car",cn:"车的问题"},{en:"with my phone",cn:"手机的问题"},{en:"with directions",cn:"问路"},{en:"with my luggage",cn:"行李的问题"},{en:"with my child",cn:"孩子的事"},{en:"with the door",cn:"门的问题"}]},
   { scene:"紧急", type:"s", en:"Call ___!", cn:"叫 ______！", chunks:[
@@ -512,7 +505,6 @@ const PATTERNS = [
   { scene:"紧急", type:"q", en:"Could you ___ for me?", cn:"你能为我 ______ 吗？", chunks:[
     {en:"call a taxi",cn:"叫出租车"},{en:"call the police",cn:"报警"},{en:"call an ambulance",cn:"叫救护车"},{en:"write it down",cn:"写下来"},{en:"translate this",cn:"翻译这个"},{en:"show me on the map",cn:"在地图上指给我"},{en:"call my family",cn:"给我家人打电话"},{en:"help me find it",cn:"帮我找"},{en:"explain this",cn:"解释这个"},{en:"read this",cn:"读这个"}]},
 
-  // ============ 餐厅（12个） ============
   { scene:"餐厅", type:"s", en:"I'd like to ___.", cn:"我想 ______。", chunks:[
     {en:"order now",cn:"现在点餐"},{en:"see the menu",cn:"看菜单"},{en:"have the bill",cn:"买单"},{en:"try this dish",cn:"尝这道菜"},{en:"book a table",cn:"订位"},{en:"have some water",cn:"要点水"},{en:"get a coffee",cn:"要杯咖啡"},{en:"see the wine list",cn:"看酒单"},{en:"order dessert",cn:"点甜点"},{en:"take this away",cn:"打包"}]},
   { scene:"餐厅", type:"s", en:"Could I have ___?", cn:"请给我 ______ 好吗？", chunks:[
@@ -539,7 +531,6 @@ const PATTERNS = [
     {en:"a table",cn:"一张桌"},{en:"the menu",cn:"菜单"},{en:"some water",cn:"一些水"},{en:"the bill",cn:"账单"},{en:"two coffees",cn:"两杯咖啡"},{en:"more rice",cn:"更多米饭"},{en:"a high chair",cn:"儿童椅"},{en:"a quiet table",cn:"安静的桌子"},{en:"some napkins",cn:"一些餐巾"},{en:"the check",cn:"账单"}]}
 ];
 
-// 商品数据
 const PRODUCTS = [
   { id:1, name:"陶瓷咖啡杯套装", nameEn:"Ceramic Coffee Mug Set", price:39.9, emoji:"☕",
     descEn:"This set includes four elegant ceramic mugs, microwave and dishwasher safe.",
@@ -567,7 +558,11 @@ let isSpeaking = false;
 let showFavOnly = false;
 let favorites = JSON.parse(localStorage.getItem("wordblock_favs") || "[]");
 
-// DOM
+// 🔁 复习模式状态
+let learnedSet = JSON.parse(localStorage.getItem("wordblock_learned") || "[]");
+let reviewMode = false;
+let reviewPatterns = [];
+
 const $ = id => document.getElementById(id);
 const sentenceLine = $("sentenceLine");
 const sentenceCn = $("sentenceCn");
@@ -620,14 +615,64 @@ function speak(text, lang, cb) {
 }
 
 // ================================================================
-// 拆分母句：把 "I want to ___." 拆成 骨架 "I want to" + 尾标点 "."
+// 拆分母句
 // ================================================================
 function splitPattern(pattern) {
   const match = pattern.match(/^([\s\S]*?)\s*___\s*([.,?!]?)\s*$/);
-  if (match) {
-    return { skeleton: match[1].trim(), punctuation: match[2] || "" };
-  }
+  if (match) return { skeleton: match[1].trim(), punctuation: match[2] || "" };
   return { skeleton: pattern.replace(/___/g, "").trim(), punctuation: "" };
+}
+
+// ================================================================
+// 复习模式
+// ================================================================
+function markLearned(p, c) {
+  const key = p.scene + "|" + p.en + "|" + c.en;
+  if (learnedSet.some(x => x.key === key)) return;
+  learnedSet.push({ key, scene: p.scene, patternEn: p.en, patternCn: p.cn, chunkEn: c.en, chunkCn: c.cn, type: p.type });
+  localStorage.setItem("wordblock_learned", JSON.stringify(learnedSet));
+}
+
+function startReview() {
+  if (reviewMode) return;
+  if (learnedSet.length === 0) {
+    statusEl.textContent = "😅 还没有学过的句子，先学几句吧";
+    statusEl.className = "status";
+    return;
+  }
+  reviewPatterns = [];
+  learnedSet.forEach(item => {
+    const p = PATTERNS.find(x => x.scene === item.scene && x.en === item.patternEn);
+    if (!p) return;
+    const c = p.chunks.find(ch => ch.en === item.chunkEn);
+    if (!c) return;
+    reviewPatterns.push(Object.assign({}, p, { chunks: [c] }));
+  });
+  if (!reviewPatterns.length) { statusEl.textContent = "复习内容已失效"; return; }
+  for (let i = reviewPatterns.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [reviewPatterns[i], reviewPatterns[j]] = [reviewPatterns[j], reviewPatterns[i]];
+  }
+  reviewMode = true;
+  filteredPatterns = reviewPatterns;
+  currentPatternIndex = 0;
+  currentChunkIndex = 0;
+  $("reviewBanner").style.display = "flex";
+  $("reviewTotal").textContent = reviewPatterns.length;
+  $("reviewProgress").textContent = 1;
+  renderPattern();
+  statusEl.textContent = "🔁 复习模式已开始（共 " + reviewPatterns.length + " 句）";
+  statusEl.className = "status";
+}
+
+function exitReview() {
+  reviewMode = false;
+  $("reviewBanner").style.display = "none";
+  currentPatternIndex = 0;
+  currentChunkIndex = 0;
+  updateFilteredPatterns();
+  statusEl.textContent = "已退出复习模式";
+  statusEl.className = "status";
 }
 
 // ================================================================
@@ -653,7 +698,7 @@ function updateFilteredPatterns() {
 }
 
 // ================================================================
-// 渲染主卡片
+// 渲染
 // ================================================================
 function renderPattern() {
   if (!filteredPatterns.length) return;
@@ -666,7 +711,6 @@ function renderPattern() {
   patternType.textContent = p.type === "q" ? "疑问句" : "陈述句";
   patternType.className = "type-tag " + p.type;
 
-  // 主句：黑母句 + 红词块 + 标点
   sentenceLine.innerHTML =
     '<span class="part-pattern" data-role="pattern" title="点击读母句">' + skeleton + '</span>' +
     ' <span class="part-chunk" data-role="chunk" title="点击读词块">' + c.en + '</span>' +
@@ -675,14 +719,16 @@ function renderPattern() {
   sentenceCn.textContent = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
   sentencePh.textContent = getPhonics(fullEn);
 
-  // 词块网格
   chunkGrid.innerHTML = "";
+  const learnedKeys = new Set(learnedSet.map(x => x.key));
   p.chunks.forEach((ch, i) => {
     const div = document.createElement("div");
     div.className = "chunk" + (i === currentChunkIndex ? " active" : "");
+    const isLearned = learnedKeys.has(p.scene + "|" + p.en + "|" + ch.en);
     div.innerHTML = '<div class="en">' + ch.en + '</div>'
       + '<div class="ph">' + getPhonics(ch.en) + '</div>'
-      + '<div class="cn">' + ch.cn + '</div>';
+      + '<div class="cn">' + ch.cn + '</div>'
+      + (isLearned ? '<div class="learned-dot"></div>' : '');
     div.onclick = () => selectChunk(i);
     chunkGrid.appendChild(div);
   });
@@ -692,10 +738,12 @@ function renderPattern() {
 
   updateFavButton();
   renderPatternList();
+
+  if (reviewMode) $("reviewProgress").textContent = currentPatternIndex + 1;
 }
 
 // ================================================================
-// 点击主句黑色/红色部分
+// 点击主句黑/红
 // ================================================================
 sentenceLine.addEventListener("click", function(e) {
   const role = e.target.dataset.role;
@@ -758,16 +806,18 @@ function playChinese() {
 }
 
 // ================================================================
-// 选择词块
+// 选词块
 // ================================================================
 function selectChunk(index) {
-  currentChunkIndex = index;
   const p = filteredPatterns[currentPatternIndex];
+  if (!p) return;
+  markLearned(p, p.chunks[index]);
+
+  currentChunkIndex = index;
   const c = p.chunks[index];
   const { skeleton, punctuation } = splitPattern(p.en);
   const fullEn = skeleton + " " + c.en + punctuation;
 
-  // 更新主句
   sentenceLine.innerHTML =
     '<span class="part-pattern" data-role="pattern">' + skeleton + '</span>' +
     ' <span class="part-chunk" data-role="chunk">' + c.en + '</span>' +
@@ -775,11 +825,24 @@ function selectChunk(index) {
   sentenceCn.textContent = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
   sentencePh.textContent = getPhonics(fullEn);
 
-  // 更新词块高亮
-  chunkGrid.querySelectorAll(".chunk").forEach((el, i) => el.classList.toggle("active", i === index));
+  // 更新高亮 + 绿点
+  const learnedKeys = new Set(learnedSet.map(x => x.key));
+  chunkGrid.querySelectorAll(".chunk").forEach((el, i) => {
+    el.classList.toggle("active", i === index);
+    const ch = p.chunks[i];
+    const isLearned = learnedKeys.has(p.scene + "|" + p.en + "|" + ch.en);
+    let dot = el.querySelector(".learned-dot");
+    if (isLearned && !dot) {
+      dot = document.createElement("div");
+      dot.className = "learned-dot";
+      el.appendChild(dot);
+    } else if (!isLearned && dot) {
+      dot.remove();
+    }
+  });
+
   updateFavButton();
 
-  // 自动读整句（新词块替换后听一遍）
   statusEl.textContent = "🔊 " + fullEn;
   statusEl.className = "status speaking";
   speak(fullEn, "en-US", () => {
@@ -789,7 +852,7 @@ function selectChunk(index) {
 }
 
 // ================================================================
-// 上一句 / 下一句
+// 上下句
 // ================================================================
 function prevPattern() {
   if (!filteredPatterns.length) return;
@@ -802,6 +865,9 @@ function nextPattern() {
   currentPatternIndex = (currentPatternIndex + 1) % filteredPatterns.length;
   currentChunkIndex = 0;
   renderPattern();
+  if (reviewMode && currentPatternIndex === 0) {
+    statusEl.textContent = "🎉 完成一轮复习！共 " + reviewPatterns.length + " 句";
+  }
 }
 
 // ================================================================
@@ -814,6 +880,7 @@ function initCategoryTabs() {
   ).join("");
   categoryTabs.querySelectorAll(".cat-tab").forEach(btn => {
     btn.onclick = () => {
+      if (reviewMode) exitReview();
       categoryTabs.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       currentScene = btn.dataset.scene;
@@ -825,9 +892,8 @@ function initCategoryTabs() {
 }
 
 function setType(type, btn) {
-  document.querySelectorAll(".type-btn").forEach(b => {
-    b.classList.remove("active"); b.classList.remove("q");
-  });
+  if (reviewMode) exitReview();
+  document.querySelectorAll(".type-btn").forEach(b => { b.classList.remove("active"); b.classList.remove("q"); });
   btn.classList.add("active");
   if (type === "q") btn.classList.add("q");
   currentType = type;
@@ -841,20 +907,13 @@ function setType(type, btn) {
 let listOpen = false;
 function toggleList() {
   listOpen = !listOpen;
-  if (listOpen) {
-    patternList.classList.add("open");
-    renderPatternList();
-  } else {
-    patternList.classList.remove("open");
-  }
+  if (listOpen) { patternList.classList.add("open"); renderPatternList(); }
+  else patternList.classList.remove("open");
 }
 
 function renderPatternList() {
   if (!listOpen) return;
-  if (!filteredPatterns.length) {
-    patternList.innerHTML = '<div class="pattern-list-empty">暂无内容</div>';
-    return;
-  }
+  if (!filteredPatterns.length) { patternList.innerHTML = '<div class="pattern-list-empty">暂无内容</div>'; return; }
   patternList.innerHTML = filteredPatterns.map((p, i) =>
     '<div class="pattern-list-item' + (i === currentPatternIndex ? ' active' : '') + '" onclick="jumpToPattern(' + i + ')">' +
       '<span>' + p.en.replace(/___/g, '____') + '</span>' +
@@ -880,17 +939,10 @@ function isCurrentFav() {
   const c = p.chunks[currentChunkIndex];
   return favorites.some(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
 }
-
 function updateFavButton() {
-  if (isCurrentFav()) {
-    favBtn.classList.add("active");
-    favBtn.textContent = "★";
-  } else {
-    favBtn.classList.remove("active");
-    favBtn.textContent = "☆";
-  }
+  if (isCurrentFav()) { favBtn.classList.add("active"); favBtn.textContent = "★"; }
+  else { favBtn.classList.remove("active"); favBtn.textContent = "☆"; }
 }
-
 function toggleFavSentence() {
   const p = filteredPatterns[currentPatternIndex];
   if (!p) return;
@@ -898,22 +950,19 @@ function toggleFavSentence() {
   const idx = favorites.findIndex(f => f.scene === p.scene && f.patternEn === p.en && f.chunkEn === c.en);
   if (idx >= 0) {
     favorites.splice(idx, 1);
-    statusEl.textContent = "已取消收藏";
-    statusEl.className = "status";
+    statusEl.textContent = "已取消收藏"; statusEl.className = "status";
   } else {
     favorites.push({ scene: p.scene, patternEn: p.en, patternCn: p.cn, chunkEn: c.en, chunkCn: c.cn, type: p.type });
-    statusEl.textContent = "⭐ 已收藏";
-    statusEl.className = "status";
+    statusEl.textContent = "⭐ 已收藏"; statusEl.className = "status";
   }
   localStorage.setItem("wordblock_favs", JSON.stringify(favorites));
   updateFavButton();
 }
-
 function toggleFavMode() {
+  if (reviewMode) exitReview();
   showFavOnly = !showFavOnly;
   favToggle.classList.toggle("on", showFavOnly);
-  currentPatternIndex = 0;
-  currentChunkIndex = 0;
+  currentPatternIndex = 0; currentChunkIndex = 0;
   statusEl.textContent = showFavOnly ? ("⭐ 只显示收藏（共 " + favorites.length + " 条）") : "显示全部";
   updateFilteredPatterns();
 }
@@ -953,7 +1002,7 @@ function closeModal() {
 }
 
 // ================================================================
-// Tab 切换
+// Tab
 // ================================================================
 function switchTab(tab, btn) {
   document.querySelectorAll(".tab-mini button").forEach(b => b.classList.remove("active"));
@@ -981,7 +1030,7 @@ function init() {
     window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
   }
 
-  console.log("✅ 已启动 · 母句", PATTERNS.length, "· 词块", PATTERNS.reduce((s,p)=>s+p.chunks.length,0));
+  console.log("✅ 已启动 · 母句", PATTERNS.length, "· 词块", PATTERNS.reduce((s,p)=>s+p.chunks.length,0), "· 已学", learnedSet.length);
 }
 
 document.getElementById("productModal").addEventListener("click", function(e) {
