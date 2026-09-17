@@ -4,12 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport"
       content="width=device-width,initial-scale=1,maximum-scale=1">
+
 <title>🎧 每句练耳 · Chaowen AI V6.0</title>
+
 <style>
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
+
 body{
     margin:0;
     background:#f5f7fa;
@@ -17,6 +20,7 @@ body{
     "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
     color:#172033;
 }
+
 .player{
     width:min(720px,94vw);
     margin:25px auto;
@@ -25,18 +29,21 @@ body{
     padding:22px;
     box-shadow:0 10px 35px rgba(0,0,0,.08);
 }
+
 .brand{
     text-align:center;
     font-size:14px;
     color:#718096;
     margin-bottom:4px;
 }
+
 .title{
     text-align:center;
     font-size:25px;
     font-weight:800;
     margin-bottom:20px;
 }
+
 .progress{
     height:6px;
     background:#e7ebf0;
@@ -44,18 +51,21 @@ body{
     overflow:hidden;
     margin-bottom:20px;
 }
+
 .progressBar{
     height:100%;
     width:0%;
     background:#222;
     transition:.25s;
 }
+
 .stage{
     text-align:center;
     font-size:13px;
     color:#7a8495;
     margin-bottom:10px;
 }
+
 .mainWord{
     text-align:center;
     font-size:42px;
@@ -63,23 +73,27 @@ body{
     letter-spacing:.5px;
     margin:8px 0;
 }
+
 .ipa{
     text-align:center;
     font-size:21px;
     color:#64748b;
     margin-bottom:10px;
 }
+
 .chinese{
     text-align:center;
     font-size:17px;
     color:#667085;
     min-height:26px;
 }
+
 .chain{
     margin-top:20px;
     border-top:1px solid #edf0f4;
     padding-top:18px;
 }
+
 .item{
     display:flex;
     justify-content:space-between;
@@ -87,11 +101,13 @@ body{
     padding:11px 4px;
     border-bottom:1px solid #f0f2f5;
 }
+
 .itemLeft{
     display:flex;
     align-items:center;
     gap:10px;
 }
+
 .badge{
     width:28px;
     height:28px;
@@ -102,14 +118,17 @@ body{
     background:#eef1f5;
     font-size:12px;
 }
+
 .itemText{
     font-size:16px;
 }
+
 .itemSub{
     font-size:12px;
     color:#9aa3b2;
     margin-top:2px;
 }
+
 .listenBtn{
     border:0;
     background:#f0f2f5;
@@ -118,28 +137,33 @@ body{
     border-radius:50%;
     font-size:17px;
 }
+
 .sentence{
     margin-top:20px;
     padding:18px;
     background:#f7f8fa;
     border-radius:17px;
 }
+
 .sentenceEN{
     font-size:24px;
     line-height:1.45;
     font-weight:700;
 }
+
 .sentenceCN{
     margin-top:8px;
     color:#667085;
     font-size:16px;
 }
+
 .controls{
     display:grid;
     grid-template-columns:1fr 1.5fr 1fr;
     gap:10px;
     margin-top:20px;
 }
+
 button{
     border:0;
     border-radius:14px;
@@ -147,14 +171,17 @@ button{
     font-size:15px;
     cursor:pointer;
 }
+
 .prev,.next{
     background:#eef1f5;
 }
+
 .play{
     background:#111827;
     color:white;
     font-weight:700;
 }
+
 .tools{
     display:flex;
     justify-content:center;
@@ -163,12 +190,14 @@ button{
     flex-wrap:wrap;
     margin-top:15px;
 }
+
 .tool{
     background:#f0f2f5;
     padding:9px 13px;
     border-radius:12px;
     font-size:13px;
 }
+
 .status{
     text-align:center;
     margin-top:16px;
@@ -176,12 +205,14 @@ button{
     color:#7a8495;
     min-height:20px;
 }
+
 .phonemeGrid{
     margin-top:20px;
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:8px;
 }
+
 .phonemeBtn{
     background:#f5f7fa;
     border:1px solid #e8ebef;
@@ -189,10 +220,12 @@ button{
     padding:10px 4px;
     font-size:14px;
 }
+
 .phonemeBtn.active{
     background:#111827;
     color:white;
 }
+
 .credit{
     margin-top:18px;
     text-align:center;
@@ -200,38 +233,53 @@ button{
     line-height:1.5;
     color:#a0a7b4;
 }
+
 @media(max-width:500px){
     .player{
         margin:10px auto;
         padding:16px;
         border-radius:20px;
     }
+
     .mainWord{
         font-size:36px;
     }
+
     .sentenceEN{
         font-size:20px;
     }
+
     .phonemeGrid{
         grid-template-columns:repeat(3,1fr);
     }
 }
 </style>
 </head>
+
 <body>
+
 <div class="player">
+
 <div class="brand">🎋 Chaowen AI</div>
+
 <div class="title">🎧 每句练耳 V6.0</div>
+
 <div class="progress">
     <div class="progressBar" id="progressBar"></div>
 </div>
+
 <div class="stage" id="stage">
     音素 → 拼读 → 单词 → 词族 → 词块 → 母句
 </div>
+
 <div class="mainWord" id="mainWord">cat</div>
+
 <div class="ipa" id="ipa">/kæt/</div>
+
 <div class="chinese" id="chinese">猫</div>
+
 <div class="chain">
+
     <div class="item">
         <div class="itemLeft">
             <div class="badge">1</div>
@@ -242,6 +290,7 @@ button{
         </div>
         <button class="listenBtn" onclick="playCurrentPhoneme()">🔊</button>
     </div>
+
     <div class="item">
         <div class="itemLeft">
             <div class="badge">2</div>
@@ -252,6 +301,7 @@ button{
         </div>
         <button class="listenBtn" onclick="playWord()">🔊</button>
     </div>
+
     <div class="item">
         <div class="itemLeft">
             <div class="badge">3</div>
@@ -262,6 +312,7 @@ button{
         </div>
         <button class="listenBtn" onclick="speakWord()">🔊</button>
     </div>
+
     <div class="item">
         <div class="itemLeft">
             <div class="badge">4</div>
@@ -272,6 +323,7 @@ button{
         </div>
         <button class="listenBtn" onclick="playFamily()">🔊</button>
     </div>
+
     <div class="item">
         <div class="itemLeft">
             <div class="badge">5</div>
@@ -282,6 +334,7 @@ button{
         </div>
         <button class="listenBtn" onclick="playHighFrequency()">🔊</button>
     </div>
+
     <div class="item">
         <div class="itemLeft">
             <div class="badge">6</div>
@@ -292,275 +345,352 @@ button{
         </div>
         <button class="listenBtn" onclick="speakChunk()">🔊</button>
     </div>
+
 </div>
+
 <div class="sentence">
+
     <div class="sentenceEN" id="sentenceEN">
         The cat sat on the mat.
     </div>
+
     <div class="sentenceCN" id="sentenceCN">
         那只猫坐在垫子上。
     </div>
+
 </div>
+
 <div class="controls">
+
     <button class="prev" onclick="prevLesson()">← 上一句</button>
+
     <button class="play" onclick="playEverything()" id="playBtn">
         ▶ 开始整条训练
     </button>
+
     <button class="next" onclick="nextLesson()">下一句 →</button>
+
 </div>
+
 <div class="tools">
+
     <button class="tool" onclick="stopAll()">⏹ 停止</button>
+
     <button class="tool" onclick="toggleChinese()" id="cnBtn">
         🇨🇳 中文：开
     </button>
+
     <button class="tool" onclick="toggleRepeat()" id="repeatBtn">
         🔁 循环：关
     </button>
+
     <button class="tool" onclick="changeSpeed()">
         ⚡ <span id="speedText">0.8x</span>
     </button>
+
 </div>
+
 <div class="status" id="status">
     准备开始
 </div>
+
 <div class="phonemeGrid" id="phonemeGrid"></div>
+
 <div class="credit">
     V6.0 · 真人音素文件由 audio/phonemes/ 提供<br>
     本播放器不会用 TTS 冒充真人音素
 </div>
+
 </div>
+
+
 <script>
+
 /* =========================================================
    1. 44个英语音素
 ========================================================= */
+
 const phonemes = {
+
     /* vowels */
+
     "iː":{
         name:"/iː/",
         file:"audio/phonemes/vowels/i-long.mp3",
         example:"see"
     },
+
     "ɪ":{
         name:"/ɪ/",
         file:"audio/phonemes/vowels/i-short.mp3",
         example:"sit"
     },
+
     "e":{
         name:"/e/",
         file:"audio/phonemes/vowels/e.mp3",
         example:"bed"
     },
+
     "æ":{
         name:"/æ/",
         file:"audio/phonemes/vowels/ae.mp3",
         example:"cat"
     },
+
     "ɑː":{
         name:"/ɑː/",
         file:"audio/phonemes/vowels/ar.mp3",
         example:"father"
     },
+
     "ɒ":{
         name:"/ɒ/",
         file:"audio/phonemes/vowels/o-short.mp3",
         example:"hot"
     },
+
     "ɔː":{
         name:"/ɔː/",
         file:"audio/phonemes/vowels/aw.mp3",
         example:"door"
     },
+
     "ʊ":{
         name:"/ʊ/",
         file:"audio/phonemes/vowels/u-short.mp3",
         example:"book"
     },
+
     "uː":{
         name:"/uː/",
         file:"audio/phonemes/vowels/u-long.mp3",
         example:"food"
     },
+
     "ʌ":{
         name:"/ʌ/",
         file:"audio/phonemes/vowels/uh.mp3",
         example:"cut"
     },
+
     "ɜː":{
         name:"/ɜː/",
         file:"audio/phonemes/vowels/er.mp3",
         example:"bird"
     },
+
     "ə":{
         name:"/ə/",
         file:"audio/phonemes/vowels/schwa.mp3",
         example:"about"
     },
+
     "eɪ":{
         name:"/eɪ/",
         file:"audio/phonemes/vowels/ay.mp3",
         example:"day"
     },
+
     "aɪ":{
         name:"/aɪ/",
         file:"audio/phonemes/vowels/eye.mp3",
         example:"my"
     },
+
     "ɔɪ":{
         name:"/ɔɪ/",
         file:"audio/phonemes/vowels/oy.mp3",
         example:"boy"
     },
+
     "əʊ":{
         name:"/əʊ/",
         file:"audio/phonemes/vowels/oh.mp3",
         example:"go"
     },
+
     "aʊ":{
         name:"/aʊ/",
         file:"audio/phonemes/vowels/ow.mp3",
         example:"now"
     },
+
     "ɪə":{
         name:"/ɪə/",
         file:"audio/phonemes/vowels/ear.mp3",
         example:"near"
     },
+
     "eə":{
         name:"/eə/",
         file:"audio/phonemes/vowels/air.mp3",
         example:"hair"
     },
+
     "ʊə":{
         name:"/ʊə/",
         file:"audio/phonemes/vowels/ure.mp3",
         example:"tour"
+
     },
+
+
     /* consonants */
+
     "p":{
         name:"/p/",
         file:"audio/phonemes/consonants/p.mp3",
         example:"pen"
     },
+
     "b":{
         name:"/b/",
         file:"audio/phonemes/consonants/b.mp3",
         example:"bed"
     },
+
     "t":{
         name:"/t/",
         file:"audio/phonemes/consonants/t.mp3",
         example:"ten"
     },
+
     "d":{
         name:"/d/",
         file:"audio/phonemes/consonants/d.mp3",
         example:"dog"
     },
+
     "k":{
         name:"/k/",
         file:"audio/phonemes/consonants/k.mp3",
         example:"cat"
     },
+
     "g":{
         name:"/ɡ/",
         file:"audio/phonemes/consonants/g.mp3",
         example:"go"
     },
+
     "f":{
         name:"/f/",
         file:"audio/phonemes/consonants/f.mp3",
         example:"fish"
     },
+
     "v":{
         name:"/v/",
         file:"audio/phonemes/consonants/v.mp3",
         example:"very"
     },
+
     "θ":{
         name:"/θ/",
         file:"audio/phonemes/consonants/th-voiceless.mp3",
         example:"think"
     },
+
     "ð":{
         name:"/ð/",
         file:"audio/phonemes/consonants/th-voiced.mp3",
         example:"this"
     },
+
     "s":{
         name:"/s/",
         file:"audio/phonemes/consonants/s.mp3",
         example:"see"
     },
+
     "z":{
         name:"/z/",
         file:"audio/phonemes/consonants/z.mp3",
         example:"zoo"
     },
+
     "ʃ":{
         name:"/ʃ/",
         file:"audio/phonemes/consonants/sh.mp3",
         example:"she"
     },
+
     "ʒ":{
         name:"/ʒ/",
         file:"audio/phonemes/consonants/zh.mp3",
         example:"vision"
     },
+
     "h":{
         name:"/h/",
         file:"audio/phonemes/consonants/h.mp3",
         example:"house"
     },
+
     "tʃ":{
         name:"/tʃ/",
         file:"audio/phonemes/consonants/ch.mp3",
         example:"chair"
     },
+
     "dʒ":{
         name:"/dʒ/",
         file:"audio/phonemes/consonants/j.mp3",
         example:"job"
     },
+
     "m":{
         name:"/m/",
         file:"audio/phonemes/consonants/m.mp3",
         example:"man"
     },
+
     "n":{
         name:"/n/",
         file:"audio/phonemes/consonants/n.mp3",
         example:"name"
     },
+
     "ŋ":{
         name:"/ŋ/",
         file:"audio/phonemes/consonants/ng.mp3",
         example:"sing"
     },
+
     "l":{
         name:"/l/",
         file:"audio/phonemes/consonants/l.mp3",
         example:"love"
     },
+
     "r":{
         name:"/r/",
         file:"audio/phonemes/consonants/r.mp3",
         example:"red"
     },
+
     "j":{
         name:"/j/",
         file:"audio/phonemes/consonants/y.mp3",
         example:"yes"
     },
+
     "w":{
         name:"/w/",
         file:"audio/phonemes/consonants/w.mp3",
         example:"we"
     }
+
 };
+
+
 /* =========================================================
    2. 词族
 ========================================================= */
+
 const families = [
+
 {
     rime:"at",
     words:[
@@ -576,6 +706,7 @@ const families = [
     cn:"那只猫坐在垫子上。",
     chunk:"sat on the mat"
 },
+
 {
     rime:"an",
     words:[
@@ -590,6 +721,7 @@ const families = [
     cn:"那个男人会跑。",
     chunk:"can run"
 },
+
 {
     rime:"ap",
     words:[
@@ -602,6 +734,7 @@ const families = [
     cn:"我有一张地图。",
     chunk:"have a map"
 },
+
 {
     rime:"am",
     words:[
@@ -613,6 +746,7 @@ const families = [
     cn:"我喜欢果酱。",
     chunk:"like jam"
 },
+
 {
     rime:"ad",
     words:[
@@ -626,6 +760,7 @@ const families = [
     cn:"爸爸很难过。",
     chunk:"is sad"
 },
+
 {
     rime:"it",
     words:[
@@ -639,6 +774,7 @@ const families = [
     cn:"坐这里。",
     chunk:"sit here"
 },
+
 {
     rime:"in",
     words:[
@@ -651,6 +787,7 @@ const families = [
     cn:"我能赢。",
     chunk:"can win"
 },
+
 {
     rime:"ig",
     words:[
@@ -663,6 +800,7 @@ const families = [
     cn:"这头猪很大。",
     chunk:"is big"
 },
+
 {
     rime:"ip",
     words:[
@@ -675,6 +813,7 @@ const families = [
     cn:"小口喝水。",
     chunk:"the water"
 },
+
 {
     rime:"id",
     words:[
@@ -687,6 +826,7 @@ const families = [
     cn:"那个孩子做到了。",
     chunk:"did it"
 },
+
 {
     rime:"ot",
     words:[
@@ -699,6 +839,7 @@ const families = [
     cn:"锅很热。",
     chunk:"is hot"
 },
+
 {
     rime:"op",
     words:[
@@ -711,6 +852,7 @@ const families = [
     cn:"顶部很热。",
     chunk:"is hot"
 },
+
 {
     rime:"og",
     words:[
@@ -722,6 +864,7 @@ const families = [
     cn:"这只狗很大。",
     chunk:"is big"
 },
+
 {
     rime:"ut",
     words:[
@@ -734,6 +877,7 @@ const families = [
     cn:"切开坚果。",
     chunk:"the nut"
 },
+
 {
     rime:"ug",
     words:[
@@ -746,6 +890,7 @@ const families = [
     cn:"我拥抱你。",
     chunk:"hug you"
 },
+
 {
     rime:"un",
     words:[
@@ -757,6 +902,7 @@ const families = [
     cn:"我会跑。",
     chunk:"can run"
 },
+
 {
     rime:"up",
     words:[
@@ -768,6 +914,7 @@ const families = [
     cn:"我想要一个杯子。",
     chunk:"want a cup"
 },
+
 {
     rime:"et",
     words:[
@@ -781,6 +928,7 @@ const families = [
     cn:"让我拿到它。",
     chunk:"let me get it"
 },
+
 {
     rime:"en",
     words:[
@@ -794,6 +942,7 @@ const families = [
     cn:"我有十支钢笔。",
     chunk:"ten pens"
 },
+
 {
     rime:"ed",
     words:[
@@ -805,200 +954,324 @@ const families = [
     cn:"床是红色的。",
     chunk:"is red"
 }
+
 ];
+
+
 /* =========================================================
    3. 母句系统
 ========================================================= */
+
 const motherSentences = [
+
 ["I want to go home.","我想回家。","go home"],
 ["I want to eat.","我想吃东西。","want to eat"],
 ["I want to drink water.","我想喝水。","drink water"],
 ["I want to learn English.","我想学英语。","learn English"],
 ["I want to buy it.","我想买它。","buy it"],
+
 ["I need to go now.","我现在需要走了。","go now"],
 ["I need some water.","我需要一些水。","some water"],
+
 ["I am going to work.","我要去工作。","going to work"],
 ["I am going home.","我要回家。","going home"],
+
 ["I can do it.","我能做到。","do it"],
 ["I can help you.","我可以帮助你。","help you"],
+
 ["I like this.","我喜欢这个。","like this"],
 ["I like it.","我喜欢它。","like it"],
+
 ["I don't know.","我不知道。","don't know"],
 ["I don't understand.","我不明白。","don't understand"],
+
 ["Please help me.","请帮助我。","help me"],
 ["Please wait here.","请在这里等。","wait here"],
+
 ["Come with me.","跟我来。","with me"],
 ["Follow me.","跟我来。","follow me"],
+
 ["Let me see.","让我看看。","let me see"],
 ["Let me try.","让我试试。","let me try"],
+
 ["Give me a minute.","给我一分钟。","give me a minute"],
 ["Give me some water.","给我一些水。","give me some water"],
+
 ["Can you help me?","你能帮助我吗？","help me"],
 ["Can you repeat that?","你能重复一下吗？","repeat that"],
 ["Can you speak slowly?","你能慢一点说吗？","speak slowly"],
+
 ["May I come in?","我可以进来吗？","come in"],
 ["May I see your passport?","我可以看你的护照吗？","see your passport"],
+
 ["Where are you going?","你要去哪里？","where are you going"],
 ["Where is the bathroom?","洗手间在哪里？","where is the bathroom"],
+
 ["What is this?","这是什么？","what is this"],
 ["What do you want?","你想要什么？","what do you want"],
+
 ["How much is it?","多少钱？","how much is it"],
 ["How are you?","你好吗？","how are you"],
+
 ["What time is it?","现在几点？","what time is it"],
+
 ["I am ready.","我准备好了。","I am ready"],
 ["I am tired.","我累了。","I am tired"],
 ["I am hungry.","我饿了。","I am hungry"],
 ["I am thirsty.","我渴了。","I am thirsty"],
+
 ["I am busy.","我很忙。","I am busy"],
 ["I am free now.","我现在有空。","free now"],
+
 ["That is good.","那很好。","that is good"],
 ["That is okay.","没关系。","that is okay"],
+
 ["It's very easy.","这很容易。","very easy"],
 ["It's too difficult.","太难了。","too difficult"],
+
 ["I have a question.","我有一个问题。","have a question"],
 ["I have an idea.","我有一个想法。","have an idea"],
+
 ["I have one bag.","我有一个包。","one bag"],
 ["I have two bags.","我有两个包。","two bags"],
+
 ["I would like some water.","我想要一些水。","some water"],
 ["I would like a coffee.","我想要一杯咖啡。","a coffee"],
 ["I would like to eat.","我想吃东西。","like to eat"]
+
 ];
+
+
 /* =========================================================
    4. 状态
 ========================================================= */
+
 let familyIndex = 0;
 let wordIndex = 0;
+
 let speed = 0.8;
 let chineseVisible = true;
 let repeatMode = false;
+
 let playing = false;
 let token = 0;
+
 let currentAudio = null;
+
+
 /* =========================================================
    5. 工具
 ========================================================= */
+
 function sleep(ms){
     return new Promise(resolve => setTimeout(resolve,ms));
 }
+
+
 function stopAudio(){
+
     if(currentAudio){
+
         currentAudio.pause();
+
         currentAudio.currentTime = 0;
+
         currentAudio = null;
     }
 }
+
+
 function stopAll(){
+
     token++;
+
     playing = false;
+
     stopAudio();
+
     speechSynthesis.cancel();
+
     document.getElementById("status").textContent =
         "已停止";
+
     document.getElementById("playBtn").textContent =
         "▶ 开始整条训练";
 }
+
+
 /* =========================================================
    6. 真人音频播放器
 ========================================================= */
+
 function playHumanPhoneme(symbol){
+
     return new Promise(resolve => {
+
         stopAudio();
+
         const data = phonemes[symbol];
+
         if(!data){
+
             document.getElementById("status").textContent =
                 "找不到音素：" + symbol;
+
             resolve(false);
+
             return;
         }
+
         const audio = new Audio(data.file);
+
         currentAudio = audio;
+
         audio.playbackRate = speed;
+
         audio.onended = () => {
+
             currentAudio = null;
+
             resolve(true);
         };
+
         audio.onerror = () => {
+
             currentAudio = null;
+
             document.getElementById("status").textContent =
                 "⚠ 缺少真人音频：" + data.file;
+
             resolve(false);
         };
+
         audio.play().catch(() => {
+
             document.getElementById("status").textContent =
                 "⚠ 无法播放：" + data.file;
+
             resolve(false);
         });
+
     });
+
 }
+
+
 /* =========================================================
    7. TTS只负责单词、词块、句子
       不负责冒充真人音素
 ========================================================= */
+
 function speak(text){
+
     return new Promise(resolve => {
+
         speechSynthesis.cancel();
+
         const u = new SpeechSynthesisUtterance(text);
+
         u.lang = "en-US";
+
         u.rate = speed;
+
         u.pitch = 1;
+
         u.volume = 1;
+
         u.onend = () => resolve();
+
         u.onerror = () => resolve();
+
         speechSynthesis.speak(u);
+
     });
+
 }
+
+
 /* =========================================================
    8. 当前课程
 ========================================================= */
+
 function getCurrent(){
+
     const family = families[familyIndex];
+
     const word = family.words[wordIndex];
+
     return {
         family,
         word
     };
+
 }
+
+
 /* =========================================================
    9. 页面刷新
 ========================================================= */
+
 function render(){
+
     const current = getCurrent();
+
     const family = current.family;
+
     const word = current.word;
+
     document.getElementById("mainWord").textContent =
         word[0];
+
     document.getElementById("ipa").textContent =
         word[1];
+
     document.getElementById("chinese").textContent =
         word[2];
+
     document.getElementById("phonemeText").textContent =
         "/" + onsetToIPA(word[3]) + "/";
+
     document.getElementById("blendText").textContent =
         word[3] + " + " + family.rime;
+
     document.getElementById("wordText").textContent =
         word[0];
+
     document.getElementById("familyText").textContent =
         family.words.map(x => x[0]).join(" · ");
+
     document.getElementById("chunkText").textContent =
         family.chunk;
+
     document.getElementById("sentenceEN").textContent =
         family.sentence;
+
     document.getElementById("sentenceCN").textContent =
         family.cn;
+
     document.getElementById("chinese").style.visibility =
         chineseVisible ? "visible" : "hidden";
+
     document.getElementById("sentenceCN").style.visibility =
         chineseVisible ? "visible" : "hidden";
+
     document.getElementById("progressBar").style.width =
         ((familyIndex + 1) / families.length * 100) + "%";
+
     document.getElementById("stage").textContent =
         `词族 ${familyIndex + 1} / ${families.length} · 单词 ${wordIndex + 1} / ${family.words.length}`;
+
 }
+
+
 /* =========================================================
    10. 字母 → IPA
 ========================================================= */
+
 function onsetToIPA(letter){
+
     const map = {
+
         b:"b",
         c:"k",
         d:"d",
@@ -1017,58 +1290,98 @@ function onsetToIPA(letter){
         v:"v",
         w:"w",
         y:"j"
+
     };
+
     return map[letter] || letter;
+
 }
+
+
 /* =========================================================
    11. 播放当前真人音素
 ========================================================= */
+
 async function playCurrentPhoneme(){
+
     const current = getCurrent();
+
     const ipa = onsetToIPA(current.word[3]);
+
     document.getElementById("status").textContent =
         "🎙 真人音素 " + ipa;
+
     await playHumanPhoneme(ipa);
+
 }
+
+
 /* =========================================================
    12. 播放单词
 ========================================================= */
+
 async function playWord(){
+
     const current = getCurrent();
+
     document.getElementById("status").textContent =
         "🔊 拼读：" +
         current.word[3] +
         " + " +
         current.family.rime;
+
     await playCurrentPhoneme();
+
     await sleep(180);
+
     await speak(current.word[0]);
+
 }
+
+
 /* =========================================================
    13. 单词 TTS
 ========================================================= */
+
 async function speakWord(){
+
     const current = getCurrent();
+
     document.getElementById("status").textContent =
         "🔊 当前单词";
+
     await speak(current.word[0]);
+
 }
+
+
 /* =========================================================
    14. 播放词族
 ========================================================= */
+
 async function playFamily(){
+
     const current = getCurrent();
+
     document.getElementById("status").textContent =
         "📚 词族：" + current.family.rime;
+
     for(const item of current.family.words){
+
         await speak(item[0]);
+
         await sleep(180);
     }
+
 }
+
+
 /* =========================================================
    15. 高频词
 ========================================================= */
+
 const highFrequency = [
+
     "I",
     "you",
     "the",
@@ -1079,196 +1392,353 @@ const highFrequency = [
     "can",
     "want",
     "go"
+
 ];
+
+
 async function playHighFrequency(){
+
     document.getElementById("status").textContent =
         "⭐ 高频词";
+
     for(const word of highFrequency){
+
         await speak(word);
+
         await sleep(160);
     }
+
 }
+
+
 /* =========================================================
    16. 词块
 ========================================================= */
+
 async function speakChunk(){
+
     const current = getCurrent();
+
     document.getElementById("status").textContent =
         "🧩 词块";
+
     await speak(current.family.chunk);
+
 }
+
+
 /* =========================================================
    17. 母句
 ========================================================= */
+
 async function playSentence(){
+
     const current = getCurrent();
+
     document.getElementById("status").textContent =
         "🗣 母句";
+
     await speak(current.family.sentence);
+
 }
+
+
 /* =========================================================
    18. 整条训练
 ========================================================= */
+
 async function playEverything(){
+
     if(playing){
+
         stopAll();
+
         return;
     }
+
     playing = true;
+
     const myToken = ++token;
+
     document.getElementById("playBtn").textContent =
         "⏸ 暂停";
+
     const current = getCurrent();
+
     const word = current.word;
+
     const family = current.family;
+
     try{
+
         /* 1 音素 */
+
         document.getElementById("status").textContent =
             "① 真人音素";
+
         await playHumanPhoneme(
             onsetToIPA(word[3])
         );
+
         if(myToken !== token) return;
+
         await sleep(250);
+
+
         /* 2 拼读 */
+
         document.getElementById("status").textContent =
             "② 拼读块";
+
         await speak(
             word[3] + " " + family.rime
         );
+
         if(myToken !== token) return;
+
         await sleep(250);
+
+
         /* 3 单词 */
+
         document.getElementById("status").textContent =
             "③ 完整单词";
+
         await speak(word[0]);
+
         if(myToken !== token) return;
+
         await sleep(300);
+
+
         /* 4 词族 */
+
         document.getElementById("status").textContent =
             "④ 词族";
+
         for(const item of family.words){
+
             if(myToken !== token) return;
+
             await speak(item[0]);
+
             await sleep(150);
         }
+
+
         /* 5 高频词 */
+
         document.getElementById("status").textContent =
             "⑤ 高频词";
+
         for(const word2 of highFrequency){
+
             if(myToken !== token) return;
+
             await speak(word2);
+
             await sleep(120);
         }
+
+
         /* 6 词块 */
+
         document.getElementById("status").textContent =
             "⑥ 词块";
+
         await speak(family.chunk);
+
         if(myToken !== token) return;
+
         await sleep(400);
+
+
         /* 7 母句 */
+
         document.getElementById("status").textContent =
             "⑦ 母句";
+
         await speak(family.sentence);
+
         if(myToken !== token) return;
+
         await sleep(700);
+
+
         /* 8 再听 */
+
         document.getElementById("status").textContent =
             "⑧ 再听一遍";
+
         await speak(family.sentence);
+
         if(myToken !== token) return;
+
         await sleep(700);
+
+
         /* 9 隐藏中文 */
+
         document.getElementById("status").textContent =
             "⑨ 现在只听英语";
+
         const oldCN = chineseVisible;
+
         chineseVisible = false;
+
         render();
+
         await speak(family.sentence);
+
         if(myToken !== token) return;
+
         await sleep(800);
+
+
         /* 10 跟读等待 */
+
         document.getElementById("status").textContent =
             "⑩ 现在你来说";
+
         await sleep(3000);
+
+
         chineseVisible = oldCN;
+
         render();
+
+
         /* 循环 */
+
         if(repeatMode && myToken === token){
+
             await sleep(500);
+
             playing = false;
+
             return playEverything();
         }
+
+
         document.getElementById("status").textContent =
             "✅ 本轮完成";
+
     }
+
     finally{
+
         if(myToken === token){
+
             playing = false;
+
             document.getElementById("playBtn").textContent =
                 "▶ 开始整条训练";
         }
+
     }
+
 }
+
+
 /* =========================================================
    19. 上一句
 ========================================================= */
+
 function prevLesson(){
+
     stopAll();
+
     wordIndex--;
+
     if(wordIndex < 0){
+
         familyIndex--;
+
         if(familyIndex < 0){
+
             familyIndex = families.length - 1;
         }
+
         wordIndex =
             families[familyIndex].words.length - 1;
     }
+
     render();
+
 }
+
+
 /* =========================================================
    20. 下一句
 ========================================================= */
+
 function nextLesson(){
+
     stopAll();
+
     wordIndex++;
+
     if(
         wordIndex >=
         families[familyIndex].words.length
     ){
+
         wordIndex = 0;
+
         familyIndex++;
+
         if(familyIndex >= families.length){
+
             familyIndex = 0;
         }
+
     }
+
     render();
+
 }
+
+
 /* =========================================================
    21. 中文
 ========================================================= */
+
 function toggleChinese(){
+
     chineseVisible = !chineseVisible;
+
     document.getElementById("cnBtn").textContent =
         chineseVisible
         ? "🇨🇳 中文：开"
         : "🇨🇳 中文：关";
+
     render();
+
 }
+
+
 /* =========================================================
    22. 循环
 ========================================================= */
+
 function toggleRepeat(){
+
     repeatMode = !repeatMode;
+
     document.getElementById("repeatBtn").textContent =
         repeatMode
         ? "🔁 循环：开"
         : "🔁 循环：关";
+
 }
+
+
 /* =========================================================
    23. 速度
 ========================================================= */
+
 function changeSpeed(){
+
     const speeds = [
         0.6,
         0.7,
@@ -1276,51 +1746,82 @@ function changeSpeed(){
         0.9,
         1.0
     ];
+
     let i = speeds.indexOf(speed);
+
     i++;
+
     if(i >= speeds.length){
+
         i = 0;
     }
+
     speed = speeds[i];
+
     document.getElementById("speedText").textContent =
         speed + "x";
+
 }
+
+
 /* =========================================================
    24. 44音素按钮
 ========================================================= */
+
 function createPhonemeGrid(){
+
     const grid =
         document.getElementById("phonemeGrid");
+
     grid.innerHTML = "";
+
     Object.keys(phonemes).forEach(symbol => {
+
         const button =
             document.createElement("button");
+
         button.className =
             "phonemeBtn";
+
         button.textContent =
             phonemes[symbol].name;
+
         button.onclick = async () => {
+
             document.querySelectorAll(
                 ".phonemeBtn"
             ).forEach(b =>
                 b.classList.remove("active")
             );
+
             button.classList.add("active");
+
             document.getElementById("status").textContent =
                 "🎙 真人音素 " +
                 phonemes[symbol].name +
                 " · " +
                 phonemes[symbol].example;
+
             await playHumanPhoneme(symbol);
+
         };
+
         grid.appendChild(button);
+
     });
+
 }
+
+
 /* =========================================================
    25. 初始化
 ========================================================= */
+
 render();
+
 createPhonemeGrid();
+
 </script>
+
 </body>
 </html>
