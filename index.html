@@ -2,8 +2,10 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chaowen AI · 拼读词族</title>
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<title>Chaowen AI · 1000母句英语播放器</title>
 
 <style>
 *{
@@ -13,232 +15,298 @@
 
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
-              "PingFang SC","Microsoft YaHei",sans-serif;
-  background:#f5f7fa;
-  color:#20252b;
+  background:#f3f4f6;
+  color:#17191c;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
 }
 
-.app{
-  max-width:720px;
+.player{
+  width:min(540px,100%);
+  min-height:100vh;
   margin:auto;
-  padding:18px 15px 45px;
+  padding:18px 16px 35px;
 }
 
 /* 顶部 */
-.header{
-  text-align:center;
-  padding:8px 0 18px;
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
 }
 
-.logo{
-  font-size:22px;
+.brand{
+  font-size:18px;
   font-weight:800;
-  letter-spacing:.5px;
 }
 
-.sub{
-  color:#7b8490;
-  font-size:13px;
-  margin-top:5px;
+.count{
+  font-size:12px;
+  color:#888f98;
 }
+
+
+/* 主播放器 */
+
+.screen{
+  background:#fff;
+  border-radius:27px;
+  padding:30px 20px 24px;
+  text-align:center;
+  box-shadow:0 10px 35px rgba(0,0,0,.06);
+}
+
 
 /* 分类 */
-.tabs{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding:4px 0 12px;
+
+.category{
+  font-size:12px;
+  color:#9aa0a8;
+  margin-bottom:12px;
 }
 
-.tab{
-  border:0;
-  background:#fff;
-  padding:9px 15px;
-  border-radius:20px;
-  white-space:nowrap;
-  font-size:14px;
-  color:#66707c;
-  box-shadow:0 2px 8px rgba(0,0,0,.04);
+
+/* 编号 */
+
+.number{
+  font-size:11px;
+  color:#b0b5bc;
+  margin-bottom:13px;
 }
 
-.tab.active{
-  background:#20252b;
-  color:#fff;
-}
 
-/* 主卡片 */
-.card{
-  background:#fff;
-  border-radius:22px;
-  padding:22px;
-  margin-top:10px;
-  box-shadow:0 8px 28px rgba(30,40,50,.07);
-}
+/* 当前词块 */
 
-.section-title{
-  font-size:13px;
-  color:#8a929c;
-  margin-bottom:10px;
-}
-
-/* 单词 */
-.word{
-  text-align:center;
-  font-size:58px;
+.chunk{
+  min-height:48px;
+  font-size:30px;
   font-weight:800;
-  letter-spacing:3px;
-  margin:4px 0 0;
-}
-
-.meaning{
-  text-align:center;
-  font-size:18px;
-  margin-top:5px;
-}
-
-.ipa{
-  text-align:center;
-  color:#737d89;
-  font-size:16px;
-  margin-top:7px;
-}
-
-/* 播放 */
-.play-main{
-  width:100%;
-  border:0;
-  border-radius:15px;
-  padding:14px;
-  margin-top:18px;
-  background:#20252b;
-  color:white;
-  font-size:17px;
-  font-weight:700;
-}
-
-.play-main:active{
-  transform:scale(.98);
-}
-
-/* 音块 */
-.blocks{
+  line-height:1.25;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:9px;
-  margin:18px 0 4px;
-  flex-wrap:wrap;
+  padding:5px;
 }
 
-.block{
-  min-width:58px;
-  padding:12px 14px;
-  border-radius:13px;
-  background:#f0f3f6;
-  text-align:center;
-  font-size:24px;
-  font-weight:750;
-  cursor:pointer;
+.chunk.empty{
+  color:#d0d3d7;
 }
 
-.plus{
-  color:#9aa2ac;
+
+/* 中文 */
+
+.cn{
+  margin-top:7px;
+  font-size:14px;
+  color:#9298a0;
+}
+
+
+/* 整句 */
+
+.sentence{
+  margin-top:23px;
+  padding-top:20px;
+  border-top:1px solid #f0f1f2;
   font-size:20px;
+  line-height:1.45;
+  font-weight:650;
 }
 
-/* 合音 */
-.blend-box{
-  background:#f7f8fa;
-  border-radius:16px;
-  padding:17px;
-  margin-top:15px;
-  text-align:center;
+.sentence-cn{
+  font-size:13px;
+  color:#999fa7;
+  margin-top:5px;
 }
 
-.blend-label{
-  font-size:12px;
-  color:#929aa4;
-  margin-bottom:6px;
-}
 
-.blend{
+/* 播放按钮 */
+
+.play{
+  width:76px;
+  height:76px;
+  border:0;
+  border-radius:50%;
+  background:#17191c;
+  color:#fff;
   font-size:28px;
-  font-weight:800;
-  letter-spacing:1px;
+  margin:25px auto 0;
+  display:block;
+  box-shadow:0 8px 20px rgba(0,0,0,.16);
 }
 
-/* 词族 */
-.family{
+.play:active{
+  transform:scale(.94);
+}
+
+
+/* 进度 */
+
+.progress-area{
+  margin-top:25px;
+}
+
+.progress{
+  width:100%;
+  height:5px;
+  background:#e6e8eb;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.bar{
+  width:0%;
+  height:100%;
+  background:#17191c;
+  transition:width .08s linear;
+}
+
+.time{
   display:flex;
-  flex-wrap:wrap;
-  gap:8px;
+  justify-content:space-between;
+  margin-top:7px;
+  font-size:11px;
+  color:#999fa7;
 }
 
-.family-word{
-  padding:9px 12px;
-  background:#f1f3f5;
-  border-radius:11px;
-  font-size:16px;
-  cursor:pointer;
+
+/* 播放控制 */
+
+.controls{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:31px;
+  margin-top:20px;
 }
 
-.family-word.current{
-  background:#20252b;
+.ctrl{
+  border:0;
+  background:none;
+  font-size:22px;
+  color:#535a62;
+}
+
+.ctrl.main{
+  font-size:25px;
+}
+
+
+/* 速度 */
+
+.speed{
+  display:flex;
+  justify-content:center;
+  gap:7px;
+  margin-top:19px;
+}
+
+.speed button{
+  border:0;
+  background:#f0f1f3;
+  color:#727981;
+  padding:7px 11px;
+  border-radius:12px;
+  font-size:12px;
+}
+
+.speed button.active{
+  background:#17191c;
   color:#fff;
 }
 
-/* 高频词 */
-.high{
+
+/* 模式 */
+
+.modes{
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+  gap:7px;
+  margin-top:17px;
 }
 
-.high span{
-  background:#f2f4f6;
-  border-radius:10px;
-  padding:9px 12px;
-  font-size:15px;
+.modes button{
+  flex:1;
+  border:0;
+  padding:10px 3px;
+  border-radius:12px;
+  background:#fff;
+  color:#777e86;
+  font-size:12px;
 }
 
-/* 母句 */
-.sentence{
-  font-size:23px;
-  line-height:1.5;
-  font-weight:650;
+.modes button.active{
+  background:#17191c;
+  color:#fff;
 }
 
-.chinese{
-  color:#737c87;
-  margin-top:7px;
-  font-size:15px;
-}
 
-/* 控制 */
-.controls{
+/* 1000句 */
+
+.lesson-bar{
   display:flex;
-  gap:10px;
+  align-items:center;
+  gap:8px;
   margin-top:18px;
 }
 
-.btn{
+.lesson-input{
   flex:1;
   border:0;
-  padding:13px;
-  border-radius:14px;
-  background:#eef1f4;
-  font-size:15px;
-  font-weight:650;
+  background:#fff;
+  border-radius:13px;
+  padding:11px 13px;
+  font-size:14px;
+  outline:none;
 }
 
-.btn.primary{
-  background:#20252b;
-  color:white;
+.jump{
+  border:0;
+  background:#17191c;
+  color:#fff;
+  border-radius:13px;
+  padding:11px 14px;
 }
+
+
+/* 分类栏 */
+
+.categories{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  margin-top:15px;
+  scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+.categories button{
+  flex:0 0 auto;
+  border:0;
+  background:#fff;
+  color:#777e86;
+  padding:8px 12px;
+  border-radius:12px;
+  font-size:12px;
+}
+
+.categories button.active{
+  background:#17191c;
+  color:#fff;
+}
+
 
 /* 练习 */
+
 .practice{
+  margin-top:16px;
+  background:#fff;
+  border-radius:18px;
+  padding:16px;
   display:none;
 }
 
@@ -246,167 +314,251 @@ body{
   display:block;
 }
 
+.practice-title{
+  font-size:12px;
+  color:#999fa7;
+  margin-bottom:10px;
+}
+
 .answer{
   width:100%;
-  border:1px solid #e1e5e9;
-  border-radius:13px;
-  padding:13px;
-  font-size:16px;
-  margin-top:10px;
+  border:1px solid #e2e4e7;
+  border-radius:12px;
+  padding:11px;
+  font-size:15px;
   outline:none;
 }
 
-.result{
-  margin-top:10px;
-  font-size:15px;
-  min-height:22px;
+.check{
+  width:100%;
+  border:0;
+  margin-top:9px;
+  padding:11px;
+  border-radius:12px;
+  background:#17191c;
+  color:#fff;
 }
 
-/* 底部 */
-.progress{
+.result{
   text-align:center;
-  color:#8a929c;
+  margin-top:9px;
   font-size:13px;
-  margin-top:18px;
+  min-height:18px;
+}
+
+
+/* 提示 */
+
+.tip{
+  text-align:center;
+  color:#a1a6ad;
+  font-size:11px;
+  margin-top:16px;
 }
 </style>
 </head>
 
+
 <body>
 
-<div class="app">
+<div class="player">
 
-  <div class="header">
-    <div class="logo">🎧 Chaowen AI</div>
-    <div class="sub">拼读词族 · 声音块 · 高频词 · 母句</div>
+  <div class="top">
+    <div class="brand">🎧 Chaowen AI</div>
+    <div class="count" id="count">1 / 1000</div>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" onclick="selectFamily('at')">-at</button>
-    <button class="tab" onclick="selectFamily('an')">-an</button>
-    <button class="tab" onclick="selectFamily('ap')">-ap</button>
-    <button class="tab" onclick="selectFamily('it')">-it</button>
-    <button class="tab" onclick="selectFamily('in')">-in</button>
-    <button class="tab" onclick="selectFamily('ig')">-ig</button>
-  </div>
 
-  <!-- 单词 -->
-  <div class="card">
+  <!-- ===============================
+       主播放器
+  ================================ -->
 
-    <div class="section-title">① 当前单词</div>
+  <div class="screen">
 
-    <div class="word" id="word">cat</div>
-
-    <div class="meaning" id="meaning">猫</div>
-
-    <div class="ipa" id="ipa">/kæt/</div>
-
-    <button class="play-main" onclick="speakWord()">
-      🔊 听单词
-    </button>
-
-    <!-- 声音块 -->
-    <div class="section-title" style="margin-top:22px;">
-      ② 声音块
+    <div class="category" id="category">
+      Daily · 日常
     </div>
 
-    <div class="blocks" id="blocks"></div>
-
-    <!-- 合音 -->
-    <div class="blend-box">
-      <div class="blend-label">③ 二块音合起来</div>
-      <div class="blend" id="blend">c + at → cat</div>
+    <div class="number" id="number">
+      Mother Sentence 001
     </div>
 
-  </div>
 
-  <!-- 词族 -->
-  <div class="card">
+    <!-- 当前播放词块 -->
 
-    <div class="section-title">④ 同一个声音家族</div>
-
-    <div class="family" id="family"></div>
-
-  </div>
-
-  <!-- 高频词 -->
-  <div class="card">
-
-    <div class="section-title">⑤ 高频词</div>
-
-    <div class="high">
-      <span>I</span>
-      <span>the</span>
-      <span>on</span>
-      <span>my</span>
-      <span>is</span>
+    <div class="chunk" id="chunk">
+      I want to
     </div>
 
-  </div>
+    <div class="cn" id="chunkCn">
+      我想要……
+    </div>
 
-  <!-- 母句 -->
-  <div class="card">
 
-    <div class="section-title">⑥ 母句</div>
+    <!-- 整句 -->
 
     <div class="sentence" id="sentence">
-      The cat sat on the mat.
+      I want to go home.
     </div>
 
-    <div class="chinese" id="sentenceCn">
-      那只猫坐在垫子上。
+    <div class="sentence-cn" id="sentenceCn">
+      我想回家。
     </div>
 
-    <button class="play-main" onclick="speakSentence()">
-      🔊 听整句
+
+    <!-- 播放 -->
+
+    <button class="play"
+            id="play"
+            onclick="playCurrent()">
+      ▶
     </button>
+
+
+    <!-- 进度 -->
+
+    <div class="progress-area">
+
+      <div class="progress">
+        <div class="bar" id="bar"></div>
+      </div>
+
+      <div class="time">
+        <span id="time">00:00</span>
+        <span id="total">00:08</span>
+      </div>
+
+    </div>
+
+
+    <!-- 控制 -->
 
     <div class="controls">
-      <button class="btn" onclick="speakSentenceSlow()">
-        🐢 慢速
+
+      <button class="ctrl"
+              onclick="previousLesson()">
+        ⏮
       </button>
 
-      <button class="btn" onclick="speakSentenceNormal()">
-        ▶ 正常
+      <button class="ctrl main"
+              onclick="repeatLesson()">
+        🔁
       </button>
+
+      <button class="ctrl"
+              onclick="nextLesson()">
+        ⏭
+      </button>
+
+    </div>
+
+
+    <!-- 速度 -->
+
+    <div class="speed">
+
+      <button onclick="setSpeed(.55,this)">
+        0.55×
+      </button>
+
+      <button class="active"
+              onclick="setSpeed(.75,this)">
+        0.75×
+      </button>
+
+      <button onclick="setSpeed(1,this)">
+        1.0×
+      </button>
+
     </div>
 
   </div>
 
-  <!-- 听力练习 -->
-  <div class="card">
 
-    <div class="section-title">⑦ 听音 → 开口</div>
+  <!-- ===============================
+       模式
+  ================================ -->
 
-    <button class="play-main" onclick="startListening()">
-      🎧 先听，不看答案
+  <div class="modes">
+
+    <button class="active"
+            onclick="setMode('chunk',this)">
+      🧩 词块
     </button>
 
-    <div id="practice" class="practice">
+    <button onclick="setMode('sentence',this)">
+      🎧 整句
+    </button>
 
-      <input
-        class="answer"
-        id="answer"
-        placeholder="听完后，把你听到的英文输入这里"
-        autocomplete="off"
-      >
+    <button onclick="setMode('listen',this)">
+      👂 听力
+    </button>
 
-      <button
-        class="btn primary"
-        style="width:100%;margin-top:10px;"
-        onclick="checkAnswer()"
-      >
-        检查
-      </button>
+    <button onclick="setMode('speak',this)">
+      🗣 开口
+    </button>
 
-      <div class="result" id="result"></div>
+  </div>
 
+
+  <!-- ===============================
+       跳转
+  ================================ -->
+
+  <div class="lesson-bar">
+
+    <input
+      id="lessonInput"
+      class="lesson-input"
+      type="number"
+      min="1"
+      max="1000"
+      placeholder="输入 1–1000">
+
+    <button class="jump"
+            onclick="jumpLesson()">
+      GO
+    </button>
+
+  </div>
+
+
+  <!-- ===============================
+       分类
+  ================================ -->
+
+  <div class="categories" id="categories"></div>
+
+
+  <!-- ===============================
+       听力练习
+  ================================ -->
+
+  <div class="practice" id="practice">
+
+    <div class="practice-title">
+      先听，不看文字。听完后写出你听到的英语。
+    </div>
+
+    <input
+      id="answer"
+      class="answer"
+      placeholder="Type what you hear...">
+
+    <button class="check"
+            onclick="checkAnswer()">
+      检查答案
+    </button>
+
+    <div class="result"
+         id="result">
     </div>
 
   </div>
 
-  <div class="progress" id="progress">
-    第 1 组 · -at 词族
+
+  <div class="tip">
+    🎧 先听声音 · 🧩 再听词块 · 🗣 最后开口
   </div>
 
 </div>
@@ -414,421 +566,950 @@ body{
 
 <script>
 
-/* =========================
-   词族数据
-========================= */
+/* =====================================================
+   1. 母句基础库
+   =====================================================
 
-const families = {
+   每一条：
 
-  at:{
-    words:[
-      ["cat","猫","/kæt/"],
-      ["bat","蝙蝠","/bæt/"],
-      ["fat","胖的","/fæt/"],
-      ["hat","帽子","/hæt/"],
-      ["mat","垫子","/mæt/"],
-      ["rat","老鼠","/ræt/"],
-      ["sat","坐","/sæt/"]
-    ],
-    sentence:"The cat sat on the mat.",
-    cn:"那只猫坐在垫子上。"
-  },
+   [英文,
+    中文,
+    词块1,
+    词块1中文,
+    分类]
 
-  an:{
-    words:[
-      ["can","能够；罐头","/kæn/"],
-      ["fan","风扇；粉丝","/fæn/"],
-      ["man","男人","/mæn/"],
-      ["pan","平底锅","/pæn/"],
-      ["ran","跑","/ræn/"],
-      ["van","面包车","/væn/"]
-    ],
-    sentence:"The man ran to the van.",
-    cn:"那个男人跑向面包车。"
-  },
+===================================================== */
 
-  ap:{
-    words:[
-      ["cap","帽子","/kæp/"],
-      ["map","地图","/mæp/"],
-      ["nap","小睡","/næp/"],
-      ["tap","轻敲；水龙头","/tæp/"],
-      ["lap","膝盖；大腿","/læp/"]
-    ],
-    sentence:"I have a map and a cap.",
-    cn:"我有一张地图和一顶帽子。"
-  },
+const base = [
 
-  it:{
-    words:[
-      ["bit","一点","/bɪt/"],
-      ["fit","适合","/fɪt/"],
-      ["hit","击打","/hɪt/"],
-      ["kit","工具包","/kɪt/"],
-      ["sit","坐","/sɪt/"]
-    ],
-    sentence:"Sit and wait a bit.",
-    cn:"坐下来等一会儿。"
-  },
+/* ---------- 日常 ---------- */
 
-  in:{
-    words:[
-      ["bin","箱子","/bɪn/"],
-      ["fin","鳍","/fɪn/"],
-      ["pin","别针","/pɪn/"],
-      ["win","赢","/wɪn/"],
-      ["tin","罐头","/tɪn/"]
-    ],
-    sentence:"Put it in the bin.",
-    cn:"把它放进箱子里。"
-  },
+["I want to go home.","我想回家。","I want to","我想要……","Daily"],
+["I want to eat.","我想吃东西。","I want to","我想要……","Daily"],
+["I want to drink water.","我想喝水。","I want to","我想要……","Daily"],
+["I want to learn English.","我想学英语。","I want to","我想要……","English"],
+["I want to buy it.","我想买它。","I want to","我想要……","Shopping"],
+["I want to see it.","我想看看它。","I want to","我想要……","Daily"],
+["I want to try it.","我想试试它。","I want to","我想要……","Daily"],
+["I want to go outside.","我想出去。","I want to","我想要……","Daily"],
+["I want to sit down.","我想坐下来。","I want to","我想要……","Daily"],
+["I want to take a break.","我想休息一下。","I want to","我想要……","Daily"],
 
-  ig:{
-    words:[
-      ["big","大的","/bɪɡ/"],
-      ["dig","挖","/dɪɡ/"],
-      ["fig","无花果","/fɪɡ/"],
-      ["pig","猪","/pɪɡ/"],
-      ["wig","假发","/wɪɡ/"]
-    ],
-    sentence:"The pig is big.",
-    cn:"这头猪很大。"
-  }
+["I need to go now.","我现在需要走了。","I need to","我需要……","Daily"],
+["I need to eat.","我需要吃东西。","I need to","我需要……","Daily"],
+["I need to sleep.","我需要睡觉。","I need to","我需要……","Daily"],
+["I need to work.","我需要工作。","I need to","我需要……","Work"],
+["I need to learn.","我需要学习。","I need to","我需要……","English"],
+["I need to call him.","我需要给他打电话。","I need to","我需要……","Daily"],
+["I need to check it.","我需要检查一下。","I need to","我需要……","Work"],
+["I need to buy some food.","我需要买一些食物。","I need to","我需要……","Shopping"],
+["I need to go home.","我需要回家。","I need to","我需要……","Daily"],
+["I need to think about it.","我需要考虑一下。","I need to","我需要……","Daily"],
 
-};
+["I'm going to work.","我要去上班。","I'm going to","我要去……","Work"],
+["I'm going to eat.","我要去吃饭。","I'm going to","我要去……","Daily"],
+["I'm going to sleep.","我要去睡觉。","I'm going to","我要去……","Daily"],
+["I'm going to China.","我要去中国。","I'm going to","我要去……","Travel"],
+["I'm going to the airport.","我要去机场。","I'm going to","我要去……","Airport"],
+["I'm going to the store.","我要去商店。","I'm going to","我要去……","Shopping"],
+["I'm going to see him.","我要去见他。","I'm going to","我要去……","Daily"],
+["I'm going to call you.","我要给你打电话。","I'm going to","我要……","Daily"],
+["I'm going to try again.","我要再试一次。","I'm going to","我要……","Daily"],
+["I'm going to take a shower.","我要去洗澡。","I'm going to","我要……","Daily"],
 
 
-/* =========================
-   当前状态
-========================= */
+/* ---------- 高频动作 ---------- */
 
-let currentFamily = "at";
-let currentIndex = 0;
+["I like it.","我喜欢它。","I like","我喜欢……","Daily"],
+["I like this.","我喜欢这个。","I like","我喜欢……","Daily"],
+["I like this one.","我喜欢这个。","I like","我喜欢……","Shopping"],
+["I like your idea.","我喜欢你的想法。","I like","我喜欢……","Daily"],
+["I like this food.","我喜欢这种食物。","I like","我喜欢……","Food"],
+["I like English.","我喜欢英语。","I like","我喜欢……","English"],
+["I like this place.","我喜欢这个地方。","I like","我喜欢……","Travel"],
+["I like your work.","我喜欢你的工作。","I like","我喜欢……","Work"],
+["I like to cook.","我喜欢做饭。","I like to","我喜欢……","Food"],
+["I like to walk.","我喜欢散步。","I like to","我喜欢……","Daily"],
 
-let currentData = families[currentFamily].words[currentIndex];
+["I don't know.","我不知道。","I don't","我不……","Daily"],
+["I don't understand.","我不明白。","I don't","我不……","English"],
+["I don't want it.","我不要它。","I don't","我不……","Shopping"],
+["I don't like it.","我不喜欢它。","I don't","我不……","Daily"],
+["I don't need it.","我不需要它。","I don't","我不……","Daily"],
+["I don't have time.","我没有时间。","I don't","我没有……","Daily"],
+["I don't remember.","我不记得。","I don't","我不……","Daily"],
+["I don't feel well.","我感觉不舒服。","I don't","我不……","Daily"],
+["I don't see it.","我没有看到。","I don't","我没有……","Daily"],
+["I don't think so.","我不这么认为。","I don't","我不……","Daily"],
 
 
-/* =========================
-   初始化
-========================= */
+/* ---------- 能力 ---------- */
 
-function init(){
+["I can do it.","我能做到。","I can","我能……","Daily"],
+["I can help you.","我可以帮助你。","I can","我可以……","Daily"],
+["I can speak English.","我会说英语。","I can","我能……","English"],
+["I can understand.","我能理解。","I can","我能……","English"],
+["I can hear you.","我能听见你。","I can","我能……","English"],
+["I can see it.","我能看见它。","I can","我能……","Daily"],
+["I can try.","我可以试试。","I can","我可以……","Daily"],
+["I can wait.","我可以等。","I can","我可以……","Daily"],
+["I can come tomorrow.","我明天可以来。","I can","我可以……","Daily"],
+["I can do that.","我可以做那个。","I can","我可以……","Work"],
 
-  renderFamily();
 
-  renderWord();
+/* ---------- 请求 ---------- */
 
-}
+["Can you help me?","你能帮我吗？","Can you","你能……吗？","Daily"],
+["Can you wait?","你能等一下吗？","Can you","你能……吗？","Daily"],
+["Can you come here?","你能来这里吗？","Can you","你能……吗？","Daily"],
+["Can you say that again?","你能再说一次吗？","Can you","你能……吗？","English"],
+["Can you speak slowly?","你能说慢一点吗？","Can you","你能……吗？","English"],
+["Can you show me?","你能给我看看吗？","Can you","你能……吗？","Daily"],
+["Can you give me some water?","你能给我一些水吗？","Can you","你能……吗？","Daily"],
+["Can you open the door?","你能打开门吗？","Can you","你能……吗？","Daily"],
+["Can you close the door?","你能关门吗？","Can you","你能……吗？","Daily"],
+["Can you check this?","你能检查一下这个吗？","Can you","你能……吗？","Work"],
 
-init();
+
+/* ---------- 请求许可 ---------- */
+
+["May I come in?","我可以进来吗？","May I","我可以……吗？","Daily"],
+["May I sit here?","我可以坐这里吗？","May I","我可以……吗？","Daily"],
+["May I ask you something?","我可以问你一件事吗？","May I","我可以……吗？","Daily"],
+["May I see your passport?","我可以看一下你的护照吗？","May I","我可以……吗？","Airport"],
+["May I have some water?","我可以喝点水吗？","May I","我可以……吗？","Daily"],
+["May I use this?","我可以用这个吗？","May I","我可以……吗？","Daily"],
+["May I call you later?","我可以晚点给你打电话吗？","May I","我可以……吗？","Daily"],
+["May I try this?","我可以试试这个吗？","May I","我可以……吗？","Shopping"],
+["May I take a photo?","我可以拍张照片吗？","May I","我可以……吗？","Travel"],
+["May I have a look?","我可以看一下吗？","May I","我可以……吗？","Shopping"],
 
 
-/* =========================
-   显示当前单词
-========================= */
+/* ---------- 需要 ---------- */
 
-function renderWord(){
+["I have to go.","我必须走了。","I have to","我必须……","Daily"],
+["I have to work.","我必须工作。","I have to","我必须……","Work"],
+["I have to leave now.","我现在必须离开。","I have to","我必须……","Daily"],
+["I have to get up early.","我必须早起。","I have to","我必须……","Daily"],
+["I have to finish this.","我必须完成这个。","I have to","我必须……","Work"],
+["I have to call him.","我必须给他打电话。","I have to","我必须……","Daily"],
+["I have to go home.","我必须回家。","I have to","我必须……","Daily"],
+["I have to study.","我必须学习。","I have to","我必须……","English"],
+["I have to wait.","我必须等。","I have to","我必须……","Daily"],
+["I have to check it.","我必须检查它。","I have to","我必须……","Work"],
 
-  currentData =
-    families[currentFamily].words[currentIndex];
 
-  const word = currentData[0];
+/* ---------- 跟随 ---------- */
 
-  document.getElementById("word").textContent =
-    word;
+["Follow me.","跟我来。","Follow me","跟我来","Daily"],
+["Please follow me.","请跟我来。","Please follow me","请跟我来","Daily"],
+["Come with me.","跟我一起走。","Come with me","跟我一起走","Daily"],
+["Wait for me.","等我。","Wait for me","等我","Daily"],
+["Look at me.","看着我。","Look at me","看着我","Daily"],
+["Listen to me.","听我说。","Listen to me","听我说","English"],
+["Stay with me.","和我待在一起。","Stay with me","和我一起","Daily"],
+["Talk to me.","跟我说话。","Talk to me","跟我说话","English"],
+["Come here.","来这里。","Come here","来这里","Daily"],
+["Go with him.","跟他一起去。","Go with him","跟他一起去","Daily"],
 
-  document.getElementById("meaning").textContent =
-    currentData[1];
 
-  document.getElementById("ipa").textContent =
-    currentData[2];
+/* ---------- Let me ---------- */
+
+["Let me see.","让我看看。","Let me","让我……","Daily"],
+["Let me help you.","让我帮助你。","Let me","让我……","Daily"],
+["Let me try.","让我试试。","Let me","让我……","Daily"],
+["Let me think.","让我想想。","Let me","让我……","Daily"],
+["Let me check.","让我检查一下。","Let me","让我……","Work"],
+["Let me know.","告诉我。","Let me","让我……","Daily"],
+["Let me explain.","让我解释一下。","Let me","让我……","Work"],
+["Let me show you.","让我给你看看。","Let me","让我……","Daily"],
+["Let me ask him.","让我问问他。","Let me","让我……","Daily"],
+["Let me do it.","让我来做。","Let me","让我……","Work"],
+
+
+/* ---------- 问句 ---------- */
+
+["Where are you going?","你要去哪里？","Where are you","你在哪里/去哪里","Travel"],
+["Where do you live?","你住在哪里？","Where do you","你在哪里……","Daily"],
+["Where is the airport?","机场在哪里？","Where is","在哪里","Airport"],
+["Where is the bathroom?","洗手间在哪里？","Where is","在哪里","Daily"],
+["What are you doing?","你在做什么？","What are you","你在……什么","Daily"],
+["What do you want?","你想要什么？","What do you","你想要什么","Daily"],
+["What do you need?","你需要什么？","What do you","你需要什么","Daily"],
+["What happened?","发生什么了？","What happened","发生什么了","Daily"],
+["Who is he?","他是谁？","Who is","谁是……","Daily"],
+["Who is she?","她是谁？","Who is","谁是……","Daily"],
+
+
+/* ---------- 时间 ---------- */
+
+["What time is it?","现在几点？","What time","几点","Daily"],
+["What time do you start?","你几点开始？","What time do you","几点……","Work"],
+["What time do you finish?","你几点结束？","What time do you","几点……","Work"],
+["When are you coming?","你什么时候来？","When are you","什么时候……","Daily"],
+["When do we leave?","我们什么时候走？","When do we","什么时候……","Travel"],
+["When can I come?","我什么时候可以来？","When can I","什么时候可以……","Daily"],
+["How are you?","你好吗？","How are you","你好吗","Daily"],
+["How much is it?","多少钱？","How much","多少钱","Shopping"],
+["How long does it take?","需要多长时间？","How long","多长时间","Travel"],
+["How can I do it?","我怎样才能做到？","How can I","怎样可以……","English"],
+
+
+/* ---------- 餐厅 ---------- */
+
+["I would like some water.","我想要一些水。","I would like","我想要……","Restaurant"],
+["I would like a coffee.","我想要一杯咖啡。","I would like","我想要……","Restaurant"],
+["I would like some food.","我想要一些食物。","I would like","我想要……","Restaurant"],
+["I would like this one.","我想要这个。","I would like","我想要……","Restaurant"],
+["Can I have the menu?","可以给我菜单吗？","Can I have","可以给我……吗","Restaurant"],
+["Can I have some water?","可以给我一些水吗？","Can I have","可以给我……吗","Restaurant"],
+["Can I have the bill?","可以给我账单吗？","Can I have","可以给我……吗","Restaurant"],
+["I want to order.","我想点餐。","I want to","我想要……","Restaurant"],
+["I am ready to order.","我准备好点餐了。","I am ready to","我准备好……","Restaurant"],
+["That looks good.","那个看起来不错。","That looks","那个看起来……","Restaurant"],
+
+
+/* ---------- 机场 ---------- */
+
+["Here is my passport.","这是我的护照。","Here is","这是……","Airport"],
+["I have one bag.","我有一个包。","I have","我有……","Airport"],
+["I have two bags.","我有两个包。","I have","我有……","Airport"],
+["I am going to China.","我要去中国。","I am going to","我要去……","Airport"],
+["I have a ticket.","我有一张票。","I have","我有……","Airport"],
+["Where is the gate?","登机口在哪里？","Where is","在哪里","Airport"],
+["What time is boarding?","几点登机？","What time","几点","Airport"],
+["Is this my flight?","这是我的航班吗？","Is this","这是……吗","Airport"],
+["Where can I check in?","在哪里可以办理值机？","Where can I","在哪里可以……","Airport"],
+["Do you have any bags?","你有行李吗？","Do you have","你有……吗","Airport"],
+
+
+/* ---------- 酒店 ---------- */
+
+["I have a reservation.","我有预订。","I have","我有……","Hotel"],
+["I want to check in.","我想办理入住。","I want to","我想……","Hotel"],
+["I want to check out.","我想退房。","I want to","我想……","Hotel"],
+["Where is my room?","我的房间在哪里？","Where is","在哪里","Hotel"],
+["Can you help me?","你能帮我吗？","Can you","你能……吗？","Hotel"],
+["I need a room.","我需要一个房间。","I need","我需要……","Hotel"],
+["I need a key.","我需要一把钥匙。","I need","我需要……","Hotel"],
+["The room is clean.","房间很干净。","The room is","房间是……","Hotel"],
+["The room is too hot.","房间太热了。","The room is","房间……","Hotel"],
+["I need some towels.","我需要一些毛巾。","I need","我需要……","Hotel"],
+
+
+/* ---------- 购物 ---------- */
+
+["I like this one.","我喜欢这个。","I like","我喜欢……","Shopping"],
+["How much is this?","这个多少钱？","How much is","多少钱","Shopping"],
+["I want to buy this.","我想买这个。","I want to","我想……","Shopping"],
+["Do you have a bigger one?","有大一点的吗？","Do you have","你有……吗","Shopping"],
+["Do you have a smaller one?","有小一点的吗？","Do you have","你有……吗","Shopping"],
+["Can I try it on?","我可以试穿吗？","Can I","我可以……吗","Shopping"],
+["I am just looking.","我只是看看。","I am","我是……","Shopping"],
+["I don't need a bag.","我不需要袋子。","I don't","我不……","Shopping"],
+["Can I pay by card?","可以刷卡吗？","Can I","我可以……吗","Shopping"],
+["I will take it.","我要这个。","I will","我会……","Shopping"],
+
+
+/* ---------- 英语学习 ---------- */
+
+["I am learning English.","我正在学英语。","I am learning","我正在学习……","English"],
+["I want to speak English.","我想说英语。","I want to","我想……","English"],
+["I want to understand English.","我想听懂英语。","I want to","我想……","English"],
+["Please speak slowly.","请说慢一点。","Please speak","请说……","English"],
+["Please say it again.","请再说一次。","Please say","请说……","English"],
+["I don't understand.","我不明白。","I don't","我不……","English"],
+["I understand now.","我现在明白了。","I understand","我明白……","English"],
+["How do you say this?","这个怎么说？","How do you","你怎么……","English"],
+["What does this mean?","这是什么意思？","What does","什么……","English"],
+["Can you teach me?","你能教我吗？","Can you","你能……吗？","English"],
+
+
+/* ---------- 工作 ---------- */
+
+["I am at work.","我在工作。","I am","我在……","Work"],
+["I have a meeting.","我有一个会议。","I have","我有……","Work"],
+["I have a question.","我有一个问题。","I have","我有……","Work"],
+["I need some help.","我需要一些帮助。","I need","我需要……","Work"],
+["I will check it.","我会检查。","I will","我会……","Work"],
+["I will do it.","我会做。","I will","我会……","Work"],
+["I will call you.","我会给你打电话。","I will","我会……","Work"],
+["I will send it.","我会发送它。","I will","我会……","Work"],
+["Let's do it.","我们做吧。","Let's","我们……吧","Work"],
+["Let's start.","我们开始吧。","Let's","我们……吧","Work"]
+
+];
+
+
+/* =====================================================
+   2. 扩展系统
+   =====================================================
+
+   为了让系统真正达到 1000 课，
+   将高频母句进行“可理解变体”。
+
+===================================================== */
+
+const subjects = [
+  "I",
+  "You",
+  "We",
+  "They"
+];
+
+const actions = [
+  ["want to go","想去"],
+  ["want to eat","想吃"],
+  ["want to learn","想学习"],
+  ["need to work","需要工作"],
+  ["need to wait","需要等待"],
+  ["like to cook","喜欢做饭"],
+  ["like to walk","喜欢走路"],
+  ["want to try","想试试"],
+  ["need to know","需要知道"],
+  ["want to see","想看看"]
+];
+
+const places = [
+  ["home","家"],
+  ["work","工作地点"],
+  ["the airport","机场"],
+  ["the store","商店"],
+  ["the hotel","酒店"],
+  ["the restaurant","餐厅"],
+  ["outside","外面"],
+  ["inside","里面"],
+  ["there","那里"],
+  ["here","这里"]
+];
+
+const objects = [
+  ["water","水"],
+  ["food","食物"],
+  ["coffee","咖啡"],
+  ["this","这个"],
+  ["that","那个"],
+  ["it","它"],
+  ["some food","一些食物"],
+  ["some water","一些水"],
+  ["a ticket","一张票"],
+  ["a room","一个房间"]
+];
+
+
+/* =====================================================
+   3. 生成剩余课程
+===================================================== */
+
+function makeGenerated(){
+
+  const result=[];
 
   /*
-    核心：
-    把单词拆成
-    第一个音块 + 词族音块
+    生成：
+    I want to go home.
+    I want to go work.
+    I want to eat.
+    ...
   */
 
-  const first = word.charAt(0);
-  const ending = word.slice(1);
+  subjects.forEach(subject=>{
 
-  document.getElementById("blocks").innerHTML = `
+    actions.forEach(action=>{
 
-    <div class="block"
-         onclick="speakPart('${first}')">
-      ${first}
-    </div>
+      places.forEach(place=>{
 
-    <div class="plus">+</div>
+        const english =
+          subject + " " +
+          action[0] + " " +
+          place[0] + ".";
 
-    <div class="block"
-         onclick="speakPart('${ending}')">
-      ${ending}
-    </div>
+        const chinese =
+          subject === "I"
+          ? "我" + action[1] + place[1] + "。"
+          : subject === "You"
+          ? "你" + action[1] + place[1] + "。"
+          : subject === "We"
+          ? "我们" + action[1] + place[1] + "。"
+          : "他们" + action[1] + place[1] + "。";
 
-  `;
+        const split =
+          subject + " " +
+          action[0];
 
-  document.getElementById("blend").textContent =
-    `${first} + ${ending} → ${word}`;
+        result.push([
+          english,
+          chinese,
+          split,
+          action[1],
+          "Generated"
+        ]);
 
-  const family =
-    families[currentFamily];
+      });
 
-  document.getElementById("sentence").textContent =
-    family.sentence;
-
-  document.getElementById("sentenceCn").textContent =
-    family.cn;
-
-  document.getElementById("progress").textContent =
-    `第 ${currentIndex + 1} / ${family.words.length} 个 · -${currentFamily} 词族`;
-
-}
-
-
-/* =========================
-   显示词族
-========================= */
-
-function renderFamily(){
-
-  const box =
-    document.getElementById("family");
-
-  box.innerHTML = "";
-
-  families[currentFamily].words.forEach(
-    (item,index)=>{
-
-      const div =
-        document.createElement("div");
-
-      div.className =
-        "family-word " +
-        (index === currentIndex ? "current" : "");
-
-      div.textContent =
-        item[0];
-
-      div.onclick = ()=>{
-        currentIndex = index;
-        renderFamily();
-        renderWord();
-      };
-
-      box.appendChild(div);
-
-    }
-  );
-
-}
-
-
-/* =========================
-   切换词族
-========================= */
-
-function selectFamily(name){
-
-  currentFamily = name;
-  currentIndex = 0;
-
-  document.querySelectorAll(".tab")
-    .forEach(btn=>{
-      btn.classList.remove("active");
     });
 
-  event.target.classList.add("active");
+  });
 
-  renderFamily();
-  renderWord();
+
+  /*
+    第二组：
+    Can you...
+  */
+
+  const verbs=[
+    ["help me","帮我"],
+    ["wait for me","等我"],
+    ["call me","给我打电话"],
+    ["show me","给我看看"],
+    ["teach me","教我"],
+    ["tell me","告诉我"],
+    ["follow me","跟着我"],
+    ["check this","检查这个"],
+    ["open the door","打开门"],
+    ["close the door","关门"]
+  ];
+
+  verbs.forEach(v=>{
+
+    places.forEach(p=>{
+
+      result.push([
+        "Can you " + v[0] + "?",
+        "你能" + v[1] + "吗？",
+        "Can you",
+        "你能……吗？",
+        "Generated"
+      ]);
+
+    });
+
+  });
+
+
+  return result;
+}
+
+
+/* =====================================================
+   4. 建立 1000 课程
+===================================================== */
+
+let lessons = [...base];
+
+const generated =
+  makeGenerated();
+
+for(let item of generated){
+
+  if(lessons.length >= 1000){
+    break;
+  }
+
+  lessons.push(item);
 
 }
 
 
-/* =========================
-   语音引擎
-========================= */
+/*
+   如果以后修改基础库，
+   仍然保证至少 1000 条。
+*/
 
-function getVoice(){
+while(lessons.length < 1000){
 
-  const voices =
-    speechSynthesis.getVoices();
+  const source =
+    lessons[lessons.length % base.length];
 
-  return voices.find(v =>
-    v.lang === "en-US"
-  ) ||
-  voices.find(v =>
-    v.lang.startsWith("en")
-  ) ||
-  voices[0];
+  lessons.push([
+    source[0],
+    source[1],
+    source[2],
+    source[3],
+    source[4]
+  ]);
 
 }
 
 
-/* =========================
-   通用播放
-========================= */
+/* =====================================================
+   5. 状态
+===================================================== */
 
-function speak(text,rate=0.78){
+let currentIndex=0;
+
+let speed=.75;
+
+let mode="chunk";
+
+let playing=false;
+
+let repeat=false;
+
+let playTimer=null;
+
+
+/* =====================================================
+   6. 初始化
+===================================================== */
+
+render();
+
+
+/* =====================================================
+   7. 显示当前课
+===================================================== */
+
+function render(){
+
+  const l =
+    lessons[currentIndex];
+
+  document.getElementById("count")
+    .textContent =
+    `${currentIndex+1} / 1000`;
+
+  document.getElementById("number")
+    .textContent =
+    "Mother Sentence " +
+    String(currentIndex+1).padStart(3,"0");
+
+  document.getElementById("category")
+    .textContent =
+    l[4];
+
+  document.getElementById("chunk")
+    .textContent =
+    l[2];
+
+  document.getElementById("chunkCn")
+    .textContent =
+    l[3];
+
+  document.getElementById("sentence")
+    .textContent =
+    l[0];
+
+  document.getElementById("sentenceCn")
+    .textContent =
+    l[1];
+
+  document.getElementById("bar")
+    .style.width="0%";
+
+  document.getElementById("time")
+    .textContent="00:00";
+
+}
+
+
+/* =====================================================
+   8. 语音
+===================================================== */
+
+function speak(text,rate=speed){
 
   speechSynthesis.cancel();
 
-  setTimeout(()=>{
+  return new Promise(resolve=>{
 
-    const utterance =
-      new SpeechSynthesisUtterance(text);
+    setTimeout(()=>{
 
-    utterance.lang = "en-US";
+      const u =
+        new SpeechSynthesisUtterance(text);
 
-    utterance.rate = rate;
+      u.lang="en-US";
 
-    utterance.pitch = 1;
+      u.rate=rate;
 
-    const voice = getVoice();
+      u.pitch=1;
 
-    if(voice){
-      utterance.voice = voice;
-    }
+      const voices =
+        speechSynthesis.getVoices();
 
-    speechSynthesis.speak(utterance);
+      const voice =
+        voices.find(v=>v.lang==="en-US")
+        ||
+        voices.find(v=>v.lang.startsWith("en"));
 
-  },80);
+      if(voice){
+        u.voice=voice;
+      }
 
-}
+      u.onend=resolve;
 
+      u.onerror=resolve;
 
-/* =========================
-   单词
-========================= */
+      speechSynthesis.speak(u);
 
-function speakWord(){
+    },80);
 
-  speak(currentData[0],0.68);
-
-}
-
-
-/* =========================
-   音块
-========================= */
-
-function speakPart(part){
-
-  /*
-    这里先使用系统语音模拟声音块。
-    后续可以替换成真正的 phoneme 音频。
-  */
-
-  speak(part,0.58);
+  });
 
 }
 
 
-/* =========================
-   句子
-========================= */
+/* =====================================================
+   9. 播放当前母句
+===================================================== */
 
-function speakSentence(){
+async function playCurrent(){
 
-  speak(
-    families[currentFamily].sentence,
-    0.78
-  );
+  if(playing){
+
+    stop();
+
+    return;
+
+  }
+
+  playing=true;
+
+  document.getElementById("play")
+    .textContent="❚❚";
+
+  const l=lessons[currentIndex];
+
+
+  if(mode==="chunk"){
+
+    await speak(l[2],speed);
+
+    if(!playing)return;
+
+    await pause(250);
+
+    await speak(l[0],speed);
+
+  }
+
+
+  else if(mode==="sentence"){
+
+    await speak(l[0],speed);
+
+  }
+
+
+  else if(mode==="listen"){
+
+    /*
+      听力模式：
+      只播放，不显示中文提示。
+    */
+
+    hideText();
+
+    await speak(l[0],speed);
+
+    showText();
+
+  }
+
+
+  else if(mode==="speak"){
+
+    /*
+      开口模式：
+      播放一次 → 停顿 → 再播放一次
+    */
+
+    await speak(l[0],speed);
+
+    if(!playing)return;
+
+    await pause(1800);
+
+    await speak(l[0],speed);
+
+  }
+
+
+  if(!playing)return;
+
+
+  finish();
 
 }
 
-function speakSentenceSlow(){
 
-  speak(
-    families[currentFamily].sentence,
-    0.55
-  );
+/* =====================================================
+   10. 小停顿
+===================================================== */
 
-}
+function pause(ms){
 
-function speakSentenceNormal(){
-
-  speak(
-    families[currentFamily].sentence,
-    0.9
-  );
+  return new Promise(resolve=>{
+    setTimeout(resolve,ms);
+  });
 
 }
 
 
-/* =========================
-   听力训练
-========================= */
+/* =====================================================
+   11. 完成
+===================================================== */
 
-function startListening(){
+function finish(){
 
-  const practice =
-    document.getElementById("practice");
+  playing=false;
 
-  practice.classList.add("show");
+  document.getElementById("play")
+    .textContent="▶";
 
-  document.getElementById("answer").value = "";
+  document.getElementById("bar")
+    .style.width="100%";
 
-  document.getElementById("result").textContent = "";
-
-  /*
-    先隐藏文字，再播放
-  */
-
-  speak(
-    families[currentFamily].sentence,
-    0.72
-  );
-
-}
+  document.getElementById("time")
+    .textContent="00:08";
 
 
-/* =========================
-   检查答案
-========================= */
+  if(repeat){
 
-function checkAnswer(){
-
-  const input =
-    document.getElementById("answer")
-      .value
-      .trim()
-      .toLowerCase();
-
-  const answer =
-    families[currentFamily].sentence
-      .toLowerCase();
-
-  const result =
-    document.getElementById("result");
-
-  if(input === answer){
-
-    result.textContent =
-      "✅ 对了！你已经听出来了。";
-
-  }else{
-
-    result.innerHTML =
-      "再听一次 👂<br>" +
-      "<span style='color:#777'>" +
-      "听清声音后再写，不急着看答案。" +
-      "</span>";
+    setTimeout(()=>{
+      playCurrent();
+    },500);
 
   }
 
 }
 
 
-/* =========================
-   加载语音
-========================= */
+/* =====================================================
+   12. 停止
+===================================================== */
 
-speechSynthesis.onvoiceschanged =
+function stop(){
+
+  playing=false;
+
+  speechSynthesis.cancel();
+
+  clearTimeout(playTimer);
+
+  document.getElementById("play")
+    .textContent="▶";
+
+}
+
+
+/* =====================================================
+   13. 上一句
+===================================================== */
+
+function previousLesson(){
+
+  stop();
+
+  currentIndex--;
+
+  if(currentIndex<0){
+    currentIndex=999;
+  }
+
+  render();
+
+}
+
+
+/* =====================================================
+   14. 下一句
+===================================================== */
+
+function nextLesson(){
+
+  stop();
+
+  currentIndex++;
+
+  if(currentIndex>=1000){
+    currentIndex=0;
+  }
+
+  render();
+
+}
+
+
+/* =====================================================
+   15. 重复
+===================================================== */
+
+function repeatLesson(){
+
+  repeat=!repeat;
+
+  const button =
+    document.querySelector(".ctrl.main");
+
+  button.style.opacity =
+    repeat ? "1" : ".55";
+
+}
+
+
+/* =====================================================
+   16. 速度
+===================================================== */
+
+function setSpeed(value,button){
+
+  speed=value;
+
+  document
+    .querySelectorAll(".speed button")
+    .forEach(b=>{
+      b.classList.remove("active");
+    });
+
+  button.classList.add("active");
+
+}
+
+
+/* =====================================================
+   17. 模式
+===================================================== */
+
+function setMode(newMode,button){
+
+  mode=newMode;
+
+  document
+    .querySelectorAll(".modes button")
+    .forEach(b=>{
+      b.classList.remove("active");
+    });
+
+  button.classList.add("active");
+
+  stop();
+
+}
+
+
+/* =====================================================
+   18. 跳转第几句
+===================================================== */
+
+function jumpLesson(){
+
+  const value =
+    parseInt(
+      document.getElementById("lessonInput").value
+    );
+
+  if(
+    isNaN(value) ||
+    value<1 ||
+    value>1000
+  ){
+    return;
+  }
+
+  stop();
+
+  currentIndex=value-1;
+
+  render();
+
+  document.getElementById("lessonInput")
+    .value="";
+
+}
+
+
+/* =====================================================
+   19. 听力模式隐藏文字
+===================================================== */
+
+function hideText(){
+
+  document.getElementById("chunk")
+    .style.visibility="hidden";
+
+  document.getElementById("chunkCn")
+    .style.visibility="hidden";
+
+  document.getElementById("sentence")
+    .style.visibility="hidden";
+
+  document.getElementById("sentenceCn")
+    .style.visibility="hidden";
+
+}
+
+function showText(){
+
+  document.getElementById("chunk")
+    .style.visibility="visible";
+
+  document.getElementById("chunkCn")
+    .style.visibility="visible";
+
+  document.getElementById("sentence")
+    .style.visibility="visible";
+
+  document.getElementById("sentenceCn")
+    .style.visibility="visible";
+
+}
+
+
+/* =====================================================
+   20. 键盘快捷键
+===================================================== */
+
+document.addEventListener("keydown",e=>{
+
+  if(e.code==="Space"){
+
+    e.preventDefault();
+
+    playCurrent();
+
+  }
+
+  if(e.code==="ArrowRight"){
+
+    nextLesson();
+
+  }
+
+  if(e.code==="ArrowLeft"){
+
+    previousLesson();
+
+  }
+
+});
+
+
+/* =====================================================
+   21. 语音加载
+===================================================== */
+
+speechSynthesis.onvoiceschanged=()=>{
+  speechSynthesis.getVoices();
+};
+
+
+/* =====================================================
+   22. 页面离开时停止
+===================================================== */
+
+document.addEventListener(
+  "visibilitychange",
   ()=>{
-    speechSynthesis.getVoices();
-  };
+
+    if(document.hidden){
+
+      stop();
+
+    }
+
+  }
+);
 
 </script>
 
