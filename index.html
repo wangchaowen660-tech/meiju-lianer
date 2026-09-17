@@ -73,7 +73,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .nav-center{font-size:12px;font-weight:700;color:#64748b;min-width:70px;text-align:center;}
 .status{text-align:center;font-size:12px;color:#94a3b8;min-height:18px;padding:4px 0;}
 .status.speaking{color:#e94560;font-weight:600;}
-/* 语音状态徽章 */
 .voice-badge{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,0.85);color:#fff;font-size:10px;padding:4px 12px;border-radius:20px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;}
 .voice-badge.show{opacity:1;}
 /* 🎯 48音标 */
@@ -542,18 +541,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <script>
 // ============================================================
-// 🎙️ iPad 优化的语音引擎
-// 优先使用 Enhanced 语音 → 自动兜底 → 首次点击唤醒
+// 🎙️ iPad 优化的语音引擎（带 AUDIO 目录结构）
 // ============================================================
 
-const AUDIO_BASE = "audio/";  // 若有预生成音频包，放在此目录
+const AUDIO = {
+  phoneme:   "audio/phonemes/",
+  vowel:     "audio/phonemes/vowels/",
+  consonant: "audio/phonemes/consonants/",
+  word:      "audio/words/",
+  sentence:  "audio/sentences/"
+};
+
+// IPA 音标符号 → 音频文件名
+const IPA_FILE_MAP = {
+  '/iː/':'ee', '/ɪ/':'i', '/e/':'e', '/æ/':'a', '/ʌ/':'u', '/ɒ/':'o', '/ʊ/':'oo', '/ə/':'schwa',
+  '/ɑː/':'ah', '/ɔː/':'aw', '/uː/':'oo_long', '/ɜː/':'er',
+  '/eɪ/':'ay', '/aɪ/':'ai', '/ɔɪ/':'oy', '/əʊ/':'oh', '/aʊ/':'ow',
+  '/ɪə/':'ear', '/eə/':'air', '/ʊə/':'oor',
+  '/p/':'p', '/b/':'b', '/t/':'t', '/d/':'d', '/k/':'k', '/ɡ/':'g', '/g/':'g',
+  '/f/':'f', '/v/':'v', '/θ/':'th', '/ð/':'dh', '/s/':'s', '/z/':'z',
+  '/ʃ/':'sh', '/ʒ/':'zh', '/h/':'h',
+  '/tʃ/':'ch', '/dʒ/':'j', '/tr/':'tr', '/dr/':'dr', '/ts/':'ts', '/dz/':'dz',
+  '/m/':'m', '/n/':'n', '/ŋ/':'ng',
+  '/l/':'l', '/r/':'r', '/j/':'y', '/w/':'w'
+};
+
+function ipaToId(sym) {
+  return IPA_FILE_MAP[sym] || String(sym).replace(/\//g, '').replace(/[^a-zA-Z0-9_]/g, '_');
+}
+
+function getAudioSrc(category, id) {
+  const base = AUDIO[category] || AUDIO.word;
+  const safeId = String(id).replace(/\//g, '').replace(/\s+/g, '_');
+  return base + safeId + ".mp3";
+}
 
 let bestVoice = null;
 let speechReady = false;
 let voicesLoaded = false;
 const audioCache = {};
 
-// 系统语音优选列表（iPad Enhanced 优先）
 const VOICE_PRIORITY = [
   "Ava (Enhanced)",
   "Samantha (Enhanced)",
@@ -593,7 +620,7 @@ function pickBestVoice() {
 }
 
 function showVoiceBadge(text) {
-  const b = $("voiceBadge");
+  const b = document.getElementById("voiceBadge");
   if (!b) return;
   b.textContent = text;
   b.classList.add("show");
@@ -603,7 +630,6 @@ function showVoiceBadge(text) {
 function warmUp() {
   if (speechReady || !window.speechSynthesis) return;
   try {
-    // iOS 必须用真实内容才能解锁
     const u = new SpeechSynthesisUtterance("a");
     u.volume = 0.01;
     u.onend = () => speechReady = true;
@@ -613,7 +639,6 @@ function warmUp() {
   } catch(e) { speechReady = true; }
 }
 
-// 系统 TTS
 function speakTTS(text, lang, cb) {
   if (!window.speechSynthesis) { if (cb) cb(); return; }
   warmUp();
@@ -630,7 +655,6 @@ function speakTTS(text, lang, cb) {
       u.voice = bestVoice;
     }
 
-    // iPad 教学场景调优
     u.rate = 0.85;
     u.pitch = 1.0;
     u.volume = 1.0;
@@ -642,31 +666,39 @@ function speakTTS(text, lang, cb) {
 
     try { window.speechSynthesis.speak(u); } catch(e) { finish(); }
 
-    // iPad 的 onend 有时不触发，按字数估算兜底
     const est = Math.max(3000, clean.length * 280);
     setTimeout(finish, est);
   }, 60);
 }
 
-// 音频优先，TTS 兜底
-function speakSmart(id, fallbackText, cb, lang) {
+/**
+ * 智能播放：优先 mp3，回退 TTS
+ * @param {string} id          文件 ID（不含 .mp3）
+ * @param {string} fallbackText 回退 TTS 文本
+ * @param {function} cb         完成回调
+ * @param {string} category    'phoneme'|'vowel'|'consonant'|'word'|'sentence'
+ * @param {string} lang        回退 TTS 语言（默认 en-US）
+ */
+function speakSmart(id, fallbackText, cb, category, lang) {
   if (lang === "zh-CN" || /[\u4e00-\u9fa5]/.test(fallbackText)) {
     return speakTTS(fallbackText, "zh-CN", cb);
   }
 
-  const src = AUDIO_BASE + id + ".mp3";
+  const cat = category || "word";
+  const src = getAudioSrc(cat, id);
+  const cacheKey = cat + ":" + id;
 
-  if (audioCache[id] === null) {
+  if (audioCache[cacheKey] === null) {
     return speakTTS(fallbackText, lang, cb);
   }
 
-  let audio = audioCache[id];
+  let audio = audioCache[cacheKey];
   if (!audio) {
     audio = new Audio();
     audio.preload = "auto";
-    audioCache[id] = audio;
+    audioCache[cacheKey] = audio;
     audio.onerror = () => {
-      audioCache[id] = null;
+      audioCache[cacheKey] = null;
       speakTTS(fallbackText, lang, cb);
     };
   }
@@ -681,9 +713,25 @@ function speakSmart(id, fallbackText, cb, lang) {
   audio.addEventListener("ended", onEnded);
 
   audio.play().catch(() => {
-    audioCache[id] = null;
+    audioCache[cacheKey] = null;
     speakTTS(fallbackText, lang, cb);
   });
+}
+
+/**
+ * 音素 + 示例词连播（IPA 卡专用）
+ * 先播 /θ/ 的纯音，再播 think
+ */
+function speakPhonemePlusWord(phonemeId, phonemeCat, word, cb) {
+  const src = getAudioSrc(phonemeCat, phonemeId);
+  const audio = new Audio();
+  audio.src = src;
+
+  const playWord = () => speakSmart(word, word, cb, "word");
+
+  audio.onended = playWord;
+  audio.onerror = playWord;
+  audio.play().catch(playWord);
 }
 
 // ============================================================
@@ -1136,12 +1184,12 @@ function wfSayPart(part) {
     wfStatus.textContent = "🔊 " + part;
     wfStatus.className = "status speaking";
   }
-  speakSmart("part_" + key, say, () => {
+  speakSmart("onset_" + key, say, () => {
     if (wfStatus) {
       wfStatus.textContent = "✅ " + part;
       wfStatus.className = "status";
     }
-  });
+  }, "phoneme");
 }
 
 function wfSpeakWord(word) {
@@ -1149,12 +1197,12 @@ function wfSpeakWord(word) {
     wfStatus.textContent = "🔊 " + word;
     wfStatus.className = "status speaking";
   }
-  speakSmart("wf_" + word, word, () => {
+  speakSmart(word, word, () => {
     if (wfStatus) {
       wfStatus.textContent = "✅ " + word;
       wfStatus.className = "status";
     }
-  });
+  }, "word");
 }
 
 function wfSpeakFamily(family) {
@@ -1162,39 +1210,40 @@ function wfSpeakFamily(family) {
     wfStatus.textContent = "🔊 -" + family;
     wfStatus.className = "status speaking";
   }
-  speakSmart("fam_" + family, family, () => {
+  speakSmart("rhyme_" + family, family, () => {
     if (wfStatus) {
       wfStatus.textContent = "✅ -" + family;
       wfStatus.className = "status";
     }
-  });
+  }, "phoneme");
 }
 
 function wfPlayWhole(family, word) {
   const onset = wfOnset(word, family);
   if (!onset) { wfSpeakWord(word); return; }
   const onsetSay = ONSET_SAY[onset.toLowerCase()] || onset;
+  const onsetKey = "onset_" + onset.toLowerCase();
 
   if (wfStatus) {
     wfStatus.textContent = "① " + onset;
     wfStatus.className = "status speaking";
   }
-  speakSmart("part_" + onset.toLowerCase(), onsetSay, () => {
+  speakSmart(onsetKey, onsetSay, () => {
     setTimeout(() => {
       if (wfStatus) wfStatus.textContent = "② " + family;
-      speakSmart("fam_" + family, family, () => {
+      speakSmart("rhyme_" + family, family, () => {
         setTimeout(() => {
           if (wfStatus) wfStatus.textContent = "③ " + word;
-          speakSmart("wf_" + word, word, () => {
+          speakSmart(word, word, () => {
             if (wfStatus) {
               wfStatus.textContent = "✅ " + onset + " + " + family + " = " + word;
               wfStatus.className = "status";
             }
-          });
+          }, "word");
         }, 280);
-      });
+      }, "phoneme");
     }, 280);
-  });
+  }, "phoneme");
 }
 
 function wfWordHTML(family, word, cn) {
@@ -1248,20 +1297,24 @@ function renderWordFamily() {
 // ============ 🎯 48音标渲染 ============
 function renderIPA() {
   const groups = [
-    { id:"ipaVowelShort", data:IPA_48.vowelShort, cls:"vowel" },
-    { id:"ipaVowelLong", data:IPA_48.vowelLong, cls:"vowel" },
-    { id:"ipaDiphthong", data:IPA_48.diphthong, cls:"vowel" },
-    { id:"ipaPlosive", data:IPA_48.plosive, cls:"consonant" },
-    { id:"ipaFricative", data:IPA_48.fricative, cls:"consonant" },
-    { id:"ipaAffricate", data:IPA_48.affricate, cls:"affricate" },
-    { id:"ipaNasal", data:IPA_48.nasal, cls:"consonant" },
-    { id:"ipaApproximant", data:IPA_48.approximant, cls:"consonant" }
+    { id:"ipaVowelShort",   data:IPA_48.vowelShort,   cls:"vowel",     cat:"vowel" },
+    { id:"ipaVowelLong",    data:IPA_48.vowelLong,    cls:"vowel",     cat:"vowel" },
+    { id:"ipaDiphthong",    data:IPA_48.diphthong,    cls:"vowel",     cat:"vowel" },
+    { id:"ipaPlosive",      data:IPA_48.plosive,      cls:"consonant", cat:"consonant" },
+    { id:"ipaFricative",    data:IPA_48.fricative,    cls:"consonant", cat:"consonant" },
+    { id:"ipaAffricate",    data:IPA_48.affricate,    cls:"affricate", cat:"consonant" },
+    { id:"ipaNasal",        data:IPA_48.nasal,        cls:"consonant", cat:"consonant" },
+    { id:"ipaApproximant",  data:IPA_48.approximant,  cls:"consonant", cat:"consonant" }
   ];
   groups.forEach(g => {
     const el = $(g.id);
     if (!el) return;
     el.innerHTML = g.data.map((item, i) =>
-      '<div class="ipa-cell ' + g.cls + '" data-sym="' + item.sym + '" data-ex="' + item.ex + '" onclick="speakIPA(this)">' +
+      '<div class="ipa-cell ' + g.cls + '" ' +
+           'data-sym="' + item.sym + '" ' +
+           'data-ex="' + item.ex + '" ' +
+           'data-cat="' + g.cat + '" ' +
+           'onclick="speakIPA(this)">' +
         '<div class="ipa-sym">' + item.sym + '</div>' +
         '<div class="ipa-ex">' + item.ex + '</div>' +
         '<div class="ipa-cn">' + item.cn + '</div>' +
@@ -1273,11 +1326,15 @@ function renderIPA() {
 function speakIPA(el) {
   const sym = el.dataset.sym;
   const ex = el.dataset.ex;
+  const cat = el.dataset.cat || "consonant";
+  const ipaId = ipaToId(sym);
+
   document.querySelectorAll(".ipa-cell").forEach(c => c.classList.remove("speaking"));
   el.classList.add("speaking");
   ipaStatus.textContent = "🔊 " + sym + " · " + ex;
   ipaStatus.className = "status speaking";
-  speakSmart("ipa_" + ex, ex, () => {
+
+  speakPhonemePlusWord(ipaId, cat, ex, () => {
     ipaStatus.textContent = "✅ " + sym + " · " + ex;
     ipaStatus.className = "status";
     el.classList.remove("speaking");
@@ -1341,10 +1398,10 @@ function speakPhonicsWord(i, j) {
   if (!w) return;
   phonicsStatus.textContent = "🔊 " + w.w + " " + w.ipa;
   phonicsStatus.className = "status speaking";
-  speakSmart("wf_" + w.w, w.w, () => {
+  speakSmart(w.w, w.w, () => {
     phonicsStatus.textContent = "✅ " + w.w;
     phonicsStatus.className = "status";
-  });
+  }, "word");
 }
 
 // ============ 学习模块 ============
@@ -1462,7 +1519,7 @@ function speakPattern() {
   speakSmart("pat_" + String(patIndex + 1).padStart(2, "0"), skeleton, () => {
     statusEl.textContent = "✅ 母句播放完成";
     statusEl.className = "status";
-  });
+  }, "sentence");
 }
 
 function speakChunk() {
@@ -1476,7 +1533,7 @@ function speakChunk() {
   speakSmart(chunkId, c.en, () => {
     statusEl.textContent = "✅ 词块播放完成";
     statusEl.className = "status";
-  });
+  }, "sentence");
 }
 
 function playThreeStage() {
@@ -1502,9 +1559,9 @@ function playThreeStage() {
             statusEl.className = "status";
           });
         }, 320);
-      });
+      }, "sentence");
     }, 320);
-  });
+  }, "sentence");
 }
 
 function playFull() {
@@ -1672,7 +1729,7 @@ function init() {
   const stat = $("patternStat");
   if (stat) stat.textContent = PATTERNS.length + " 母句 · " + totalGroups + " 组";
 
-  // 🎙️ iPad 语音初始化（异步加载 + 首次手势唤醒）
+  // 🎙️ iPad 语音初始化
   if (window.speechSynthesis) {
     pickBestVoice();
 
@@ -1680,12 +1737,10 @@ function init() {
       pickBestVoice();
     };
 
-    // iPad Safari 有时不触发 voiceschanged，多次延时兜底
     setTimeout(pickBestVoice, 300);
     setTimeout(pickBestVoice, 1000);
     setTimeout(pickBestVoice, 2500);
 
-    // 首次用户手势：解锁语音 + 再次优选
     const warm = () => {
       warmUp();
       pickBestVoice();
@@ -1698,10 +1753,11 @@ function init() {
 
   let totalWords = 0;
   WORD_FAMILIES.forEach(f => totalWords += f.w.length);
-  console.log("✅ iPad 版已启动");
+  console.log("✅ iPad 版已启动（带 AUDIO 目录结构）");
   console.log("📐 母句:", PATTERNS.length, "个 /", totalGroups, "组词块");
   console.log("🧩 词族:", WORD_FAMILIES.length, "个 /", totalWords, "个单词");
   console.log("🎯 音标:", 7 + 5 + 8 + 6 + 9 + 6 + 3 + 4, "个");
+  console.log("📁 音频目录:", AUDIO);
 }
 
 $("contractionModal").addEventListener("click", function(e) {
