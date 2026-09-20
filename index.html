@@ -45,7 +45,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .sentence-cn{font-size:15px;color:#64748b;line-height:1.6;margin-top:12px;min-height:24px;}
 .sentence-ph{margin-top:10px;padding:8px 12px;background:#fffbeb;border-radius:10px;font-size:12px;color:#92400e;font-style:italic;border-left:3px solid #f59e0b;line-height:1.5;}
 .sentence-ph::before{content:"🎵 ";font-style:normal;font-weight:700;}
-/* 🎤 KTV 歌词 */
+/* 🎤 KTV */
 .sentence-line .kw{display:inline-block;color:#cbd5e1;transition:color .22s ease,transform .22s ease,text-shadow .22s ease;will-change:color,transform;padding:0 1px;}
 .sentence-line .kw.pattern-kw.done{color:#0f172a;}
 .sentence-line .kw.chunk-kw.done{color:#e94560;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);border-radius:4px;}
@@ -53,7 +53,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .sentence-cn .kw-cn{display:inline-block;color:#cbd5e1;transition:color .2s,transform .2s;padding:0 1px;}
 .sentence-cn .kw-cn.done{color:#64748b;}
 .sentence-cn .kw-cn.current{color:#8b5cf6;transform:scale(1.15);text-shadow:0 0 10px rgba(139,92,246,0.5);}
-/* 缩读卡片 */
 .contraction-card{margin-top:10px;padding:10px 12px;background:#eef2ff;border-radius:12px;border-left:3px solid #6366f1;display:none;}
 .contraction-card.show{display:block;}
 .contraction-label{font-size:11px;font-weight:700;color:#4f46e5;margin-bottom:6px;}
@@ -109,7 +108,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .ipa-cell .ipa-cn{font-size:9px;color:#94a3b8;margin-top:1px;}
 .ipa-cell.speaking{background:#e94560;border-color:#e94560;}
 .ipa-cell.speaking .ipa-sym,.ipa-cell.speaking .ipa-ex,.ipa-cell.speaking .ipa-cn{color:#fff;}
-/* Phonics */
 .phonics-tabs{display:flex;gap:5px;margin-bottom:12px;background:#fff;border-radius:20px;padding:4px;overflow-x:auto;}
 .phonics-tab{flex:1;min-width:70px;padding:8px 6px;border:0;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:#64748b;white-space:nowrap;}
 .phonics-tab.active{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;}
@@ -125,7 +123,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .phonics-words{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;}
 .phonics-word{background:#f1f5f9;color:#0f172a;padding:5px 12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;}
 .phonics-word .ipa{color:#6366f1;font-size:11px;margin-left:4px;}
-/* Word family */
 .wf-intro{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-radius:18px;padding:18px 20px;margin-bottom:14px;box-shadow:0 8px 20px rgba(16,185,129,0.28);}
 .wf-intro h2{font-size:17px;font-weight:800;margin-bottom:6px;}
 .wf-intro p{font-size:13px;opacity:0.95;line-height:1.6;}
@@ -148,7 +145,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .wf-full:active{background:#e94560;color:#fff;}
 .wf-cn{font-size:10px;color:#94a3b8;margin-top:3px;line-height:1.3;padding-left:2px;}
 .wf-empty{text-align:center;padding:40px 20px;color:#94a3b8;font-size:14px;}
-/* Method */
 .method-intro{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:18px;padding:18px;margin-bottom:14px;}
 .method-intro h2{font-size:18px;font-weight:800;margin-bottom:6px;}
 .method-intro p{font-size:13px;opacity:0.9;line-height:1.6;}
@@ -168,7 +164,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .method-card p{font-size:13px;color:#475569;line-height:1.65;margin-bottom:6px;}
 .method-card .example{background:#fff;border-radius:8px;padding:8px 12px;margin-top:6px;font-size:12px;color:#64748b;border:1px dashed #e2e8f0;}
 .method-card .warning{background:#fff7ed;border-left:3px solid #f97316;padding:8px 12px;border-radius:8px;margin-top:6px;font-size:12px;color:#c2410c;}
-/* Shop */
 .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
 .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.05);cursor:pointer;}
 .product-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;background:linear-gradient(135deg,#e0e7ff,#f1f5f9);}
@@ -185,7 +180,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .contraction-list-arrow{color:#6366f1;font-weight:800;}
 .contraction-list-short{color:#4f46e5;font-weight:800;font-size:15px;flex:1;}
 .contraction-list-btn{background:#eef2ff;border:0;padding:5px 12px;border-radius:10px;color:#4f46e5;font-size:11px;font-weight:700;cursor:pointer;}
-/* Reaction */
 .reaction-intro{background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-radius:18px;padding:18px 20px;margin-bottom:14px;box-shadow:0 8px 20px rgba(139,92,246,0.28);}
 .reaction-intro h2{font-size:17px;font-weight:800;margin-bottom:6px;}
 .reaction-intro p{font-size:13px;opacity:0.95;line-height:1.6;}
@@ -248,7 +242,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     </div>
   </div>
 
-  <!-- 学习模块 -->
   <div id="learnModule">
     <div class="category-tabs" id="categoryTabs"></div>
     <div class="toolbar">
@@ -315,7 +308,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="status">点黑色读母句 · 点红色读词块</div>
   </div>
 
-  <!-- 反应训练 -->
   <div id="reactionModule" style="display:none;">
     <div class="reaction-intro">
       <h2>🎯 反应训练 · 声音 → 意思 → 场景 → 英语</h2>
@@ -337,7 +329,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="reactionStatus">听声音 → 想意思 → 想场景 → 说英语</div>
   </div>
 
-  <!-- 词族 -->
   <div id="wordfamilyModule" style="display:none;">
     <div class="wf-intro"><h2>🧩 词族拼读 · 500+ 词</h2><p>辅音 + 韵脚 = 单词。点任意部分听标准发音。</p></div>
     <input class="wf-search" id="wfSearch" placeholder="🔍 搜索单词 / 中文 / 词族..." oninput="wfFilter=this.value;renderWordFamily()">
@@ -346,7 +337,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="wfStatus">点任意部分听发音</div>
   </div>
 
-  <!-- 音标 -->
   <div id="ipaModule" style="display:none;">
     <div class="ipa-intro"><h2>🎯 英语国际音标一览（48 个）</h2><p>20 个元音 + 28 个辅音。点任意音标即可听标准发音与例词。</p></div>
     <div class="ipa-section">
@@ -366,7 +356,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="ipaStatus">点音标听发音</div>
   </div>
 
-  <!-- 发音 -->
   <div id="phonicsModule" style="display:none;">
     <div class="phonics-tabs">
       <button class="phonics-tab active" data-cat="vowel" onclick="setPhonicsCat('vowel', this)">元音</button>
@@ -379,7 +368,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="phonicsStatus">点卡片听发音</div>
   </div>
 
-  <!-- 方法 -->
   <div id="methodModule" style="display:none;">
     <div class="method-intro"><h2>🎯 英语学习方法指南</h2><p>不是学不会，而是方法不对。下面带你走对路。</p></div>
     <div class="method-section open">
@@ -434,7 +422,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     </div>
   </div>
 
-  <!-- 商城 -->
   <div id="shopModule" style="display:none;">
     <div class="chunk-section">
       <div class="chunk-section-title"><span>🛍️ 精选好物</span></div>
@@ -455,6 +442,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 <div class="voice-badge" id="voiceBadge"></div>
 
 <script>
+// ============================================================
+// 🛡️ 全局事件保护
+// ============================================================
+function stopProp(ev) {
+  if (ev && typeof ev.stopPropagation === "function") {
+    try { ev.stopPropagation(); } catch(e){}
+  }
+}
+
 // ============================================================
 // 🎙️ 语音引擎
 // ============================================================
@@ -590,21 +586,18 @@ function clearKTV() {
   document.querySelectorAll("#sentenceCn .kw-cn").forEach(el => el.classList.remove("current", "done"));
 }
 
-function buildKaraokeEN(skeleton, chunkText, punctuation) {
-  const skelTokens = skeleton.split(/(\s+)/).filter(t => t !== "");
-  const chunkTokens = chunkText.split(/(\s+)/).filter(t => t !== "");
-  let html = "";
-  skelTokens.forEach(t => {
-    if (/^\s+$/.test(t)) html += " ";
-    else html += '<span class="kw pattern-kw">' + escapeHTML(t) + '</span>';
-  });
-  html += " ";
-  chunkTokens.forEach(t => {
-    if (/^\s+$/.test(t)) html += " ";
-    else html += '<span class="kw chunk-kw">' + escapeHTML(t) + '</span>';
-  });
-  html += escapeHTML(punctuation || "");
-  return html;
+// ⭐ 生成 KTV 版英文，词可单独点击
+function buildSentenceHTML(skeleton, chunkText, punctuation) {
+  const skel = skeleton.split(/(\s+)/).filter(t => t !== "").map(t =>
+    /^\s+$/.test(t) ? " " : '<span class="kw pattern-kw" onclick="speakOneWord(event,this)">' + escapeHTML(t) + '</span>'
+  ).join("");
+  const chk = chunkText.split(/(\s+)/).filter(t => t !== "").map(t =>
+    /^\s+$/.test(t) ? " " : '<span class="kw chunk-kw" onclick="speakOneWord(event,this)">' + escapeHTML(t) + '</span>'
+  ).join("");
+  // ⭐ 用 stopProp 包裹，避免 iPad Safari 抛错
+  return '<span class="part-pattern" onclick="stopProp(event);speakPattern()">' + skel +
+         '</span> <span class="part-chunk" onclick="stopProp(event);speakChunk()">' + chk +
+         '</span>' + escapeHTML(punctuation || "");
 }
 
 function buildKaraokeCN(text) {
@@ -672,8 +665,21 @@ function estimateSentenceDuration(fullText) {
   return Math.max(1200, estimateCharWeight(fullText) * 95);
 }
 
+// ⭐ 点击单个词读该词
+function speakOneWord(ev, el) {
+  stopProp(ev);
+  const word = el.textContent.trim();
+  if (!word) return;
+  statusEl.textContent = "🔊 " + word;
+  statusEl.className = "status speaking";
+  speakTTS(word, "en-US", () => {
+    statusEl.textContent = "✅ " + word;
+    statusEl.className = "status";
+  });
+}
+
 // ============================================================
-// 数据
+// 数据（省略详细数据，与前版一致）
 // ============================================================
 const IPA_48 = {
   vowelShort:[{sym:"/ɪ/",ex:"sit",cn:"衣/诶之间"},{sym:"/e/",ex:"bed",cn:"诶（短）"},{sym:"/æ/",ex:"cat",cn:"诶/啊之间"},{sym:"/ʌ/",ex:"cup",cn:"啊/呃之间"},{sym:"/ɒ/",ex:"hot",cn:"哦（短）"},{sym:"/ʊ/",ex:"book",cn:"乌（短）"},{sym:"/ə/",ex:"about",cn:"轻声呃"}],
@@ -988,62 +994,62 @@ const WORD_FAMILIES = [
 ];
 
 const ONSET_SAY = {
-  b:"buh", c:"kuh", d:"duh", f:"fuh", g:"guh", h:"huh", j:"juh", k:"kuh",
-  l:"luh", m:"muh", n:"nuh", p:"puh", q:"kwuh", r:"ruh", s:"suh", t:"tuh",
-  v:"vuh", w:"wuh", x:"ks", y:"yuh", z:"zuh",
-  ch:"chuh", sh:"shuh", th:"thuh", ph:"fuh", wh:"wuh", ck:"kuh",
-  bl:"bluh", br:"bruh", cl:"kluh", cr:"kruh", dr:"druh", fl:"fluh",
-  fr:"fruh", gl:"gluh", gr:"gruh", pl:"pluh", pr:"pruh", sc:"skuh",
-  sk:"skuh", sl:"sluh", sm:"smuh", sn:"snuh", sp:"spuh", st:"stuh",
-  sw:"swuh", tr:"truh", tw:"twuh", str:"struh", spr:"spruh", spl:"spluh",
-  thr:"thruh", shr:"shruh"
+  b:"buh",c:"kuh",d:"duh",f:"fuh",g:"guh",h:"huh",j:"juh",k:"kuh",
+  l:"luh",m:"muh",n:"nuh",p:"puh",q:"kwuh",r:"ruh",s:"suh",t:"tuh",
+  v:"vuh",w:"wuh",x:"ks",y:"yuh",z:"zuh",
+  ch:"chuh",sh:"shuh",th:"thuh",ph:"fuh",wh:"wuh",ck:"kuh",
+  bl:"bluh",br:"bruh",cl:"kluh",cr:"kruh",dr:"druh",fl:"fluh",
+  fr:"fruh",gl:"gluh",gr:"gruh",pl:"pluh",pr:"pruh",sc:"skuh",
+  sk:"skuh",sl:"sluh",sm:"smuh",sn:"snuh",sp:"spuh",st:"stuh",
+  sw:"swuh",tr:"truh",tw:"twuh",str:"struh",spr:"spruh",spl:"spluh",
+  thr:"thruh",shr:"shruh"
 };
 
 const USAGE_SCENES = {
-  "I have no idea how to ___.": "在陌生环境里需要求助，但不知道怎么开口时。比如在机场、餐厅、新公司。",
-  "I have no idea where to ___.": "想做事却不知道地点时。比如找洗手间、找商店、找餐馆。",
-  "I have no idea which one to ___.": "面对多个选项，拿不定主意时。比如菜单、货架、候选人。",
-  "I have no idea whom to ___.": "需要找对人但不知道找谁时。比如遇到麻烦、想咨询、想投诉。",
-  "Do you know how to ___?": "向陌生人或朋友求助，问方法时。比自己闷头想更自然。",
-  "I want to ___.": "表达自己的愿望，最基础也最常用的句型。",
-  "I need to ___.": "表达客观需要，比 want 更迫切。工作、出行、健康场景都常用。",
-  "I have to ___.": "表达不得不做，带点无奈或义务感。任务、规定、责任场景。",
-  "What do you want to ___?": "问对方意愿，开启对话。约会、点餐、商量计划都能用。",
-  "I'm going to ___.": "说自己的计划，比 will 更确定。日程、安排、打算的场景。",
-  "Do you want to ___?": "向朋友发出邀请，轻松又自然。周末、下班后、假期都适用。",
-  "Let's ___ together.": "主动提议一起做某事，拉近关系。适合朋友、同事、家人之间。",
-  "Would you like to ___?": "礼貌邀请，适合刚认识的人或正式场合。",
-  "Where is ___?": "初到陌生地方最常用的一句。问路、找设施都靠它。",
-  "How can I ___?": "遇到困难向人求助，问方法时的万能句。",
-  "How long does it take to ___?": "安排行程、规划时间时问时长。",
-  "How much ___?": "购物、坐车、点餐前问价，最实用的一句。",
-  "Can I pay by ___?": "结账时问付款方式。出国旅行尤其重要。",
-  "I'd like to ___.": "在服务场合礼貌表达需求，比 I want 更得体。",
-  "Could I have ___?": "在餐厅、咖啡厅礼貌点单，比 give me 更礼貌。",
-  "I'm working on ___.": "同事间随口聊工作进度，最自然的开场。",
-  "Can you help me with ___?": "请同事或朋友帮忙，礼貌又直接。",
-  "I have a meeting with ___.": "说到日程安排时，最常用的句式。",
-  "Let me check ___.": "别人问你信息时，先缓一步去查的说法。",
-  "I'm learning how to ___.": "向别人介绍自己在学什么，聊天最常用。",
-  "Can you explain ___?": "听不懂让对方解释，课堂上最常用。",
-  "I don't understand ___.": "直接说没听懂，比沉默更有效。",
-  "I'm so happy about ___.": "分享好消息、表达开心时用。",
-  "I'm worried about ___.": "表达担忧和焦虑，跟朋友倾诉时常用。",
-  "I feel like ___.": "说自己的状态或想做的事，非常口语。",
-  "I have a pain in ___.": "看病时描述疼痛位置，最直接的表达。",
-  "I need to see a doctor about ___.": "预约看病、跟医生说明来意时用。",
-  "Is this the right way to ___?": "在陌生地方确认方向，避免走错。",
-  "I'd like to ___ a taxi.": "出行打车的常用句。",
-  "It looks like it's going to ___.": "聊天气、看天色变化时的常用句。",
-  "What time do you ___?": "问别人作息、约定时间时用。",
-  "My family likes to ___.": "聊家庭爱好，开启轻松话题。",
-  "Can I speak to ___?": "打电话找人，最基础的句式。",
-  "I'd like to book ___.": "订房、订餐、订票都通用。",
-  "Could you please ___?": "礼貌请求别人做某事，句式万能。",
-  "Why don't we ___?": "提建议、委婉邀约，比 Let's 更柔和。",
-  "I'm sorry for ___.": "道歉时说明原因，比单说 sorry 更诚恳。",
-  "Thank you for ___.": "具体感谢对方为你做的某事，比 Thanks 更有温度。",
-  "Don't worry about ___.": "安慰别人时用，让对话有温度。"
+  "I have no idea how to ___.":"在陌生环境里需要求助，但不知道怎么开口时。比如在机场、餐厅、新公司。",
+  "I have no idea where to ___.":"想做事却不知道地点时。比如找洗手间、找商店、找餐馆。",
+  "I have no idea which one to ___.":"面对多个选项，拿不定主意时。比如菜单、货架、候选人。",
+  "I have no idea whom to ___.":"需要找对人但不知道找谁时。比如遇到麻烦、想咨询、想投诉。",
+  "Do you know how to ___?":"向陌生人或朋友求助，问方法时。比自己闷头想更自然。",
+  "I want to ___.":"表达自己的愿望，最基础也最常用的句型。",
+  "I need to ___.":"表达客观需要，比 want 更迫切。工作、出行、健康场景都常用。",
+  "I have to ___.":"表达不得不做，带点无奈或义务感。任务、规定、责任场景。",
+  "What do you want to ___?":"问对方意愿，开启对话。约会、点餐、商量计划都能用。",
+  "I'm going to ___.":"说自己的计划，比 will 更确定。日程、安排、打算的场景。",
+  "Do you want to ___?":"向朋友发出邀请，轻松又自然。周末、下班后、假期都适用。",
+  "Let's ___ together.":"主动提议一起做某事，拉近关系。适合朋友、同事、家人之间。",
+  "Would you like to ___?":"礼貌邀请，适合刚认识的人或正式场合。",
+  "Where is ___?":"初到陌生地方最常用的一句。问路、找设施都靠它。",
+  "How can I ___?":"遇到困难向人求助，问方法时的万能句。",
+  "How long does it take to ___?":"安排行程、规划时间时问时长。",
+  "How much ___?":"购物、坐车、点餐前问价，最实用的一句。",
+  "Can I pay by ___?":"结账时问付款方式。出国旅行尤其重要。",
+  "I'd like to ___.":"在服务场合礼貌表达需求，比 I want 更得体。",
+  "Could I have ___?":"在餐厅、咖啡厅礼貌点单，比 give me 更礼貌。",
+  "I'm working on ___.":"同事间随口聊工作进度，最自然的开场。",
+  "Can you help me with ___?":"请同事或朋友帮忙，礼貌又直接。",
+  "I have a meeting with ___.":"说到日程安排时，最常用的句式。",
+  "Let me check ___.":"别人问你信息时，先缓一步去查的说法。",
+  "I'm learning how to ___.":"向别人介绍自己在学什么，聊天最常用。",
+  "Can you explain ___?":"听不懂让对方解释，课堂上最常用。",
+  "I don't understand ___.":"直接说没听懂，比沉默更有效。",
+  "I'm so happy about ___.":"分享好消息、表达开心时用。",
+  "I'm worried about ___.":"表达担忧和焦虑，跟朋友倾诉时常用。",
+  "I feel like ___.":"说自己的状态或想做的事，非常口语。",
+  "I have a pain in ___.":"看病时描述疼痛位置，最直接的表达。",
+  "I need to see a doctor about ___.":"预约看病、跟医生说明来意时用。",
+  "Is this the right way to ___?":"在陌生地方确认方向，避免走错。",
+  "I'd like to ___ a taxi.":"出行打车的常用句。",
+  "It looks like it's going to ___.":"聊天气、看天色变化时的常用句。",
+  "What time do you ___?":"问别人作息、约定时间时用。",
+  "My family likes to ___.":"聊家庭爱好，开启轻松话题。",
+  "Can I speak to ___?":"打电话找人，最基础的句式。",
+  "I'd like to book ___.":"订房、订餐、订票都通用。",
+  "Could you please ___?":"礼貌请求别人做某事，句式万能。",
+  "Why don't we ___?":"提建议、委婉邀约，比 Let's 更柔和。",
+  "I'm sorry for ___.":"道歉时说明原因，比单说 sorry 更诚恳。",
+  "Thank you for ___.":"具体感谢对方为你做的某事，比 Thanks 更有温度。",
+  "Don't worry about ___.":"安慰别人时用，让对话有温度。"
 };
 
 const SCENE_FALLBACKS = {
@@ -1103,7 +1109,8 @@ function wfOnset(word, family) {
   if (!word.toLowerCase().endsWith(family)) return "";
   return word.slice(0, word.length - family.length);
 }
-function wfSayPart(part) {
+function wfSayPart(ev, part) {
+  stopProp(ev);
   const key = String(part).toLowerCase();
   const say = ONSET_SAY[key] || part;
   if (wfStatus) { wfStatus.textContent = "🔊 " + part; wfStatus.className = "status speaking"; }
@@ -1111,13 +1118,15 @@ function wfSayPart(part) {
     if (wfStatus) { wfStatus.textContent = "✅ " + part; wfStatus.className = "status"; }
   }, "phoneme");
 }
-function wfSpeakWord(word) {
+function wfSpeakWord(ev, word) {
+  stopProp(ev);
   if (wfStatus) { wfStatus.textContent = "🔊 " + word; wfStatus.className = "status speaking"; }
   speakSmart(word, word, () => {
     if (wfStatus) { wfStatus.textContent = "✅ " + word; wfStatus.className = "status"; }
   }, "word");
 }
-function wfSpeakFamily(family) {
+function wfSpeakFamily(ev, family) {
+  stopProp(ev);
   if (wfStatus) { wfStatus.textContent = "🔊 -" + family; wfStatus.className = "status speaking"; }
   speakSmart("rhyme_" + family, family, () => {
     if (wfStatus) { wfStatus.textContent = "✅ -" + family; wfStatus.className = "status"; }
@@ -1125,7 +1134,7 @@ function wfSpeakFamily(family) {
 }
 function wfPlayWhole(family, word) {
   const onset = wfOnset(word, family);
-  if (!onset) { wfSpeakWord(word); return; }
+  if (!onset) { wfSpeakWord(null, word); return; }
   const onsetSay = ONSET_SAY[onset.toLowerCase()] || onset;
   const onsetKey = "onset_" + onset.toLowerCase();
   if (wfStatus) { wfStatus.textContent = "① " + onset; wfStatus.className = "status speaking"; }
@@ -1147,12 +1156,12 @@ function wfWordHTML(family, word, cn) {
   const onset = wfOnset(word, family);
   let formula;
   if (onset) {
-    formula = '<span class="wf-part" onclick="event.stopPropagation();wfSayPart(\'' + onset + '\')">' + onset + '</span>' +
+    formula = '<span class="wf-part" onclick="wfSayPart(event, \'' + onset + '\')">' + onset + '</span>' +
       '<span class="wf-op">+</span>' +
-      '<span class="wf-part" onclick="event.stopPropagation();wfSayPart(\'' + family + '\')">' + family + '</span>' +
+      '<span class="wf-part" onclick="wfSayPart(event, \'' + family + '\')">' + family + '</span>' +
       '<span class="wf-op">=</span>' +
-      '<span class="wf-full" onclick="event.stopPropagation();wfSpeakWord(\'' + word + '\')">' + word + '</span>';
-  } else formula = '<span class="wf-full" onclick="event.stopPropagation();wfSpeakWord(\'' + word + '\')">' + word + '</span>';
+      '<span class="wf-full" onclick="wfSpeakWord(event, \'' + word + '\')">' + word + '</span>';
+  } else formula = '<span class="wf-full" onclick="wfSpeakWord(event, \'' + word + '\')">' + word + '</span>';
   return '<div class="wf-word" onclick="wfPlayWhole(\'' + family + '\',\'' + word + '\')">' +
     '<div class="wf-formula">' + formula + '</div><div class="wf-cn">' + cn + '</div></div>';
 }
@@ -1166,7 +1175,7 @@ function renderWordFamily() {
     if (!words.length) return;
     totalFams++; totalWords += words.length;
     html += '<div class="wf-card"><div class="wf-card-head">' +
-      '<span class="wf-family" onclick="wfSpeakFamily(\'' + f.r + '\')">-' + f.r + '</span>' +
+      '<span class="wf-family" onclick="wfSpeakFamily(event, \'' + f.r + '\')">-' + f.r + '</span>' +
       '<span class="wf-count">' + words.length + ' 词</span></div>' +
       '<div class="wf-words">' + words.map(([w, cn]) => wfWordHTML(f.r, w, cn)).join("") + '</div></div>';
   });
@@ -1233,7 +1242,7 @@ function renderPhonics() {
       (item.tip ? '<div class="phonics-tip">👉 ' + item.tip + '</div>' : '') +
       (item.wrong ? '<div class="phonics-wrong">⚠️ ' + item.wrong + '</div>' : '') +
       '<div class="phonics-words">' + item.words.map((w, j) =>
-        '<span class="phonics-word" onclick="event.stopPropagation();speakPhonicsWord(' + i + ',' + j + ')">' + w.w + '<span class="ipa">' + w.ipa + '</span></span>'
+        '<span class="phonics-word" onclick="speakPhonicsWord(event, ' + i + ',' + j + ')">' + w.w + '<span class="ipa">' + w.ipa + '</span></span>'
       ).join("") + '</div></div>'
   ).join("");
 }
@@ -1248,7 +1257,8 @@ function speakPhonicsGroup(i) {
     phonicsStatus.className = "status";
   });
 }
-function speakPhonicsWord(i, j) {
+function speakPhonicsWord(ev, i, j) {
+  stopProp(ev);
   const item = PHONICS_DATA[currentPhonicsCat][i];
   if (!item) return;
   const w = item.words[j];
@@ -1298,17 +1308,6 @@ function updateFilteredPatterns() {
     return;
   }
   renderPattern();
-}
-
-// 生成 KTV 版英文（带点击容器）
-function buildSentenceHTML(skeleton, chunkText, punctuation) {
-  const skel = skeleton.split(/(\s+)/).filter(t => t !== "").map(t =>
-    /^\s+$/.test(t) ? " " : '<span class="kw pattern-kw">' + escapeHTML(t) + '</span>'
-  ).join("");
-  const chk = chunkText.split(/(\s+)/).filter(t => t !== "").map(t =>
-    /^\s+$/.test(t) ? " " : '<span class="kw chunk-kw">' + escapeHTML(t) + '</span>'
-  ).join("");
-  return '<span class="part-pattern" onclick="event.stopPropagation();speakPattern()">' + skel + '</span> <span class="part-chunk" onclick="event.stopPropagation();speakChunk()">' + chk + '</span>' + escapeHTML(punctuation || "");
 }
 
 function renderPattern() {
@@ -1396,7 +1395,6 @@ function playThreeStage() {
   const patId = "pat_" + String(patIndex + 1).padStart(2, "0");
   const chunkId = "chk_" + String(patIndex + 1).padStart(2, "0") + "_" + String(currentChunkIndex + 1).padStart(2, "0");
 
-  // 启动 KTV，按整句时长点亮
   startKTV(estimateSentenceDuration(fullEn));
 
   statusEl.textContent = "① 母句：" + skeleton;
@@ -1726,9 +1724,9 @@ function init() {
     document.addEventListener("touchstart", warm, { passive: true });
   }
 
-  console.log("✅ KTV 版已启动");
+  console.log("✅ KTV 修复版已启动");
   console.log("📐 母句:", PATTERNS.length, "/", totalGroups, "组");
-  console.log("🎤 KTV 歌词模式：默认开启");
+  console.log("🎤 KTV 默认开启 · 语音事件已加保护");
 }
 
 $("contractionModal").addEventListener("click", function(e) {
