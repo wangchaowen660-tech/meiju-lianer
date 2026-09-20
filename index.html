@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>词块学习 · 完整版</title>
+<title>词块学习 · KTV 版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#f0f4f8 0%,#e2e8f0 100%);color:#1e293b;min-height:100vh;-webkit-text-size-adjust:100%;}
@@ -36,12 +36,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .main-card-header .meta .type-tag.q{background:#dbeafe;color:#1e40af;}
 .fav-btn-sentence{width:34px;height:34px;border:0;border-radius:50%;background:#f8fafc;font-size:17px;cursor:pointer;color:#cbd5e1;}
 .fav-btn-sentence.active{color:#f59e0b;background:#fef3c7;}
-.sentence-line{font-size:24px;font-weight:800;line-height:1.5;word-break:break-word;}
-.sentence-line .part-pattern{color:#0f172a;cursor:pointer;padding:2px;border-radius:6px;}
-.sentence-line .part-chunk{color:#e94560;cursor:pointer;padding:2px;border-radius:6px;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);}
-.sentence-cn{font-size:15px;color:#64748b;line-height:1.5;margin-top:12px;}
+.ktv-toggle{position:absolute;top:22px;right:64px;width:34px;height:34px;border:0;border-radius:50%;background:#f8fafc;font-size:15px;cursor:pointer;color:#cbd5e1;transition:.2s;}
+.ktv-toggle.active{color:#8b5cf6;background:#f3e8ff;}
+.ktv-toggle:active{transform:scale(0.92);}
+.sentence-line{font-size:24px;font-weight:800;line-height:1.5;word-break:break-word;min-height:60px;}
+.sentence-line .part-pattern{color:#0f172a;cursor:pointer;padding:2px;border-radius:6px;display:inline;}
+.sentence-line .part-chunk{color:#e94560;cursor:pointer;padding:2px;border-radius:6px;display:inline;}
+.sentence-cn{font-size:15px;color:#64748b;line-height:1.6;margin-top:12px;min-height:24px;}
 .sentence-ph{margin-top:10px;padding:8px 12px;background:#fffbeb;border-radius:10px;font-size:12px;color:#92400e;font-style:italic;border-left:3px solid #f59e0b;line-height:1.5;}
 .sentence-ph::before{content:"🎵 ";font-style:normal;font-weight:700;}
+/* 🎤 KTV 歌词 */
+.sentence-line .kw{display:inline-block;color:#cbd5e1;transition:color .22s ease,transform .22s ease,text-shadow .22s ease;will-change:color,transform;padding:0 1px;}
+.sentence-line .kw.pattern-kw.done{color:#0f172a;}
+.sentence-line .kw.chunk-kw.done{color:#e94560;background:linear-gradient(180deg,transparent 60%,rgba(233,69,96,0.18) 60%);border-radius:4px;}
+.sentence-line .kw.current{color:#ec4899 !important;background:linear-gradient(180deg,transparent 55%,rgba(236,72,153,0.35) 55%);transform:scale(1.12);text-shadow:0 0 14px rgba(236,72,153,0.55);z-index:1;position:relative;border-radius:6px;}
+.sentence-cn .kw-cn{display:inline-block;color:#cbd5e1;transition:color .2s,transform .2s;padding:0 1px;}
+.sentence-cn .kw-cn.done{color:#64748b;}
+.sentence-cn .kw-cn.current{color:#8b5cf6;transform:scale(1.15);text-shadow:0 0 10px rgba(139,92,246,0.5);}
+/* 缩读卡片 */
 .contraction-card{margin-top:10px;padding:10px 12px;background:#eef2ff;border-radius:12px;border-left:3px solid #6366f1;display:none;}
 .contraction-card.show{display:block;}
 .contraction-label{font-size:11px;font-weight:700;color:#4f46e5;margin-bottom:6px;}
@@ -154,12 +166,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .method-card h4{font-size:13px;font-weight:800;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
 .method-card h4 .num{background:#6366f1;color:#fff;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;}
 .method-card p{font-size:13px;color:#475569;line-height:1.65;margin-bottom:6px;}
-.method-card ul{list-style:none;}
-.method-card li{font-size:13px;color:#475569;line-height:1.7;padding-left:18px;position:relative;}
-.method-card li::before{content:"·";position:absolute;left:6px;color:#6366f1;font-weight:800;font-size:18px;}
 .method-card .example{background:#fff;border-radius:8px;padding:8px 12px;margin-top:6px;font-size:12px;color:#64748b;border:1px dashed #e2e8f0;}
 .method-card .warning{background:#fff7ed;border-left:3px solid #f97316;padding:8px 12px;border-radius:8px;margin-top:6px;font-size:12px;color:#c2410c;}
-.method-card .go-practice{background:#e94560;color:#fff;border:0;padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;}
 /* Shop */
 .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
 .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.05);cursor:pointer;}
@@ -259,6 +267,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
           <span id="patternScene">日常</span>
           <span class="type-tag s" id="patternType">陈述句</span>
         </div>
+        <button class="ktv-toggle active" id="ktvToggle" onclick="toggleKTV()" title="KTV 歌词模式">🎤</button>
         <button class="fav-btn-sentence" onclick="toggleFavSentence()">☆</button>
       </div>
 
@@ -279,6 +288,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <div class="hint-row">
         <span><span class="dot-black"></span>点黑色读母句</span>
         <span><span class="dot-red"></span>点红色读词块</span>
+        <span>🎤 开关 KTV</span>
       </div>
 
       <div class="sentence-actions">
@@ -305,51 +315,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="status">点黑色读母句 · 点红色读词块</div>
   </div>
 
-  <!-- 反应训练模块 -->
+  <!-- 反应训练 -->
   <div id="reactionModule" style="display:none;">
     <div class="reaction-intro">
       <h2>🎯 反应训练 · 声音 → 意思 → 场景 → 英语</h2>
       <p>像学母语一样：先听声音，再懂意思，最后看场景开口。四步走一遍，句子真正变你的。</p>
     </div>
-
     <div class="reaction-meta">
       <span id="reactionProgress">1 / 45</span>
       <span class="mode-tag" id="reactionMode">顺序模式</span>
       <button class="icon-btn" onclick="toggleReactionMode()" style="padding:5px 10px;font-size:11px;margin-left:auto;">🔀 切换</button>
     </div>
-
     <div class="step-bar" id="stepBar">
       <div class="step-item active" data-step="1" onclick="reactionGoStep(1)"><span class="num">①</span>声音</div>
       <div class="step-item" data-step="2" onclick="reactionGoStep(2)"><span class="num">②</span>意思</div>
       <div class="step-item" data-step="3" onclick="reactionGoStep(3)"><span class="num">③</span>场景</div>
       <div class="step-item" data-step="4" onclick="reactionGoStep(4)"><span class="num">④</span>反应</div>
     </div>
-
     <div class="reaction-card" id="reactionCard"></div>
-
     <div class="reaction-actions" id="reactionActions"></div>
-
     <div class="status" id="reactionStatus">听声音 → 想意思 → 想场景 → 说英语</div>
   </div>
 
-  <!-- 词族模块 -->
+  <!-- 词族 -->
   <div id="wordfamilyModule" style="display:none;">
-    <div class="wf-intro">
-      <h2>🧩 词族拼读 · 500+ 词</h2>
-      <p>辅音 + 韵脚 = 单词。点任意部分听标准发音。</p>
-    </div>
+    <div class="wf-intro"><h2>🧩 词族拼读 · 500+ 词</h2><p>辅音 + 韵脚 = 单词。点任意部分听标准发音。</p></div>
     <input class="wf-search" id="wfSearch" placeholder="🔍 搜索单词 / 中文 / 词族..." oninput="wfFilter=this.value;renderWordFamily()">
     <div class="wf-stats" id="wfStats"></div>
     <div id="wfList"></div>
     <div class="status" id="wfStatus">点任意部分听发音</div>
   </div>
 
-  <!-- 音标模块 -->
+  <!-- 音标 -->
   <div id="ipaModule" style="display:none;">
-    <div class="ipa-intro">
-      <h2>🎯 英语国际音标一览（48 个）</h2>
-      <p>20 个元音 + 28 个辅音。点任意音标即可听标准发音与例词。</p>
-    </div>
+    <div class="ipa-intro"><h2>🎯 英语国际音标一览（48 个）</h2><p>20 个元音 + 28 个辅音。点任意音标即可听标准发音与例词。</p></div>
     <div class="ipa-section">
       <div class="ipa-section-title"><div class="left">🔵 元音（20 个）</div><span class="count">Vowels</span></div>
       <div class="ipa-subgroup"><div class="ipa-subgroup-title">短元音（7 个）</div><div class="ipa-grid" id="ipaVowelShort"></div></div>
@@ -367,7 +366,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="ipaStatus">点音标听发音</div>
   </div>
 
-  <!-- 发音模块 -->
+  <!-- 发音 -->
   <div id="phonicsModule" style="display:none;">
     <div class="phonics-tabs">
       <button class="phonics-tab active" data-cat="vowel" onclick="setPhonicsCat('vowel', this)">元音</button>
@@ -380,22 +379,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="status" id="phonicsStatus">点卡片听发音</div>
   </div>
 
-  <!-- 方法模块 -->
+  <!-- 方法 -->
   <div id="methodModule" style="display:none;">
-    <div class="method-intro">
-      <h2>🎯 英语学习方法指南</h2>
-      <p>不是学不会，而是方法不对。下面带你走对路。</p>
-    </div>
+    <div class="method-intro"><h2>🎯 英语学习方法指南</h2><p>不是学不会，而是方法不对。下面带你走对路。</p></div>
     <div class="method-section open">
-      <div class="method-header" onclick="toggleMethod(this)">
-        <div class="title"><span class="icon">🗺️</span>学习路径 <span class="badge">必看</span></div>
-        <div class="arrow">▼</div>
-      </div>
+      <div class="method-header" onclick="toggleMethod(this)"><div class="title"><span class="icon">🗺️</span>学习路径 <span class="badge">必看</span></div><div class="arrow">▼</div></div>
       <div class="method-body"><div class="method-content">
-        <div class="method-card"><h4><span class="num">1</span>阶段一：建立语音基础（1-2 周）</h4><p>先把发音学会。重点搞定 48 个音标，尤其 /θ/ /ð/ /r/ /v/ /w/。</p></div>
-        <div class="method-card"><h4><span class="num">2</span>阶段二：学母句型 + 词块（1-2 个月）</h4><p>不要背单词，要背"母句 + 可替换词块"。一个母句能滚动出 10 句话。</p></div>
-        <div class="method-card"><h4><span class="num">3</span>阶段三：真实场景练习（2-3 个月）</h4><p>把学过的句子用出去。先从购物、餐厅这些高频场景开始。</p></div>
-        <div class="method-card"><h4><span class="num">4</span>阶段四：进阶口语（长期）</h4><p>学会缩读、连读、语调，听起来才地道。gonna / wanna / kinda 都要会。</p></div>
+        <div class="method-card"><h4><span class="num">1</span>阶段一：建立语音基础</h4><p>先把发音学会。重点搞定 48 个音标，尤其 /θ/ /ð/ /r/ /v/ /w/。</p></div>
+        <div class="method-card"><h4><span class="num">2</span>阶段二：学母句型 + 词块</h4><p>不要背单词，要背"母句 + 可替换词块"。一个母句能滚动出 10 句话。</p></div>
+        <div class="method-card"><h4><span class="num">3</span>阶段三：真实场景练习</h4><p>把学过的句子用出去。先从购物、餐厅这些高频场景开始。</p></div>
+        <div class="method-card"><h4><span class="num">4</span>阶段四：进阶口语</h4><p>学会缩读、连读、语调，听起来才地道。gonna / wanna / kinda 都要会。</p></div>
       </div></div>
     </div>
     <div class="method-section">
@@ -409,9 +402,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="method-section">
       <div class="method-header" onclick="toggleMethod(this)"><div class="title"><span class="icon">🎧</span>听力训练</div><div class="arrow">▼</div></div>
       <div class="method-body"><div class="method-content">
-        <div class="method-card"><h4><span class="num">1</span>精听法（每天 15 分钟）</h4><p>一句 10 秒的句子听 5 遍：第 1 遍大意 → 第 2-3 遍关键词 → 第 4-5 遍听写 → 最后对照原文。</p></div>
-        <div class="method-card"><h4><span class="num">2</span>泛听法（随时随地）</h4><p>走路、通勤时听英语播客。不需要 100% 听懂，重点熟悉节奏和语调。</p></div>
-        <div class="method-card"><h4><span class="num">3</span>影子跟读法（最有效）</h4><p>听一句，紧跟一句，模仿语音、语调、速度。每天 10 分钟，坚持 1 个月听力暴涨。</p></div>
+        <div class="method-card"><h4><span class="num">1</span>精听法</h4><p>一句 10 秒的句子听 5 遍：第 1 遍大意 → 第 2-3 遍关键词 → 第 4-5 遍听写 → 最后对照原文。</p></div>
+        <div class="method-card"><h4><span class="num">2</span>泛听法</h4><p>走路、通勤时听英语播客。不需要 100% 听懂，重点熟悉节奏和语调。</p></div>
+        <div class="method-card"><h4><span class="num">3</span>影子跟读法</h4><p>听一句，紧跟一句，模仿语音、语调、速度。每天 10 分钟，坚持 1 个月听力暴涨。</p></div>
       </div></div>
     </div>
     <div class="method-section">
@@ -466,45 +459,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 // 🎙️ 语音引擎
 // ============================================================
 const AUDIO = {
-  phoneme:   "audio/phonemes/",
-  vowel:     "audio/phonemes/vowels/",
-  consonant: "audio/phonemes/consonants/",
-  word:      "audio/words/",
-  sentence:  "audio/sentences/"
+  phoneme:"audio/phonemes/", vowel:"audio/phonemes/vowels/", consonant:"audio/phonemes/consonants/",
+  word:"audio/words/", sentence:"audio/sentences/"
 };
 
 const IPA_FILE_MAP = {
-  '/iː/':'ee', '/ɪ/':'i', '/e/':'e', '/æ/':'a', '/ʌ/':'u', '/ɒ/':'o', '/ʊ/':'oo', '/ə/':'schwa',
-  '/ɑː/':'ah', '/ɔː/':'aw', '/uː/':'oo_long', '/ɜː/':'er',
-  '/eɪ/':'ay', '/aɪ/':'ai', '/ɔɪ/':'oy', '/əʊ/':'oh', '/aʊ/':'ow',
-  '/ɪə/':'ear', '/eə/':'air', '/ʊə/':'oor',
-  '/p/':'p', '/b/':'b', '/t/':'t', '/d/':'d', '/k/':'k', '/ɡ/':'g', '/g/':'g',
-  '/f/':'f', '/v/':'v', '/θ/':'th', '/ð/':'dh', '/s/':'s', '/z/':'z',
-  '/ʃ/':'sh', '/ʒ/':'zh', '/h/':'h',
-  '/tʃ/':'ch', '/dʒ/':'j', '/tr/':'tr', '/dr/':'dr', '/ts/':'ts', '/dz/':'dz',
-  '/m/':'m', '/n/':'n', '/ŋ/':'ng',
-  '/l/':'l', '/r/':'r', '/j/':'y', '/w/':'w'
+  '/iː/':'ee','/ɪ/':'i','/e/':'e','/æ/':'a','/ʌ/':'u','/ɒ/':'o','/ʊ/':'oo','/ə/':'schwa',
+  '/ɑː/':'ah','/ɔː/':'aw','/uː/':'oo_long','/ɜː/':'er',
+  '/eɪ/':'ay','/aɪ/':'ai','/ɔɪ/':'oy','/əʊ/':'oh','/aʊ/':'ow',
+  '/ɪə/':'ear','/eə/':'air','/ʊə/':'oor',
+  '/p/':'p','/b/':'b','/t/':'t','/d/':'d','/k/':'k','/ɡ/':'g','/g/':'g',
+  '/f/':'f','/v/':'v','/θ/':'th','/ð/':'dh','/s/':'s','/z/':'z',
+  '/ʃ/':'sh','/ʒ/':'zh','/h/':'h',
+  '/tʃ/':'ch','/dʒ/':'j','/tr/':'tr','/dr/':'dr','/ts/':'ts','/dz/':'dz',
+  '/m/':'m','/n/':'n','/ŋ/':'ng',
+  '/l/':'l','/r/':'r','/j/':'y','/w/':'w'
 };
 
-function ipaToId(sym) {
-  return IPA_FILE_MAP[sym] || String(sym).replace(/\//g, '').replace(/[^a-zA-Z0-9_]/g, '_');
-}
-
-function getAudioSrc(category, id) {
-  const base = AUDIO[category] || AUDIO.word;
-  const safeId = String(id).replace(/\//g, '').replace(/\s+/g, '_');
-  return base + safeId + ".mp3";
-}
+function ipaToId(sym) { return IPA_FILE_MAP[sym] || String(sym).replace(/\//g,'').replace(/[^a-zA-Z0-9_]/g,'_'); }
+function getAudioSrc(cat, id) { const base = AUDIO[cat] || AUDIO.word; return base + String(id).replace(/\//g,'').replace(/\s+/g,'_') + ".mp3"; }
+function escapeHTML(s) { return String(s).replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
 
 let bestVoice = null;
 let speechReady = false;
 const audioCache = {};
 
 const VOICE_PRIORITY = [
-  "Ava (Enhanced)", "Samantha (Enhanced)", "Tom (Enhanced)", "Nicky (Enhanced)", "Aaron (Enhanced)",
-  "Ava (Premium)", "Samantha (Premium)", "Tom (Premium)",
-  "Microsoft Aria Online (Natural)", "Microsoft Guy Online (Natural)", "Microsoft Jenny Online (Natural)",
-  "Google US English", "Samantha", "Karen", "Daniel"
+  "Ava (Enhanced)","Samantha (Enhanced)","Tom (Enhanced)","Nicky (Enhanced)","Aaron (Enhanced)",
+  "Ava (Premium)","Samantha (Premium)","Tom (Premium)",
+  "Microsoft Aria Online (Natural)","Microsoft Guy Online (Natural)","Microsoft Jenny Online (Natural)",
+  "Google US English","Samantha","Karen","Daniel"
 ];
 
 function pickBestVoice() {
@@ -513,12 +497,7 @@ function pickBestVoice() {
   if (!voices.length) return;
   for (const name of VOICE_PRIORITY) {
     const v = voices.find(v => v.name.includes(name));
-    if (v) {
-      bestVoice = v;
-      showVoiceBadge("🎙️ " + v.name);
-      console.log("✅ 优选语音:", v.name, "|", v.lang);
-      return;
-    }
+    if (v) { bestVoice = v; showVoiceBadge("🎙️ " + v.name); console.log("✅ 优选语音:", v.name); return; }
   }
   bestVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en")) || null;
   showVoiceBadge("🎙️ " + (bestVoice ? bestVoice.name : "无可用语音"));
@@ -527,8 +506,7 @@ function pickBestVoice() {
 function showVoiceBadge(text) {
   const b = document.getElementById("voiceBadge");
   if (!b) return;
-  b.textContent = text;
-  b.classList.add("show");
+  b.textContent = text; b.classList.add("show");
   setTimeout(() => b.classList.remove("show"), 2200);
 }
 
@@ -548,52 +526,36 @@ function speakTTS(text, lang, cb) {
   if (!window.speechSynthesis) { if (cb) cb(); return; }
   warmUp();
   try { window.speechSynthesis.cancel(); } catch(e) {}
-  const clean = String(text).replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+  const clean = String(text).replace(/[<>]/g,"").replace(/\s+/g," ").trim();
   if (!clean) { if (cb) cb(); return; }
-
   setTimeout(() => {
     const u = new SpeechSynthesisUtterance(clean);
     u.lang = lang || (/[\u4e00-\u9fa5]/.test(clean) ? "zh-CN" : "en-US");
     if (bestVoice && u.lang.toLowerCase().startsWith("en")) u.voice = bestVoice;
     u.rate = 0.85; u.pitch = 1.0; u.volume = 1.0;
-
     let ended = false;
     const finish = () => { if (ended) return; ended = true; if (cb) cb(); };
-    u.onend = finish;
-    u.onerror = finish;
+    u.onend = finish; u.onerror = finish;
     try { window.speechSynthesis.speak(u); } catch(e) { finish(); }
     setTimeout(finish, Math.max(3000, clean.length * 280));
   }, 60);
 }
 
 function speakSmart(id, fallbackText, cb, category, lang) {
-  if (lang === "zh-CN" || /[\u4e00-\u9fa5]/.test(fallbackText)) {
-    return speakTTS(fallbackText, "zh-CN", cb);
-  }
+  if (lang === "zh-CN" || /[\u4e00-\u9fa5]/.test(fallbackText)) return speakTTS(fallbackText, "zh-CN", cb);
   const cat = category || "word";
   const src = getAudioSrc(cat, id);
   const cacheKey = cat + ":" + id;
-
   if (audioCache[cacheKey] === null) return speakTTS(fallbackText, lang, cb);
-
   let audio = audioCache[cacheKey];
   if (!audio) {
-    audio = new Audio();
-    audio.preload = "auto";
-    audioCache[cacheKey] = audio;
-    audio.onerror = () => {
-      audioCache[cacheKey] = null;
-      speakTTS(fallbackText, lang, cb);
-    };
+    audio = new Audio(); audio.preload = "auto"; audioCache[cacheKey] = audio;
+    audio.onerror = () => { audioCache[cacheKey] = null; speakTTS(fallbackText, lang, cb); };
   }
-  audio.src = src;
-  audio.currentTime = 0;
+  audio.src = src; audio.currentTime = 0;
   const onEnded = () => { audio.removeEventListener("ended", onEnded); if (cb) cb(); };
   audio.addEventListener("ended", onEnded);
-  audio.play().catch(() => {
-    audioCache[cacheKey] = null;
-    speakTTS(fallbackText, lang, cb);
-  });
+  audio.play().catch(() => { audioCache[cacheKey] = null; speakTTS(fallbackText, lang, cb); });
 }
 
 function speakPhonemePlusWord(phonemeId, phonemeCat, word, cb) {
@@ -607,57 +569,131 @@ function speakPhonemePlusWord(phonemeId, phonemeCat, word, cb) {
 }
 
 // ============================================================
+// 🎤 KTV 引擎
+// ============================================================
+let ktvEnabled = true;
+let ktvRAF = null;
+let ktvTimeline = [];
+let ktvCnTimeline = [];
+let ktvStartTime = 0;
+
+function toggleKTV() {
+  ktvEnabled = !ktvEnabled;
+  const btn = document.getElementById("ktvToggle");
+  if (btn) btn.classList.toggle("active", ktvEnabled);
+  if (!ktvEnabled) clearKTV();
+}
+
+function clearKTV() {
+  if (ktvRAF) { cancelAnimationFrame(ktvRAF); ktvRAF = null; }
+  document.querySelectorAll("#sentenceLine .kw").forEach(el => el.classList.remove("current", "done"));
+  document.querySelectorAll("#sentenceCn .kw-cn").forEach(el => el.classList.remove("current", "done"));
+}
+
+function buildKaraokeEN(skeleton, chunkText, punctuation) {
+  const skelTokens = skeleton.split(/(\s+)/).filter(t => t !== "");
+  const chunkTokens = chunkText.split(/(\s+)/).filter(t => t !== "");
+  let html = "";
+  skelTokens.forEach(t => {
+    if (/^\s+$/.test(t)) html += " ";
+    else html += '<span class="kw pattern-kw">' + escapeHTML(t) + '</span>';
+  });
+  html += " ";
+  chunkTokens.forEach(t => {
+    if (/^\s+$/.test(t)) html += " ";
+    else html += '<span class="kw chunk-kw">' + escapeHTML(t) + '</span>';
+  });
+  html += escapeHTML(punctuation || "");
+  return html;
+}
+
+function buildKaraokeCN(text) {
+  const chars = Array.from(text);
+  let html = "";
+  chars.forEach(ch => {
+    if (/[\u4e00-\u9fa5]/.test(ch)) html += '<span class="kw-cn">' + ch + '</span>';
+    else html += escapeHTML(ch);
+  });
+  return html;
+}
+
+function estimateCharWeight(text) {
+  let w = 0;
+  for (let ch of text) {
+    if (/[.,?!;:—]/.test(ch)) w += 4;
+    else if (/\s/.test(ch)) w += 0.5;
+    else w += 1;
+  }
+  return Math.max(w, 1);
+}
+
+function buildTimeline(elements, totalDuration) {
+  const weights = elements.map(el => estimateCharWeight(el.textContent));
+  const totalWeight = weights.reduce((a, b) => a + b, 0) || 1;
+  let elapsed = 0;
+  return weights.map((w, i) => {
+    const dur = (w / totalWeight) * totalDuration;
+    const start = elapsed;
+    elapsed += dur;
+    return { start, end: elapsed, el: elements[i] };
+  });
+}
+
+function ktvTick() {
+  const now = performance.now() - ktvStartTime;
+  let allDone = true;
+  ktvTimeline.forEach(t => {
+    if (now >= t.end) { t.el.classList.remove("current"); t.el.classList.add("done"); }
+    else if (now >= t.start) { t.el.classList.add("current"); t.el.classList.remove("done"); allDone = false; }
+    else { t.el.classList.remove("current", "done"); allDone = false; }
+  });
+  ktvCnTimeline.forEach(t => {
+    if (now >= t.end) { t.el.classList.remove("current"); t.el.classList.add("done"); }
+    else if (now >= t.start) { t.el.classList.add("current"); t.el.classList.remove("done"); }
+    else { t.el.classList.remove("current", "done"); }
+  });
+  if (!allDone) ktvRAF = requestAnimationFrame(ktvTick);
+  else ktvRAF = null;
+}
+
+function startKTV(totalDuration) {
+  if (!ktvEnabled) return;
+  const words = Array.from(document.querySelectorAll("#sentenceLine .kw"));
+  const cnChars = Array.from(document.querySelectorAll("#sentenceCn .kw-cn"));
+  if (!words.length) return;
+  ktvTimeline = buildTimeline(words, totalDuration);
+  ktvCnTimeline = cnChars.length ? buildTimeline(cnChars, totalDuration) : [];
+  ktvStartTime = performance.now();
+  if (ktvRAF) cancelAnimationFrame(ktvRAF);
+  ktvRAF = requestAnimationFrame(ktvTick);
+}
+
+function estimateSentenceDuration(fullText) {
+  return Math.max(1200, estimateCharWeight(fullText) * 95);
+}
+
+// ============================================================
 // 数据
 // ============================================================
 const IPA_48 = {
-  vowelShort:[
-    {sym:"/ɪ/",ex:"sit",cn:"衣/诶之间"},{sym:"/e/",ex:"bed",cn:"诶（短）"},{sym:"/æ/",ex:"cat",cn:"诶/啊之间"},
-    {sym:"/ʌ/",ex:"cup",cn:"啊/呃之间"},{sym:"/ɒ/",ex:"hot",cn:"哦（短）"},{sym:"/ʊ/",ex:"book",cn:"乌（短）"},
-    {sym:"/ə/",ex:"about",cn:"轻声呃"}
-  ],
-  vowelLong:[
-    {sym:"/iː/",ex:"see",cn:"衣（长）"},{sym:"/ɑː/",ex:"car",cn:"啊（长）"},{sym:"/ɔː/",ex:"door",cn:"哦（长）"},
-    {sym:"/uː/",ex:"food",cn:"乌（长）"},{sym:"/ɜː/",ex:"bird",cn:"呃（长）"}
-  ],
-  diphthong:[
-    {sym:"/eɪ/",ex:"day",cn:"诶+衣"},{sym:"/aɪ/",ex:"my",cn:"啊+衣"},{sym:"/ɔɪ/",ex:"boy",cn:"哦+衣"},
-    {sym:"/əʊ/",ex:"go",cn:"呃+乌"},{sym:"/aʊ/",ex:"now",cn:"啊+乌"},{sym:"/ɪə/",ex:"here",cn:"衣+呃"},
-    {sym:"/eə/",ex:"hair",cn:"诶+呃"},{sym:"/ʊə/",ex:"tour",cn:"乌+呃"}
-  ],
-  plosive:[
-    {sym:"/p/",ex:"pen",cn:"泼（清）"},{sym:"/b/",ex:"book",cn:"波（浊）"},{sym:"/t/",ex:"tea",cn:"特（清）"},
-    {sym:"/d/",ex:"dog",cn:"得（浊）"},{sym:"/k/",ex:"cat",cn:"克（清）"},{sym:"/ɡ/",ex:"go",cn:"格（浊）"}
-  ],
-  fricative:[
-    {sym:"/f/",ex:"fish",cn:"夫（清）"},{sym:"/v/",ex:"very",cn:"夫（浊）"},{sym:"/θ/",ex:"think",cn:"咬舌清"},
-    {sym:"/ð/",ex:"this",cn:"咬舌浊"},{sym:"/s/",ex:"see",cn:"斯（清）"},{sym:"/z/",ex:"zoo",cn:"兹（浊）"},
-    {sym:"/ʃ/",ex:"ship",cn:"嘘（清）"},{sym:"/ʒ/",ex:"measure",cn:"日（浊）"},{sym:"/h/",ex:"hat",cn:"喝（清）"}
-  ],
-  affricate:[
-    {sym:"/tʃ/",ex:"chair",cn:"吃（清）"},{sym:"/dʒ/",ex:"job",cn:"知（浊）"},{sym:"/tr/",ex:"tree",cn:"戳（清）"},
-    {sym:"/dr/",ex:"dream",cn:"卓（浊）"},{sym:"/ts/",ex:"cats",cn:"此（清）"},{sym:"/dz/",ex:"beds",cn:"兹（浊）"}
-  ],
+  vowelShort:[{sym:"/ɪ/",ex:"sit",cn:"衣/诶之间"},{sym:"/e/",ex:"bed",cn:"诶（短）"},{sym:"/æ/",ex:"cat",cn:"诶/啊之间"},{sym:"/ʌ/",ex:"cup",cn:"啊/呃之间"},{sym:"/ɒ/",ex:"hot",cn:"哦（短）"},{sym:"/ʊ/",ex:"book",cn:"乌（短）"},{sym:"/ə/",ex:"about",cn:"轻声呃"}],
+  vowelLong:[{sym:"/iː/",ex:"see",cn:"衣（长）"},{sym:"/ɑː/",ex:"car",cn:"啊（长）"},{sym:"/ɔː/",ex:"door",cn:"哦（长）"},{sym:"/uː/",ex:"food",cn:"乌（长）"},{sym:"/ɜː/",ex:"bird",cn:"呃（长）"}],
+  diphthong:[{sym:"/eɪ/",ex:"day",cn:"诶+衣"},{sym:"/aɪ/",ex:"my",cn:"啊+衣"},{sym:"/ɔɪ/",ex:"boy",cn:"哦+衣"},{sym:"/əʊ/",ex:"go",cn:"呃+乌"},{sym:"/aʊ/",ex:"now",cn:"啊+乌"},{sym:"/ɪə/",ex:"here",cn:"衣+呃"},{sym:"/eə/",ex:"hair",cn:"诶+呃"},{sym:"/ʊə/",ex:"tour",cn:"乌+呃"}],
+  plosive:[{sym:"/p/",ex:"pen",cn:"泼（清）"},{sym:"/b/",ex:"book",cn:"波（浊）"},{sym:"/t/",ex:"tea",cn:"特（清）"},{sym:"/d/",ex:"dog",cn:"得（浊）"},{sym:"/k/",ex:"cat",cn:"克（清）"},{sym:"/ɡ/",ex:"go",cn:"格（浊）"}],
+  fricative:[{sym:"/f/",ex:"fish",cn:"夫（清）"},{sym:"/v/",ex:"very",cn:"夫（浊）"},{sym:"/θ/",ex:"think",cn:"咬舌清"},{sym:"/ð/",ex:"this",cn:"咬舌浊"},{sym:"/s/",ex:"see",cn:"斯（清）"},{sym:"/z/",ex:"zoo",cn:"兹（浊）"},{sym:"/ʃ/",ex:"ship",cn:"嘘（清）"},{sym:"/ʒ/",ex:"measure",cn:"日（浊）"},{sym:"/h/",ex:"hat",cn:"喝（清）"}],
+  affricate:[{sym:"/tʃ/",ex:"chair",cn:"吃（清）"},{sym:"/dʒ/",ex:"job",cn:"知（浊）"},{sym:"/tr/",ex:"tree",cn:"戳（清）"},{sym:"/dr/",ex:"dream",cn:"卓（浊）"},{sym:"/ts/",ex:"cats",cn:"此（清）"},{sym:"/dz/",ex:"beds",cn:"兹（浊）"}],
   nasal:[{sym:"/m/",ex:"man",cn:"母"},{sym:"/n/",ex:"no",cn:"呢"},{sym:"/ŋ/",ex:"sing",cn:"后鼻音"}],
-  approximant:[
-    {sym:"/l/",ex:"like",cn:"了"},{sym:"/r/",ex:"red",cn:"若（不卷）"},{sym:"/j/",ex:"yes",cn:"耶"},{sym:"/w/",ex:"we",cn:"乌（圆唇）"}
-  ]
+  approximant:[{sym:"/l/",ex:"like",cn:"了"},{sym:"/r/",ex:"red",cn:"若（不卷）"},{sym:"/j/",ex:"yes",cn:"耶"},{sym:"/w/",ex:"we",cn:"乌（圆唇）"}]
 };
 
 const PHONICS_DICT = {
-  "i":"aɪ","you":"juː","he":"hiː","she":"ʃiː","we":"wiː","they":"ðeɪ",
-  "my":"maɪ","your":"jɔːr","the":"ðə","a":"ə","is":"ɪz","are":"ɑːr",
-  "want":"wɒnt","need":"niːd","have":"hæv","do":"duː","does":"dʌz",
-  "go":"ɡəʊ","come":"kʌm","eat":"iːt","drink":"drɪŋk","sleep":"sliːp",
-  "work":"wɜːrk","rest":"rest","cook":"kʊk","buy":"baɪ","see":"siː",
-  "order":"OR-der","pay":"peɪ","book":"bʊk","check":"tʃek","get":"ɡet",
-  "how":"haʊ","where":"weər","when":"wen","why":"waɪ","what":"wɒt",
-  "which":"wɪtʃ","who":"huː","whom":"huːm","no":"nəʊ","idea":"aɪ-DE-a",
-  "hotel":"ho-TEL","airport":"AIR-port","station":"STA-tion",
-  "water":"WA-ter","coffee":"COF-fee","food":"fuːd","ticket":"TICK-et",
-  "money":"MON-ey","friend":"frend","family":"FAM-i-ly","doctor":"DOC-tor",
-  "this":"ðɪs","that":"ðæt","here":"hɪər","there":"ðeər","now":"naʊ",
-  "to":"tuː","for":"fɔːr","with":"wɪð","from":"frɒm","about":"a-BOUT",
-  "please":"pliːz","sorry":"SOR-ry","thank":"θæŋk"
+  "i":"aɪ","you":"juː","he":"hiː","she":"ʃiː","we":"wiː","they":"ðeɪ","my":"maɪ","your":"jɔːr","the":"ðə","a":"ə","is":"ɪz","are":"ɑːr",
+  "want":"wɒnt","need":"niːd","have":"hæv","do":"duː","does":"dʌz","go":"ɡəʊ","come":"kʌm","eat":"iːt","drink":"drɪŋk","sleep":"sliːp",
+  "work":"wɜːrk","rest":"rest","cook":"kʊk","buy":"baɪ","see":"siː","order":"OR-der","pay":"peɪ","book":"bʊk","check":"tʃek","get":"ɡet",
+  "how":"haʊ","where":"weər","when":"wen","why":"waɪ","what":"wɒt","which":"wɪtʃ","who":"huː","whom":"huːm","no":"nəʊ","idea":"aɪ-DE-a",
+  "hotel":"ho-TEL","airport":"AIR-port","station":"STA-tion","water":"WA-ter","coffee":"COF-fee","food":"fuːd","ticket":"TICK-et",
+  "money":"MON-ey","friend":"frend","family":"FAM-i-ly","doctor":"DOC-tor","this":"ðɪs","that":"ðæt","here":"hɪər","there":"ðeər","now":"naʊ",
+  "to":"tuː","for":"fɔːr","with":"wɪð","from":"frɒm","about":"a-BOUT","please":"pliːz","sorry":"SOR-ry","thank":"θæŋk"
 };
 
 function getPhonics(text) {
@@ -665,7 +701,7 @@ function getPhonics(text) {
   const lower = text.toLowerCase().trim();
   if (PHONICS_DICT[lower]) return PHONICS_DICT[lower];
   return lower.split(/\s+/).map(w => {
-    const clean = w.replace(/[.,?!]/g, "");
+    const clean = w.replace(/[.,?!]/g,"");
     const punct = w.slice(clean.length);
     return (PHONICS_DICT[clean] || clean) + punct;
   }).join(" ");
@@ -687,7 +723,7 @@ function applyContractions(text) {
   const sorted = [...CONTRACTIONS].sort((a, b) => b.full.length - a.full.length);
   sorted.forEach(c => {
     const escaped = c.full.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    result = result.replace(new RegExp("\\b" + escaped + "\\b", "g"), c.short);
+    result = result.replace(new RegExp("\\b" + escaped + "\\b","g"), c.short);
   });
   return result;
 }
@@ -1034,11 +1070,8 @@ let currentPhonicsCat = "vowel";
 let wfFilter = "";
 let currentTab = "learn";
 
-let reactionStep = 1;
-let reactionPatternIndex = 0;
-let reactionChunkIndex = 0;
-let reactionRandomMode = false;
-let reactionAnswered = false;
+let reactionStep = 1, reactionPatternIndex = 0, reactionChunkIndex = 0;
+let reactionRandomMode = false, reactionAnswered = false;
 
 const $ = id => document.getElementById(id);
 const sentenceLine = $("sentenceLine");
@@ -1061,7 +1094,7 @@ const wfStatus = $("wfStatus");
 function splitPattern(pattern) {
   const match = pattern.match(/^([\s\S]*?)\s*___\s*([.,?!]?)\s*$/);
   if (match) return { skeleton: match[1].trim(), punctuation: match[2] || "" };
-  return { skeleton: pattern.replace(/___/g, "").trim(), punctuation: "" };
+  return { skeleton: pattern.replace(/___/g,"").trim(), punctuation: "" };
 }
 
 // ============ 词族 ============
@@ -1119,9 +1152,7 @@ function wfWordHTML(family, word, cn) {
       '<span class="wf-part" onclick="event.stopPropagation();wfSayPart(\'' + family + '\')">' + family + '</span>' +
       '<span class="wf-op">=</span>' +
       '<span class="wf-full" onclick="event.stopPropagation();wfSpeakWord(\'' + word + '\')">' + word + '</span>';
-  } else {
-    formula = '<span class="wf-full" onclick="event.stopPropagation();wfSpeakWord(\'' + word + '\')">' + word + '</span>';
-  }
+  } else formula = '<span class="wf-full" onclick="event.stopPropagation();wfSpeakWord(\'' + word + '\')">' + word + '</span>';
   return '<div class="wf-word" onclick="wfPlayWhole(\'' + family + '\',\'' + word + '\')">' +
     '<div class="wf-formula">' + formula + '</div><div class="wf-cn">' + cn + '</div></div>';
 }
@@ -1159,7 +1190,7 @@ function renderIPA() {
   groups.forEach(g => {
     const el = $(g.id);
     if (!el) return;
-    el.innerHTML = g.data.map((item, i) =>
+    el.innerHTML = g.data.map(item =>
       '<div class="ipa-cell ' + g.cls + '" data-sym="' + item.sym + '" data-ex="' + item.ex + '" data-cat="' + g.cat + '" onclick="speakIPA(this)">' +
         '<div class="ipa-sym">' + item.sym + '</div><div class="ipa-ex">' + item.ex + '</div><div class="ipa-cn">' + item.cn + '</div></div>'
     ).join("");
@@ -1268,19 +1299,36 @@ function updateFilteredPatterns() {
   }
   renderPattern();
 }
+
+// 生成 KTV 版英文（带点击容器）
+function buildSentenceHTML(skeleton, chunkText, punctuation) {
+  const skel = skeleton.split(/(\s+)/).filter(t => t !== "").map(t =>
+    /^\s+$/.test(t) ? " " : '<span class="kw pattern-kw">' + escapeHTML(t) + '</span>'
+  ).join("");
+  const chk = chunkText.split(/(\s+)/).filter(t => t !== "").map(t =>
+    /^\s+$/.test(t) ? " " : '<span class="kw chunk-kw">' + escapeHTML(t) + '</span>'
+  ).join("");
+  return '<span class="part-pattern" onclick="event.stopPropagation();speakPattern()">' + skel + '</span> <span class="part-chunk" onclick="event.stopPropagation();speakChunk()">' + chk + '</span>' + escapeHTML(punctuation || "");
+}
+
 function renderPattern() {
   if (!filteredPatterns.length) return;
+  clearKTV();
   const p = filteredPatterns[currentPatternIndex];
   const c = p.chunks[currentChunkIndex];
   const { skeleton, punctuation } = splitPattern(p.en);
   const fullEn = skeleton + " " + c.en + punctuation;
+  const cnText = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
+
   patternScene.textContent = p.scene;
   patternType.textContent = p.type === "q" ? "疑问句" : "陈述句";
   patternType.className = "type-tag " + p.type;
-  sentenceLine.innerHTML = '<span class="part-pattern" onclick="speakPattern()">' + skeleton + '</span> <span class="part-chunk" onclick="speakChunk()">' + c.en + '</span>' + punctuation;
-  sentenceCn.textContent = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
+
+  sentenceLine.innerHTML = buildSentenceHTML(skeleton, c.en, punctuation);
+  sentenceCn.innerHTML = buildKaraokeCN(cnText);
   sentencePh.textContent = getPhonics(fullEn);
   updateContractionCard(fullEn);
+
   chunkGrid.innerHTML = "";
   p.chunks.forEach((ch, i) => {
     const div = document.createElement("div");
@@ -1293,6 +1341,7 @@ function renderPattern() {
   patternNav.textContent = (currentPatternIndex + 1) + " / " + filteredPatterns.length;
   updateFavButton();
 }
+
 function updateContractionCard(fullEn) {
   const contracted = applyContractions(fullEn);
   const card = $("contractionCard");
@@ -1346,6 +1395,10 @@ function playThreeStage() {
   const patIndex = PATTERNS.indexOf(p);
   const patId = "pat_" + String(patIndex + 1).padStart(2, "0");
   const chunkId = "chk_" + String(patIndex + 1).padStart(2, "0") + "_" + String(currentChunkIndex + 1).padStart(2, "0");
+
+  // 启动 KTV，按整句时长点亮
+  startKTV(estimateSentenceDuration(fullEn));
+
   statusEl.textContent = "① 母句：" + skeleton;
   statusEl.className = "status speaking";
   speakSmart(patId, skeleton, () => {
@@ -1357,6 +1410,7 @@ function playThreeStage() {
           speakTTS(fullEn, "en-US", () => {
             statusEl.textContent = "✅ 三段完成";
             statusEl.className = "status";
+            setTimeout(clearKTV, 900);
           });
         }, 320);
       }, "sentence");
@@ -1371,9 +1425,11 @@ function playFull() {
   const fullEn = skeleton + " " + c.en + punctuation;
   statusEl.textContent = "🔊 整句：" + fullEn;
   statusEl.className = "status speaking";
+  startKTV(estimateSentenceDuration(fullEn));
   speakTTS(fullEn, "en-US", () => {
     statusEl.textContent = "✅ 播放完成";
     statusEl.className = "status";
+    setTimeout(clearKTV, 900);
   });
 }
 function playChinese() {
@@ -1391,14 +1447,18 @@ function playChinese() {
 function selectChunk(index) {
   const p = filteredPatterns[currentPatternIndex];
   if (!p) return;
+  clearKTV();
   currentChunkIndex = index;
   const c = p.chunks[index];
   const { skeleton, punctuation } = splitPattern(p.en);
   const fullEn = skeleton + " " + c.en + punctuation;
-  sentenceLine.innerHTML = '<span class="part-pattern" onclick="speakPattern()">' + skeleton + '</span> <span class="part-chunk" onclick="speakChunk()">' + c.en + '</span>' + punctuation;
-  sentenceCn.textContent = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
+  const cnText = p.cn.replace(/______/g, c.cn).replace(/___/g, c.cn);
+
+  sentenceLine.innerHTML = buildSentenceHTML(skeleton, c.en, punctuation);
+  sentenceCn.innerHTML = buildKaraokeCN(cnText);
   sentencePh.textContent = getPhonics(fullEn);
   updateContractionCard(fullEn);
+
   chunkGrid.querySelectorAll(".chunk").forEach((el, i) => el.classList.toggle("active", i === index));
   updateFavButton();
   playThreeStage();
@@ -1438,7 +1498,7 @@ function toggleFavSentence() {
   updateFavButton();
 }
 
-// ============ 缩读表 ============
+// ============ 缩读表 / 方法 / 商城 ============
 function openContractionList() {
   const body = $("contractionListBody");
   body.innerHTML = CONTRACTIONS.map((c, i) =>
@@ -1470,10 +1530,7 @@ function renderShop() {
 }
 
 // ============ 反应训练 ============
-function getUsageScene(p) {
-  return USAGE_SCENES[p.en] || SCENE_FALLBACKS[p.scene] || "日常对话中使用。";
-}
-
+function getUsageScene(p) { return USAGE_SCENES[p.en] || SCENE_FALLBACKS[p.scene] || "日常对话中使用。"; }
 function initReaction() {
   reactionStep = 1;
   reactionAnswered = false;
@@ -1486,21 +1543,16 @@ function toggleReactionMode() {
   if (tag) tag.textContent = reactionRandomMode ? "随机模式" : "顺序模式";
 }
 function reactionNextPattern() {
-  if (reactionRandomMode) {
-    reactionPatternIndex = Math.floor(Math.random() * PATTERNS.length);
-  } else {
-    reactionPatternIndex = (reactionPatternIndex + 1) % PATTERNS.length;
-  }
-  reactionStep = 1;
-  reactionAnswered = false;
+  if (reactionRandomMode) reactionPatternIndex = Math.floor(Math.random() * PATTERNS.length);
+  else reactionPatternIndex = (reactionPatternIndex + 1) % PATTERNS.length;
+  reactionStep = 1; reactionAnswered = false;
   reactionChunkIndex = Math.floor(Math.random() * PATTERNS[reactionPatternIndex].chunks.length);
   renderReaction();
 }
 function reactionPrevPattern() {
   if (reactionRandomMode) return;
   reactionPatternIndex = (reactionPatternIndex - 1 + PATTERNS.length) % PATTERNS.length;
-  reactionStep = 1;
-  reactionAnswered = false;
+  reactionStep = 1; reactionAnswered = false;
   reactionChunkIndex = Math.floor(Math.random() * PATTERNS[reactionPatternIndex].chunks.length);
   renderReaction();
 }
@@ -1523,8 +1575,7 @@ function getReactionFullCn() {
 function playReactionAudio() {
   const p = PATTERNS[reactionPatternIndex];
   const c = p.chunks[reactionChunkIndex];
-  const { skeleton, punctuation } = splitPattern(p.en);
-  const fullEn = skeleton + " " + c.en + punctuation;
+  const { skeleton } = splitPattern(p.en);
   const playBtn = document.getElementById("reactionPlayBtn");
   if (playBtn) playBtn.classList.add("playing");
   const status = document.getElementById("reactionStatus");
@@ -1535,24 +1586,17 @@ function playReactionAudio() {
   speakSmart(patId, skeleton, () => {
     setTimeout(() => {
       speakSmart(chunkId, c.en, () => {
-        setTimeout(() => {
-          speakTTS(fullEn, "en-US", () => {
-            if (playBtn) playBtn.classList.remove("playing");
-            if (status) { status.textContent = "✅ 听完了，想一下意思"; status.className = "status"; }
-          });
-        }, 220);
+        if (playBtn) playBtn.classList.remove("playing");
+        if (status) { status.textContent = "✅ 听完了，想一下意思"; status.className = "status"; }
       }, "sentence");
     }, 220);
   }, "sentence");
 }
 function playReactionFull() {
   const fullEn = getReactionFullEn();
-  const playBtn = document.getElementById("reactionPlayBtn");
-  if (playBtn) playBtn.classList.add("playing");
   const status = document.getElementById("reactionStatus");
   if (status) { status.textContent = "🔊 " + fullEn; status.className = "status speaking"; }
   speakTTS(fullEn, "en-US", () => {
-    if (playBtn) playBtn.classList.remove("playing");
     if (status) { status.textContent = "✅ 播放完成"; status.className = "status"; }
   });
 }
@@ -1569,8 +1613,7 @@ function revealReactionAnswer() {
   }, 200);
 }
 function reactionRetrySame() {
-  reactionStep = 1;
-  reactionAnswered = false;
+  reactionStep = 1; reactionAnswered = false;
   renderReaction();
 }
 function renderReaction() {
@@ -1598,24 +1641,21 @@ function renderReaction() {
       '<div style="margin-top:18px;font-size:12px;color:#94a3b8;">点圆形按钮听</div>';
     actions.innerHTML = '<button class="btn-react-prev" onclick="reactionPrevPattern()">⏮ 上一句</button>' +
       '<button class="btn-react-next" onclick="reactionGoStep(2)">看到意思 →</button>';
-  }
-  else if (reactionStep === 2) {
+  } else if (reactionStep === 2) {
     card.innerHTML = '<div class="reaction-icon">💭</div>' +
       '<div class="reaction-hint">听到声音，先想意思。中文答案在这里 👇</div>' +
       '<div class="reaction-cn">' + fullCn + '</div>' +
       '<button class="icon-btn" onclick="playReactionFull()" style="margin-top:18px;">🔊 再听一遍</button>';
     actions.innerHTML = '<button class="btn-react-prev" onclick="reactionGoStep(1)">← 回声音</button>' +
       '<button class="btn-react-next" onclick="reactionGoStep(3)">看场景 →</button>';
-  }
-  else if (reactionStep === 3) {
+  } else if (reactionStep === 3) {
     card.innerHTML = '<div class="reaction-icon">🎬</div>' +
       '<div class="reaction-hint">这句话用在什么场景？</div>' +
       '<div class="reaction-scene"><b>📍 场景：</b>' + scene + '</div>' +
       '<button class="icon-btn" onclick="playReactionFull()" style="margin-top:18px;">🔊 听英语</button>';
     actions.innerHTML = '<button class="btn-react-prev" onclick="reactionGoStep(2)">← 回意思</button>' +
       '<button class="btn-react-next" onclick="reactionGoStep(4)">试反应 →</button>';
-  }
-  else if (reactionStep === 4) {
+  } else if (reactionStep === 4) {
     if (!reactionAnswered) {
       card.innerHTML = '<div class="reaction-icon">🗣️</div>' +
         '<div class="reaction-hint">看中文，心里说出英语。<br>说出来再点揭晓。</div>' +
@@ -1652,6 +1692,7 @@ function switchTab(tab, btn) {
   if (tab === "wordfamily" && !$("wfList").innerHTML) renderWordFamily();
   if (tab === "reaction" && !document.getElementById("reactionCard").innerHTML) initReaction();
   if (window.speechSynthesis) window.speechSynthesis.cancel();
+  clearKTV();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -1685,12 +1726,9 @@ function init() {
     document.addEventListener("touchstart", warm, { passive: true });
   }
 
-  let totalWords = 0;
-  WORD_FAMILIES.forEach(f => totalWords += f.w.length);
-  console.log("✅ 已启动");
-  console.log("📐 母句:", PATTERNS.length, "个 /", totalGroups, "组");
-  console.log("🧩 词族:", WORD_FAMILIES.length, "个 /", totalWords, "个单词");
-  console.log("🎯 反应训练已就绪");
+  console.log("✅ KTV 版已启动");
+  console.log("📐 母句:", PATTERNS.length, "/", totalGroups, "组");
+  console.log("🎤 KTV 歌词模式：默认开启");
 }
 
 $("contractionModal").addEventListener("click", function(e) {
