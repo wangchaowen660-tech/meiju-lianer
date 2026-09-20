@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>词块学习 · KTV 版</title>
+<title>词块学习 · 完整版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#f0f4f8 0%,#e2e8f0 100%);color:#1e293b;min-height:100vh;-webkit-text-size-adjust:100%;}
@@ -123,28 +123,51 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .phonics-words{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;}
 .phonics-word{background:#f1f5f9;color:#0f172a;padding:5px 12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;}
 .phonics-word .ipa{color:#6366f1;font-size:11px;margin-left:4px;}
+
+/* ============================================================
+   🧩 词族 - 增强高亮
+   ============================================================ */
 .wf-intro{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border-radius:18px;padding:18px 20px;margin-bottom:14px;box-shadow:0 8px 20px rgba(16,185,129,0.28);}
 .wf-intro h2{font-size:17px;font-weight:800;margin-bottom:6px;}
 .wf-intro p{font-size:13px;opacity:0.95;line-height:1.6;}
+.wf-legend{background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:#64748b;display:flex;gap:14px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+.wf-legend span{display:inline-flex;align-items:center;gap:4px;}
+.wf-legend .dot{width:10px;height:10px;border-radius:50%;}
+.wf-legend .dot.onset{background:#3b82f6;}
+.wf-legend .dot.rhyme{background:#10b981;}
+.wf-legend .dot.full{background:#f97316;}
 .wf-search{width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:14px;font-size:16px;margin-bottom:10px;outline:none;background:#fff;color:#0f172a;font-family:inherit;transition:border-color .2s;-webkit-appearance:none;}
 .wf-search:focus{border-color:#10b981;}
 .wf-stats{font-size:12px;color:#94a3b8;margin-bottom:12px;text-align:center;font-weight:600;}
 .wf-card{background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,0.05);}
 .wf-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #e2e8f0;}
-.wf-family{font-size:17px;font-weight:800;color:#10b981;cursor:pointer;padding:2px 6px;border-radius:8px;user-select:none;}
-.wf-family:active{background:#d1fae5;}
+.wf-family{font-size:17px;font-weight:800;color:#10b981;cursor:pointer;padding:3px 8px;border-radius:8px;user-select:none;background:#ecfdf5;transition:.18s;}
+.wf-family:active{transform:scale(1.08);background:#a7f3d0;}
+.wf-family.playing{animation:wfPulse .7s ease;}
 .wf-count{font-size:10px;background:#ecfdf5;color:#059669;padding:3px 10px;border-radius:10px;font-weight:700;}
-.wf-words{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:6px;}
-.wf-word{padding:8px 9px 7px;background:#f8fafc;border-radius:11px;border:1.5px solid #e2e8f0;cursor:pointer;transition:.15s;user-select:none;}
-.wf-word:active{transform:scale(0.97);background:#ecfdf5;border-color:#6ee7b7;}
-.wf-formula{display:flex;align-items:center;gap:2px;font-size:13px;flex-wrap:nowrap;line-height:1.2;}
-.wf-part{color:#0f172a;font-weight:800;padding:1px 4px;border-radius:5px;cursor:pointer;}
-.wf-part:active{background:#10b981;color:#fff;}
-.wf-op{color:#cbd5e1;font-weight:800;font-size:11px;padding:0 1px;}
-.wf-full{color:#e94560;font-weight:800;padding:1px 4px;border-radius:5px;cursor:pointer;}
-.wf-full:active{background:#e94560;color:#fff;}
-.wf-cn{font-size:10px;color:#94a3b8;margin-top:3px;line-height:1.3;padding-left:2px;}
+.wf-words{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:7px;}
+.wf-word{padding:9px 10px 8px;background:#f8fafc;border-radius:11px;border:1.5px solid #e2e8f0;cursor:pointer;transition:.18s;user-select:none;position:relative;}
+.wf-word:active{transform:scale(0.98);border-color:#6ee7b7;box-shadow:0 2px 10px rgba(16,185,129,0.15);}
+.wf-formula{display:flex;align-items:center;gap:3px;font-size:15px;font-weight:800;flex-wrap:nowrap;line-height:1.3;}
+.wf-part{font-weight:800;padding:2px 7px;border-radius:7px;cursor:pointer;transition:.18s;display:inline-block;}
+.wf-part.onset{color:#2563eb;background:#dbeafe;}
+.wf-part.rhyme{color:#047857;background:#d1fae5;}
+.wf-op{color:#cbd5e1;font-weight:800;font-size:12px;padding:0 2px;}
+.wf-full{color:#fff;background:linear-gradient(135deg,#f97316,#e94560);font-weight:800;padding:2px 9px;border-radius:7px;cursor:pointer;transition:.18s;display:inline-block;box-shadow:0 2px 6px rgba(233,69,96,0.25);}
+/* 点击/播放时的高亮脉冲 */
+.wf-part.playing,.wf-full.playing{animation:wfPulse .7s ease;}
+.wf-part.onset.playing{box-shadow:0 0 0 3px rgba(59,130,246,0.35),0 0 18px rgba(59,130,246,0.55);}
+.wf-part.rhyme.playing{box-shadow:0 0 0 3px rgba(16,185,129,0.35),0 0 18px rgba(16,185,129,0.55);}
+.wf-full.playing{box-shadow:0 0 0 3px rgba(249,115,22,0.4),0 0 22px rgba(249,115,22,0.6);}
+@keyframes wfPulse{
+  0%{transform:scale(1);}
+  45%{transform:scale(1.22);}
+  100%{transform:scale(1);}
+}
+.wf-cn{font-size:10px;color:#94a3b8;margin-top:5px;line-height:1.3;padding-left:2px;}
 .wf-empty{text-align:center;padding:40px 20px;color:#94a3b8;font-size:14px;}
+
+/* Method */
 .method-intro{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:18px;padding:18px;margin-bottom:14px;}
 .method-intro h2{font-size:18px;font-weight:800;margin-bottom:6px;}
 .method-intro p{font-size:13px;opacity:0.9;line-height:1.6;}
@@ -180,6 +203,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .contraction-list-arrow{color:#6366f1;font-weight:800;}
 .contraction-list-short{color:#4f46e5;font-weight:800;font-size:15px;flex:1;}
 .contraction-list-btn{background:#eef2ff;border:0;padding:5px 12px;border-radius:10px;color:#4f46e5;font-size:11px;font-weight:700;cursor:pointer;}
+/* Reaction */
 .reaction-intro{background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-radius:18px;padding:18px 20px;margin-bottom:14px;box-shadow:0 8px 20px rgba(139,92,246,0.28);}
 .reaction-intro h2{font-size:17px;font-weight:800;margin-bottom:6px;}
 .reaction-intro p{font-size:13px;opacity:0.95;line-height:1.6;}
@@ -219,8 +243,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   .ipa-grid{grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:5px;}
   .ipa-cell{padding:6px 3px;}
   .ipa-cell .ipa-sym{font-size:16px;}
-  .wf-words{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:5px;}
-  .wf-formula{font-size:12px;}
+  .wf-words{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;}
+  .wf-formula{font-size:14px;}
   .pattern-stat{font-size:10px;padding:5px 9px;}
   .play-btn-big{width:100px;height:100px;font-size:40px;}
 }
@@ -330,11 +354,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   </div>
 
   <div id="wordfamilyModule" style="display:none;">
-    <div class="wf-intro"><h2>🧩 词族拼读 · 500+ 词</h2><p>辅音 + 韵脚 = 单词。点任意部分听标准发音。</p></div>
+    <div class="wf-intro">
+      <h2>🧩 词族拼读 · 500+ 词</h2>
+      <p>辅音 + 韵脚 = 单词。点每个彩色部分听对应发音。</p>
+    </div>
+    <div class="wf-legend">
+      <span><span class="dot onset"></span>点辅音听辅音</span>
+      <span><span class="dot rhyme"></span>点韵脚听韵脚</span>
+      <span><span class="dot full"></span>点整词听整词</span>
+    </div>
     <input class="wf-search" id="wfSearch" placeholder="🔍 搜索单词 / 中文 / 词族..." oninput="wfFilter=this.value;renderWordFamily()">
     <div class="wf-stats" id="wfStats"></div>
     <div id="wfList"></div>
-    <div class="status" id="wfStatus">点任意部分听发音</div>
+    <div class="status" id="wfStatus">点任意彩色部分听发音</div>
   </div>
 
   <div id="ipaModule" style="display:none;">
@@ -404,7 +436,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       </div></div>
     </div>
     <div class="method-section">
-      <div class="method-header" onclick="toggleMethod(this)"><div class="title"><span class="icon">⏰</span>学习习惯</div><div class="arrow">▼</div></div>
+      <div class="method-header" onclick="toggleMethod(this)"><div class="title"><span class="icon">⏰</span>学习习惯</div><div class="arrow"></div></div>
       <div class="method-body"><div class="method-content">
         <div class="method-card"><h4><span class="num">1</span>每天 15 分钟 > 周末 3 小时</h4><p>语言学习靠频率不靠时长。每天 15 分钟效果比一周一次 3 小时好 5 倍。</p></div>
         <div class="method-card"><h4><span class="num">2</span>固定时间 + 固定地点</h4><p>刷牙后 3 分钟、通勤 10 分钟、睡前 5 分钟。让学习变成习惯。</p></div>
@@ -586,7 +618,6 @@ function clearKTV() {
   document.querySelectorAll("#sentenceCn .kw-cn").forEach(el => el.classList.remove("current", "done"));
 }
 
-// ⭐ 生成 KTV 版英文，词可单独点击
 function buildSentenceHTML(skeleton, chunkText, punctuation) {
   const skel = skeleton.split(/(\s+)/).filter(t => t !== "").map(t =>
     /^\s+$/.test(t) ? " " : '<span class="kw pattern-kw" onclick="speakOneWord(event,this)">' + escapeHTML(t) + '</span>'
@@ -594,7 +625,6 @@ function buildSentenceHTML(skeleton, chunkText, punctuation) {
   const chk = chunkText.split(/(\s+)/).filter(t => t !== "").map(t =>
     /^\s+$/.test(t) ? " " : '<span class="kw chunk-kw" onclick="speakOneWord(event,this)">' + escapeHTML(t) + '</span>'
   ).join("");
-  // ⭐ 用 stopProp 包裹，避免 iPad Safari 抛错
   return '<span class="part-pattern" onclick="stopProp(event);speakPattern()">' + skel +
          '</span> <span class="part-chunk" onclick="stopProp(event);speakChunk()">' + chk +
          '</span>' + escapeHTML(punctuation || "");
@@ -665,7 +695,6 @@ function estimateSentenceDuration(fullText) {
   return Math.max(1200, estimateCharWeight(fullText) * 95);
 }
 
-// ⭐ 点击单个词读该词
 function speakOneWord(ev, el) {
   stopProp(ev);
   const word = el.textContent.trim();
@@ -679,7 +708,7 @@ function speakOneWord(ev, el) {
 }
 
 // ============================================================
-// 数据（省略详细数据，与前版一致）
+// 数据
 // ============================================================
 const IPA_48 = {
   vowelShort:[{sym:"/ɪ/",ex:"sit",cn:"衣/诶之间"},{sym:"/e/",ex:"bed",cn:"诶（短）"},{sym:"/æ/",ex:"cat",cn:"诶/啊之间"},{sym:"/ʌ/",ex:"cup",cn:"啊/呃之间"},{sym:"/ɒ/",ex:"hot",cn:"哦（短）"},{sym:"/ʊ/",ex:"book",cn:"乌（短）"},{sym:"/ə/",ex:"about",cn:"轻声呃"}],
@@ -1103,68 +1132,124 @@ function splitPattern(pattern) {
   return { skeleton: pattern.replace(/___/g,"").trim(), punctuation: "" };
 }
 
-// ============ 词族 ============
+// ============================================================
+// 🧩 词族 - 增强高亮 + 三段独立发音
+// ============================================================
 function wfOnset(word, family) {
   if (word.length <= family.length) return "";
   if (!word.toLowerCase().endsWith(family)) return "";
   return word.slice(0, word.length - family.length);
 }
-function wfSayPart(ev, part) {
+
+// 高亮脉冲：给元素加 .playing，700ms 后自动移除
+function wfFlash(el) {
+  if (!el) return;
+  el.classList.remove("playing");
+  void el.offsetWidth; // 触发重排让动画重播
+  el.classList.add("playing");
+  setTimeout(() => el.classList.remove("playing"), 720);
+}
+
+// 读「辅音」（如 c → "kuh"）
+function wfSayOnset(ev, onset, el) {
   stopProp(ev);
-  const key = String(part).toLowerCase();
-  const say = ONSET_SAY[key] || part;
-  if (wfStatus) { wfStatus.textContent = "🔊 " + part; wfStatus.className = "status speaking"; }
+  const key = String(onset).toLowerCase();
+  const say = ONSET_SAY[key] || onset;
+  if (el) wfFlash(el);
+  if (wfStatus) { wfStatus.textContent = "🔵 辅音：" + onset; wfStatus.className = "status speaking"; }
   speakSmart("onset_" + key, say, () => {
-    if (wfStatus) { wfStatus.textContent = "✅ " + part; wfStatus.className = "status"; }
+    if (wfStatus) { wfStatus.textContent = "✅ 辅音 " + onset + " 完成"; wfStatus.className = "status"; }
   }, "phoneme");
 }
-function wfSpeakWord(ev, word) {
+
+// 读「韵脚」（如 at → "at"）
+function wfSayRhyme(ev, family, el) {
   stopProp(ev);
-  if (wfStatus) { wfStatus.textContent = "🔊 " + word; wfStatus.className = "status speaking"; }
+  if (el) wfFlash(el);
+  if (wfStatus) { wfStatus.textContent = "🟢 韵脚：-" + family; wfStatus.className = "status speaking"; }
+  speakSmart("rhyme_" + family, family, () => {
+    if (wfStatus) { wfStatus.textContent = "✅ 韵脚 -" + family + " 完成"; wfStatus.className = "status"; }
+  }, "phoneme");
+}
+
+// 读「整词」（如 cat → "cat"）
+function wfSayFull(ev, word, el) {
+  stopProp(ev);
+  if (el) wfFlash(el);
+  if (wfStatus) { wfStatus.textContent = "🟠 整词：" + word; wfStatus.className = "status speaking"; }
   speakSmart(word, word, () => {
-    if (wfStatus) { wfStatus.textContent = "✅ " + word; wfStatus.className = "status"; }
+    if (wfStatus) { wfStatus.textContent = "✅ " + word + " 完成"; wfStatus.className = "status"; }
   }, "word");
 }
-function wfSpeakFamily(ev, family) {
+
+// 词族标题（如 -at）：读整个韵脚
+function wfSpeakFamily(ev, family, el) {
   stopProp(ev);
-  if (wfStatus) { wfStatus.textContent = "🔊 -" + family; wfStatus.className = "status speaking"; }
+  if (el) wfFlash(el);
+  if (wfStatus) { wfStatus.textContent = "🔊 词族 -" + family; wfStatus.className = "status speaking"; }
   speakSmart("rhyme_" + family, family, () => {
-    if (wfStatus) { wfStatus.textContent = "✅ -" + family; wfStatus.className = "status"; }
+    if (wfStatus) { wfStatus.textContent = "✅ 词族 -" + family; wfStatus.className = "status"; }
   }, "phoneme");
 }
-function wfPlayWhole(family, word) {
+
+// 点整张词卡：三段连读（辅音 → 韵脚 → 整词）
+function wfPlayWhole(ev, family, word, cardEl) {
+  stopProp(ev);
   const onset = wfOnset(word, family);
-  if (!onset) { wfSpeakWord(null, word); return; }
+  if (!onset) { wfSayFull(ev, word, cardEl); return; }
   const onsetSay = ONSET_SAY[onset.toLowerCase()] || onset;
   const onsetKey = "onset_" + onset.toLowerCase();
-  if (wfStatus) { wfStatus.textContent = "① " + onset; wfStatus.className = "status speaking"; }
+
+  // 高亮整卡
+  if (cardEl) wfFlash(cardEl);
+
+  // 三段依次播放，每段对应的高亮也同步
+  const elOnset = cardEl ? cardEl.querySelector(".wf-part.onset") : null;
+  const elRhyme = cardEl ? cardEl.querySelector(".wf-part.rhyme") : null;
+  const elFull = cardEl ? cardEl.querySelector(".wf-full") : null;
+
+  if (wfStatus) { wfStatus.textContent = "① 辅音 " + onset; wfStatus.className = "status speaking"; }
+  if (elOnset) wfFlash(elOnset);
+
   speakSmart(onsetKey, onsetSay, () => {
     setTimeout(() => {
-      if (wfStatus) wfStatus.textContent = "② " + family;
+      if (wfStatus) wfStatus.textContent = "② 韵脚 -" + family;
+      if (elRhyme) wfFlash(elRhyme);
       speakSmart("rhyme_" + family, family, () => {
         setTimeout(() => {
-          if (wfStatus) wfStatus.textContent = "③ " + word;
+          if (wfStatus) wfStatus.textContent = "③ 整词 " + word;
+          if (elFull) wfFlash(elFull);
           speakSmart(word, word, () => {
-            if (wfStatus) { wfStatus.textContent = "✅ " + onset + " + " + family + " = " + word; wfStatus.className = "status"; }
+            if (wfStatus) {
+              wfStatus.textContent = "✅ " + onset + " + " + family + " = " + word;
+              wfStatus.className = "status";
+            }
           }, "word");
-        }, 280);
+        }, 320);
       }, "phoneme");
-    }, 280);
+    }, 320);
   }, "phoneme");
 }
+
+// 生成单词语卡 HTML（三个部分独立高亮）
 function wfWordHTML(family, word, cn) {
   const onset = wfOnset(word, family);
   let formula;
   if (onset) {
-    formula = '<span class="wf-part" onclick="wfSayPart(event, \'' + onset + '\')">' + onset + '</span>' +
+    formula =
+      '<span class="wf-part onset" onclick="wfSayOnset(event, \'' + onset + '\', this)">' + onset + '</span>' +
       '<span class="wf-op">+</span>' +
-      '<span class="wf-part" onclick="wfSayPart(event, \'' + family + '\')">' + family + '</span>' +
+      '<span class="wf-part rhyme" onclick="wfSayRhyme(event, \'' + family + '\', this)">' + family + '</span>' +
       '<span class="wf-op">=</span>' +
-      '<span class="wf-full" onclick="wfSpeakWord(event, \'' + word + '\')">' + word + '</span>';
-  } else formula = '<span class="wf-full" onclick="wfSpeakWord(event, \'' + word + '\')">' + word + '</span>';
-  return '<div class="wf-word" onclick="wfPlayWhole(\'' + family + '\',\'' + word + '\')">' +
-    '<div class="wf-formula">' + formula + '</div><div class="wf-cn">' + cn + '</div></div>';
+      '<span class="wf-full" onclick="wfSayFull(event, \'' + word + '\', this)">' + word + '</span>';
+  } else {
+    formula = '<span class="wf-full" onclick="wfSayFull(event, \'' + word + '\', this)">' + word + '</span>';
+  }
+  return '<div class="wf-word" onclick="wfPlayWhole(event, \'' + family + '\', \'' + word + '\', this)">' +
+    '<div class="wf-formula">' + formula + '</div>' +
+    '<div class="wf-cn">' + cn + '</div></div>';
 }
+
 function renderWordFamily() {
   const list = $("wfList");
   if (!list) return;
@@ -1175,7 +1260,7 @@ function renderWordFamily() {
     if (!words.length) return;
     totalFams++; totalWords += words.length;
     html += '<div class="wf-card"><div class="wf-card-head">' +
-      '<span class="wf-family" onclick="wfSpeakFamily(event, \'' + f.r + '\')">-' + f.r + '</span>' +
+      '<span class="wf-family" onclick="wfSpeakFamily(event, \'' + f.r + '\', this)">-' + f.r + '</span>' +
       '<span class="wf-count">' + words.length + ' 词</span></div>' +
       '<div class="wf-words">' + words.map(([w, cn]) => wfWordHTML(f.r, w, cn)).join("") + '</div></div>';
   });
@@ -1724,9 +1809,8 @@ function init() {
     document.addEventListener("touchstart", warm, { passive: true });
   }
 
-  console.log("✅ KTV 修复版已启动");
-  console.log("📐 母句:", PATTERNS.length, "/", totalGroups, "组");
-  console.log("🎤 KTV 默认开启 · 语音事件已加保护");
+  console.log("✅ 增强版已启动");
+  console.log("🧩 词族高亮：辅音蓝 / 韵脚绿 / 整词橙");
 }
 
 $("contractionModal").addEventListener("click", function(e) {
