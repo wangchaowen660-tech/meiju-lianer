@@ -38,15 +38,18 @@
     .btn-main { width: 100%; max-width: 300px; padding: 18px; border-radius: 30px; background: linear-gradient(135deg, #e94560, #f97316); color: #fff; font-size: 20px; font-weight: bold; border: none; box-shadow: 0 8px 20px rgba(233,69,96,0.4); }
     .btn-main:active { transform: scale(0.95); }
     
+    /* 付费墙 */
     .paywall-box { background: #fff; border-radius: 20px; padding: 25px 20px; color: #333; width: 100%; max-width: 320px; }
     .paywall-box h2 { color: #0f172a; margin-bottom: 5px; font-size: 22px; }
     .price-tag { background: linear-gradient(135deg, #fff1f3, #fffbeb); border: 2px dashed #fecdd3; border-radius: 12px; padding: 12px; display: inline-block; color: #e94560; margin: 10px 0 15px 0; box-shadow: 0 4px 10px rgba(233,69,96,0.1); }
     .price-tag span { font-size: 18px; font-weight: bold; }
     .price-tag strong { font-size: 38px; font-weight: 900; letter-spacing: -1px; }
     .price-tag small { display: block; font-size: 12px; color: #b8730a; margin-top: 2px; font-weight: bold; }
-    .wechat-card { background: #fff1f3; border: 1px solid #fecdd3; border-radius: 12px; padding: 12px; margin-bottom: 20px; }
-    .wechat-card span { display: block; font-size: 13px; color: #e94560; margin-bottom: 5px; }
-    .wechat-card strong { font-size: 22px; color: #e94560; user-select: all; letter-spacing: 1px; }
+    
+    .wechat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 15px; }
+    .wechat-card span { display: block; font-size: 12px; color: #64748b; margin-bottom: 5px; }
+    .wechat-card strong { font-size: 20px; color: #0f172a; user-select: all; letter-spacing: 1px; }
+    
     .input-box { width:100%; padding:14px; border:2px solid #e2e8f0; border-radius:10px; margin-bottom:15px; font-size:16px; text-align:center; outline:none; font-weight:bold; }
     .input-box:focus { border-color: #e94560; }
 </style>
@@ -83,21 +86,35 @@
         <button class="btn-main" onclick="restartGame()">再来一次</button>
     </div>
 
+    <!-- 付费墙（升级后的文案） -->
     <div class="overlay hidden" id="paywall-screen">
         <div class="paywall-box">
             <h2>🎉 突破 60 分！</h2>
             <p style="font-size:14px; color:#64748b;">你的语感非常棒！仅需支付：</p>
+            
             <div class="price-tag">
                 <span>¥</span><strong>9.9</strong>
                 <small>解锁 1000+ 全新题库</small>
             </div>
-            <p style="font-size:13px; color:#94a3b8; margin-bottom:10px;">请添加下方微信转账，备注“英语”</p>
+
+            <p style="font-size:13px; color:#64748b; margin-bottom:10px;">请添加开发团队微信转账，备注“英语”</p>
+            
             <div class="wechat-card">
-                <span>👇 长按复制微信号 👇</span>
+                <span>👇 长按复制团队微信号 👇</span>
                 <strong>king13142786</strong>
             </div>
-            <input type="text" id="code-input" class="input-box" placeholder="在此输入激活码">
-            <button class="btn-main" onclick="checkCode()" style="font-size:18px; padding:14px;">立即激活并继续</button>
+
+            <!-- 新增：复制口令功能 -->
+            <p style="font-size:13px; color:#64748b; margin-bottom:8px;">付款后，请复制口令发给开发团队：</p>
+            <button class="btn-main" onclick="copyCommand()" style="font-size:15px; padding:12px; margin-bottom:15px; background:#4299e1; box-shadow: 0 4px 10px rgba(66,153,225,0.3);">📋 复制口令发给开发团队</button>
+            
+            <!-- 系统生成提示语 -->
+            <div style="font-size:12.5px; color:#e94560; margin-bottom:15px; font-weight:bold; background:#fff1f3; padding:8px; border-radius:8px;">
+                ⏳ 请稍后，系统生成解锁码第一时间为您解锁
+            </div>
+
+            <input type="text" id="code-input" class="input-box" placeholder="在此输入收到的解锁码">
+            <button class="btn-main" onclick="checkCode()" style="font-size:18px; padding:14px;">立即解锁并继续</button>
         </div>
     </div>
 
@@ -158,7 +175,7 @@
         const sentences = rawSentences.map(item => ({ cn: item[0], en: item[1] }));
         const words = rawWords.map(item => ({ cn: item[0], en: item[1] }));
 
-        // ★ 免费试玩题库（固定前15句短句，前20个单词）
+        // 免费试玩题库（固定前15句短句，前20个单词）
         const freeSentences = sentences.slice(0, 15);
         const freeWords = words.slice(0, 20);
 
@@ -238,15 +255,12 @@
             
             currentScore = 0; currentLevel = 1; comboCount = 0; isSentenceTurn = true; timeLeft = 100;
             
-            // ★ 核心改动：根据是否付费，加载不同题池
             if (isLocked) {
-                // 付费后：使用全量题库，并且每次开始都重新洗牌
                 sentencePool = [...sentences];
                 wordPool = [...words];
                 shuffleArray(sentencePool);
                 shuffleArray(wordPool);
             } else {
-                // 免费版：只给固定的题库，不洗牌，永远同样的顺序
                 sentencePool = [...freeSentences];
                 wordPool = [...freeWords];
             }
@@ -286,7 +300,6 @@
 
             let sourceDB = isSentenceTurn ? sentencePool : wordPool;
             
-            // 如果因为某种原因池子空了，补充（比如全答对通关了）
             if (sourceDB.length === 0) {
                 sourceDB = isSentenceTurn ? [...sentences] : [...words];
                 if(isLocked) shuffleArray(sourceDB);
@@ -411,6 +424,39 @@
             startGame();
         }
 
+        // ================= 复制口令功能 =================
+        function copyCommand() {
+            const commandText = "【极速词块】我已支付9.9元，请发解锁码";
+            
+            // 使用 Clipboard API 复制
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(commandText).then(() => {
+                    alert("口令已复制！请前往微信粘贴发送给开发团队。");
+                }).catch(err => {
+                    fallbackCopy(commandText);
+                });
+            } else {
+                fallbackCopy(commandText);
+            }
+        }
+
+        function fallbackCopy(text) {
+            // 兼容老版本微信/浏览器的复制
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert("口令已复制！请前往微信粘贴发送给开发团队。");
+            } catch (err) {
+                alert("复制失败，请手动输入：" + text);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // ================= 验证激活码 =================
         function checkCode() {
             const code = document.getElementById("code-input").value.trim();
             if (code === "VIP888") {
@@ -419,7 +465,6 @@
                 timeLeft = 100;
                 updateUI();
                 
-                // ★ 关键：付费成功后，立即更换为完整的题库并洗牌
                 sentencePool = [...sentences];
                 wordPool = [...words];
                 shuffleArray(sentencePool);
@@ -429,7 +474,7 @@
                 playBGM(); 
                 nextQuestion();
             } else {
-                alert("激活码错误，请检查是否输入正确~");
+                alert("解锁码错误，请检查是否输入正确，或稍等片刻等待系统发码~");
             }
         }
     </script>
