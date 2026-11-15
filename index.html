@@ -21,16 +21,24 @@
     .option-btn.wrong { background: #f56565; border-color: #f56565; }
     .combo { position: absolute; top: 30%; font-size: 40px; font-weight: 900; color: #f6e05e; opacity: 0; pointer-events: none; transform: scale(0.5); transition: all 0.3s; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
     .combo.show { opacity: 1; transform: scale(1.2) translateY(-20px); }
-    .overlay { position: absolute; inset: 0; background: rgba(26,32,44,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; z-index: 10; text-align: center; backdrop-filter: blur(5px); }
+    .overlay { position: absolute; inset: 0; background: rgba(26,32,44,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 10; text-align: center; backdrop-filter: blur(5px); }
     .overlay.hidden { display: none; }
     .overlay h1 { font-size: 32px; margin-bottom: 10px; color: #f6e05e; }
     .overlay p { font-size: 16px; color: #a0aec0; margin-bottom: 30px; line-height: 1.6; }
     .btn-main { width: 100%; max-width: 300px; padding: 18px; border-radius: 30px; background: linear-gradient(135deg, #e94560, #f97316); color: #fff; font-size: 20px; font-weight: bold; border: none; box-shadow: 0 8px 20px rgba(233,69,96,0.4); }
     .btn-main:active { transform: scale(0.95); }
-    .paywall-box { background: #fff; border-radius: 20px; padding: 25px; color: #333; width: 100%; max-width: 320px; }
-    .paywall-box h2 { color: #0f172a; margin-bottom: 10px; }
-    .paywall-box p { color: #64748b; font-size: 14px; margin-bottom: 20px; }
-    .wechat-id { background: #f1f5f9; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 18px; font-weight: bold; color: #e94560; margin-bottom: 20px; user-select: all; }
+    
+    /* 付费墙特别样式 */
+    .paywall-box { background: #fff; border-radius: 20px; padding: 20px; color: #333; width: 100%; max-width: 320px; }
+    .paywall-box h2 { color: #0f172a; margin-bottom: 5px; font-size: 20px; }
+    .paywall-box p { color: #64748b; font-size: 13px; margin-bottom: 15px; }
+    
+    /* 收款码图片 */
+    .qr-img { width: 160px; height: 160px; display: block; margin: 0 auto 10px auto; border-radius: 8px; object-fit: contain; background: #f1f5f9; }
+    
+    .wechat-id { background: #f1f5f9; padding: 8px; border-radius: 8px; font-family: monospace; font-size: 14px; font-weight: bold; color: #e94560; margin-bottom: 15px; user-select: all; display: inline-block;}
+    .input-box { width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; margin-bottom:15px; font-size:16px; text-align:center; outline:none; }
+    .input-box:focus { border-color: #e94560; }
 </style>
 </head>
 <body>
@@ -59,19 +67,24 @@
         <button class="btn-main" onclick="restartGame()">再来一次</button>
     </div>
 
+    <!-- 付费墙：带收款码 -->
     <div class="overlay hidden" id="paywall-screen">
         <div class="paywall-box">
             <h2>🎉 突破 200 分！</h2>
-            <p>你的语感非常棒！<br>支付 ¥9.9 获取专属激活码，继续挑战更高分！</p>
-            <div class="wechat-id">加微信：King13142786</div>
-            <input type="text" id="code-input" placeholder="输入激活码" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; margin-bottom:15px; font-size:16px; text-align:center;">
+            <p>你的语感非常棒！请扫码支付 ¥9.9<br>获取激活码继续挑战</p>
+            
+            <!-- 这里引用了同目录下的 wx.png，你把微信码传上去就行 -->
+            <img src="wx.png" class="qr-img" alt="微信收款码">
+            
+            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">付款后加微信：<span class="wechat-id">King13142786</span> 获取码</div>
+            
+            <input type="text" id="code-input" class="input-box" placeholder="输入激活码">
             <button class="btn-main" onclick="checkCode()" style="font-size:16px; padding:12px;">激活并继续</button>
         </div>
     </div>
 
     <script>
         // ================= 核心题库 =================
-        // 采用极度压缩格式 [中文, 英文]，减少代码体积
         const rawSentences = [
             ["我想点这个", "I'd like to order this"],["我不知道去哪", "I have no idea where to go"],["你能帮我一下吗", "Can you help me with this"],
             ["你是什么意思", "What do you mean"],["我该去哪里", "Where should I visit"],["现在几点了", "What time is it now"],
@@ -131,11 +144,9 @@
             ["为了", "for"],["从...来", "from"],["去往", "to"],["和...一起", "with"],["没有", "without"],["关于", "about"],["在...之间", "between"]
         ];
 
-        // 格式化为统一对象数组
         const sentences = rawSentences.map(item => ({ cn: item[0], en: item[1] }));
         const words = rawWords.map(item => ({ cn: item[0], en: item[1] }));
 
-        // ================= 游戏状态 =================
         let currentScore = 0;
         let currentLevel = 1;
         let comboCount = 0;
@@ -145,11 +156,9 @@
         let isLocked = false; 
         let isSentenceTurn = true; 
 
-        // 抽取池 (保证一局内不重复)
         let sentencePool = [];
         let wordPool = [];
 
-        // ================= 音效引擎 =================
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -174,7 +183,6 @@
             }
         }
 
-        // ================= 核心逻辑 =================
         const $ = id => document.getElementById(id);
 
         function shuffleArray(array) {
@@ -196,7 +204,6 @@
             isSentenceTurn = true; 
             timeLeft = 100;
             
-            // 初始化题库池 (打乱)
             sentencePool = [...sentences];
             wordPool = [...words];
             shuffleArray(sentencePool);
@@ -235,17 +242,14 @@
 
             let sourceDB = isSentenceTurn ? sentencePool : wordPool;
             
-            // 如果池子空了，重新补充（防崩溃）
             if (sourceDB.length === 0) {
                 sourceDB = isSentenceTurn ? [...sentences] : [...words];
                 shuffleArray(sourceDB);
             }
 
-            // 取出第一题并从池中删除
             const correctAnswer = sourceDB.shift(); 
             currentQuestion = correctAnswer;
 
-            // 生成干扰项 (从完整题库随机抽)
             let allOptions = isSentenceTurn ? sentences : words;
             let options = [correctAnswer];
             while (options.length < 4) {
