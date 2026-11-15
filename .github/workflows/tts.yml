@@ -1,0 +1,37 @@
+name: Generate TTS Audio
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Extract data from index.html
+        run: node scripts/extract.js
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install edge-tts
+        run: pip install edge-tts
+
+      - name: Generate audio files
+        run: python scripts/generate.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add audio/ data.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Generate TTS audio [skip ci]"
+          git push
