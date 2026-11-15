@@ -21,6 +21,8 @@
     .option-btn.wrong { background: #f56565; border-color: #f56565; }
     .combo { position: absolute; top: 30%; font-size: 40px; font-weight: 900; color: #f6e05e; opacity: 0; pointer-events: none; transform: scale(0.5); transition: all 0.3s; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
     .combo.show { opacity: 1; transform: scale(1.2) translateY(-20px); }
+    
+    /* 遮罩层 */
     .overlay { position: absolute; inset: 0; background: rgba(26,32,44,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 10; text-align: center; backdrop-filter: blur(5px); }
     .overlay.hidden { display: none; }
     .overlay h1 { font-size: 32px; margin-bottom: 10px; color: #f6e05e; }
@@ -29,15 +31,30 @@
     .btn-main:active { transform: scale(0.95); }
     
     /* 付费墙特别样式 */
-    .paywall-box { background: #fff; border-radius: 20px; padding: 20px; color: #333; width: 100%; max-width: 320px; }
-    .paywall-box h2 { color: #0f172a; margin-bottom: 5px; font-size: 20px; }
-    .paywall-box p { color: #64748b; font-size: 13px; margin-bottom: 15px; }
+    .paywall-box { background: #fff; border-radius: 20px; padding: 25px 20px; color: #333; width: 100%; max-width: 320px; }
+    .paywall-box h2 { color: #0f172a; margin-bottom: 5px; font-size: 22px; }
     
-    /* 收款码图片 */
-    .qr-img { width: 160px; height: 160px; display: block; margin: 0 auto 10px auto; border-radius: 8px; object-fit: contain; background: #f1f5f9; }
+    /* 醒目的 9.9 价格标签 */
+    .price-tag { 
+        background: linear-gradient(135deg, #fff1f3, #fffbeb); 
+        border: 2px dashed #fecdd3; 
+        border-radius: 12px; 
+        padding: 12px; 
+        display: inline-block; 
+        color: #e94560; 
+        margin: 10px 0 15px 0;
+        box-shadow: 0 4px 10px rgba(233,69,96,0.1);
+    }
+    .price-tag span { font-size: 18px; font-weight: bold; }
+    .price-tag strong { font-size: 38px; font-weight: 900; letter-spacing: -1px; }
+    .price-tag small { display: block; font-size: 12px; color: #b8730a; margin-top: 2px; font-weight: bold; }
     
-    .wechat-id { background: #f1f5f9; padding: 8px; border-radius: 8px; font-family: monospace; font-size: 14px; font-weight: bold; color: #e94560; margin-bottom: 15px; user-select: all; display: inline-block;}
-    .input-box { width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; margin-bottom:15px; font-size:16px; text-align:center; outline:none; }
+    /* 醒目微信号 */
+    .wechat-card { background: #fff1f3; border: 1px solid #fecdd3; border-radius: 12px; padding: 12px; margin-bottom: 20px; }
+    .wechat-card span { display: block; font-size: 13px; color: #e94560; margin-bottom: 5px; }
+    .wechat-card strong { font-size: 22px; color: #e94560; user-select: all; letter-spacing: 1px; }
+    
+    .input-box { width:100%; padding:14px; border:2px solid #e2e8f0; border-radius:10px; margin-bottom:15px; font-size:16px; text-align:center; outline:none; font-weight:bold; }
     .input-box:focus { border-color: #e94560; }
 </style>
 </head>
@@ -67,19 +84,25 @@
         <button class="btn-main" onclick="restartGame()">再来一次</button>
     </div>
 
-    <!-- 付费墙：带收款码 -->
     <div class="overlay hidden" id="paywall-screen">
         <div class="paywall-box">
             <h2>🎉 突破 200 分！</h2>
-            <p>你的语感非常棒！请扫码支付 ¥9.9<br>获取激活码继续挑战</p>
+            <p style="font-size:14px; color:#64748b;">你的语感非常棒！仅需支付：</p>
             
-            <!-- 这里引用了同目录下的 wx.png，你把微信码传上去就行 -->
-            <img src="wx.png" class="qr-img" alt="微信收款码">
+            <div class="price-tag">
+                <span>¥</span><strong>9.9</strong>
+                <small>终身解锁 · 无限挑战</small>
+            </div>
+
+            <p style="font-size:13px; color:#94a3b8; margin-bottom:10px;">请添加下方微信转账，备注“英语”</p>
             
-            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">付款后加微信：<span class="wechat-id">King13142786</span> 获取码</div>
+            <div class="wechat-card">
+                <span>👇 长按复制微信号 👇</span>
+                <strong>king13142786</strong>
+            </div>
             
-            <input type="text" id="code-input" class="input-box" placeholder="输入激活码">
-            <button class="btn-main" onclick="checkCode()" style="font-size:16px; padding:12px;">激活并继续</button>
+            <input type="text" id="code-input" class="input-box" placeholder="在此输入激活码">
+            <button class="btn-main" onclick="checkCode()" style="font-size:18px; padding:14px;">立即激活并继续</button>
         </div>
     </div>
 
@@ -106,7 +129,6 @@
         ];
 
         const rawWords = [
-            // 基础名词 (Nouns)
             ["水", "water"],["咖啡", "coffee"],["食物", "food"],["钱", "money"],["时间", "time"],["工作", "work"],["家", "home"],["手机", "phone"],
             ["朋友", "friend"],["城市", "city"],["酒店", "hotel"],["机场", "airport"],["护照", "passport"],["票", "ticket"],["行李", "luggage"],
             ["天气", "weather"],["问题", "question"],["答案", "answer"],["电脑", "computer"],["网络", "internet"],["密码", "password"],
@@ -118,8 +140,6 @@
             ["商店", "store"],["超市", "supermarket"],["医院", "hospital"],["银行", "bank"],["学校", "school"],["公司", "company"],
             ["办公室", "office"],["房间", "room"],["厨房", "kitchen"],["卫生间", "bathroom"],["书", "book"],["笔", "pen"],
             ["纸", "paper"],["包", "bag"],["衣服", "clothes"],["鞋子", "shoes"],["帽子", "hat"],["手表", "watch"],["钥匙", "key"],
-
-            // 核心动词 (Verbs)
             ["吃", "eat"],["喝", "drink"],["睡觉", "sleep"],["走路", "walk"],["跑", "run"],["买", "buy"],["卖", "sell"],["说", "speak"],
             ["听", "listen"],["看", "watch"],["阅读", "read"],["写", "write"],["学习", "study"],["休息", "rest"],["帮助", "help"],
             ["寻找", "find"],["丢失", "lose"],["支付", "pay"],["等待", "wait"],["开始", "start"],["结束", "finish"],["打开", "open"],
@@ -128,8 +148,6 @@
             ["喜欢", "like"],["讨厌", "hate"],["想要", "want"],["需要", "need"],["使用", "use"],["工作", "work"],["玩", "play"],
             ["唱歌", "sing"],["跳舞", "dance"],["做饭", "cook"],["打扫", "clean"],["洗", "wash"],["穿", "wear"],["脱", "take off"],
             ["开车", "drive"],["飞", "fly"],["游泳", "swim"],["笑", "laugh"],["哭", "cry"],["尝试", "try"],["改变", "change"],
-
-            // 形容词 (Adjectives)
             ["好的", "good"],["坏的", "bad"],["大的", "big"],["小的", "small"],["热的", "hot"],["冷的", "cold"],["开心的", "happy"],
             ["伤心的", "sad"],["贵的", "expensive"],["便宜的", "cheap"],["快的", "fast"],["慢的", "slow"],["简单的", "easy"],
             ["困难的", "difficult"],["重要", "important"],["美丽的", "beautiful"],["丑陋的", "ugly"],["干净的", "clean"],["脏的", "dirty"],
@@ -137,8 +155,6 @@
             ["胖的", "fat"],["瘦的", "thin"],["聪明", "smart"],["愚蠢", "stupid"],["强壮", "strong"],["虚弱", "weak"],["累的", "tired"],
             ["无聊的", "boring"],["有趣的", "interesting"],["危险的", "dangerous"],["安全的", "safe"],["安静的", "quiet"],["吵闹的", "noisy"],
             ["明亮的", "bright"],["黑暗的", "dark"],["正确的", "right"],["错误的", "wrong"],["真的", "true"],["假的", "false"],
-
-            // 介词与连词 (Prepositions & Conjunctions)
             ["在...里面", "inside"],["在...上面", "on"],["在...下面", "under"],["在...旁边", "beside"],["在...前面", "in front of"],
             ["在...后面", "behind"],["因为", "because"],["但是", "but"],["而且", "and"],["或者", "or"],["如果", "if"],["虽然", "although"],
             ["为了", "for"],["从...来", "from"],["去往", "to"],["和...一起", "with"],["没有", "without"],["关于", "about"],["在...之间", "between"]
@@ -159,7 +175,11 @@
         let sentencePool = [];
         let wordPool = [];
 
+        // ================= 音频引擎 (音效 + BGM) =================
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let bgmInterval = null;
+
+        // 播放短音效
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
@@ -170,19 +190,53 @@
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(600, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             } else if (type === 'wrong') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(200, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.2);
             }
         }
 
+        // 生成 8-bit 街机风 BGM (纯代码，无需加载)
+        function playBGM() {
+            if (bgmInterval) return; // 防止重复
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            let step = 0;
+            // 经典动感 Bassline 旋律音高
+            const notes = [130.81, 130.81, 164.81, 130.81, 146.83, 130.81, 196.00, 164.81]; 
+            
+            bgmInterval = setInterval(() => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.type = 'triangle'; // 柔和一点的电子音
+                osc.frequency.value = notes[step % notes.length];
+                
+                // BGM 音量调小，不抢答题音效
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+                step++;
+            }, 150); // 150ms 一拍，速度很快
+        }
+
+        function stopBGM() {
+            clearInterval(bgmInterval);
+            bgmInterval = null;
+        }
+
+        // ================= 游戏逻辑 =================
         const $ = id => document.getElementById(id);
 
         function shuffleArray(array) {
@@ -213,7 +267,8 @@
             nextQuestion();
             startTimer();
             
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            // 开始 BGM
+            playBGM();
         }
 
         function startTimer() {
@@ -321,6 +376,7 @@
 
         function pauseGame() {
             if (timerInterval) clearInterval(timerInterval);
+            stopBGM(); // 暂停游戏时，BGM 也暂停
         }
 
         function gameOver() {
@@ -335,15 +391,17 @@
 
         function checkCode() {
             const code = document.getElementById("code-input").value.trim();
+            // 你的万能测试码
             if (code === "VIP888") {
                 isLocked = true;
                 $("paywall-screen").classList.add("hidden");
                 timeLeft = 100;
                 updateUI();
                 startTimer();
+                playBGM(); // 激活成功后，BGM 继续响
                 nextQuestion();
             } else {
-                alert("激活码错误");
+                alert("激活码错误，请检查是否输入正确~");
             }
         }
     </script>
