@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>极速词块 · 名片卡片</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+        background: #cbd5e1; /* 截图用的底色，方便裁剪 */
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;
+    }
+    /* 卡片本体，尺寸 320x480，标准的 2:3 名片比例 */
+    .card {
+        width: 100%; max-width: 340px; height: 520px;
+        background: linear-gradient(160deg, #1a202c 0%, #0f172a 100%);
+        border-radius: 24px; position: relative; overflow: hidden;
+        display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+        padding: 40px 25px; text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    
+    /* 卡片内的光影特效 */
+    .glow { position: absolute; width: 200px; height: 200px; background: #e94560; filter: blur(80px); opacity: 0.4; top: -10%; left: -20%; border-radius: 50%; }
+    .glow2 { position: absolute; width: 180px; height: 180px; background: #f97316; filter: blur(80px); opacity: 0.3; bottom: -10%; right: -20%; border-radius: 50%; }
+    
+    /* 顶部区域 */
+    .header { z-index: 2; display: flex; flex-direction: column; align-items: center; }
+    .logo-icon { font-size: 52px; line-height: 1; margin-bottom: 12px; filter: drop-shadow(0 4px 10px rgba(233,69,96,0.5)); }
+    .title { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: 2px; background: linear-gradient(135deg, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { font-size: 14px; color: #94a3b8; font-weight: bold; margin-top: 8px; letter-spacing: 1px; }
+
+    /* 中间卖点区域 */
+    .features { z-index: 2; width: 100%; display: flex; flex-direction: column; gap: 12px; margin-top: 10px;}
+    .feat-item { 
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); 
+        padding: 12px; border-radius: 12px; font-size: 14px; color: #e2e8f0; font-weight: 600; 
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .feat-item span { color: #f6e05e; font-size: 16px; }
+
+    /* 底部链接区域 */
+    .footer { z-index: 2; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+    .url-box { 
+        background: #fff; color: #0f172a; padding: 14px 20px; border-radius: 16px; 
+        font-weight: 900; font-size: 16px; width: 100%;
+        box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .url-box span { color: #e94560; font-size: 12px; letter-spacing: 1px; }
+    .tips { font-size: 12px; color: #a0aec0; font-weight: bold; letter-spacing: 1px;}
+</style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="glow"></div>
+        <div class="glow2"></div>
+
+        <div class="header">
+            <div class="logo-icon">⚡️</div>
+            <div class="title">极速词块</div>
+            <div class="subtitle">测测你的英语肌肉记忆</div>
+        </div>
+
+        <div class="features">
+            <div class="feat-item"><span>🧠</span> 1000+ 核心词库</div>
+            <div class="feat-item"><span>🎵</span> 街机节奏 · 连击闯关</div>
+            <div class="feat-item"><span>💡</span> 小白也能玩（带发音提示）</div>
+        </div>
+
+        <div class="footer">
+            <div class="tips">长按复制网址至浏览器打开</div>
+            <div class="url-box">
+                <span>立即开始挑战 👇</span>
+                meiju-lianer.pages.dev
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
