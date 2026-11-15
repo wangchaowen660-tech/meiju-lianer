@@ -20,7 +20,7 @@
     /* 游戏区 */
     .game-area { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
     
-    .question-cn { font-size: 28px; font-weight: 800; margin-bottom: 40px; line-height: 1.4; color: #e2e8f0; }
+    .question-cn { font-size: 32px; font-weight: 800; margin-bottom: 40px; line-height: 1.4; color: #e2e8f0; }
     
     /* 选项按钮 */
     .options { width: 100%; display: flex; flex-direction: column; gap: 15px; }
@@ -71,7 +71,7 @@
     <!-- 遮罩层：开始 -->
     <div class="overlay" id="start-screen">
         <h1>⚡️ 极速词块</h1>
-        <p>看中文，选英文。<br>在倒计时结束前尽可能多地得分！</p>
+        <p>短句与单词交替出现。<br>在倒计时结束前尽可能多地得分！</p>
         <button class="btn-main" onclick="startGame()">开始闯关</button>
     </div>
 
@@ -85,8 +85,8 @@
     <!-- 遮罩层：付费墙 -->
     <div class="overlay hidden" id="paywall-screen">
         <div class="paywall-box">
-            <h2>🎉 突破 500 分！</h2>
-            <p>你已经解锁了高级语感。<br>支付 ¥9.9 获取专属激活码，继续挑战！</p>
+            <h2>🎉 突破 200 分！</h2>
+            <p>你的语感非常棒！<br>支付 ¥9.9 获取专属激活码，继续挑战更高分！</p>
             <div class="wechat-id">加微信：King13142786</div>
             <input type="text" id="code-input" placeholder="输入激活码" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; margin-bottom:15px; font-size:16px; text-align:center;">
             <button class="btn-main" onclick="checkCode()" style="font-size:16px; padding:12px;">激活并继续</button>
@@ -94,21 +94,63 @@
     </div>
 
     <script>
-        // ================= 数据配置 =================
-        // 题库：直接抽取你之前的词块
-        const database = [
+        // ================= 题库配置 =================
+        // 1. 短句库
+        const sentences = [
             { cn: "我想点这个", en: "I'd like to order this" },
             { cn: "我不知道去哪", en: "I have no idea where to go" },
             { cn: "你能帮我一下吗", en: "Can you help me with this" },
             { cn: "你是什么意思", en: "What do you mean" },
             { cn: "我该去哪里", en: "Where should I visit" },
-            { cn: "我非常喜欢", en: "I like it very much" },
             { cn: "现在几点了", en: "What time is it now" },
             { cn: "请再说一遍", en: "Could you say that again" },
             { cn: "我马上就到", en: "I'll be there soon" },
-            { cn: "我想预订一个房间", en: "I'd like to book a room" },
+            { cn: "我想预订房间", en: "I'd like to book a room" },
             { cn: "这个多少钱", en: "How much does it cost" },
-            { cn: "我不明白", en: "I don't understand" }
+            { cn: "我不明白", en: "I don't understand" },
+            { cn: "随便看看", en: "I'm just looking, thanks" },
+            { cn: "很高兴认识你", en: "Nice to meet you" },
+            { cn: "祝你有美好的一天", en: "Have a nice day" },
+            { cn: "好久不见", en: "Long time no see" },
+            { cn: "你最近怎么样", en: "How have you been" },
+            { cn: "我同意你的看法", en: "I agree with you" },
+            { cn: "没问题", en: "No problem" },
+            { cn: "别担心", en: "Don't worry about it" },
+            { cn: "小心点", en: "Be careful" }
+        ];
+
+        // 2. 单词库 (精选高频词，分类扩充)
+        const words = [
+            // 日常名词
+            { cn: "水", en: "water" }, { cn: "咖啡", en: "coffee" }, { cn: "食物", en: "food" },
+            { cn: "钱", en: "money" }, { cn: "时间", en: "time" }, { cn: "工作", en: "work" },
+            { cn: "家", en: "home" }, { cn: "手机", en: "phone" }, { cn: "朋友", en: "friend" },
+            { cn: "城市", en: "city" }, { cn: "酒店", en: "hotel" }, { cn: "机场", en: "airport" },
+            { cn: "护照", en: "passport" }, { cn: "票", en: "ticket" }, { cn: "行李", en: "luggage" },
+            { cn: "天气", en: "weather" }, { cn: "问题", en: "question" }, { cn: "答案", en: "answer" },
+            { cn: "电脑", en: "computer" }, { cn: "网络", en: "internet" }, { cn: "密码", en: "password" },
+            
+            // 动词 (Actions)
+            { cn: "吃", en: "eat" }, { cn: "喝", en: "drink" }, { cn: "睡觉", en: "sleep" },
+            { cn: "走路", en: "walk" }, { cn: "跑", en: "run" }, { cn: "买", en: "buy" },
+            { cn: "卖", en: "sell" }, { cn: "说", en: "speak" }, { cn: "听", en: "listen" },
+            { cn: "看", en: "watch" }, { cn: "阅读", en: "read" }, { cn: "写", en: "write" },
+            { cn: "学习", en: "study" }, { cn: "休息", en: "rest" }, { cn: "帮助", en: "help" },
+            { cn: "寻找", en: "find" }, { cn: "丢失", en: "lose" }, { cn: "支付", en: "pay" },
+            { cn: "等待", en: "wait" }, { cn: "开始", en: "start" }, { cn: "结束", en: "finish" },
+            
+            // 形容词 (Adjectives)
+            { cn: "好的", en: "good" }, { cn: "坏的", en: "bad" }, { cn: "大的", en: "big" },
+            { cn: "小的", en: "small" }, { cn: "热的", en: "hot" }, { cn: "冷的", en: "cold" },
+            { cn: "开心的", en: "happy" }, { cn: "伤心的", en: "sad" }, { cn: "贵的", en: "expensive" },
+            { cn: "便宜的", en: "cheap" }, { cn: "快的", en: "fast" }, { cn: "慢的", en: "slow" },
+            { cn: "简单的", en: "easy" }, { cn: "困难的", en: "difficult" }, { cn: "重要", en: "important" },
+            
+            // 介词与连词
+            { cn: "在...里面", en: "inside" }, { cn: "在...上面", en: "on" }, { cn: "在...下面", en: "under" },
+            { cn: "在...旁边", en: "beside" }, { cn: "在...前面", en: "in front of" }, { cn: "在...后面", en: "behind" },
+            { cn: "因为", en: "because" }, { cn: "但是", en: "but" }, { cn: "而且", en: "and" },
+            { cn: "或者", en: "or" }, { cn: "如果", en: "if" }, { cn: "虽然", en: "although" }
         ];
 
         // ================= 游戏状态 =================
@@ -118,9 +160,10 @@
         let timeLeft = 100; // 百分比
         let timerInterval = null;
         let currentQuestion = null;
-        let isLocked = false; // 付费锁状态
+        let isLocked = false; 
+        let isSentenceTurn = true; // 控制交替逻辑：初始为短句
 
-        // ================= 音效引擎 (纯代码生成，绝不挑系统) =================
+        // ================= 音效引擎 =================
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -158,21 +201,21 @@
             currentLevel = 1;
             comboCount = 0;
             isLocked = false;
+            isSentenceTurn = true; 
             timeLeft = 100;
             
             updateUI();
             nextQuestion();
             startTimer();
             
-            // 解锁音频上下文
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function startTimer() {
             if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(() => {
-                // 随着等级提升，时间流逝更快
-                timeLeft -= (0.3 + currentLevel * 0.05); 
+                // 时间流逝 (随等级稍微加快)
+                timeLeft -= (0.15 + currentLevel * 0.02); 
                 if (timeLeft <= 0) {
                     timeLeft = 0;
                     updateUI();
@@ -184,34 +227,36 @@
         }
 
         function nextQuestion() {
-            // 每次答对增加一点关卡难度
+            // 难度提升
             currentLevel = Math.floor(currentScore / 100) + 1;
             $("ui-level").textContent = "第 " + currentLevel + " 关";
             
-            // 如果分数超过 500 且没解锁，弹付费墙
-            if (currentScore >= 500 && !isLocked) {
+            // 200分触发付费墙 (不再增加)
+            if (currentScore >= 200 && !isLocked) {
                 pauseGame();
                 $("paywall-screen").classList.remove("hidden");
                 return;
             }
 
-            // 随机抽题
-            const correctAnswer = database[Math.floor(Math.random() * database.length)];
+            // 根据 isSentenceTurn 决定抽取短句还是单词
+            let sourceDB = isSentenceTurn ? sentences : words;
+            
+            const correctAnswer = sourceDB[Math.floor(Math.random() * sourceDB.length)];
             currentQuestion = correctAnswer;
 
-            // 生成错误选项
+            // 生成干扰项 (必须从当前题库抽)
             let options = [correctAnswer];
             while (options.length < 4) {
-                const randomWrong = database[Math.floor(Math.random() * database.length)];
+                const randomWrong = sourceDB[Math.floor(Math.random() * sourceDB.length)];
                 if (!options.find(o => o.en === randomWrong.en)) {
                     options.push(randomWrong);
                 }
             }
             
-            // 打乱选项顺序
+            // 打乱顺序
             options.sort(() => Math.random() - 0.5);
 
-            // 渲染
+            // 渲染 UI
             $("ui-question").textContent = correctAnswer.cn;
             const optBox = $("ui-options");
             optBox.innerHTML = "";
@@ -226,43 +271,46 @@
         }
 
         function checkAnswer(btn, isCorrect) {
-            // 禁用所有按钮防连点
             document.querySelectorAll(".option-btn").forEach(b => b.style.pointerEvents = "none");
 
             if (isCorrect) {
                 playSound('correct');
                 btn.classList.add("correct");
                 
-                // 连击奖励
+                // 连击与得分
                 comboCount++;
-                let points = 10 + (comboCount * 2);
-                currentScore += points;
+                currentScore += 10 + (comboCount * 2);
                 
-                // 回复少量时间
-                timeLeft = Math.min(100, timeLeft + 10);
+                // 答对回复大量时间
+                timeLeft = Math.min(100, timeLeft + 20);
                 
-                // 显示连击提示
                 if (comboCount >= 3) {
                     showCombo(comboCount + " Combo!");
                 }
 
-                setTimeout(() => nextQuestion(), 400);
+                // 核心交替逻辑：无论原来是什么，这里翻转状态
+                isSentenceTurn = !isSentenceTurn; 
+
+                setTimeout(() => nextQuestion(), 300);
             } else {
                 playSound('wrong');
                 btn.classList.add("wrong");
                 
-                // 扣除时间惩罚
                 comboCount = 0;
-                timeLeft = Math.max(0, timeLeft - 15);
+                // 答错扣除少量时间
+                timeLeft = Math.max(0, timeLeft - 8);
                 
-                // 亮出正确选项
+                // 亮出正确答案
                 document.querySelectorAll(".option-btn").forEach(b => {
                     if (b.textContent === currentQuestion.en) b.classList.add("correct");
                 });
 
+                // 答错也翻转交替状态，保证题型更迭
+                isSentenceTurn = !isSentenceTurn;
+
                 setTimeout(() => {
                     if (timeLeft <= 0) { gameOver(); } else { nextQuestion(); }
-                }, 800);
+                }, 700);
             }
             updateUI();
         }
@@ -278,7 +326,6 @@
             $("ui-score").textContent = currentScore + " 分";
             const timerEl = $("ui-timer");
             timerEl.style.width = timeLeft + "%";
-            // 时间越少变红
             if (timeLeft < 30) {
                 timerEl.style.background = "#f56565";
             } else {
@@ -303,11 +350,9 @@
         // ================= 付费验证 =================
         function checkCode() {
             const code = document.getElementById("code-input").value.trim();
-            // 你的激活码逻辑
             if (code === "VIP888") {
                 isLocked = true;
                 $("paywall-screen").classList.add("hidden");
-                // 奖励时间并继续
                 timeLeft = 100;
                 updateUI();
                 startTimer();
