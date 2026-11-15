@@ -13,22 +13,14 @@
     .timer-bg { width: 100%; height: 6px; background: #2d3748; }
     .timer-fill { height: 100%; background: #48bb78; width: 100%; transition: width 0.1s linear; }
     
-    /* 游戏区 */
     .game-area { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
     .question-cn { font-size: 32px; font-weight: 800; margin-bottom: 15px; line-height: 1.4; color: #e2e8f0; }
     
-    /* 提示系统 */
     .hint-section { height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 10px; }
-    .hint-btn { 
-        padding: 8px 16px; border-radius: 20px; background: rgba(237, 137, 54, 0.2); 
-        border: 1px solid #ed8936; color: #ed8936; font-size: 14px; font-weight: bold; transition: all 0.2s;
-    }
+    .hint-btn { padding: 8px 16px; border-radius: 20px; background: rgba(237, 137, 54, 0.2); border: 1px solid #ed8936; color: #ed8936; font-size: 14px; font-weight: bold; transition: all 0.2s; }
     .hint-btn:active { transform: scale(0.95); }
     .hint-btn.disabled { opacity: 0.3; pointer-events: none; }
-    .hint-text { 
-        display: none; font-size: 20px; font-weight: bold; color: #f6e05e; 
-        letter-spacing: 2px; background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 8px;
-    }
+    .hint-text { display: none; font-size: 20px; font-weight: bold; color: #f6e05e; letter-spacing: 2px; background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 8px; }
 
     .options { width: 100%; display: flex; flex-direction: column; gap: 12px; }
     .option-btn { width: 100%; padding: 18px; border-radius: 16px; border: 2px solid #4a5568; background: #2d3748; color: #fff; font-size: 18px; font-weight: bold; transition: all 0.1s; }
@@ -39,7 +31,6 @@
     .combo { position: absolute; top: 30%; font-size: 40px; font-weight: 900; color: #f6e05e; opacity: 0; pointer-events: none; transform: scale(0.5); transition: all 0.3s; text-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 5;}
     .combo.show { opacity: 1; transform: scale(1.2) translateY(-20px); }
     
-    /* 遮罩层 */
     .overlay { position: absolute; inset: 0; background: rgba(26,32,44,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 10; text-align: center; backdrop-filter: blur(5px); }
     .overlay.hidden { display: none; }
     .overlay h1 { font-size: 32px; margin-bottom: 10px; color: #f6e05e; }
@@ -47,7 +38,6 @@
     .btn-main { width: 100%; max-width: 300px; padding: 18px; border-radius: 30px; background: linear-gradient(135deg, #e94560, #f97316); color: #fff; font-size: 20px; font-weight: bold; border: none; box-shadow: 0 8px 20px rgba(233,69,96,0.4); }
     .btn-main:active { transform: scale(0.95); }
     
-    /* 付费墙 */
     .paywall-box { background: #fff; border-radius: 20px; padding: 25px 20px; color: #333; width: 100%; max-width: 320px; }
     .paywall-box h2 { color: #0f172a; margin-bottom: 5px; font-size: 22px; }
     .price-tag { background: linear-gradient(135deg, #fff1f3, #fffbeb); border: 2px dashed #fecdd3; border-radius: 12px; padding: 12px; display: inline-block; color: #e94560; margin: 10px 0 15px 0; box-shadow: 0 4px 10px rgba(233,69,96,0.1); }
@@ -73,7 +63,6 @@
         <div class="combo" id="ui-combo">Perfect!</div>
         <div class="question-cn" id="ui-question">点击开始游戏</div>
         
-        <!-- 提示区域 -->
         <div class="hint-section">
             <button id="hint-btn" class="hint-btn" onclick="showHint()">💡 听音提示 (得分减半)</button>
             <div id="hint-text" class="hint-text"></div>
@@ -96,11 +85,11 @@
 
     <div class="overlay hidden" id="paywall-screen">
         <div class="paywall-box">
-            <h2>🎉 突破 200 分！</h2>
+            <h2>🎉 突破 60 分！</h2>
             <p style="font-size:14px; color:#64748b;">你的语感非常棒！仅需支付：</p>
             <div class="price-tag">
                 <span>¥</span><strong>9.9</strong>
-                <small>终身解锁 · 无限挑战</small>
+                <small>解锁 1000+ 全新题库</small>
             </div>
             <p style="font-size:13px; color:#94a3b8; margin-bottom:10px;">请添加下方微信转账，备注“英语”</p>
             <div class="wechat-card">
@@ -169,6 +158,10 @@
         const sentences = rawSentences.map(item => ({ cn: item[0], en: item[1] }));
         const words = rawWords.map(item => ({ cn: item[0], en: item[1] }));
 
+        // ★ 免费试玩题库（固定前15句短句，前20个单词）
+        const freeSentences = sentences.slice(0, 15);
+        const freeWords = words.slice(0, 20);
+
         let currentScore = 0;
         let currentLevel = 1;
         let comboCount = 0;
@@ -177,7 +170,7 @@
         let currentQuestion = null;
         let isLocked = false; 
         let isSentenceTurn = true; 
-        let hintUsed = false; // 本题是否使用了提示
+        let hintUsed = false; 
 
         let sentencePool = [];
         let wordPool = [];
@@ -190,8 +183,7 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            osc.connect(gain); gain.connect(audioCtx.destination);
             if (type === 'correct') {
                 osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
@@ -244,12 +236,20 @@
             $("gameover-screen").classList.add("hidden");
             $("paywall-screen").classList.add("hidden");
             
-            currentScore = 0; currentLevel = 1; comboCount = 0; isLocked = false; isSentenceTurn = true; timeLeft = 100;
+            currentScore = 0; currentLevel = 1; comboCount = 0; isSentenceTurn = true; timeLeft = 100;
             
-            sentencePool = [...sentences];
-            wordPool = [...words];
-            shuffleArray(sentencePool);
-            shuffleArray(wordPool);
+            // ★ 核心改动：根据是否付费，加载不同题池
+            if (isLocked) {
+                // 付费后：使用全量题库，并且每次开始都重新洗牌
+                sentencePool = [...sentences];
+                wordPool = [...words];
+                shuffleArray(sentencePool);
+                shuffleArray(wordPool);
+            } else {
+                // 免费版：只给固定的题库，不洗牌，永远同样的顺序
+                sentencePool = [...freeSentences];
+                wordPool = [...freeWords];
+            }
             
             updateUI();
             nextQuestion();
@@ -273,22 +273,23 @@
             currentLevel = Math.floor(currentScore / 100) + 1;
             $("ui-level").textContent = "第 " + currentLevel + " 关";
             
-            if (currentScore >= 200 && !isLocked) {
+            if (currentScore >= 60 && !isLocked) {
                 pauseGame();
                 $("paywall-screen").classList.remove("hidden");
                 return;
             }
 
-            // 重置提示状态
             hintUsed = false;
             $("hint-btn").style.display = "block";
             $("hint-btn").classList.remove("disabled");
             $("hint-text").style.display = "none";
 
             let sourceDB = isSentenceTurn ? sentencePool : wordPool;
+            
+            // 如果因为某种原因池子空了，补充（比如全答对通关了）
             if (sourceDB.length === 0) {
                 sourceDB = isSentenceTurn ? [...sentences] : [...words];
-                shuffleArray(sourceDB);
+                if(isLocked) shuffleArray(sourceDB);
             }
 
             const correctAnswer = sourceDB.shift(); 
@@ -317,13 +318,11 @@
             });
         }
 
-        // 显示提示功能
         function showHint() {
             if (hintUsed) return;
             hintUsed = true;
             $("hint-btn").classList.add("disabled");
             
-            // 1. 播放语音
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const msg = new SpeechSynthesisUtterance(currentQuestion.en);
@@ -332,9 +331,7 @@
                 window.speechSynthesis.speak(msg);
             }
 
-            // 2. 显示首字母镂空
             let hintStr = currentQuestion.en.split(' ').map(word => {
-                // 保留标点，首字母显现，后面变下划线
                 let cleanWord = word.replace(/[^a-zA-Z]/g, '');
                 if(cleanWord.length <= 1) return word;
                 return word[0] + '_'.repeat(word.length - 1);
@@ -347,19 +344,18 @@
 
         function checkAnswer(btn, isCorrect) {
             document.querySelectorAll(".option-btn").forEach(b => b.style.pointerEvents = "none");
-            $("hint-btn").classList.add("disabled"); // 答题后禁用提示
+            $("hint-btn").classList.add("disabled");
 
             if (isCorrect) {
                 playSound('correct');
                 btn.classList.add("correct");
                 
-                // 计分逻辑：没用提示给满分，用了提示给一半分
                 if (!hintUsed) {
                     comboCount++;
                     currentScore += 10 + (comboCount * 2);
                     if (comboCount >= 3) showCombo(comboCount + " Combo!");
                 } else {
-                    comboCount = 0; // 用了提示断连击
+                    comboCount = 0; 
                     currentScore += 5; 
                 }
 
@@ -422,6 +418,13 @@
                 $("paywall-screen").classList.add("hidden");
                 timeLeft = 100;
                 updateUI();
+                
+                // ★ 关键：付费成功后，立即更换为完整的题库并洗牌
+                sentencePool = [...sentences];
+                wordPool = [...words];
+                shuffleArray(sentencePool);
+                shuffleArray(wordPool);
+                
                 startTimer();
                 playBGM(); 
                 nextQuestion();
